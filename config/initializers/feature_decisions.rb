@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # --copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -42,16 +44,12 @@ require_relative "../../lib_static/open_project/feature_decisions"
 OpenProject::FeatureDecisions.add :built_in_oauth_applications,
                                   description: "Allows the display and use of built-in OAuth applications."
 
-OpenProject::FeatureDecisions.add :generate_pdf_from_work_package,
-                                  description: "Allows to generate a PDF document from a work package description. " \
-                                               "See #45896 for details."
-
 OpenProject::FeatureDecisions.add :generate_work_package_subjects,
                                   description: "Allows the configuration for work package types to have " \
                                                "automatically generated work package subjects."
 
 OpenProject::FeatureDecisions.add :stages_and_gates,
-                                  description: "Enables the under construction feature of stages and gates."
+                                  description: "Enables the under construction feature of phases."
 
 OpenProject::FeatureDecisions.add :oidc_token_exchange,
                                   description: "Enables the under construction OAuth2 token exchange, allowing " \
@@ -62,3 +60,7 @@ OpenProject::FeatureDecisions.add :work_package_comment_id_url,
                                   description: "Introduced a new WP comment URL identifier structure " \
                                                "`#comment-<journal-id>` replacing the old " \
                                                "`#activity-<journal-sequence_number>`."
+
+OpenProject::FeatureDecisions.add :comments_with_restricted_visibility,
+                                  description: "Enables submitting comments that are restricted " \
+                                               "and only a subset of users can see"

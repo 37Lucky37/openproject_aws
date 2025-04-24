@@ -20,6 +20,20 @@
 #See COPYRIGHT and LICENSE files for more details.
 #++
 ru:
+  attributes:
+    additions_count: "Количество добавлений"
+    deletions_count: "Количество удалений"
+    comments_count: "Количество комментариев"
+    github_html_url: "URL "
+    github_app_owner_avatar_url: "URL аватара владельца"
+    review_comments_count: "Количество просмотренных комментариев"
+    github: "Идентификатор GitHub"
+    github_avatar_url: "URL на аватар"
+    github_updated_at: "Обновлено"
+    github_login: "Вход в GitHub"
+    labels: "Метки"
+    repository: "Репозиторий"
+    changed_files_count: "Изменённые файлы"
   button_add_deploy_target: Добавить цель установки
   label_deploy_target: Цель установки
   label_deploy_target_new: Новая цель установки

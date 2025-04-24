@@ -45,7 +45,7 @@ RSpec.describe "Admin lists project mappings for a storage",
   shared_let(:oauth_client_token) { create(:oauth_client_token, oauth_client: storage.oauth_client, user: admin) }
 
   shared_let(:remote_identity) do
-    create(:remote_identity, oauth_client: storage.oauth_client, user: admin, origin_user_id: "admin")
+    create(:remote_identity, auth_source: storage.oauth_client, integration: storage, user: admin, origin_user_id: "admin")
   end
 
   shared_let(:archived_project_project_storage) do
@@ -157,7 +157,7 @@ RSpec.describe "Admin lists project mappings for a storage",
         find(".ng-option-label", text: project.name).click
         check "Include sub-projects"
 
-        expect(page.find_by_id("storages_project_storage_project_folder_mode_automatic")).to be_checked
+        expect(page).to have_checked_field("storages_project_storage_project_folder_mode_automatic")
 
         click_on "Add"
       end
@@ -182,7 +182,7 @@ RSpec.describe "Admin lists project mappings for a storage",
       page.find_test_selector("storage-delete-button").click
 
       expect(page).to have_text("DELETE FILE STORAGE")
-      expect(page).to have_current_path("#{confirm_destroy_admin_settings_storage_path(storage)}?utf8=%E2%9C%93")
+      expect(page).to have_current_path(confirm_destroy_admin_settings_storage_path(storage))
     end
 
     describe "Linking a project to a storage with a manually managed folder" do
@@ -205,7 +205,8 @@ RSpec.describe "Admin lists project mappings for a storage",
             find(".ng-option-label", text: project.name).click
             check "Include sub-projects"
 
-            expect(page.find_by_id("storages_project_storage_project_folder_mode_automatic")).to be_checked
+            expect(page)
+              .to have_checked_field("storages_project_storage_project_folder_mode_automatic")
 
             choose "Existing folder with manually managed permissions"
             wait_for { page }.to have_text("No selected folder")
@@ -251,7 +252,8 @@ RSpec.describe "Admin lists project mappings for a storage",
               click_on "Add"
 
               expect(page).to have_text("Please select a folder.")
-              expect(page.find_by_id("storages_project_storage_project_folder_mode_manual")).to be_checked
+              expect(page)
+                .to have_checked_field("storages_project_storage_project_folder_mode_manual")
               expect(page).to have_text("No selected folder")
             end
           end

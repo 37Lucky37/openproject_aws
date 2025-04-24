@@ -42,7 +42,7 @@ See COPYRIGHT and LICENSE files for more details.
             scheme: :link,
             size: :medium,
             tag: :a,
-            href: url_for(limit: next_count, upcoming:),
+            href: url_for(limit: next_count, upcoming:, **params.slice(:filters).permit!),
             data: {
               keep_scroll_position_target: "triggerButton"
             }

@@ -2,6 +2,7 @@
 ms:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Pautkan fail dalam %{storageType}"
       link_existing_files: "Pautkan fail sedia ada"
       upload_files: "Muat naik fail"
@@ -19,6 +20,7 @@ ms:
         one_drive: "OneDrive/SharePoint"
         default: "Storan"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Beberapa tetapan %{storageType} tidak berfungsi. Sila hubungi pentadbir %{storageType} anda.
         live_data_error: "Ralat memperoleh butiran fail"
@@ -27,6 +29,8 @@ ms:
         no_file_links: "Untuk mengaitkan fail-fail kepada pakej kerja ini, sila lakukan melalui %{storageType}."
         not_logged_in: >
           Untuk tambah pautan, lihat atau muat naik fail yang berkaitan dengan pakej kerja ini, sila log masuk ke %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Fail ini telah wujud"
         already_existing_body: >

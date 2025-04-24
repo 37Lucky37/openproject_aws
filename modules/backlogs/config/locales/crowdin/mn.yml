@@ -75,7 +75,7 @@ mn:
     unassigned: "Unassigned"
     x_more: "%{count} more..."
   backlogs_active: "идэвхтэй"
-  backlogs_any: "any"
+  backlogs_any: "ямар ч"
   backlogs_inactive: "Project shows no activity"
   backlogs_points_burn_direction: "Points burn up/down"
   backlogs_product_backlog: "Product backlog"
@@ -88,7 +88,7 @@ mn:
   backlogs_sprints: "Sprints"
   backlogs_story: "Story"
   backlogs_story_type: "Story types"
-  backlogs_task: "Task"
+  backlogs_task: "Даалгавар"
   backlogs_task_type: "Task type"
   backlogs_velocity_missing: "No velocity could be calculated for this project"
   backlogs_velocity_varies: "Velocity varies significantly over sprints"
@@ -129,7 +129,7 @@ mn:
   label_stories_tasks: "Stories/Tasks"
   label_task_board: "Task board"
   label_version_setting: "Versions"
-  label_version: 'Version'
+  label_version: 'Хувилбар'
   label_webcal: "Webcal Feed"
   label_wiki: "Wiki"
   permission_view_master_backlog: "View master backlog"

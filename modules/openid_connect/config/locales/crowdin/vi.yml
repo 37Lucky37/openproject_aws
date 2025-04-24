@@ -4,7 +4,7 @@ vi:
     description: "Thêm các nhà cung cấp chiến lược OmniAuth OpenID Connect vào OpenProject."
   logout_warning: >
     Bạn đã được đăng xuất. Nội dung của bất kỳ biểu mẫu nào bạn gửi có thể bị mất. Vui lòng [đăng nhập].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Tên
@@ -29,7 +29,6 @@ vi:
         claims: Tuyên bố
         acr_values: Giá trị ACR
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@ vi:
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Ánh xạ thuộc tính
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Chưa có nhà cung cấp nào được định nghĩa.
       plural: Các nhà cung cấp OpenID

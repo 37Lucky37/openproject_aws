@@ -30,6 +30,7 @@ pt-BR:
         overridden_costs: "Substitui custos"
         spent: "Gasto"
         spent_on: "Data"
+        logged_by: "Registrado por"
       cost_type:
         unit: "Nome da unidade"
         unit_plural: "Plural do nome da unidade"
@@ -56,14 +57,24 @@ pt-BR:
         start_time: Hora de início
         end_time: Hora Final
     models:
+      time_entry:
+        one: "Registro de tempo"
+        other: "Registros de tempo"
+      cost_entry:
+        one: "Registro de custo"
+        other: "Registros de custo"
       cost_type:
         one: "Tipo de custo"
         other: "Tipos de custo"
+      time_entry_activity:
+        one: "Atividade de registro de tempo"
+        other: "Atividades de registro de tempo"
       rate: "Taxa"
     errors:
       models:
         time_entry:
           invalid_time: "deve estar entre 00:00 e 23:59."
+          cannot_log_for_this_work_package: "Não é possível registrar tempo para este pacote de trabalho."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Pacote de trabalho #%{id} não é válido para reatribuir as entradas de custo."
           nullify_is_not_valid_for_cost_entries: "Custos dos insumos não podem ser atribuídos a um projeto."
@@ -79,6 +90,7 @@ pt-BR:
   button_add_rate: "Adicionar taxa"
   button_log_costs: "Registrar custos unitários"
   button_log_time: "Registro"
+  button_add_activity: "Atividade"
   caption_booked_on_project: "Reservado para o projeto"
   caption_default: "Padrão"
   caption_default_rate_history_for: "Taxa histórica padrão para %{user}"
@@ -92,6 +104,8 @@ pt-BR:
   caption_show_locked: "Mostrar tipos bloqueados"
   caption_log_time_dialog: "Horário do registro"
   description_date_for_new_rate: "Data para nova taxa"
+  description_costs_settings: "Define o formato desejado para os custos em todos os projetos."
+  description_time_settings: "Define quais campos são obrigatórios ao registrar o tempo em todos os projetos."
   group_by_others: "Não em qualquer grupo"
   label_between: "entre"
   label_cost_filter_add: "Adicionar filtro de entrada de custo"
@@ -118,6 +132,8 @@ pt-BR:
   label_kind: "Tipo"
   label_less_or_equal: "<="
   label_log_costs: "Registrar custos unitários"
+  label_new_time_entry_activity: "Nova atividade de registro de tempo"
+  label_time_entry_activity_form_description: "As mudanças nesta atividade de registro de tempo serão aplicadas a todos os projetos onde estiver habilitada."
   label_no: "Não"
   label_option_plural: "Opções"
   label_overall_costs: "Custos totais"
@@ -130,6 +146,10 @@ pt-BR:
   label_until: "até"
   label_valid_from: "Válido a partir de"
   label_yes: "Sim"
+  label_time: "Horário"
+  label_cost: "Custo"
+  label_costs: "Custos"
+  label_mandatory_fields: "Campos obrigatórios"
   placeholder_activity_select_work_package_first: Primeiro é necessária a seleção do pacote de trabalho
   notice_something_wrong: "Algo deu errado. Por favor, tente novamente."
   notice_successful_restore: "Restauração bem-sucedida."
@@ -161,8 +181,6 @@ pt-BR:
   text_reassign_time_and_cost_entries: "Reatribua horas reportadas e custos para este pacote de trabalho:"
   text_warning_hidden_elements: "Algumas entradas podem ter sido excluídas da agregação."
   week: "semana"
-  js:
-    text_are_you_sure: "Você tem certeza?"
   api_v3:
     errors:
       validation:

@@ -20,6 +20,20 @@
 #See COPYRIGHT and LICENSE files for more details.
 #++
 uk:
+  attributes:
+    additions_count: "Кількість додавань"
+    deletions_count: "Кількість видалень"
+    comments_count: "Кількість коментарів"
+    github_html_url: "URL-адреса запиту на злиття"
+    github_app_owner_avatar_url: "URL-адреса аватара власника"
+    review_comments_count: "Кількість переглянутих коментарів"
+    github: "Ідентифікатор GitHub"
+    github_avatar_url: "URL-адреса аватара"
+    github_updated_at: "Оновлено о"
+    github_login: "Вхід у GitHub"
+    labels: "Мітки"
+    repository: "Репозиторій"
+    changed_files_count: "Змінені файли"
   button_add_deploy_target: Додати ціль розгортання
   label_deploy_target: Ціль розгортання
   label_deploy_target_new: Нова ціль розгортання

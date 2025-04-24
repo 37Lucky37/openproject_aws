@@ -64,13 +64,13 @@ RSpec.describe IssuePriority do
     end
   end
 
-  describe "#cache_key" do
+  describe "#cache_key_with_version" do
     it "updates when the updated_at field changes" do
-      old_cache_key = stubbed_priority.cache_key
+      old_cache_key = stubbed_priority.cache_key_with_version
 
-      stubbed_priority.updated_at = Time.now
+      stubbed_priority.updated_at = Time.zone.now
 
-      expect(stubbed_priority.cache_key)
+      expect(stubbed_priority.cache_key_with_version)
         .not_to eql old_cache_key
     end
   end

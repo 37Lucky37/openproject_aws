@@ -388,6 +388,58 @@ RSpec.describe "Projects copy", :js,
       end
     end
 
+    context "with a multi-select version custom field" do
+      include_context "ng-select-autocomplete helpers"
+
+      shared_let(:public_project) do
+        create(:project, name: "Public Pr", identifier: "public-pr", public: true)
+      end
+
+      let!(:versions) do
+        [
+          create(:version, project:, name: "Ringbo 1.0", sharing: "system"),
+          create(:version, project: public_project, name: "Ringbo 2.0", sharing: "system")
+        ]
+      end
+
+      let!(:version_custom_field) do
+        create(:version_project_custom_field,
+               name: "Version CF",
+               multi_value: true,
+               project_custom_field_section:,
+               projects: [project])
+      end
+
+      let(:version_field) { FormFields::SelectFormField.new version_custom_field }
+
+      before do
+        Pages::Projects::Settings::General.new(project).visit!
+
+        page.find_test_selector("project-settings-more-menu").click
+        page.find_test_selector("project-settings--copy").click
+
+        fill_in "Name", with: "Copied project"
+        click_on "Advanced settings"
+      end
+
+      it "can create a project" do
+        # expect the versions are grouped by the project name
+        version_field.expect_option(versions.first.name, grouping: project.name)
+        version_field.expect_option(versions.last.name, grouping: public_project.name)
+
+        version_field.select_option(versions.first.name, versions.last.name)
+
+        click_button "Save"
+
+        wait_for_copy_to_finish
+
+        copied_project = Project.find_by(name: "Copied project")
+        typed_values =
+          copied_project.custom_value_for(version_custom_field).map(&:typed_value)
+        expect(typed_values).to eq versions
+      end
+    end
+
     context "when the user has a view_project_attributes only" do
       let(:permissions) do
         %i(copy_projects
@@ -583,7 +635,6 @@ RSpec.describe "Projects copy", :js,
       expect(page).to have_text "The job has been queued and will be processed shortly."
 
       GoodJob.perform_inline
-      perform_enqueued_jobs
 
       expect(copied_project)
         .to be_present
@@ -599,7 +650,5 @@ RSpec.describe "Projects copy", :js,
 
     # ensure all jobs are run especially emails which might be sent later on
     GoodJob.perform_inline
-    while perform_enqueued_jobs > 0
-    end
   end
 end

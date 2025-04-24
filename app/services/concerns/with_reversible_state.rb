@@ -50,9 +50,8 @@ module WithReversibleState
     ##
     # Assign state to the service result
     def assign_state
-      yield.tap do |call|
-        state.called!(self)
-        call.state = state
+      yield.tap do |service_result|
+        service_result.state = state
       end
     end
   end

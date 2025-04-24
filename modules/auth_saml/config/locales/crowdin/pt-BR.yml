@@ -1,18 +1,18 @@
 pt-BR:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nome
         identifier: Identificador
-        secret: Segredo
+        secret: Secret
         scope: Escopo
-        assertion_consumer_service_url: URL do ACS (Serviço Consumidor de Aserção)
-        limit_self_registration: Limitar o registro automático
+        assertion_consumer_service_url: URL do ACS (Assertion Consumer Service)
+        limit_self_registration: Restringir auto-registro
         sp_entity_id: ID da entidade do serviço
         metadata_url: URL de metadados do provedor de identidade
         name_identifier_format: Formato do identificador de nome
-        idp_sso_service_url: Ponto de extremidade de login do provedor de identidade
-        idp_slo_service_url: Ponto de extremidade de logout do provedor de identidade
+        idp_sso_service_url: Endpoint de login do provedor de identidade
+        idp_slo_service_url: Endpoint de logout do provedor de identidade
         idp_cert: Certificado público de provedor de identidade
         authn_requests_signed: Assinar solicitações de autenticação SAML
         want_assertions_signed: Exigir respostas assinadas
@@ -23,7 +23,6 @@ pt-BR:
         digest_method: Algoritmo de resumo
         format: "Formato"
         icon: "Ícone personalizado"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -138,7 +137,7 @@ pt-BR:
       authn_requests_signed: >
         Se esta opção estiver marcada, o OpenProject assinará a SAML AuthnRequest. Você precisará fornecer um certificado de assinatura e uma chave privada nos campos abaixo.
       want_assertions_signed: >
-        Se esta opção estiver marcada, o OpenProject exigirá que o provedor de identidade envie respostas assinadas usando seu próprio par de chaves de certificado. O OpenProject verificará a assinatura com o certificado da seção de configuração básica.
+        Se esta opção estiver ativada, o OpenProject exigirá que o provedor de identidade envie respostas assinadas com seu próprio par de chaves. A assinatura será verificada pelo OpenProject usando o certificado da seção de configuração básica.
       want_assertions_encrypted: >
         Se ativado, será necessário que o provedor de identidade criptografe a resposta da asserção usando o par de certificados que você fornecer.
       certificate: >

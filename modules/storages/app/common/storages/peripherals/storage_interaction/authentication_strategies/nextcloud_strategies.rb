@@ -33,14 +33,44 @@ module Storages
     module StorageInteraction
       module AuthenticationStrategies
         module NextcloudStrategies
+          SpecificBearerToken = -> do
+            ::Storages::Peripherals::StorageInteraction::AuthenticationStrategies::SpecificBearerToken.strategy
+          end
+
           UserLess = -> do
             ::Storages::Peripherals::StorageInteraction::AuthenticationStrategies::BasicAuth.strategy
           end
 
-          UserBound = ->(user:) do
-            ::Storages::Peripherals::StorageInteraction::AuthenticationStrategies::OAuthUserToken
-              .strategy
-              .with_user(user)
+          class UserBound
+            class << self
+              include TaggedLogging
+
+              def call(user:, storage:)
+                with_tagged_logger do
+                  selector = AuthenticationMethodSelector.new(user:, storage:)
+
+                  case selector.authentication_method
+                  when :sso
+                    ::Storages::Peripherals::StorageInteraction::AuthenticationStrategies::SsoUserToken
+                      .strategy
+                      .with_user(user)
+                  when :storage_oauth
+                    ::Storages::Peripherals::StorageInteraction::AuthenticationStrategies::OAuthUserToken
+                      .strategy
+                      .with_user(user)
+                  else
+                    error "No user-bound authentication strategy applicable for file storage #{storage.id}."
+                    ::Storages::Peripherals::StorageInteraction::AuthenticationStrategies::Failure.strategy
+                  end
+                end
+              end
+
+              private
+
+              def oidc_provider_for(user)
+                user.authentication_provider.is_a?(OpenIDConnect::Provider)
+              end
+            end
           end
         end
       end

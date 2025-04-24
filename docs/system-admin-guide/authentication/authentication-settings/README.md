@@ -66,6 +66,8 @@ There can be defined a number of other authentication settings.
 3. Enable or disable the **autologin option**. This allows a user to remain logged in, even if he/she leaves the site. If this option is activated, the “Stay signed in” option will appear on the login screen to be selected.
 4. Activate the **session expiration option**. If you select this option, an additional field will open, where you will be able to define the **inactivity time duration before the session expiry**.
 5. Define to **log user login, name, and mail address for all requests**.
-7. Do not forget to **save** your changes.
+6. Define a path to redirect users to after their first login. If left empty, users are redirected to the homepage to see the onboarding tour.
+7. Set a default path to redirect users after login (only if the login link is not a back link, i.e. www.example.openproject.com/login). If left empty, users are redirected to the homepage.
+8. Do not forget to **save** your changes.
 
 ![Additional authentication settings in OpenProject administration](openproject_system_admin_guide_authentication_settings_other.png)

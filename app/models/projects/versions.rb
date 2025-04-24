@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -51,7 +53,7 @@ module Projects::Versions
       Version.shared_with(self)
     end
 
-    # Returns all versions a work package can be assigned to.  Opposed to
+    # Returns all versions a work package can be assigned to. Opposed to
     # #shared_versions this returns an array of Versions, not a scope.
     #
     # The main benefit is in scenarios where work packages' projects are eager

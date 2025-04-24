@@ -36,14 +36,10 @@ export class GitActionsService {
     // See https://stackoverflow.com/a/3651867 for how these rules came in.
     // This sanitization tries to be harsher than those rules
     return str
-      .replace(/&/g, 'and ') // & becomes and
-      .replace(/ +/g, '-') // Spaces become dashes
-      .replace(/[\x00-\x1F]/g, '') // ASCII control characters are out
-      .replace(/\x7F/g, '') // DEL is out
-      .replace(/[#\\\/\?\*\~\^\:\{\}@\.\[\]'"]/g, '') // Some other characters with special rules are out
-      .replace(/^[-]+/g, '') // Dashes at the start are removed
-      .replace(/[-]+$/g, '') // Dashes at the end are removed
-      .replace(/-+/g, '-') // Multiple dashes in a row are deduped
+      .replace(/&/g, "and ") // & becomes and
+      .replace(/\W+/g, "-") // Replace any consecutive non ascii characters by a single dash as they might make trouble in some tools.
+      .replace(/^-/g, "") // Dash at the start is removed
+      .replace(/-$/g, "") // Dash at the end is removed
       .trim();
   }
 

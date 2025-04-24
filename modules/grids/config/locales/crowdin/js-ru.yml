@@ -51,7 +51,7 @@ ru:
         work_packages_accountable:
           title: "Пакеты работ, в которых я подотчетен"
         work_packages_assigned:
-          title: 'Переданные мне пакеты работ'
+          title: 'Пакеты работ, назначенные мне'
         work_packages_created:
           title: 'Пакеты работ, созданные мной'
         work_packages_watched:

@@ -34,16 +34,14 @@ bg:
           name: Тъмно сиво
         item_13:
           name: Черно
-      life_cycle_colors:
+      project_phase_colors:
         item_0:
           name: PM2 Orange
         item_1:
-          name: PM2 Purple
-        item_2:
           name: PM2 Red
-        item_3:
+        item_2:
           name: PM2 Magenta
-        item_4:
+        item_3:
           name: PM2 Green Yellow
       document_categories:
         item_0:
@@ -81,21 +79,18 @@ bg:
         item_1:
           name: Standard global role
     standard:
-      life_cycles:
+      project_phases:
         item_0:
           name: Initiating
         item_1:
-          name: Ready for Planning
-        item_2:
           name: Planning
-        item_3:
-          name: Ready for Executing
-        item_4:
+          start_gate: Ready for Planning
+        item_2:
           name: Executing
-        item_5:
-          name: Ready for Closing
-        item_6:
+          start_gate: Ready for Executing
+        item_3:
           name: Closing
+          start_gate: Ready for Closing
       priorities:
         item_0:
           name: Нисък
@@ -108,24 +103,24 @@ bg:
       projects:
         demo-project:
           name: Demo project
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
+          status_explanation: Всички задачи са по график. Участниците си знаят задачите. Системата е напълно настроена.
           description: This is a short summary of the goals of this demo project.
           news:
             item_0:
-              title: Welcome to your demo project
+              title: Добре дошли във вашия демонстрационен проект
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
-              description: The actual news
+                Радваме се, че се присъединихте.
+                В този модул можете да съобщавате новини за проекта на членовете на вашия екип.
+              description: Актуалните новини
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Категория 1 (да се промени в настройките на проекта)
           queries:
             item_0:
-              name: Project plan
+              name: План на проекта
             item_1:
-              name: Milestones
+              name: Етапи
             item_2:
-              name: Tasks
+              name: Задачи
             item_3:
               name: Екипен плановик
           boards:
@@ -148,7 +143,7 @@ bg:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Добре дошли
               item_1:
                 options:
                   name: Първи стъпки
@@ -173,7 +168,7 @@ bg:
                   name: Работни пакети
               item_6:
                 options:
-                  name: Milestones
+                  name: Етапи
           work_packages:
             item_0:
               subject: Start of project
@@ -226,14 +221,14 @@ bg:
             More information: [https://www.openproject.org/docs/user-guide/wiki/](https://www.openproject.org/docs/user-guide/wiki/)
         scrum-project:
           name: Scrum project
-          status_explanation: All tasks are on schedule. The people involved know their tasks. The system is completely set up.
+          status_explanation: Всички задачи са по график. Участниците си знаят задачите. Системата е напълно настроена.
           description: This is a short summary of the goals of this demo Scrum project.
           news:
             item_0:
               title: Welcome to your Scrum demo project
               summary: |
-                We are glad you joined.
-                In this module you can communicate project news to your team members.
+                Радваме се, че се присъединихте.
+                В този модул можете да съобщавате новини за проекта на членовете на вашия екип.
           versions:
             item_0:
               name: Bug Backlog
@@ -292,16 +287,16 @@ bg:
             item_3:
               name: Sprint 2
           categories:
-            item_0: Category 1 (to be changed in Project settings)
+            item_0: Категория 1 (да се промени в настройките на проекта)
           queries:
             item_0:
-              name: Project plan
+              name: План на проекта
             item_1:
               name: Натрупване на продукти
             item_2:
               name: Sprint 1
             item_3:
-              name: Tasks
+              name: Задачи
           boards:
             kanban:
               name: Kanban board
@@ -320,7 +315,7 @@ bg:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Добре дошли
               item_1:
                 options:
                   name: Първи стъпки
@@ -344,7 +339,7 @@ bg:
                   name: Работни пакети
               item_6:
                 options:
-                  name: Project plan
+                  name: План на проекта
           work_packages:
             item_0:
               subject: New login screen
@@ -490,7 +485,7 @@ bg:
         item_1:
           name: Етап
         item_2:
-          name: Фаза
+          name: Summary task
         item_3:
           name: Функция
         item_4:

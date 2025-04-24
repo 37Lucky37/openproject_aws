@@ -4,7 +4,7 @@ ru:
     description: "Добавлена стратегия OmniAuth OpenID Connect для OpenProject."
   logout_warning: >
     Вы вышли из системы. Содержимое любой формы, которую вы можете отправить, может быть потеряно. Пожалуйста [войдите в систему].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Имя
@@ -12,10 +12,10 @@ ru:
         display_name: Отображаемое имя
         client_id: ID клиента
         client_secret: Закрытый ключ клиента
-        secret: Секретный ключ
-        scope: Область
+        secret: Закрытый ключ
+        scope: Масштаб
         grant_types_supported: Поддерживаемые типы разрешений
-        limit_self_registration: Ограничить саморегистрацию
+        limit_self_registration: Ограничение самостоятельной регистрации
         authorization_endpoint: Конечная точка авторизации
         userinfo_endpoint: Конечная точка получения информации о пользователе
         token_endpoint: Конечная точка токена
@@ -28,8 +28,7 @@ ru:
         icon: Пользовательская иконка
         claims: Претензии
         acr_values: Значения ACR
-        redirect_url: URL переадресации
-  activerecord:
+        redirect_url: URL перенаправления
     errors:
       models:
         openid_connect/provider:

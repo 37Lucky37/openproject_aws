@@ -8,7 +8,7 @@ eo:
         url: 'Payload URL'
         secret: 'Signature secret'
         events: 'Events'
-        enabled: 'Enabled'
+        enabled: 'Ŝaltita'
         projects: 'Ŝaltitaj projektoj'
       webhooks/log:
         event_name: 'Event name'

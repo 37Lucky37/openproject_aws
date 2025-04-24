@@ -159,7 +159,9 @@ class CopyProjectJob < ApplicationJob
     Array(copied_storages).each do |storage_pair|
       batch.enqueue do
         Storages::CopyProjectFoldersJob
-          .perform_later(source: storage_pair[:source], target: storage_pair[:target], work_packages_map:)
+          .perform_later(source: storage_pair[:source],
+                         target: storage_pair[:target],
+                         work_packages_map: work_packages_map.stringify_keys)
       end
     end
   end

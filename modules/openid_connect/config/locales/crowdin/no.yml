@@ -4,14 +4,14 @@
     description: "Legger til strategileverandører for OmniAuth OpenID Connect til OpenProject."
   logout_warning: >
     Du har blitt logget ut. Innholdet kan gå tapt. Vennligst [logg in].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Navn
         slug: Unique identifier
         display_name: Visningsnavn
-        client_id: Client ID
-        client_secret: Client secret
+        client_id: Klient ID
+        client_secret: Klient hemmlighet
         secret: Hemmelig nøkkel
         scope: Omfang
         grant_types_supported: Supported grant types
@@ -29,7 +29,6 @@
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Tilordning av egenskap
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Ingen leverandører har blitt definert ennå.
       plural: OpenID-leverandører

@@ -4,15 +4,15 @@ cs:
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     Byli jste odhlášeni. Obsah formuláře může být ztracen. Prosím, [přihlaste se].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
-        name: Jméno
+        name: Název
         slug: Jedinečný identifikátor
         display_name: Zobrazovaný název
         client_id: ID klienta
-        client_secret: Client secret
-        secret: Tajný klíč
+        client_secret: Tajný klíč klienta
+        secret: Tajné
         scope: Rozsah
         grant_types_supported: Podporované typy grantů
         limit_self_registration: Omezit vlastní registraci
@@ -22,14 +22,13 @@ cs:
         end_session_endpoint: Ukončení koncového bodu relace
         post_logout_redirect_uri: URI přesměrování po odhlášení
         jwks_uri: JWKS URI
-        issuer: Emitent
+        issuer: Vydavatel
         tenant: Tenant
         metadata_url: URL metadat
         icon: Vlastní ikona
         claims: Nároky
         acr_values: ACR hodnoty
         redirect_url: Přesměrování URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -81,7 +80,7 @@ cs:
         Provide a custom mapping in the userinfo response to be used for the admin status. It expects a boolean attribute to be returned.
     settings:
       metadata_none: Nemám tyto informace
-      metadata_url: I have a discovery endpoint URL
+      metadata_url: Mám adresu URL koncového bodu zjišťování
       endpoint_url: URL koncového bodu
     providers:
       label_providers: "Poskytovatelé"

@@ -31,7 +31,7 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Storages::CopyProjectFoldersJob, :job, :webmock, with_good_job_batches: [Storages::CopyProjectFoldersJob] do
+RSpec.describe Storages::CopyProjectFoldersJob, :job, :webmock, with_good_job: Storages::CopyProjectFoldersJob do
   include ActiveJob::TestHelper
 
   let(:storage) { create(:nextcloud_storage, :as_automatically_managed) }
@@ -227,7 +227,10 @@ RSpec.describe Storages::CopyProjectFoldersJob, :job, :webmock, with_good_job_ba
             described_class.perform_later(source:, target:, work_packages_map:)
           end
           GoodJob.perform_inline
-          job = GoodJob::Job.order(:created_at).last
+          job = GoodJob::Job
+                  .where(job_class: "Storages::CopyProjectFoldersJob")
+                  .order(:created_at)
+                  .last
 
           expect(job.executions_count).to eq(3)
           expect(job.serialized_params["exception_executions"]["[Storages::Errors::PollingRequired]"]).to eq(2)

@@ -50,6 +50,8 @@ class Journal < ApplicationRecord
   register_journal_formatter OpenProject::JournalFormatter::MeetingStartTime
   register_journal_formatter OpenProject::JournalFormatter::MeetingState
   register_journal_formatter OpenProject::JournalFormatter::MeetingWorkPackageId
+  register_journal_formatter OpenProject::JournalFormatter::ProjectPhaseActive
+  register_journal_formatter OpenProject::JournalFormatter::ProjectPhaseDates
   register_journal_formatter OpenProject::JournalFormatter::ProjectStatusCode
   register_journal_formatter OpenProject::JournalFormatter::ScheduleManually
   register_journal_formatter OpenProject::JournalFormatter::SubprojectNamedAssociation
@@ -95,10 +97,11 @@ class Journal < ApplicationRecord
   belongs_to :journable, polymorphic: true
   belongs_to :data, polymorphic: true, dependent: :destroy
 
+  has_many :agenda_item_journals, class_name: "Journal::MeetingAgendaItemJournal", dependent: :delete_all
   has_many :attachable_journals, class_name: "Journal::AttachableJournal", dependent: :delete_all
   has_many :customizable_journals, class_name: "Journal::CustomizableJournal", dependent: :delete_all
+  has_many :project_phase_journals, class_name: "Journal::ProjectPhaseJournal", dependent: :delete_all
   has_many :storable_journals, class_name: "Journal::StorableJournal", dependent: :delete_all
-  has_many :agenda_item_journals, class_name: "Journal::MeetingAgendaItemJournal", dependent: :delete_all
 
   has_many :notifications, dependent: :destroy
 
@@ -162,11 +165,13 @@ class Journal < ApplicationRecord
   end
 
   def successor
-    @successor ||= self.class
-                       .where(journable_type:, journable_id:)
-                       .where("#{self.class.table_name}.version > ?", version)
-                       .order(version: :asc)
-                       .first
+    return @successor if defined?(@successor)
+
+    @successor = self.class
+                     .where(journable_type:, journable_id:)
+                     .where("#{self.class.table_name}.version > ?", version)
+                     .order(version: :asc)
+                     .first
   end
 
   def noop?
@@ -194,14 +199,16 @@ class Journal < ApplicationRecord
   end
 
   def predecessor
-    @predecessor ||= if initial?
-                       nil
-                     else
-                       self.class
-                         .where(journable_type:, journable_id:)
-                         .where("#{self.class.table_name}.version < ?", version)
-                         .order(version: :desc)
-                         .first
-                     end
+    return @predecessor if defined?(@predecessor)
+
+    @predecessor = if initial?
+                     nil
+                   else
+                     self.class
+                       .where(journable_type:, journable_id:)
+                       .where("#{self.class.table_name}.version < ?", version)
+                       .order(version: :desc)
+                       .first
+                   end
   end
 end

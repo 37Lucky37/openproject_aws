@@ -106,7 +106,7 @@ Redmine::MenuManager.map :account_menu do |menu|
             partial: "/my/timer/menu"
   menu.push :my_page,
             :my_page_path,
-            caption: I18n.t("js.my_page.label"),
+            caption: I18n.t("my_page.label"),
             if: ->(_) { User.current.logged? }
   menu.push :my_profile,
             { controller: "/users", action: "show", id: "me" },
@@ -132,12 +132,17 @@ Redmine::MenuManager.map :global_menu do |menu|
             icon: "home",
             first: true
 
+  menu.push :my_page,
+            { controller: "/my/page", action: "show" },
+            after: :home,
+            icon: "person"
+
   # Projects
   menu.push :projects,
             { controller: "/projects", project_id: nil, action: "index" },
             caption: I18n.t("label_projects_menu"),
             icon: "project",
-            after: :home,
+            after: :my_page,
             if: ->(_) {
               User.current.logged? || !Setting.login_required?
             }
@@ -323,6 +328,12 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_status,
             parent: :admin_work_packages
 
+  menu.push :priorities,
+            { controller: "/admin/settings/work_package_priorities" },
+            if: ->(_) { User.current.admin? },
+            caption: IssuePriority.model_name.human(count: :other),
+            parent: :admin_work_packages
+
   menu.push :progress_tracking,
             { controller: "/admin/settings/progress_tracking", action: :show },
             if: ->(_) { User.current.admin? },
@@ -338,7 +349,7 @@ Redmine::MenuManager.map :admin_menu do |menu|
   menu.push :admin_projects_settings,
             ->(_) { # TODO: doesn't need to be a proc when condition is removed
               if OpenProject::FeatureDecisions.stages_and_gates_active?
-                { controller: "/admin/settings/project_life_cycle_step_definitions", action: :index }
+                { controller: "/admin/settings/project_life_cycle_definitions", action: :index }
               else
                 { controller: "/admin/settings/project_custom_fields", action: :index }
               end
@@ -347,10 +358,10 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :label_project_plural,
             icon: "project"
 
-  menu.push :project_life_cycle_step_definitions_settings,
-            { controller: "/admin/settings/project_life_cycle_step_definitions", action: :index },
+  menu.push :project_life_cycle_definitions_settings,
+            { controller: "/admin/settings/project_life_cycle_definitions", action: :index },
             if: ->(_) { User.current.admin? && OpenProject::FeatureDecisions.stages_and_gates_active? },
-            caption: :label_project_lifecycle,
+            caption: :label_project_life_cycle,
             parent: :admin_projects_settings
 
   menu.push :project_custom_fields_settings,
@@ -390,11 +401,6 @@ Redmine::MenuManager.map :admin_menu do |menu|
             caption: :"attribute_help_texts.label_plural",
             icon: "question",
             if: ->(_) { User.current.allowed_globally?(:edit_attribute_help_texts) }
-
-  menu.push :enumerations,
-            { controller: "/enumerations" },
-            if: ->(_) { User.current.admin? },
-            icon: "multi-select"
 
   menu.push :calendars_and_dates,
             { controller: "/admin/settings/working_days_and_hours_settings", action: :show },
@@ -638,16 +644,21 @@ Redmine::MenuManager.map :project_menu do |menu|
   project_menu_items = {
     general: { caption: :label_information_plural },
     life_cycle_steps: {
-      caption: :label_life_cycle_step_plural,
+      caption: :label_project_life_cycle,
       action: :index,
       if: ->(_) { OpenProject::FeatureDecisions.stages_and_gates_active? }
     },
     project_custom_fields: { caption: :label_project_attributes_plural },
     modules: { caption: :label_module_plural },
-    types: { caption: :label_work_package_types },
-    custom_fields: { caption: :label_custom_field_plural },
+    work_packages: {
+      caption: :label_work_package_plural,
+      if: ->(project) {
+        User.current.allowed_in_project?(:manage_types, project) ||
+          User.current.allowed_in_project?(:manage_categories, project) ||
+          User.current.allowed_in_project?(:select_custom_fields, project)
+      }
+    },
     versions: { caption: :label_version_plural },
-    categories: { caption: :label_work_package_category_plural },
     repository: { caption: :label_repository },
     time_entry_activities: { caption: :enumeration_activities },
     storage: { caption: :label_required_disk_storage }

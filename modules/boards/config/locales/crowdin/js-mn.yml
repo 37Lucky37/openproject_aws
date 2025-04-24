@@ -7,7 +7,7 @@ mn:
       label_unnamed_list: 'Нэрлэгдээгүй жагсаалт'
       label_board_type: 'Самбарын төрөл'
       upsale:
-        teaser_text: 'Would you like to automate your workflows with Boards? Advanced boards are an Enterprise add-on. Please upgrade to a paid plan.'
+        teaser_text: 'Та самбарын тусламжтайгаар ажлын урсгалаа автоматжуулахыг хүсч байна уу? Нарийвчилсан самбарууд нь Enterprise нэмэлт юм. Төлбөртэй багц болгон шинэчилнэ үү.'
         upgrade: 'Яг одоо шинэчлэх'
       lists:
         delete: 'Устгасан жагсаалт'
@@ -38,7 +38,7 @@ mn:
         free_text: >
           Start from scratch with a blank board. Manually add cards and columns to this board.
         action: 'Үйлдлийн самбар'
-        action_by_attribute: 'Action board (%{attribute})'
+        action_by_attribute: 'Үйлдлийн самбар (%{attribute})'
         action_text: >
           A board with filtered lists on %{attribute} attribute. Moving work packages to other lists will update their attribute.
         action_text_subprojects: >
@@ -61,7 +61,7 @@ mn:
           assignee: Даалгагч
           status: Төлөв
           version: Хувилбар
-          subproject: Subproject
+          subproject: Дэд төсөл
           subtasks: Parent-child
           basic: Ердийн
         select_attribute: "Action attribute"

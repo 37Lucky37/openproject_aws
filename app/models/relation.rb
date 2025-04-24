@@ -49,9 +49,13 @@ class Relation < ApplicationRecord
   TYPE_PARENT       = "parent"
   TYPE_CHILD        = "child"
 
+  # The order of the types is important. It's used to build up `ORDERED_TYPES`
+  # which is used to order relations of different kind like in the "Add relation"
+  # menu or the relations tab.
   TYPES = {
     TYPE_RELATES => {
-      name: :label_relates_to, sym_name: :label_relates_to, order: 1, sym: TYPE_RELATES
+      name: :label_relates_to, sym_name: :label_relates_to, order: 1,
+      sym: TYPE_RELATES
     },
     TYPE_FOLLOWS => {
       name: :label_follows, sym_name: :label_precedes, order: 7,
@@ -62,14 +66,16 @@ class Relation < ApplicationRecord
       sym: TYPE_FOLLOWS, reverse: TYPE_FOLLOWS
     },
     TYPE_DUPLICATES => {
-      name: :label_duplicates, sym_name: :label_duplicated_by, order: 6, sym: TYPE_DUPLICATED
+      name: :label_duplicates, sym_name: :label_duplicated_by, order: 6,
+      sym: TYPE_DUPLICATED
     },
     TYPE_DUPLICATED => {
       name: :label_duplicated_by, sym_name: :label_duplicates, order: 7,
       sym: TYPE_DUPLICATES, reverse: TYPE_DUPLICATES
     },
     TYPE_BLOCKS => {
-      name: :label_blocks, sym_name: :label_blocked_by, order: 4, sym: TYPE_BLOCKED
+      name: :label_blocks, sym_name: :label_blocked_by, order: 4,
+      sym: TYPE_BLOCKED
     },
     TYPE_BLOCKED => {
       name: :label_blocked_by, sym_name: :label_blocks, order: 5,
@@ -93,9 +99,11 @@ class Relation < ApplicationRecord
     }
   }.freeze
 
+  ORDERED_TYPES = [*TYPES.keys, TYPE_CHILD].freeze
+
   include ::Scopes::Scoped
 
-  scopes :follows_non_manual_ancestors,
+  scopes :used_for_scheduling_of,
          :types,
          :visible
 
@@ -104,6 +112,18 @@ class Relation < ApplicationRecord
 
   scope :follows_with_lag,
         -> { follows.where("lag > 0") }
+
+  scope :of_predecessor,
+        ->(work_package) { where(to: work_package) }
+
+  scope :of_successor,
+        ->(work_package) { where(from: work_package) }
+
+  scope :not_of_predecessor,
+        ->(work_package) { where.not(to: work_package) }
+
+  scope :not_of_successor,
+        ->(work_package) { where.not(from: work_package) }
 
   validates :lag, numericality: {
     allow_nil: true,
@@ -140,11 +160,23 @@ class Relation < ApplicationRecord
     TYPES[relation_type] ? TYPES[relation_type][key] : :unknown
   end
 
+  def predecessor = to
+  def predecessor_id = to_id
+  def successor = from
+  def successor_id = from_id
+
+  def predecessor_date
+    predecessor.due_date || predecessor.start_date
+  end
+
+  def successor_date
+    successor.start_date || successor.due_date
+  end
+
   def successor_soonest_start
-    if follows? && (to.start_date || to.due_date)
-      days = WorkPackages::Shared::Days.for(from)
-      relation_start_date = (to.due_date || to.start_date) + 1.day
-      days.soonest_working_day(relation_start_date, lag:)
+    if follows? && predecessor_date
+      days = WorkPackages::Shared::WorkingDays.new
+      days.add_lag(predecessor_date, lag)
     end
   end
 

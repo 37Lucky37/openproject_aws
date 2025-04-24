@@ -49,6 +49,10 @@ module Storages
       errors
     end
 
+    def message
+      to_s
+    end
+
     def to_s
       output = code.to_s
       output << " | #{log_message}" unless log_message.nil?

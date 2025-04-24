@@ -16,11 +16,14 @@
            [multiple]="true"
            [closeOnSelect]="false"
            [appendTo]="appendTo"
+           [groupBy]="groupByFn"
            [dropdownPosition]="'top'"
            [hideSelected]="true">
   <ng-template ng-option-tmp let-item="item">
     <span
       class="ng-option-label ellipsis"
+      [attr.data-hover-card-trigger-target]="getHoverCardTriggerTarget()"
+      [attr.data-hover-card-url]="getHoverCardUrl(item)"
       [textContent]="item.name"
       [ngStyle]="{'padding-left.px': item.depth * 16}"
     ></span>

@@ -20,6 +20,20 @@
 #See COPYRIGHT and LICENSE files for more details.
 #++
 ko:
+  attributes:
+    additions_count: "추가 항목 수"
+    deletions_count: "삭제 항목 수"
+    comments_count: "코멘트 수"
+    github_html_url: "끌어오기 요청 URL"
+    github_app_owner_avatar_url: "소유자 아바타 URL"
+    review_comments_count: "리뷰 코멘트 수"
+    github: "GitHub ID"
+    github_avatar_url: "아바타 URL"
+    github_updated_at: "업데이트:"
+    github_login: "GitHub 로그인"
+    labels: "레이블"
+    repository: "리포지토리"
+    changed_files_count: "파일 변경"
   button_add_deploy_target: 배포 대상 추가
   label_deploy_target: 배포 대상
   label_deploy_target_new: 새로운 배포 대상

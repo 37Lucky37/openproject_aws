@@ -1,11 +1,27 @@
 uk:
   activerecord:
     attributes:
+      oauth_client:
+        client_id: Client ID
+        client_secret: Client secret
+      project:
+        project_folder_type: Тип папки проєкту
       storages/file_link:
-        origin_id: Код джерела
-      storages/project_storage:
+        origin: Джерело
         storage: Сховище
+      storages/nextcloud_storage:
+        authentication_methods:
+          oauth2_sso: Єдиний вхід через постачальника ідентифікаційних даних OpenID Connect
+          oauth2_sso_with_two_way_oauth2_fallback: Єдиний вхід через двосторонню авторизацію OAuth 2.0 як запасний варіант
+          two_way_oauth2: Потік коду двосторонньої авторизації OAuth 2.0
+        storage_audience: Аудиторія сховища
+      storages/project_storage:
+        project_folder: Папка проєкту
+        project_folder_mode: Режим папки проєкту
+        storage: Сховище
+        storage_url: URL-адреса сховища
       storages/storage:
+        authentication_method: Метод автентифікації
         creator: Автор
         drive: ID диску
         host: Хост
@@ -199,15 +215,19 @@ uk:
         manual_management_description: Створюйте папки для кожного проєкту й керуйте ними самостійно. Вам знадобиться вручну надавати доступ відповідним користувачам.
         setup_incomplete: Виберіть тип керування доступом користувачів і створенням папок.
         subtitle: Керування доступом
-        title: Доступ і папки проєкту
+      access_management_section: Доступ і папки проєкту
       automatically_managed_folders: Папки з автоматичним керуванням
       general_information: Загальна інформація
-      nextcloud_oauth: Nextcloud OAuth
-      oauth_applications: Програми OAuth
+      oauth_configuration: Конфігурація OAuth
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Папки проєкту
       redirect_uri: URI переспрямування
+      storage_audience: Аудиторія сховища
+      storage_audience_blank: Аудиторію не налаштовано.
+      storage_audience_description: Отримання маркерів для аудиторії «%{audience}».
+      storage_audience_idp: Використання першого маркера доступу, отриманого від постачальника ідентифікаційних даних, незалежно від аудиторії.
+      storage_oauth: Nextcloud OAuth
       storage_provider: Постачальник сховища
     health:
       checked: 'Востаннє перевірено: %{datetime}'
@@ -222,6 +242,14 @@ uk:
         host_not_found: Сервер Nextcloud  не знайдено за вказаною URL-адресою. Перевірте конфігурацію.
         missing_dependencies: 'Відсутня обов’язкова залежність для файлового сховища. Додайте таку залежність: %{dependency}.'
         not_configured: Не вдалося перевірити підключення. Спочатку налаштуйте конфігурацію.
+        oauth_request_not_found: OpenProject не вдалося знайти кореневу папку Nextcloud в обліковому записі поточного користувача. Щоб дізнатися більше, перевірте журнали сервера.
+        oauth_request_unauthorized: Поточний користувач не має дозволу на перегляд основної папки Nextcloud, або ми не змогли отримати маркер. Щоб дізнатися більше, перевірте журнали сервера.
+        oauth_token_missing: OpenProject не може перевірити з’єднання на рівні користувача з Nextcloud, оскільки маркер для поточного користувача відсутній.
+        oidc_cant_acquire_token: Ваша конфігурація OpenID Connect не передбачає наявності необхідної аудиторії і можливостей обміну маркерами. Щоб дізнатися більше, ознайомтеся з нашою документацією.
+        oidc_cant_exchange_token: Здається, виникла проблема з конфігурацією Token Exchange у вашого постачальника OpenID Connect. Перевірте конфігурацію і повторіть спробу.
+        oidc_cant_refresh_token: Під час перевірки доступу до сховища сталася помилка. Щоб отримати додаткову інформацію, перевірте журнали сервера.
+        oidc_non_oidc_user: Поточний користувач має доступ, але його надав не постачальник ідентифікаційних даних OpenID Connect (OIDC). Повторіть перевірку з користувачем, створеним через OIDC.
+        oidc_non_provisioned_user: Поточного користувача не надано постачальником ідентифікаційних даних OpenID Connect. Повторіть перевірку з наданим користувачем.
         placeholder: Перевірте підключення до сервера.
         subtitle: Перевірка підключення
         tenant_id_wrong: Налаштований ідентифікатор каталогу (клієнта) недійсний. Перевірте конфігурацію.
@@ -250,6 +278,7 @@ uk:
       project_folder_bulk: Папка проєкту – це папка за замовчуванням, у якій зберігаються додані файли для всіх вибраних проєктів. Ви можете змінити її окремо в налаштуваннях кожного проєкту. Однак користувачі все одно можуть додавати файли в інші папки.
     instructions:
       all_available_storages_already_added: У проєкт уже додано всі доступні сховища.
+      authentication_method: Спосіб автентифікації запитів між OpenProject і сховищем.
       automatic_folder: Буде автоматично створено кореневу папку для цього проєкту й налаштовано дозволи на доступ для кожного учасника проєкту.
       empty_project_folder_validation: Щоб продовжити, потрібно вибрати папку.
       existing_manual_folder: Ви можете призначити наявну папку як кореневу папку для цього проєкту. Однак дозволи автоматично не налаштовуються, і адміністратор має вручну надати користувачам відповідні дозволи на доступ. Вибрану папку зможуть використовувати кілька проєктів.
@@ -262,6 +291,8 @@ uk:
         integration: Адміністрування Nextcloud / OpenProject
         oauth_configuration: Скопіюйте ці значення з додатка %{application_link_text}.
         provider_configuration: Перш ніж виконувати налаштування, переконайтеся, що маєте права адміністратора у своєму екземплярі Nextcloud і що встановлено %{application_link_text}.
+        storage_audience: Введіть ID клієнта, який використовує екземпляр Nextcloud для обміну даними з постачальником ідентифікаційних даних.
+        storage_audience_placeholder: напр., Nextcloud
       no_specific_folder: За замовчуванням кожен користувач, який передасть файл, починатиме роботу у власній головній папці.
       no_storage_set_up: Файлові сховища поки не створено.
       not_logged_into_storage: Шоб вибрати папку проєкту, спочатку ввійдіть
@@ -293,6 +324,7 @@ uk:
     label_creator: Автор
     label_delete_storage: Видалити сховище
     label_edit_storage_access_management: Змінити керування доступом до сховища
+    label_edit_storage_audience: Редагування аудиторії сховища
     label_edit_storage_automatically_managed_folders: Редагувати папки сховища з автоматичним керуванням
     label_edit_storage_host: Редагувати хост сховища
     label_existing_manual_folder: Наявна папка з ручним керуванням дозволами
@@ -321,6 +353,7 @@ uk:
       connected: Підключено
       connected_no_permissions: Ролі користувача не надано дозволи на доступ до сховища
       not_connected: 'Не підключено. Користувач має ввійти в сховище за цим посиланням: %{link}.'
+      not_connected_sso: Не підключено. SSO має виконувати підключення автоматично під час отримання доступу до файлів.
     members_no_results: Немає учасників.
     no_results: Сховища поки не створено.
     oauth_access_granted_modal:
@@ -383,8 +416,15 @@ uk:
         name: OneDrive / SharePoint
         name_placeholder: напр. OneDrive
     show_attachments_toggle:
-      description: 'Якщо вимкнути цей параметр, список вкладень буде приховано на вкладці «Файли» пакетів робіт. Файли, вкладені в опис пакета робіт, усе одно буде додано у внутрішнє сховище вкладень. '
+      description: Якщо вимкнути цей параметр, список вкладень буде приховано на вкладці «Файли» пакетів робіт. Файли, вкладені в опис пакета робіт, усе одно буде додано у внутрішнє сховище вкладень.
       label: Показувати вкладення на вкладці «Файли» пакетів робіт
+    storage_audience:
+      idp:
+        helptext: OpenProject використовуватиме перший маркер доступу, отриманий від постачальника ідентифікаційних даних, для автентифікації запитів до сховища й не намагатиметься отримати інший маркер.
+        label: Використовувати перший маркер доступу, отриманий від постачальника ідентифікаційних даних
+      manual:
+        helptext: Дає змогу задати аудиторію сховища. OpenProject спробує отримати маркер для заданої аудиторії від постачальника ідентифікаційних даних.
+        label: Визначити аудиторію сховища вручну
     storage_list_blank_slate:
       description: Додайте сховище, щоб воно з’явилося тут.
       heading: У вас ще немає жодного сховища.

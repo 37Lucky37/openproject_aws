@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -33,7 +34,11 @@ module Meetings
 
       super
 
-      set_participants(participants) if participants.present?
+      if participants.present?
+        set_participants(participants)
+      else
+        set_default_participant
+      end
     end
 
     def set_default_attributes(_params)
@@ -46,6 +51,13 @@ module Meetings
     def set_participants(participants_attributes)
       model.participants.clear if model.new_record?
       model.participants_attributes = participants_attributes
+    end
+
+    def set_default_participant
+      return if model.participants.present? || model.persisted?
+      return if user.builtin?
+
+      model.participants.build(user:, invited: true)
     end
   end
 end

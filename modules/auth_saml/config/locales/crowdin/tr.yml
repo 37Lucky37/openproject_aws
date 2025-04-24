@@ -1,5 +1,5 @@
 tr:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: İsim
@@ -19,11 +19,10 @@ tr:
         want_assertions_encrypted: Require encrypted responses
         certificate: Certificate used by OpenProject for SAML requests
         private_key: Corresponding private key for OpenProject SAML requests
-        signature_method: Signature algorithm
-        digest_method: Digest algorithm
-        format: "Format"
+        signature_method: İmza Algoritması
+        digest_method: Özet algoritması
+        format: "Biçim"
         icon: "Özel simge"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -46,29 +45,29 @@ tr:
       label_empty_title: "No SAML providers configured yet."
       label_empty_description: "Add a provider to see them here."
       label_automatic_configuration: Otomatik yapılandırma
-      label_metadata: Metadata
-      label_metadata_endpoint: OpenProject metadata endpoint
-      label_openproject_information: OpenProject information
+      label_metadata: Metaveri
+      label_metadata_endpoint: OpenProject Metaveri bitiş noktası
+      label_openproject_information: OpenProject Bilgileri
       label_configuration_details: "Identity provider endpoints and certificates"
       label_configuration_encryption: "Signatures and Encryption"
       label_add_new: New SAML identity provider
-      label_edit: Edit SAML identity provider %{name}
-      label_uid: Internal user id
-      label_mapping: Mapping
-      label_requested_attribute_for: "Requested attribute for: %{attribute}"
+      label_edit: SAML kimlik sağlayıcısını düzenle %{name}
+      label_uid: Dahili kullanıcı kimliği
+      label_mapping: İlişkilendirme
+      label_requested_attribute_for: "%{attribute} için nitelik talebi"
       no_results_table: No SAML identity providers have been defined yet.
-      plural: SAML identity providers
-      singular: SAML identity provider
-      requested_attributes: Requested attributes
-      attribute_mapping: Attribute mapping
+      plural: SAML kimlik sağlayıcıları
+      singular: SAML kimlik sağlayıcısı
+      requested_attributes: Talep edilen nitelikler
+      attribute_mapping: Nitelik ilişkilendirme
       attribute_mapping_text: >
         The following fields control which attributes provided by the SAML identity provider are used to provide user attributes in OpenProject
       metadata:
         dialog: "This is the URL where the OpenProject SAML metadata is available. Optionally use it to configure your identity provider:"
       upsale:
-        description: Connect OpenProject to a SAML identity provider
+        description: OpenProject'i bir SAML kimlik sağlayıcısına bağlama
       request_attributes:
-        title: 'Requested attributes'
+        title: 'Talep edilen nitelikler'
         legend: >
           These attributes are added to the SAML XML metadata to signify to the identify provider which attributes OpenProject requires. You may still need to explicitly configure your identity provider to send these attributes. Please refer to your IdP's documentation.
         name: 'Requested attribute key'
@@ -77,10 +76,10 @@ tr:
         configuration: "Birincil yapılandırma"
         attributes: "Öznitelikler"
       section_texts:
-        display_name: "Configure the display name of the SAML provider."
+        display_name: "SAML sağlayıcısının görünen adını değiştir."
         metadata: "Pre-fill configuration using a metadata URL or by pasting metadata XML"
         metadata_form: "If your identity provider has a metadata endpoint or XML download, add it below to pre-fill the configuration."
-        metadata_form_banner: "Editing the metadata may override existing values in other sections. "
+        metadata_form_banner: "Metaverileri düzenlemek diğer bölümlerde var olan değerlerin üstüne yazılmasına neden olabilir. "
         configuration: "Configure the endpoint URLs for the identity provider, certificates, and further SAML options."
         configuration_metadata: "This information has been pre-filled using the supplied metadata. In most cases, they do not require editing."
         encryption: "Configure assertion signatures and encryption for SAML requests and responses."
@@ -90,13 +89,13 @@ tr:
       seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
     settings:
       metadata_none: "I don't have metadata"
-      metadata_url: "Metadata URL"
+      metadata_url: "Metaveri URL'si"
       metadata_xml: "Metadata XML"
     instructions:
       documentation_link: >
         Please refer to our [documentation on configuring SAML providers](docs_url) for more information on these configuration options.
       display_name: >
-        The name of the provider. This will be displayed as the login button and in the list of providers.
+        Sağlayıcının adı. Bu, oturum açma düğmesi olarak ve sağlayıcılar listesinde görüntülenecektir.
       metadata_none: >
         Your identity provider does not have a metadata endpoint or XML download option. You can configure it manually.
       metadata_url: >
@@ -138,7 +137,7 @@ tr:
       authn_requests_signed: >
         If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using it's own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
       certificate: >

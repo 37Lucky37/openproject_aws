@@ -1,11 +1,11 @@
 fr:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nom
         identifier: Identifiant
         secret: Secret
-        scope: Portée
+        scope: Périmètre
         assertion_consumer_service_url: URL ACS (Assertion Consumer Service)
         limit_self_registration: Limiter l'inscription automatique
         sp_entity_id: ID de l'entité de service
@@ -23,7 +23,6 @@ fr:
         digest_method: Algorithme de chiffrement
         format: "Format"
         icon: "Icône personnalisée"
-  activerecord:
     errors:
       models:
         saml/provider:

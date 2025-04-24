@@ -46,6 +46,10 @@ class Queries::Principals::Filters::MentionableOnWorkPackageFilter <
     :mentionable_on_work_package
   end
 
+  def human_name
+    "mentionable" # intenral use
+  end
+
   def apply_to(query_scope)
     case operator
     when "="

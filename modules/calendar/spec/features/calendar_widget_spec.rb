@@ -122,4 +122,21 @@ RSpec.describe "Calendar Widget", :js, with_settings: { start_of_week: 1 } do
     work_package.reload
     expect(work_package.due_date).to eq Time.zone.today.beginning_of_week.next_occurring(:tuesday)
   end
+
+  context "when looking at the date headers" do
+    let(:next_tuesday) { Time.zone.today.beginning_of_week.next_occurring(:tuesday) }
+    let(:tue_css_selector) { ".fc-day-tue .fc-col-header-cell-cushion" }
+
+    it "shows the default date format" do
+      expected = /Tue #{next_tuesday.month}\/#{next_tuesday.day}/
+      expect(page).to have_css(tue_css_selector, text: expected)
+    end
+
+    context "with a date format configured", with_settings: { date_format: "%d.%m.%Y" } do
+      it "shows the configured date format" do
+        expected = /Tue #{next_tuesday.day.to_s.rjust(2, '0')}\.#{next_tuesday.month.to_s.rjust(2, '0')}\./
+        expect(page).to have_css(tue_css_selector, text: expected)
+      end
+    end
+  end
 end

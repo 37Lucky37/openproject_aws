@@ -22,7 +22,7 @@
 tr:
   plugin_costs:
     name: "Zaman ve maliyetler"
-    description: "This module adds features for planning and tracking costs of projects."
+    description: "Bu modül, projelerin maliyetlerini planlamak ve izlemek için özellikler ekler."
   activerecord:
     attributes:
       cost_entry:
@@ -30,13 +30,14 @@ tr:
         overridden_costs: "Geçersiz kılınmış maliyetler"
         spent: "Harcanan"
         spent_on: "Tarih"
+        logged_by: "Tarafından giriş yapıldı"
       cost_type:
         unit: "Birim adı"
-        unit_plural: "Birden fazla birim adı"
+        unit_plural: "Birimin çoğul adı"
         default: "Varsayılan maliyet türü"
       work_package:
         costs_by_type: "Harcanan maliyet"
-        labor_costs: "İşçilik maliyetleri"
+        labor_costs: "İş gücü maliyetleri"
         material_costs: "Birim maliyeti"
         overall_costs: "Tüm maliyetler"
         spent_costs: "Harcanan maliyet"
@@ -53,17 +54,27 @@ tr:
         comments: Yorum
         activity: Etkinlik
         spent_on: Tarih
-        start_time: Başlangıç zamanı
+        start_time: Başlama tarihi
         end_time: Bitiş zamanı
     models:
+      time_entry:
+        one: "Zaman girişleri"
+        other: "Zaman girişleri"
+      cost_entry:
+        one: "Maliyet girişi"
+        other: "Maliyet girişleri"
       cost_type:
         one: "Maliyet türü"
         other: "Maliyet türü"
+      time_entry_activity:
+        one: "Zaman izleme etkinliği"
+        other: "Zaman izleme etkinlikleri"
       rate: "Oranlar"
     errors:
       models:
         time_entry:
           invalid_time: "00:00 ile 23:59 arasında olmalı."
+          cannot_log_for_this_work_package: "Bu iş paketi için zaman kaydedilemiyor."
         work_package:
           is_not_a_valid_target_for_cost_entries: "İş numarası # {id}, maliyet girişlerini yeniden atamak için geçerli bir hedef değil.%{id}."
           nullify_is_not_valid_for_cost_entries: "Maliyet girdileri bir projeye atanamaz."
@@ -79,12 +90,13 @@ tr:
   button_add_rate: "Oran ekle"
   button_log_costs: "Günlük birim maliyetleri"
   button_log_time: "Kayıt"
+  button_add_activity: "Etkinlik"
   caption_booked_on_project: "Proje rezervasyonu yaptırdı"
   caption_default: "Varsayılan"
-  caption_default_rate_history_for: "%{user} için varsayılan hızı geçmişi"
+  caption_default_rate_history_for: "%{user} için varsayılan değerleme geçmişi"
   caption_locked_on: "Kilitli"
   caption_materials: "Birimler"
-  caption_rate_history: "Hız tarihi"
+  caption_rate_history: "Değerleme geçmişi"
   caption_rate_history_for: "%{user} için ücret geçmişi"
   caption_rate_history_for_project: "Projenin oran tarihi %{user} %{project}"
   caption_save_rate: "Oranı kaydet"
@@ -92,6 +104,8 @@ tr:
   caption_show_locked: "Kilitli türleri göster"
   caption_log_time_dialog: "Zaman kaydet"
   description_date_for_new_rate: "Yeni oran için tarih"
+  description_costs_settings: "Tüm projelerdeki maliyetler için istenen biçimi tanımlayın."
+  description_time_settings: "Tüm projelerde zaman kaydı yapılırken hangi alanların doldurulmasının zorunlu olduğunu tanımlayın."
   group_by_others: "herhangi bir grupta değil"
   label_between: "arasında"
   label_cost_filter_add: "Maliyet girişi filtresi ekle"
@@ -101,9 +115,9 @@ tr:
   label_cost_type_specific: "Maliyet türü #%{id}: %{name}"
   label_costs_per_page: "Her sayfa için maliyet"
   label_current_default_rate: "Güncel varsayılan oran"
-  label_date_on: "açık"
+  label_date_on: "tarihinde"
   label_deleted_cost_types: "Silinmiş maliyet türleri"
-  label_locked_cost_types: "Kilit maliyet türleri"
+  label_locked_cost_types: "Kilitli maliyet türleri"
   label_display_cost_entries: "Birim maliyetlerini göster"
   label_display_time_entries: "Raporlanan saatleri göster"
   label_display_types: "Ekran türleri"
@@ -118,6 +132,8 @@ tr:
   label_kind: "Tür"
   label_less_or_equal: "<="
   label_log_costs: "Birim maliyet kaydet"
+  label_new_time_entry_activity: "Yeni zaman girişi etkinliği"
+  label_time_entry_activity_form_description: "Bu zaman girişi etkinliğinde yapılan değişiklikler, etkin olduğu tüm projelere yansıtılacaktır."
   label_no: "Hayır"
   label_option_plural: "Ayarlar"
   label_overall_costs: "Tüm maliyetler"
@@ -130,6 +146,10 @@ tr:
   label_until: "kadar"
   label_valid_from: "Geçerlilik"
   label_yes: "Evet"
+  label_time: "Zaman"
+  label_cost: "Maliyet"
+  label_costs: "Maliyetler"
+  label_mandatory_fields: "Zorunlu alanlar"
   placeholder_activity_select_work_package_first: Öncelikle iş paketi seçimi gereklidir
   notice_something_wrong: "Bir şeyler yanlış gitti. Lütfen tekrar deneyin."
   notice_successful_restore: "Başarılı bir geri yükleme."
@@ -150,10 +170,10 @@ tr:
   permission_view_own_hourly_rate: "Kendi saatlik ücreti görüntüleyin"
   permission_view_own_time_entries: "Kendi harcanan zamanı görüntüleyin"
   project_module_costs: "Zaman ve maliyetler"
-  setting_allow_tracking_start_and_end_times: "Allow users to track start and end time on time records"
+  setting_allow_tracking_start_and_end_times: "Kullanıcıların zaman kayıtlarında başlangıç ve bitiş zamanını izlemelerine izin verin"
   setting_costs_currency: "Para birimi"
   setting_costs_currency_format: "Para birimi biçimi"
-  setting_enforce_tracking_start_and_end_times: "Force users to set start and end time on time records"
+  setting_enforce_tracking_start_and_end_times: "Kullanıcıları zaman kayıtlarında başlangıç ve bitiş zamanı belirlemeye zorlayın"
   text_assign_time_and_cost_entries_to_project: "Raporlanan saatleri ve maliyetleri projeye tahsis edin"
   text_destroy_cost_entries_question: "%{cost_entries} silmek üzere olduğunuz iş paketleri hakkında rapor edildi. Ne yapmak istiyorsun ?"
   text_destroy_time_and_cost_entries: "Raporlanan saat ve masrafları sil"
@@ -161,9 +181,7 @@ tr:
   text_reassign_time_and_cost_entries: "Raporlanan saatleri ve maliyetleri bu iş paketine yeniden atayın:"
   text_warning_hidden_elements: "Bazı girdiler toplama işleminden dışlanmış olabilir."
   week: "hafta"
-  js:
-    text_are_you_sure: "Emin misiniz?"
   api_v3:
     errors:
       validation:
-        start_time_different_date: "Date part of startTime (%{start_time}) must be the same as the spentOn (%{spent_on}) date."
+        start_time_different_date: "StartTime (%{start_time}) öğesinin tarih kısmı, spentOn (%{spent_on}) tarihi ile aynı olmalıdır."

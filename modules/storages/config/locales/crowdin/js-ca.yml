@@ -2,6 +2,7 @@
 ca:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Fitxers enllaçats a %{storageType}"
       link_existing_files: "Enllaça fitxers existents"
       upload_files: "Carregar fitxers"
@@ -19,6 +20,7 @@ ca:
         one_drive: "OneDrive/SharePoint"
         default: "Emmagatzematge"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Alguna configuració de %{storageType} no està funcionant. Si us plau, contacta el teu administrador de %{storageType}.
         live_data_error: "Error recuperant els detalls del fitxer"
@@ -27,6 +29,8 @@ ca:
         no_file_links: "Per tal d'enllaçar arxius a aquest paquet de treball si us plau fes-ho a través de %{storageType}."
         not_logged_in: >
           Per afegir un enllaç, veure o pujar fitxers relacionats amb aquest paquet de treball si us plau inicia sessió a %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Aquest fitxer ja existeix"
         already_existing_body: >

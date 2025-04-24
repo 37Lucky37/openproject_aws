@@ -1,8 +1,8 @@
 cs:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
-        display_name: Název
+        display_name: 'Název:'
         identifier: Identifikátor
         secret: Tajné
         scope: Rozsah
@@ -23,7 +23,6 @@ cs:
         digest_method: Algoritmus výběru
         format: "Formát"
         icon: "Vlastní ikona"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -96,7 +95,7 @@ cs:
       documentation_link: >
         Please refer to our [documentation on configuring SAML providers](docs_url) for more information on these configuration options.
       display_name: >
-        The name of the provider. This will be displayed as the login button and in the list of providers.
+        Jméno poskytovatele. Bude zobrazeno jako tlačítko pro přihlášení a v seznamu poskytovatelů.
       metadata_none: >
         Your identity provider does not have a metadata endpoint or XML download option. You can configure it manually.
       metadata_url: >
@@ -138,7 +137,7 @@ cs:
       authn_requests_signed: >
         If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using it's own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
       certificate: >

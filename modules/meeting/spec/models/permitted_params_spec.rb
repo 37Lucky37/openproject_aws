@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -26,7 +27,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.dirname(__FILE__) + "/../spec_helper"
+require_relative "../spec_helper"
 
 RSpec.describe PermittedParams do
   let(:user) { build_stubbed(:user) }

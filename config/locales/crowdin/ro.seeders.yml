@@ -34,16 +34,14 @@ ro:
           name: Gri închis
         item_13:
           name: Negru
-      life_cycle_colors:
+      project_phase_colors:
         item_0:
           name: PM2 Orange
         item_1:
-          name: PM2 Purple
-        item_2:
           name: PM2 Red
-        item_3:
+        item_2:
           name: PM2 Magenta
-        item_4:
+        item_3:
           name: PM2 Green Yellow
       document_categories:
         item_0:
@@ -81,21 +79,18 @@ ro:
         item_1:
           name: Standard global role
     standard:
-      life_cycles:
+      project_phases:
         item_0:
           name: Initiating
         item_1:
-          name: Ready for Planning
-        item_2:
           name: Planning
-        item_3:
-          name: Ready for Executing
-        item_4:
+          start_gate: Ready for Planning
+        item_2:
           name: Executing
-        item_5:
-          name: Ready for Closing
-        item_6:
+          start_gate: Ready for Executing
+        item_3:
           name: Closing
+          start_gate: Ready for Closing
       priorities:
         item_0:
           name: Scăzută
@@ -309,11 +304,11 @@ ro:
               name: Tablă de sarcini
               lists:
                 item_0:
-                  name: Wish list
+                  name: Listă dorințe
                 item_1:
-                  name: Short list
+                  name: Listă scurtă
                 item_2:
-                  name: Priority list for today
+                  name: Listă priorități pentru astăzi
                 item_3:
                   name: Niciodată
           project-overview:
@@ -354,14 +349,14 @@ ro:
               subject: New website
               children:
                 item_0:
-                  subject: Newsletter registration form
+                  subject: Formular de înregistrare la newsletter
                 item_1:
                   subject: Implement product tour
                 item_2:
-                  subject: New landing page
+                  subject: Pagină de destinație nouă
                   children:
                     item_0:
-                      subject: Create wireframes for new landing page
+                      subject: Creează wireframes pentru noua pagină de destinație
             item_3:
               subject: Contact form
             item_4:
@@ -490,7 +485,7 @@ ro:
         item_1:
           name: Reper
         item_2:
-          name: Fază
+          name: Summary task
         item_3:
           name: Funcționalitate
         item_4:

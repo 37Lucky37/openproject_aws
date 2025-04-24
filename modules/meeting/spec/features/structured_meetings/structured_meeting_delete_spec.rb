@@ -49,7 +49,12 @@ RSpec.describe "Structured meetings deletion",
     end
   end
 
-  shared_let(:meeting) { create(:meeting, project:, author: user) }
+  shared_let(:meeting) do
+    create(:meeting,
+           :author_participates,
+           project:,
+           author: user)
+  end
 
   let(:current_user) { user }
   let(:meetings_page) { Pages::Meetings::Index.new(project: nil) }

@@ -94,6 +94,23 @@ RSpec.describe API::V3::Storages::StorageRepresenter, "parsing" do
       end
     end
 
+    context "with SSO authentication" do
+      before do
+        parsed_hash["_links"]["authenticationMethod"] = {
+          "href" => "urn:openproject-org:api:v3:storages:authenticationMethod:OAuth2SSO"
+        }
+        parsed_hash["storageAudience"] = "the-new-storage-audience"
+      end
+
+      it "parses the authentication method" do
+        expect(parsed.authentication_method).to eq("oauth2_sso")
+      end
+
+      it "parses the storage audience" do
+        expect(parsed.storage_audience).to eq("the-new-storage-audience")
+      end
+    end
+
     describe "automatically managed project folders" do
       context "with applicationPassword" do
         let(:parsed_hash) do

@@ -64,17 +64,39 @@ Please note, the status may differ from work package type. They can be configure
 
 ### How to add comments to a work package
 
-To add a comment to a work package, open the [details view](../../work-packages/work-package-views/#full-screen-view) or the [split screen view](../../work-packages/work-package-views/#split-screen-view) of a work package. Under [Activity](../../../getting-started/work-packages-introduction/#activity-of-work-packages) tab you have a comment field at the bottom (or on top depending on your [Account settings](../../../user-guide/account-settings/)).
+To add a comment to a work package, open the [details view](../../work-packages/work-package-views/#full-screen-view) or the [split screen view](../../work-packages/work-package-views/#split-screen-view) of a work package. Under [Activity](../../../getting-started/work-packages-introduction/#activity-of-work-packages) tab you have a comment field at the bottom.
 
-**Split screen view:**
+> [!TIP] 
+>
+> For narrower screens such as mobiles and tablets, the comment field may be displayed on the top, depending on your [Account settings](../../../user-guide/account-settings/).
 
 ![Comment on work packages in OpenProject](openproject_user_guide_wp_activity_tab_comment.png)
+
+#### Quote a comment in a work package
+
+You can also reply to a specific comment and quote it in your reply text. To do that click the **More (three dots)** icon at the right side of the comment and select **Quote this comment**.
+
+![Edit a work package comment in OpenProject](openproject_user_guide_wp_edit_comment.png)
+
+The author of the quoted comment will automatically be [@mentioned](#-notification-mention) and notified of the reply to their comment.
+
+![Quote reply to a comment in an OpenProject work package](openproject_user_guide_wp_quote_comment_mentioned.png)
+
+#### Edit a comment in a work package
+
+To edit a work package comment click the **More (three dots)** icon at the right side of the comment and select **Edit this comment**. Depending on your rights, you may be able to edit other users comments.
+
+![Edit a comment in a work package in OpenProject](openproject_user_guide_wp_edit_comment_icon.png)
+
+#### Copy a work package comment link
+
+You can copy a direct link to a specific work package comment in OpenProject. To do that, click the **More (three dots)** icon at the right side of the comment and select **Copy link to clipboard**. 
+
+![Copy a link to a work package comment in OpenProject](openproject_user_guide_wp_edit_comment_copy_link.png)
 
 ### @ notification (mention)
 
 You can mention and notify team members via [@notification](../../notifications/). They will receive a notification in OpenProject about the updates (according to their [notification settings](../../../user-guide/notifications/) in the **Account settings**).
-
-**Full-screen view**:
 
 ![Leave a comment in OpenProject work packages](openproject_user_guide_wp_activity_tab_comment_update.png)
 
@@ -115,7 +137,7 @@ Once you set a reminder, you will see a confirmation message. The reminder icon 
 
 At the configured date and time, you will receive the reminder in [Notification center](../../notifications/#access-in-app-notifications). 
 
-![Work package reminder in OpenProject notificaiton center](openproject_user_guide_wp_set_reminder_notification.png)
+![Work package reminder in OpenProject notification center](openproject_user_guide_wp_set_reminder_notification.png)
 
 >  [!NOTE] 
 >

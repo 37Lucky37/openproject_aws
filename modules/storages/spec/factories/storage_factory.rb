@@ -92,7 +92,17 @@ FactoryBot.define do
     provider_type { Storages::Storage::PROVIDER_TYPE_NEXTCLOUD }
     sequence(:host) { |n| "https://host#{n}.example.com/" }
     authentication_method { "two_way_oauth2" }
-    nextcloud_audience { "nextcloud" }
+    storage_audience { nil }
+
+    trait :oidc_sso_enabled do
+      storage_audience { "nextcloud" }
+      authentication_method { "oauth2_sso" }
+    end
+
+    trait :oidc_sso_with_fallback do
+      storage_audience { "nextcloud" }
+      authentication_method { "oauth2_sso_with_two_way_oauth2_fallback" }
+    end
 
     trait :as_automatically_managed do
       automatic_management_enabled { true }
@@ -147,7 +157,8 @@ FactoryBot.define do
              token_type: "bearer")
 
       create(:remote_identity,
-             oauth_client: storage.oauth_client,
+             auth_source: storage.oauth_client,
+             integration: storage,
              user: evaluator.oauth_client_token_user,
              origin_user_id: evaluator.origin_user_id)
     end
@@ -211,8 +222,6 @@ FactoryBot.define do
              refresh_token: ENV.fetch("ONE_DRIVE_TEST_OAUTH_CLIENT_REFRESH_TOKEN",
                                       "MISSING_ONE_DRIVE_TEST_OAUTH_CLIENT_REFRESH_TOKEN"),
              token_type: "bearer")
-      create(:remote_identity, oauth_client: storage.oauth_client, user: evaluator.oauth_client_token_user,
-                               origin_user_id: "33db2c84-275d-46af-afb0-c26eb786b194")
     end
   end
 end

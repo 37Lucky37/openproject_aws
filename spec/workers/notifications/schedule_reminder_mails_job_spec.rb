@@ -28,7 +28,10 @@
 
 require "spec_helper"
 
-RSpec.describe Notifications::ScheduleReminderMailsJob, type: :job do
+RSpec.describe Notifications::ScheduleReminderMailsJob,
+               type: :job,
+               with_good_job_batches: [Mails::ReminderJob,
+                                       Notifications::ScheduleReminderMailsJob] do
   let(:scheduled_job) do
     described_class.perform_later.tap do |job|
       set_cron_time(job, job_cron_at)
@@ -47,9 +50,6 @@ RSpec.describe Notifications::ScheduleReminderMailsJob, type: :job do
   let(:ids) { [23, 42] }
 
   before do
-    # We need to access the job as stored in the database to get at the scheduled_at time persisted there
-    ActiveJob::Base.disable_test_adapter
-
     scope = instance_double(ActiveRecord::Relation)
     allow(User).to receive(:having_reminder_mail_to_send).and_return(scope)
     allow(scope).to receive(:pluck).with(:id).and_return(ids)

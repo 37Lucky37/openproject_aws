@@ -27,7 +27,7 @@ ja:
     work_packages:
       activity_tab:
         no_results_title_text: No activity to display
-        no_results_description_text: "Choose \"Show everything\" to show all activity and comments"
+        no_results_description_text: 'Choose "Show everything" to show all activity and comments'
         label_activity_show_all: "Show everything"
         label_activity_show_only_comments: "Show comments only"
         label_activity_show_only_changes: "Show changes only"
@@ -35,11 +35,15 @@ ja:
         label_sort_desc: "Newest on top"
         label_type_to_comment: "コメントを追加。メンバーをメンションするには@を入力してください。"
         label_submit_comment: "Submit comment"
+        label_who: Who?
         changed_on: "changed on"
         created_on: "created this on"
         changed: "changed"
-        created: "created"
-        commented: "commented"
+        created: "作成する"
+        commented: "コメント"
+        restrict_visibility: Restrict visibility
+        restricted_journal: Restricted comments are visible to a limited group of members.
+        unsaved_changes_confirmation_message: You have unsaved changes. Are you sure you want to close the editor?
   admin:
     plugins:
       no_results_title_text: There are currently no plugins installed.
@@ -128,9 +132,9 @@ ja:
     sync_failed: "Failed to synchronize from LDAP: %{message}."
     back_to_index: "Click here to go back to the list of connection."
     technical_warning_html: |
-      この LDAP フォームには、LDAP / Active Directory の設定に関する技術的な知識が必要です。
-      <br/>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">詳細な手順について</a>
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
     attribute_texts:
       name: LDAP接続の任意の名称
       host: LDAPのホスト名または IP アドレス
@@ -138,9 +142,9 @@ ja:
       generic_map: OpenProject`%{attribute}`属性にマップされているLDAPの属性キーです。
       admin_map_html: "オプション: LDAPの属性キー。 <strong>存在する場合</strong> はOpenProjectユーザーを管理者としてマークします。疑わしい場合は空のままにします。"
       system_user_dn_html: |
-        読み取り専用アクセスに利用するシステムユーザの DN を入力します。
-        <br/>
-        例: uid=openproject,ou=system,dc=example,dc=com
+        Enter the DN of the system user used for read-only access.
+        <br>
+        Example: uid=openproject,ou=system,dc=example,dc=com
       system_user_password: システムユーザーの Bind パスワードを入力してください
       base_dn: |
         OpenProjectがユーザーとグループを探すように、サブツリーのベースDNをLDAPに入力します。
@@ -177,7 +181,7 @@ ja:
     tls_options:
       verify_peer: "SSL 証明書の確認"
       verify_peer_description_html: >
-        信頼できる証明書チェーンの厳格な SSL 検証を有効にします。 <br/> <strong>警告:</strong> このオプションのチェックを外すと、LDAP サーバー証明書の SSL 検証が無効になります。 中間者攻撃の標的になる危険性が高くなります。
+        Enables strict SSL verification of the certificate trusted chain. <br> <strong>Warning:</strong> Unchecking this option disables SSL verification of the LDAP server certificate. This exposes your connection to Man in the Middle attacks.
       tls_certificate_description: "LDAP サーバ証明書がこのシステムの信頼ソースにない場合は、ここで手動で追加できます。PEM X509証明書文字列を入力します。"
   forums:
     show:
@@ -216,7 +220,7 @@ ja:
     admin:
       custom_field_projects:
         is_for_all_blank_slate:
-          heading: For all projects
+          heading: 全プロジェクト向け
           description: This custom field is enabled in all projects since the "For all projects" option is checked. It cannot be deactivated for individual projects.
       items:
         actions: "Item actions"
@@ -289,7 +293,7 @@ ja:
       item: "Item"
       label: "Label"
       short: "Short name"
-      parent: "Parent"
+      parent: "親項目"
       blueprint: "Pattern blueprint"
   global_search:
     placeholder: "Search in %{app_title}"
@@ -344,6 +348,7 @@ ja:
         placeholder: "New project list"
       delete_modal:
         title: "Delete project list"
+        heading: "Delete this project list?"
         text: "This action will not delete any project the list contains. Are you sure you want to delete this project list?"
     settings:
       change_identifier: 識別子の変更
@@ -362,14 +367,14 @@ ja:
         no_results_title_text: 現在、有効なカスタム フィールドはありません。
       life_cycle:
         header:
-          title: "Project lifecycle"
-          description_html: 'These project stages and gates in the project lifecycle will be displayed in your <a href=%{overview_url} target="_blank">project overview page</a> and are defined in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance. You can enable or disable individual attributes.'
-        non_defined: "Neither stages nor gates are currently defined."
-        section_header: "Stages and gates"
+          title: "Project life cycle"
+          description_html: "The active project phases define this project's life cycle and are defined in the <a href=%{admin_settings_url} target=\"_blank\">administration settings</a>. Enabled phases will be displayed in your <a href=%{overview_url} target=\"_blank\">project overview</a>."
+        non_defined: "No phases are currently defined."
+        section_header: "Phases"
         step:
           use_in_project: "Use %{step} in this project"
         filter:
-          label: "Search project stage or gate"
+          label: "Search project phase"
       project_custom_fields:
         header:
           title: "Project attributes"
@@ -392,7 +397,9 @@ ja:
         no_results_content_text: 新しいバージョンを作成
       storage:
         no_results_title_text: このプロジェクトによって使用される追加のディスク領域はありません。
-  project_stage:
+      work_package_priorities:
+        new_label: "New priority"
+  project_phase:
     working_days_count:
       other: "Duration: %{count} working days"
   lists:
@@ -564,8 +571,10 @@ ja:
         package is automatically set to this value when this status is selected.
         Ignored in work-based mode.
       status_readonly_html: |
-        このステータスのワークパッケージを読み取り専用としてマークするにはこのオプションを選択します。ステータスを除く属性は変更できません。<br/>
-        <strong>注</strong>：継承された値（子や関係）は引き続き適用されます。
+        Check this option to mark work packages with this status as read-only.
+        No attributes can be changed with the exception of the status.
+        <br>
+        <strong>Note</strong>: Inherited values (e.g., from children or relations) will still apply.
     index:
       no_results_title_text: 現在、ワークパッケージのステータスはありません。
       no_results_content_text: 新しいステータスを追加
@@ -584,14 +593,14 @@ ja:
       no_results_content_text: 新しい種類を作成
     edit:
       form_configuration:
-        tab: "Form configuration"
+        tab: "フォーム設定"
       more_info_text_html: >
         エンタープライズ版では、以下の追加アドオンでフォームの設定をカスタマイズできます:<br> <ul class="%{list_styling_class}"> <li><b>新しい属性グループの追加</b></li> <li><b>属性グループの名前の変更</b></li> <li><b>関連するワークパッケージのテーブルを追加する</b></li> </ul>
       projects:
-        tab: "Projects"
-        enabled_projects: "Enabled projects"
+        tab: "プロジェクト"
+        enabled_projects: "有効なプロジェクト"
       settings:
-        tab: "Settings"
+        tab: "設定"
         type_color_text: The selected color distinguishes different types in Gantt charts or work packages tables. It is therefore recommended to use a strong color.
       subject_configuration:
         tab: "Subject configuration"
@@ -603,7 +612,20 @@ ja:
           caption: "Define a pattern using referenced attributes and text to automatically generate work package subjects. Users will not be able to manually edit subjects."
         pattern:
           label: "Subject pattern"
-          caption: "Search for an attribute or add text. To create a space between elements add it as a text."
+          caption: "Add text or type / to search for an attribute. You can add spaces to separate them."
+          headings:
+            work_package: "Work package"
+            parent: "Parent"
+            project: "Project"
+          insert_as_text: "No attributes found. Add as text: \"%{word}\""
+      export_configuration:
+        tab: "Generate PDF"
+        intro: "Select which templates from those that are available you would like to enable for this type. The template determines the design and attributes visible in the exported PDF of a work package using this type. The first template on the list is selected by default."
+        pdf_export_templates:
+          label: "PDF Export templates"
+          actions:
+            label_enable_all: "Enable all"
+            label_disable_all: "Disable all"
   versions:
     overview:
       work_packages_in_archived_projects: "The version is shared with archived projects which still have work packages assigned to this version. These are counted, but will not appear in the linked views."
@@ -618,6 +640,47 @@ ja:
     index:
       no_results_title_text: 現在、ワークフローはありません。
   work_packages:
+    datepicker_modal:
+      banner:
+        description:
+          automatic_mobile: "Start date derived."
+          click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for Gantt overview.'
+          manual_mobile: "Ignoring relations."
+          manual_gap_between_predecessors: "There is a gap between this and all predecessors."
+          manual_overlap_with_predecessors: "Overlaps with at least one predecessor."
+          manual_with_children: "This has child work packages but their start dates are ignored."
+        title:
+          automatic_mobile: "Automatically scheduled."
+          automatic_with_children: "The dates are determined by child work packages."
+          automatic_with_predecessor: "The start date is set by a predecessor."
+          manual_mobile: "Manually scheduled."
+          manually_scheduled: "Manually scheduled. Dates not affected by relations."
+      blankslate:
+        title: "No predecessors"
+        description: "To enable automatic scheduling, this work package needs to have at least one predecessor. It will then automatically be scheduled to start after the closest predecessor."
+      ignore_non_working_days:
+        title: "営業日のみ"
+      mode:
+        title: "Scheduling mode"
+        automatic: "自動"
+        manual: "Manual"
+      show_relations: "関連するタスクを表示"
+      tabs:
+        aria_label: "Datepicker tabs"
+        children: "子"
+        dates: "日付"
+        predecessors: "Predecessors"
+        successors: "Successors"
+        blankslate:
+          predecessors:
+            title: "No predecessors"
+            description: "This work package does not have any predecessors."
+          successors:
+            title: "No successors"
+            description: "This work package does not have any successors."
+          children:
+            title: "No children"
+            description: "This work package does not have any children."
     x_descendants:
       other: "%{count} つの作業項目の子孫"
     bulk:
@@ -672,10 +735,10 @@ ja:
       caption: "2つの作業パッケージの間に空ける最低作業日数。"
     relations:
       label_new_child_created: "New work package created and added as a child"
-      label_relates_singular: "related to"
-      label_relates_plural: "related to"
-      label_relates_to_singular: "related to"
-      label_relates_to_plural: "related to"
+      label_relates_singular: "関連している"
+      label_relates_plural: "関連している"
+      label_relates_to_singular: "関連している"
+      label_relates_to_plural: "関連している"
       relates_description: "Creates a visible link between the two work packages with no additional effect"
       relates_to_description: "Creates a visible link between the two work packages with no additional effect"
       label_precedes_singular: "successor (after)"
@@ -686,46 +749,47 @@ ja:
       follows_description: "The related work package necessarily needs to finish before this one can start"
       label_child_singular: "child"
       label_child_plural: "children"
-      new_child: "New child"
+      new_child: "Create new child"
       new_child_text: "Creates a related work package as a sub-item of the current (parent) work package"
-      existing_child: "Existing child"
+      child: "Child"
       child_description: "関連するワークパッケージを現在の(親)ワークパッケージのサブ項目にします。"
-      label_blocks_singular: "blocks"
-      label_blocks_plural: "blocks"
+      label_closest: "Closest"
+      label_blocks_singular: "ブロックしている"
+      label_blocks_plural: "ブロックしている"
       blocks_description: "The related work package cannot be closed until this one is closed first"
-      label_blocked_singular: "blocked by"
-      label_blocked_plural: "blocked by"
-      label_blocked_by_singular: "blocked by"
-      label_blocked__by_plural: "blocked by"
+      label_blocked_singular: "ブロックされている"
+      label_blocked_plural: "ブロックされている"
+      label_blocked_by_singular: "ブロックされている"
+      label_blocked__by_plural: "ブロックされている"
       blocked_description: "This work package cannot be closed until the related one is closed first"
       blocked_by_description: "This work package cannot be closed until the related one is closed first"
-      label_duplicates_singular: "duplicates"
-      label_duplicates_plural: "duplicates"
+      label_duplicates_singular: "次と重複"
+      label_duplicates_plural: "次と重複"
       duplicates_description: "This is a copy of the related work package"
-      label_duplicated_singular: "duplicated by"
-      label_duplicated_plural: "duplicated by"
-      label_duplicated_by_singular: "duplicated by"
-      label_duplicated_by_plural: "duplicated by"
+      label_duplicated_singular: "次の項目が重複"
+      label_duplicated_plural: "次の項目が重複"
+      label_duplicated_by_singular: "次の項目が重複"
+      label_duplicated_by_plural: "次の項目が重複"
       duplicated_by_description: "The related work package is a copy of this"
       duplicated_description: "The related work package is a copy of this"
-      label_includes_singular: "includes"
-      label_includes_plural: "includes"
+      label_includes_singular: "インクルード"
+      label_includes_plural: "インクルード"
       includes_description: "Marks the related work package as including this one with no additional effect"
-      label_partof_singular: "part of"
-      label_partof_plural: "part of"
-      label_part_of_singular: "part of"
-      label_part_of_plural: "part of"
+      label_partof_singular: "以下の一部："
+      label_partof_plural: "以下の一部："
+      label_part_of_singular: "以下の一部："
+      label_part_of_plural: "以下の一部："
       partof_description: "Marks the related work package as being part of this one with no additional effect"
       part_of_description: "Marks the related work package as being part of this one with no additional effect"
-      label_requires_singular: "requires"
-      label_requires_plural: "requires"
+      label_requires_singular: "要求"
+      label_requires_plural: "要求"
       requires_description: "Marks the related work package as a requirement to this one"
-      label_required_singular: "required by"
-      label_required_plural: "required by"
+      label_required_singular: "に必要"
+      label_required_plural: "に必要"
       required_description: "Marks this work package as being a requirement to the related one"
       label_parent_singular: "parent"
       label_parent_plural: "parent"
-      ghost_relation_title: "Related work package"
+      ghost_relation_title: "関連するワークパッケージ"
       ghost_relation_description: "This is not visible to you due to permissions."
   label_invitation: 案内
   account:
@@ -766,6 +830,7 @@ ja:
       attachment:
         attachment_content: "添付ファイルのコンテンツ"
         attachment_file_name: "添付ファイル名"
+        content_type: "Content-type"
         downloads: "ダウンロード数"
         file: "ファイル"
         filename: "ファイル"
@@ -773,10 +838,10 @@ ja:
       attribute_help_text:
         attribute_name: "属性"
         help_text: "ヘルプ テキスト"
+      capability:
+        context: "Context"
       changeset:
         repository: "リポジトリ"
-      color:
-        hexcode: "16進コード"
       comment:
         commented: "コメントしました。" #an object that this comment belongs to
       custom_action:
@@ -787,7 +852,7 @@ ja:
         editable: "編集可能"
         field_format: "書式"
         is_filter: "フィルタとして使用"
-        is_for_all: "For all projects"
+        is_for_all: "全プロジェクト向け"
         is_required: "必須"
         max_length: "最大値の長さ"
         min_length: "最短長"
@@ -804,12 +869,15 @@ ja:
         secret: "秘密鍵"
         owner: "所有者"
         builtin: "Builtin"
-        enabled: "Active"
+        enabled: "アクティブ"
         redirect_uri: "リダイレクトURI"
         client_credentials_user_id: "クライアント資格情報ユーザーID"
         scopes: "範囲"
         confidential: "機密"
+      emoji_reaction:
+        reactable: "Reacted on"
       enterprise_token:
+        domain: "ドメイン"
         starts_at: "有効期間開始"
         subscriber: "購入者"
         encoded_token: "エンタープライズ サポート トークン"
@@ -821,6 +889,7 @@ ja:
         widgets: "ウィジェット"
       journal:
         notes: "注記"
+        cause_type: "Cause type"
       ldap_auth_source:
         account: "アカウント"
         attr_firstname: "名前"
@@ -828,7 +897,7 @@ ja:
         attr_login: "ユーザー名属性"
         attr_mail: "メール"
         filter_string: "Filter string"
-        admin: "Administrator"
+        admin: "管理者"
         base_dn: "ベースDN"
         host: "ホスト"
         onthefly: "ユーザーの自動作成"
@@ -836,14 +905,17 @@ ja:
         tls_certificate_string: "LDAP server SSL certificate"
       member:
         roles: "ロール"
+      notification:
+        read_ian: "Read in-app"
+        resource: "Resource"
       oauth_client:
         client: "クライアントID"
-      planning_element_type_color:
-        hexcode: 16進コード
       project:
         active_value:
           true: "unarchived"
           false: "アーカイブ済"
+        description: "説明"
+        enabled_modules: "有効なモジュール"
         identifier: "識別子"
         latest_activity_at: "最新の活動"
         parent: "親プロジェクト名"
@@ -853,7 +925,6 @@ ja:
           false: "private"
         queries: "クエリ"
         status_code: "プロジェクトの進捗状況"
-        description: "説明"
         status_explanation: "Project status description"
         status_codes:
           not_started: "未着手"
@@ -871,24 +942,54 @@ ja:
         work_packages: "ワークパッケージ"
       project_custom_field:
         is_required: "Required for all projects"
-        custom_field_section: Section
-      project/life_cycle_step_definition:
+        custom_field_section: セクション
+      project/phase:
+        date_range: "Date range"
+        definition: "Definition"
+      project/phase_definition:
         name: "Name"
         color: "Color"
+        start_gate: "Start phase gate"
+        start_gate_name: "Start phase gate name"
+        finish_gate: "Finish phase gate"
+        finish_gate_name: "Finish phase gate name"
       query:
+        sums: "Sums"
+        columns: "列"
         column_names: "列"
         relations_to_type_column: "%{type} との関連"
         relations_of_type_column: "%{type} 関連"
+        child_work_packages: "Child work packages"
         group_by: "グループ化"
+        sort_by: "Sort results by"
         filters: "フィルタ"
         timeline_labels: "タイムラインのラベル"
+        timeline_visible: "ガントチャートの表示"
+        timeline_zoom_level: "Gantt chart zoom level"
+        timestamps: "Baseline timestamps"
+        sort_criteria: "Sort criteria"
+        highlighted_attributes: "Highlighted attributes"
+        highlighting_mode: "Highlight mode"
+        display_representation: "Display mode"
+        show_hierarchies: "Display mode"
+        starred: "お気に入り"
+        hidden: "Hidden"
+        manual_sorting: "Manual sort order"
+        ordered_work_packages: "Work packages order"
+        include_subprojects: "Include subprojects"
+        results: "検索結果"
       relation:
         lag: "Lag"
-        from: "Related work package"
+        from: "関連するワークパッケージ"
         to: "関係するワークパッケージ"
+        relation_type: "Relation type"
       reminder:
-        remind_at_date: "Date"
-        remind_at_time: "Time"
+        remindable: "Reminded object"
+        remind_at: "Remind at"
+        remind_at_date: "日付"
+        remind_at_time: "時間"
+      reminder_notification:
+        notification: "Notification"
       repository:
         url: "URL"
       role:
@@ -898,6 +999,9 @@ ja:
         is_readonly: "読み取り専用のワークパッケージ"
         excluded_from_totals: "Exclude from calculation of totals in hierarchy"
         default_done_ratio: "% Complete"
+      token/ical:
+        calendar: "カレンダー"
+        ical_token_query_assignment: "Query assignment"
       time_entry:
         activity: "活動"
         hours: " 時間"
@@ -911,6 +1015,11 @@ ja:
         is_default: "デフォルトで新規プロジェクト用に有効化"
         is_milestone: "マイルストーン"
         color: "色"
+        patterns: "Patterns"
+      remote_identity:
+        auth_source: "Auth Source"
+        integration: "Integration"
+        user: "ユーザ"
       user:
         admin: "管理者"
         auth_source: "認証ソース"
@@ -920,17 +1029,23 @@ ja:
         force_password_change: "次回ログイン時にパスワード変更を強制する"
         language: "言語"
         last_login_on: "最終ログイン日時"
+        failed_login_count: "Failed login attempts"
+        first_name: "名前"
+        last_name: "苗字"
+        first_login: "First login"
         new_password: "新しいパスワード"
         password_confirmation: "確認のため再入力"
         consented_at: "同意しました。"
       user_preference:
         comments_sorting: "コメントの表示"
         impaired: "アクセシビリティモード"
-        time_zone: "タイムゾーン"
         auto_hide_popups: "成功通知を自動的に隠す"
         warn_on_leaving_unsaved: "変更を保存せずにワークパッケージから移動するときに警告"
         theme: "Mode"
+        time_zone: "タイムゾーン"
         mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. For the full custom theme, please select Light mode."
+        daily_reminders: "Daily reminders"
+        workdays: "Working days"
       version:
         effective_date: "終了日"
         sharing: "共有"
@@ -939,7 +1054,9 @@ ja:
       wiki_page:
         parent_title: "親ページ"
         redirect_existing_links: "既存のリンクをリダイレクトする"
+        text: "Page content"
       work_package:
+        ancestor: "Descendants of" #used for filtering of work packages that are descendants of a given work package
         begin_insertion: "挿入の始まり"
         begin_deletion: "削除の始まり"
         children: "サブ要素"
@@ -955,6 +1072,7 @@ ja:
           title: "Working days"
           false: "working days only"
           true: "include non-working days"
+        journal_restricted: Restricted Journal
         notify: "Notify" #used in custom actions
         parent: "親項目"
         parent_issue: "親項目"
@@ -998,6 +1116,7 @@ ja:
         empty: "は空にすることができません。"
         even: "は偶数にしてください。"
         exclusion: "は予約されています。"
+        feature_disabled: is not available.
         file_too_large: "は大きすぎます (最大サイズは%{count}バイト)"
         filter_does_not_exist: "フィルターが存在しません。"
         format: "does not match the expected format '%{expected}'."
@@ -1134,42 +1253,12 @@ ja:
           attributes:
             project_ids:
               blank: "Please select a project."
-        project/life_cycle_step_definition:
-          attributes:
-            type:
-              must_be_a_stage_or_gate: "must be either Project::StageDefinition or Project::GateDefinition"
-              type_and_class_name_mismatch: "must match the instantiated class name"
-        project/gate_definition:
-          attributes:
-            type:
-              type_and_class_name_mismatch: "must be a Project::GateDefinition"
-        project/stage_definition:
-          attributes:
-            type:
-              type_and_class_name_mismatch: "must be a Project::StageDefinition"
-        project/life_cycle_step:
-          attributes:
-            type:
-              must_be_a_stage_or_gate: "must be either Project::Stage or Project::Gate"
-              must_be_a_stage: "must be a Project::Stage"
-              must_be_a_gate: "must be a Project::Gate"
-              type_and_class_name_mismatch: "must match the instantiated class name"
-        project/gate:
-          attributes:
-            base:
-              end_date_not_allowed: "Cannot assign end date to a Project::Gate"
-            type:
-              type_and_class_name_mismatch: "must be a Project::Gate"
-            date:
-              non_continuous_dates: "can't be earlier than the previous %{step}'s end date."
-        project/stage:
+        project/phase:
           attributes:
             date_range:
-              start_date_must_be_before_end_date: "start date must be before the end date."
-              non_continuous_dates: "can't be earlier than the previous %{step}'s end date."
+              start_date_must_be_before_finish_date: "start date must be before the finish date."
+              non_continuous_dates: "can't be earlier than the previous phase's end date."
               incomplete: "is incomplete."
-            type:
-              type_and_class_name_mismatch: "must be a Project::Stage"
         query:
           attributes:
             project:
@@ -1269,6 +1358,10 @@ ja:
         work_package:
           is_not_a_valid_target_for_time_entries: "ワークパッケージ #%{id} は、作業時間の再割り当ての対象としては有効ではありません。"
           attributes:
+            id:
+              format: "%{message}"
+              cannot_add_child_because_of_lack_of_permission: "選択したワークパッケージを編集する権限がないため、子タスクを追加できません。"
+              blank: "IDは空白にできません。"
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -1285,6 +1378,7 @@ ja:
               smaller_than_dates: "is smaller than the interval between the start and the finish date."
               not_available_for_milestones: "is not available for milestone typed work packages."
               cannot_be_null: "can not be set to null as start date and finish date are known."
+              not_an_integer: "は有効な日付ではありません。"
             parent:
               cannot_be_milestone: "はマイルストーンにすることはできません。"
               cannot_be_self_assigned: "cannot be assigned to itself."
@@ -1325,6 +1419,8 @@ ja:
               duplicate_group: "グループ名 '%{group}' は複数回使用されています。グループ名は一意でなければなりません。"
               query_invalid: "埋め込みクエリ '%{group}' は無効です： %{details}"
               group_without_name: "名前のないグループは指定できません。"
+            patterns:
+              invalid_tokens: "One or more attributes inside the field are not valid. Please, fix the attributes before saving."
         user:
           attributes:
             base:
@@ -1334,7 +1430,7 @@ ja:
               confirmation: "Password confirmation does not match password."
               format: "%{message}"
             password:
-              weak: "Must contain characters of the following classes (at least %{min_count} of %{all_count}): %{rules}"
+              weak: "次の文字の種類を含まれるようにしてください。（%{all_count})つのうちに%{min_count}つ以上：%{rules}）"
               lowercase: "アルファベット小文字 (例: 'a')"
               uppercase: "アルファベット大文字 (例: ' A')"
               numeric: "数値 (例: '1')"
@@ -1381,17 +1477,18 @@ ja:
       forum: "フォーラム"
       global_role: "グローバルロール"
       group: "グループ"
+      issue_priority:
+        other: "Priorities"
       member: "メンバー"
       news: "ニュース"
       notification:
         other: "Notifications"
       placeholder_user: "プレースホルダー ユーザー"
       project: "プロジェクト"
-      project/gate_definition: "Gate"
-      project/stage_definition: "Stage"
       project_query:
         other: "プロジェクト一覧"
       query: "ユーザのクエリ"
+      reminder: "Reminder"
       role:
         other: "ロール"
       status: "ステータス名"
@@ -1433,78 +1530,121 @@ ja:
           other: "%{count}時間"
         hour_html:
           other: "<i>%{count} hours</i>"
-        updated: "changed from %{old_value} to %{value}"
+        updated: "%{old_value} から %{value} に変更されました"
         logged_for: "Logged for"
     filter:
       changeset: "更新履歴"
       message: "フォーラム"
       news: "ニュース"
-      project_attribute: "Project attributes"
+      project_details: "Project details"
       subproject: "Include subprojects"
       time_entry: "作業時間の記録"
       wiki_edit: "Wiki"
       work_package: "ワークパッケージ"
+    project_phase:
+      activated: "activated"
+      deactivated: "deactivated"
+      added_date: "set to %{date}"
+      changed_date: "changed from %{from} to %{to}"
+      removed_date: "date deleted %{date}"
+      phase_and_one_gate: "%{phase_message}. %{gate_message}"
+      phase_and_both_gates: "%{phase_message}. %{start_gate_message}, and %{finish_gate_message}"
   #common attributes of all models
   attributes:
     active: "アクティブ"
     assigned_to: "担当者"
     assignee: "担当者"
     attachments: "添付ファイル"
+    actor: "Actor"
+    action: "操作"
     author: "作成者"
+    avatar: "アバター"
     base: "一般的なエラー:"
+    body: "Body"
     blocks_ids: "ブロックされているワークパッケージのID"
     category: "カテゴリ"
     comment: "コメント"
     comments: "コメント"
     content: "内容"
     color: "色"
+    creator: "作成者"
     created_at: "作成日時"
+    custom_field: "カスタムフィールド"
     custom_options: "選択肢"
     custom_values: "カスタムフィールド"
     date: "日付"
+    dates_interval: "期間"
     default_columns: "既定の列"
     description: "説明"
     derived_due_date: "派生終了日"
     derived_estimated_hours: "合計作業数"
     derived_start_date: "派生開始日"
+    direction: "Direction"
     display_sums: "合計を表示"
     due_date: "終了日"
     estimated_hours: "Work"
     estimated_time: "Work"
+    email: "電子メールアドレス"
+    entity_type: "Entity"
     expires_at: "有効期限"
     firstname: "名前"
+    filter: "フィルタ"
     group: "グループ"
     groups: "グループ"
+    hexcode: "16進コード"
     id: "ID"
     is_default: "デフォルト値"
     is_for_all: "全プロジェクト向け"
     public: "公開"
+    principal: "User or group"
     #kept for backwards compatibility
     issue: "ワーク パッケージ"
+    journal: "履歴記述"
+    journal_notes: "コメント"
     lastname: "苗字"
     login: "ユーザー名"
+    lock_version: "バージョンをロック"
     mail: "電子メールアドレス"
     name: "名称"
-    note: "Note"
+    note: "注記"
+    notes: "注記"
+    number: "Number"
+    options: "オプション"
+    operator: "演算子"
     password: "パスワード"
     priority: "優先度"
     project: "プロジェクト"
+    project_ids: "Project IDs"
+    reason: "Reason"
     responsible: "責任者"
+    required: "必須"
+    recipient: "Recipient"
     role: "ロール"
     roles: "ロール"
+    search: "検索"
     start_date: "開始日"
     status: "ステータス"
+    state: "State"
     subject: "タイトル"
+    slug: "Slug"
     summary: "サマリ"
+    time_zone: "タイムゾーン"
+    text: "テキスト（本文）"
     title: "タイトル"
     type: "タイプ"
+    typeahead: "Autocomplete"
     updated_at: "更新日時"
     updated_on: "更新日時"
     uploader: "アップロード"
     user: "ユーザ"
+    username: "ユーザー名"
+    unit: "ユニット"
     value: "値"
+    values: "Values"
     version: "バージョン"
+    visible: "表示"
     work_package: "ワーク パッケージ"
+    work_package_id: "ワーク パッケージ"
   backup:
     failed: "Backup failed"
     label_backup_token: "バックアップトークン"
@@ -1750,7 +1890,7 @@ ja:
       hour:
         other: "時"
       day:
-        other: "days"
+        other: "日"
   description_active: "有効？"
   description_attachment_toggle: "添付ファイルの表示/非表示"
   description_autocomplete: >
@@ -1785,11 +1925,11 @@ ja:
   ee:
     upsale:
       title: "Enterprise add-on"
-      link_title: "More information"
+      link_title: "詳細情報"
       automatic_subject_generation:
         description: "Create automatically generated subjects using referenced attributes and text."
       customize_life_cycle:
-        description: "Create and organize different project stages and gates than the ones provided by PM2 project cycle planning."
+        description: "Create and organize different project phases than the ones provided by PM2 project cycle planning."
       form_configuration:
         description: "これらの追加機能でフォームの設定をカスタマイズします:"
         add_groups: "新しい属性グループを追加"
@@ -1797,6 +1937,8 @@ ja:
   enumeration_activities: "タイムトラッキングアクティビティ"
   enumeration_work_package_priorities: "ワークパッケージの優先度"
   enumeration_reported_project_statuses: "報告されるプロジェクト進捗状況"
+  enumeration_caption_order_changed: "Order successfully changed."
+  enumeration_could_not_be_moved: "Enumeration could not be moved."
   error_auth_source_sso_failed: "ユーザー '%{value}' のシングルサインオン (SSO) に失敗しました"
   error_can_not_archive_project: "このプロジェクトはアーカイブできません: %{errors}"
   error_can_not_delete_entry: "エントリを削除できません"
@@ -1857,7 +1999,7 @@ ja:
     changeset: "変更セットが編集されました。"
     message: メッセージが編集されました。
     news: ニュース
-    project_attributes: "Project attributes edited"
+    project_details: "Project details edited"
     project: "プロジェクトが編集されました。"
     projects: "プロジェクトが編集されました。"
     reply: 返信済み
@@ -1871,8 +2013,8 @@ ja:
       subproject: "Subproject: %{name}"
   export:
     dialog:
-      title: "Export"
-      submit: "Export"
+      title: "外部出力"
+      submit: "外部出力"
       format:
         label: "File format"
         options:
@@ -1886,18 +2028,19 @@ ja:
         input_label_report: "Add columns to attribute table"
         input_caption_report: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in the attribute table, but can be displayed below it."
         input_caption_table: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in table based exports."
+        input_caption_required: "It is not possible to export the view without any column. Please add at least one column."
       pdf:
         export_type:
           label: "PDF export type"
           options:
             table:
-              label: "Table"
+              label: "表"
               caption: "Export the work packages list in a table with the desired columns."
             report:
-              label: "Report"
+              label: "レポート"
               caption: "Export the work package on a detailed report of all work packages in the list."
             gantt:
-              label: "Gantt chart"
+              label: "ガントチャート"
               caption: "Export the work packages list in a Gantt diagram view."
         include_images:
           label: "Include images"
@@ -1906,10 +2049,10 @@ ja:
           label: "Zoom levels"
           caption: "Select what is the zoom level for dates displayed in the chart."
           options:
-            days: "Days"
-            weeks: "Weeks"
-            months: "Months"
-            quarters: "Quarters"
+            days: "日"
+            weeks: "週"
+            months: "ヶ月"
+            quarters: "四半期ごと"
         column_width:
           label: "Table column width"
           options:
@@ -1918,7 +2061,7 @@ ja:
             wide: "Wide"
             very_wide: "Very wide"
         paper_size:
-          label: "Paper size"
+          label: "用紙サイズ"
           caption: "Depending on the chart size more than one page might be exported."
         long_text_fields:
           input_caption: "By default all long text fields are selected."
@@ -1935,6 +2078,8 @@ ja:
     your_work_packages_export: "Work packages are being exported"
     succeeded: "Export completed"
     failed: "An error has occurred while trying to export the work packages: %{message}"
+    errors:
+      embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
       atom: "Atom"
       csv: "CSV"
@@ -1956,21 +2101,35 @@ ja:
       days: d
   pdf_generator:
     page_nr_footer: "Page %{page} of %{total}"
+    template_attributes:
+      label: "Attributes and description"
+      caption: All the attributes present in the current form configuration using the default template.
+    template_contract:
+      label: "Contract"
+      caption: Work package details formatted to the standard German contract form.
     dialog:
       title: Generate PDF
-      submit: Generate
-      header_right:
-        label: Header right
-        caption: Text to be displayed in the right of the header
+      submit: ダウンロード
+      templates:
+        label: "Template"
+        none_enabled: "No template has been enabled for this work package type"
       footer_center:
-        label: Footer center
-        caption: Text to be displayed in the center of the footer
+        label: Footer text
+        caption: This text will appear on every page at the center of the footer.
+      footer_right:
+        label: Footer text
+        caption: This text will appear on every page at the right of the footer.
       hyphenation:
         label: Hyphenation
-        caption: Break words between lines to improve text justification and readability.
-      paper_size:
-        label: Paper size
-        caption: The size of the paper to use for the PDF.
+        caption: Break line between words for better layout and justification.
+      hyphenation_language:
+        label: Language and hyphenation
+      page_orientation:
+        label: Page orientation
+        caption: Select the orientation of the pages in the PDF document.
+        options:
+          portrait: Portrait
+          landscape: Landscape
   extraction:
     available:
       pdftotext: "Pdftotextが利用可能 (オプション)"
@@ -2052,6 +2211,8 @@ ja:
           Progress calculation automatically <a href="%{href}" target="_blank">set to work-based mode and adjusted with version update</a>.
         progress_calculation_adjusted: >-
           Progress calculation automatically <a href="%{href}" target="_blank">adjusted with version update</a>.
+        scheduling_mode_adjusted: >-
+          Scheduling mode automatically adjusted with version update.
         totals_removed_from_childless_work_packages: >-
           Work and progress totals automatically removed for non-parent work packages with <a href="%{href}" target="_blank">version update</a>. This is a maintenance task and can be safely ignored.
       total_percent_complete_mode_changed_to_work_weighted_average: >-
@@ -2077,7 +2238,7 @@ ja:
       no_results:
         title: "表示するアクセス トークンはありません"
         description: "すべてが無効になっています。管理メニューで再度有効にすることができます。"
-      access_tokens: "Access tokens"
+      access_tokens: "アクセストークン"
       headers:
         action: "操作"
         expiration: "有効期限"
@@ -2223,7 +2384,7 @@ ja:
   label_calendars_and_dates: "Calendars and dates"
   label_calendar_show: "カレンダーを表示"
   label_category: "カテゴリ"
-  label_completed: Completed
+  label_completed: 完了しました
   label_consent_settings: "ユーザーの同意"
   label_wiki_menu_item: Wikiのメニュー項目
   label_select_main_menu_item: 新しいメインメニュー項目を選択する
@@ -2287,7 +2448,7 @@ ja:
   label_default: "既定の項目"
   label_delete_user: "ユーザーを削除"
   label_delete_project: "プロジェクトを削除"
-  label_delete: "Delete"
+  label_delete: "削除"
   label_deleted: "削除された"
   label_deleted_custom_field: "（削除されたカスタムフィールド）"
   label_deleted_custom_item: "(deleted item)"
@@ -2296,6 +2457,7 @@ ja:
   label_missing_or_hidden_custom_option: "(missing value or lacking permissions to access)"
   label_descending: "降順"
   label_details: "詳細"
+  label_defaults: "Defaults"
   label_development_roadmap: "開発ロードマップ"
   label_diff: "差分"
   label_diff_inline: "インライン"
@@ -2352,6 +2514,7 @@ ja:
   label_filter: "フィルタ"
   label_filter_add: "フィルタを追加"
   label_filter_by: "Filter by"
+  label_filter_any_name_attribute: "Name attributes"
   label_filter_plural: "フィルタ"
   label_filters_toggle: "フィルターの表示/非表示"
   label_float: "小数"
@@ -2374,7 +2537,7 @@ ja:
   label_here: こちら
   label_hide: "非表示"
   label_history: "履歴"
-  label_hierarchy: "Hierarchy"
+  label_hierarchy: "階層"
   label_hierarchy_leaf: "階層枚"
   label_home: "ホーム"
   label_subject_or_id: "タイトルまたはID"
@@ -2403,7 +2566,7 @@ ja:
   label_share_project_list: "Share project list"
   label_share_work_package: "Share work package"
   label_show_all_registered_users: "すべての登録ユーザーを表示"
-  label_show_less: "Show less"
+  label_show_less: "非表示にする"
   label_show_more: "Show more"
   label_journal: "履歴記述"
   label_journal_diff: "説明の比較"
@@ -2475,8 +2638,8 @@ ja:
   label_months_from: "ヶ月分"
   label_more: "続き"
   label_more_than_ago: "今日より○日前以前"
-  label_move_column_left: "Move column left"
-  label_move_column_right: "Move column right"
+  label_move_column_left: "列を左に移動"
+  label_move_column_right: "列を右に移動"
   label_move_work_package: "ワークパッケージを移動"
   label_my_account: "Account settings"
   label_my_activity: "My activity"
@@ -2500,8 +2663,8 @@ ja:
   label_next_week: "次の週"
   label_no_change_option: "（変更なし）"
   label_no_data: "表示できるデータがありません。"
-  label_no_due_date: "no finish date"
-  label_no_start_date: "no start date"
+  label_no_due_date: "終了日が未設定"
+  label_no_start_date: "開始日なし"
   label_no_parent_page: "親ページはありません"
   label_nothing_display: "表示するものはありません"
   label_nobody: "無記名"
@@ -2511,7 +2674,7 @@ ja:
   label_none_parentheses: "(なし)"
   label_not_contains: "含まない"
   label_not_equals: "等しくない"
-  label_life_cycle_step_plural: "Project lifecycle"
+  label_life_cycle_step_plural: "Project life cycle"
   label_on: "オン"
   label_operator_all: "is not empty"
   label_operator_none: "is empty"
@@ -2569,11 +2732,11 @@ ja:
   label_project_latest: "最新のプロジェクト"
   label_project_default_type: "空の種類を許可する"
   label_project_hierarchy: "プロジェクトの階層構造"
-  label_project_mappings: "Projects"
+  label_project_mappings: "プロジェクト"
   label_project_new: "新規プロジェクト"
   label_project_plural: "プロジェクト"
-  label_project_list_plural: "Project lists"
-  label_project_lifecycle: "Project lifecycle"
+  label_project_list_plural: "プロジェクト一覧"
+  label_project_life_cycle: "Project life cycle"
   label_project_attributes_plural: "Project attributes"
   label_project_custom_field_plural: "Project attributes"
   label_project_settings: "プロジェクトの設定"
@@ -2604,7 +2767,7 @@ ja:
   label_relation_new: "新しい関係"
   label_release_notes: "リリースノート"
   label_remaining_work: "残りの作業"
-  label_remove_column: "Remove column"
+  label_remove_column: "列を削除"
   label_remove_columns: "選択した列を削除"
   label_renamed: "名称変更"
   label_reply_plural: "返信"
@@ -2631,6 +2794,7 @@ ja:
   label_roadmap_overdue: "%{value}遅れ"
   label_role_and_permissions: "ロールと権限"
   label_role_new: "新しいロール"
+  label_role_grantable: "Grantable role"
   label_role_plural: "ロール"
   label_role_search: "新しいメンバーに役割を割り当てる"
   label_scm: "バージョン管理システム"
@@ -2646,10 +2810,10 @@ ja:
   label_show_completed_versions: "終了したバージョンを表示"
   label_columns: "列"
   label_sort: "並べ替え"
-  label_sort_ascending: "Sort ascending"
+  label_sort_ascending: "昇順にソート"
   label_sort_by: "%{value}で並べ替え"
   label_sorted_by: "%{value}で並べ替えている"
-  label_sort_descending: "Sort descending"
+  label_sort_descending: "降順にソート"
   label_sort_higher: "上へ"
   label_sort_highest: "一番上へ移動"
   label_sort_lower: "下へ移動"
@@ -2678,12 +2842,16 @@ ja:
   label_this_month: "今月"
   label_this_week: "今週"
   label_this_year: "今年"
-  label_time: "Time"
+  label_time: "時間"
   label_time_entry_plural: "作業時間の記録"
   label_time_entry_activity_plural: "Spent time activities"
   label_title: "タイトル"
   label_projects_menu: "プロジェクト"
   label_today: "今日"
+  label_token_version: "Token Version"
+  label_today_as_start_date: "Select today as start date."
+  label_today_as_due_date: "Select today as finish date."
+  label_today_as_date: "Select today as date."
   label_top_menu: "トップメニュー"
   label_topic_plural: "トピック"
   label_total: "合計"
@@ -2714,7 +2882,7 @@ ja:
   label_user_settings: "ユーザー設定"
   label_users_settings: "Users settings"
   label_version_new: "新しいバージョン"
-  label_version_edit: "Edit version"
+  label_version_edit: "バージョンを編集"
   label_version_plural: "バージョン"
   label_version_sharing_descendants: "子プロジェクト単位"
   label_version_sharing_hierarchy: "プロジェクト階層単位"
@@ -2796,7 +2964,7 @@ ja:
   label_global_role: "グローバルロール"
   label_not_changeable: "（変更不可）"
   label_global: "全般"
-  label_seeded_from_env_warning: This record has been created through a setting / environment variable. It is not editable through UI.
+  label_seeded_from_env_warning: This record has been created through a setting environment variable. It is not editable through UI.
   macro_execution_error: "マクロ%{macro_name}を実行中にエラーが発生しました。"
   macro_unavailable: "マクロ%{macro_name}を表示できません。"
   macros:
@@ -3070,6 +3238,7 @@ ja:
   permission_add_project: "プロジェクトの作成"
   permission_add_work_package_attachments: "添付ファイルを追加する"
   permission_add_work_package_attachments_explanation: "Allows adding attachments without Edit work packages permission"
+  permission_add_comments_with_restricted_visibility: "Write comments with restricted visibility"
   permission_archive_project: "プロジェクトをアーカイブ"
   permission_create_user: "Create users"
   permission_manage_user: "Edit users"
@@ -3098,12 +3267,15 @@ ja:
   permission_edit_work_package_notes_explanation: "Caution: Users with this permission are able to edit anyone's comment."
   permission_edit_work_packages: "ワークパッケージの編集"
   permission_edit_messages: "メッセージの編集"
+  permission_edit_own_comments_with_restricted_visibility: "Edit own comments with restricted visibility"
   permission_edit_own_work_package_notes: "Edit own comments"
   permission_edit_own_messages: "自分の投稿したメッセージの編集"
   permission_edit_own_time_entries: "自分が記入した作業時間の編集"
+  permission_edit_others_comments_with_restricted_visibility: "Moderate comments with restricted visibility"
+  permission_edit_others_comments_with_restricted_visibility_explanation: "Caution: Users with this permission are able to edit other users' comments with restricted visibility."
   permission_edit_project: "プロジェクトの編集"
   permission_edit_project_attributes: "Edit project attributes"
-  permission_edit_project_stages_and_gates: "Edit project stages and gates"
+  permission_edit_project_phases: "Edit project phases"
   permission_edit_reportings: "レポートの編集"
   permission_edit_time_entries: "他のユーザーの作業時間を編集"
   permission_edit_timelines: "タイムラインの編集"
@@ -3133,14 +3305,15 @@ ja:
   permission_search_project: "Search project"
   permission_select_custom_fields: "Select custom fields"
   permission_select_project_custom_fields: "Select project attributes"
-  permission_select_project_life_cycle: "Select project stages and gates"
-  permission_select_project_life_cycle_explanation: "Activate/Deactivate the stages and gates in a project. Enables the user to select the lifecycle appropriate for the project as inactive stages and gates will not be visible in the project overview page nor the project list."
+  permission_select_project_phases: "Select project phases"
+  permission_select_project_phases_explanation: "Activate/Deactivate the phases in a project. Enables the user to select the life cycle appropriate for the project as inactive phases will not be visible in the project overview page nor the project list."
   permission_select_project_modules: "プロジェクトでモジュールの選択"
   permission_share_work_packages: "Share work packages"
   permission_manage_types: "ワークパッケージのタイプを選択"
   permission_manage_own_reminders: "Create own reminders"
   permission_view_project: "View projects"
   permission_view_changesets: "OpenProject にリポジトリのリビジョンを表示"
+  permission_view_comments_with_restricted_visibility: "View comments with restricted visibility"
   permission_view_commit_author_statistics: "コミット作成者の統計情報の閲覧"
   permission_view_dashboards: "View dashboards"
   permission_view_work_package_watchers: "ウォッチャー一覧の閲覧"
@@ -3159,7 +3332,7 @@ ja:
   permission_work_package_assigned_explanation: "それぞれのプロジェクトで、ワークパッケージはこの役割をもつユーザーおよびグループに割り当てることができます。"
   permission_view_project_activity: "View project activity"
   permission_view_project_attributes: "View project attributes"
-  permission_view_project_stages_and_gates: "View project stages and gates"
+  permission_view_project_phases: "View project phases"
   permission_save_bcf_queries: "Save BCF queries"
   permission_manage_public_bcf_queries: "Manage public BCF queries"
   permission_edit_attribute_help_texts: "Edit attribute help texts"
@@ -3169,6 +3342,13 @@ ja:
   placeholders:
     default: "-"
   project:
+    archive:
+      are_you_sure: "プロジェクト '%{name}' をアーカイブしてもよろしいですか？"
+      archived: "アーカイブ済み"
+    count:
+      zero: "0 projects"
+      one: "1 プロジェクト"
+      other: "%{count}件プロジェクト"
     destroy:
       confirmation: "If you continue, the project %{identifier} will be permanently destroyed. To confirm this action please introduce the project name in the field below, this will:"
       project_delete_result_1: "Delete all related data."
@@ -3177,23 +3357,21 @@ ja:
       project_verification: "削除を確認するため、プロジェクト名 %{name} を入力してください。"
       subprojects_confirmation: "子プロジェクト: %{value} も削除されます。"
       title: "プロジェクト %{name} を削除"
+    filters:
+      project_phase: "Project phase: %{phase}"
+      project_phase_any: "Project phase: Any"
+      project_phase_gate: "Project phase gate: %{gate}"
     identifier:
       warning_one: プロジェクトのメンバーは、プロジェクトのリポジトリを再配置する必要があります。
       warning_two: プロジェクトへの既存のリンクは機能しなくなります。
       title: プロジェクトの識別子を変更
+    not_available: "Project N/A"
     template:
       copying: >
         プロジェクトは選択したテンプレートプロジェクトから作成されています。プロジェクトが利用可能になるとすぐにメールで通知されます。
       use_template: "テンプレートを使用"
       make_template: "テンプレートとして設定"
       remove_from_templates: "テンプレートから削除"
-    archive:
-      are_you_sure: "プロジェクト '%{name}' をアーカイブしてもよろしいですか？"
-      archived: "アーカイブ済み"
-    count:
-      zero: "0 projects"
-      one: "1 project"
-      other: "%{count} projects"
   project_module_activity: "活動"
   project_module_forums: "フォーラム"
   project_module_work_package_tracking: "ワークパッケージ"
@@ -3324,9 +3502,18 @@ ja:
     warnings:
       cannot_annotate: "このファイルに注釈を付けることはできません。"
   scheduling:
-    activated: "有効化"
-    deactivated: "無効化"
+    manual: "set to Manual"
+    automatic: "set to Automatic"
   search_input_placeholder: "検索…"
+  setting_allowed_link_protocols: "Allowed link protocols"
+  setting_allowed_link_protocols_text_html: >-
+    Allow these protocols to be rendered as links in work package descriptions, long text fields and comments. For example, %{tel_code} or %{element_code}. Enter one protocol per line. <br/> Protocols %{http_code}, %{https_code}, and %{mailto_code} are always allowed.
+  setting_after_first_login_redirect_url: "First login redirect"
+  setting_after_first_login_redirect_url_text_html: >
+    Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url: "After login redirect"
+  setting_after_login_default_redirect_url_text_html: >
+    Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
   setting_apiv3_cors_title: "Cross-Origin Resource Sharing (CORS)"
   setting_apiv3_cors_enabled: "CORSを有効にする"
   setting_apiv3_cors_origins: "API V3のオリジン間リソース共有 (CORS) が許可されています"
@@ -3542,7 +3729,7 @@ ja:
     project_attributes:
       heading: "Project attributes"
       label_new_attribute: "Project attribute"
-      label_new_section: "Section"
+      label_new_section: "セクション"
       label_edit_section: "Edit title"
       label_section_actions: "Section actions"
       heading_description: "These project attributes appear in the overview page of each project. You can add new attributes, group them into sections and re-order them as you please. These attributes can be enabled or disabled but not re-ordered at a project level."
@@ -3553,27 +3740,27 @@ ja:
       new:
         heading: "New attribute"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
-    project_life_cycle_step_definitions:
-      heading: "Project lifecycle"
-      heading_description: "The project lifecycle consists of stages and gates that structure your projects. They will appear in the overview page of a project and be available in the projects list. Individual stages and gates can be selected to customize a project but reordering is not possible on a project level."
+    project_phase_definitions:
+      heading: "Project life cycle"
+      heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
       label_add: "Add"
-      label_add_description: "Add lifecycle definition"
-      label_add_stage: "Stage"
-      label_add_gate: "Gate"
+      label_add_description: "Add life cycle definition"
       filter:
-        label: "Search project stage or gate"
-      section_header: "Stages and gates"
-      non_defined: "Neither stages nor gates are currently defined."
+        label: "Search project phase"
+      section_header: "Phases"
+      non_defined: "No phases are currently defined."
+      phase_gates: "Phase gates"
       new:
-        description: "Changes to this project step will be reflected in all projects where it is enabled."
-      new_stage:
-        heading: "New stage"
-      new_gate:
-        heading: "New gate"
-      edit_stage:
-        heading: "Edit stage"
-      edit_gate:
-        heading: "Edit gate"
+        description: "Changes to this project phase will be reflected in all projects where it is enabled."
+        heading: "New Phase"
+      edit:
+        heading: "Edit Phase"
+      both_gate: "Start and finish gate"
+      no_gate: "No gate"
+      start_gate: "Start gate"
+      start_gate_caption: "Add a gate with the start date of the phase"
+      finish_gate: "Finish gate"
+      finish_gate_caption: "Add a gate with the end date of the phase"
     projects:
       missing_dependencies: "Project module %{module} was checked which depends on %{dependencies}. You need to check these dependencies as well."
       section_new_projects: "新規プロジェクトの設定"
@@ -3586,6 +3773,8 @@ ja:
     working_days:
       section_work_week: "Work week"
       section_holidays_and_closures: "Holidays and closures"
+    work_packages:
+      not_allowed_text: "You do not have the necessary permissions to view this page."
   text_formatting:
     markdown: "Markdown"
     plain: "プレーンテキスト"
@@ -3607,7 +3796,7 @@ ja:
   text_are_you_sure_continue: "Are you sure you want to continue?"
   text_are_you_sure_with_children: "仕事項目と子項目を削除してもよろしいですか？"
   text_are_you_sure_with_project_custom_fields: "Deleting this attribute will also delete its values in all projects. Are you sure you want to do this?"
-  text_are_you_sure_with_project_life_cycle_step: "Deleting this step will also delete its usages in all projects. Are you sure you want to do this?"
+  text_are_you_sure_with_project_life_cycle_step: "Deleting this phase will also delete its usages in all projects. Are you sure you want to do this?"
   text_assign_to_project: "プロジェクト自体に割り当てする"
   text_form_configuration: >
     ワークパッケージのフォームに表示されるフィールドをカスタマイズできます。自由にフィールドをグループ化して、あなたのドメインのニーズを反映できます。
@@ -3705,6 +3894,7 @@ ja:
   text_unallowed_characters: "次の文字は使用できません。"
   text_user_invited: ユーザは招待されて、登録は保留中です。
   text_user_wrote: "%{value}が書き込みました："
+  text_wrote: "wrote"
   text_warn_on_leaving_unsaved: "このページから移動すると、保存されてないテキストを含むワークパッケージが失われます。"
   text_what_did_you_change_click_to_add_comment: "何を変更しましたか？コメントを追加するをクリックしてください"
   text_wiki_destroy_confirmation: "本当にこのWikiページとその内容のすべてを削除してもよろしいですか？"
@@ -3863,7 +4053,7 @@ ja:
       view: "表示"
       view_description: "Can view this work package."
     reminders:
-      label_remind_at: "Date"
+      label_remind_at: "日付"
       note_placeholder: "Why are you setting this reminder?"
       success_creation_message: "Reminder set successfully. You will receive a notification for this work package at the chosen time."
       success_update_message: "Reminder updated successfully."
@@ -3954,7 +4144,6 @@ ja:
   nothing_to_preview: "プレビューできるものは何もありません。"
   api_v3:
     attributes:
-      lock_version: "ロックバージョン"
       property: "Property"
     errors:
       code_400: "不正なリクエスト: %{message}"
@@ -4052,9 +4241,9 @@ ja:
   oauth:
     application:
       builtin: Built-in instance application
-      confidential: Confidential
+      confidential: 機密
       singular: "OAuthアプリケーション"
-      scopes: "Scopes"
+      scopes: "範囲"
       client_credentials: "Client credentials"
       plural: "OAuthアプリケーション"
       named: "OAuthアプリケーション '%{name}'"
@@ -4111,6 +4300,7 @@ ja:
       connected: "Connected"
       error: "エラー！"
       failed_authorization: "Authorization failed"
+      not_connected: "Not connected"
     labels:
       label_oauth_integration: "OAuth2 integration"
       label_redirect_uri: "リダイレクトURI"
@@ -4161,3 +4351,29 @@ ja:
   plugin_openproject_auth_saml:
     name: "OmniAuth SAML / シングルサインオン"
     description: "OmniAuthSAMLプロバイダをOpenProjectに追加します"
+  enterprise_plans:
+    legacy_enterprise: "Enterprise Plan"
+  enterprise_features:
+    baseline_comparison: Baseline Comparison
+    board_view: Board View
+    conditional_highlighting: Conditional Highlighting
+    custom_actions: Custom Actions
+    custom_field_hierarchies: Custom Field Hierarchies
+    customize_life_cycle: Customize Life Cycle
+    date_alerts: Date Alerts
+    define_custom_style: Define Custom Style
+    edit_attribute_groups: Edit Attribute Groups
+    gantt_pdf_export: Gantt PDF Export
+    grid_widget_wp_graph: Grid Widget Work Package Graph
+    ldap_groups: LDAP Groups
+    one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
+    placeholder_users: Placeholder Users
+    project_list_sharing: Project List Sharing
+    readonly_work_packages: Readonly Work Packages
+    sso_auth_providers: SSO Auth Providers
+    team_planner_view: Team Planner View
+    two_factor_authentication: Two-Factor Authentication
+    virus_scanning: Attachment Virus Scanning
+    work_package_query_relation_columns: Work Package Query Relation Columns
+    work_package_sharing: Work Package Sharing
+    work_package_subject_generation: Work Package Subject Generation

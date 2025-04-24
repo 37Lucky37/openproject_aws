@@ -4,18 +4,18 @@ bg:
     description: "Добавя OmniAuth OpenID. Свържете доставчици на стратегии към OpenProject."
   logout_warning: >
     Излезли сте от системата. Съдържанието на всеки изпратен от вас формуляр, може да бъде изгубено. Моля, [влезте отново]!
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Име
         slug: Unique identifier
         display_name: Показвано име
-        client_id: Client ID
-        client_secret: Client secret
+        client_id: '№ на клиент'
+        client_secret: Тайна на клиента
         secret: Тайна
         scope: Обхват
         grant_types_supported: Supported grant types
-        limit_self_registration: Limit self registration
+        limit_self_registration: Ограничаване на самостоятелната регистрация
         authorization_endpoint: Authorization endpoint
         userinfo_endpoint: User information endpoint
         token_endpoint: Token endpoint
@@ -25,11 +25,10 @@ bg:
         issuer: Issuer
         tenant: Tenant
         metadata_url: Metadata URL
-        icon: Custom icon
+        icon: Персонализирана икона
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -97,14 +96,14 @@ bg:
       label_add_new: Добавяне на нов OpenID доставчик
       label_edit: Редактиране на OpenID доставчика  %{name}
       label_empty_title: No OpenID providers configured yet.
-      label_empty_description: Add a provider to see them here.
+      label_empty_description: Добавете доставчик, за да ги видите тук.
       label_metadata: OpenID Connect Discovery Endpoint
-      label_automatic_configuration: Automatic configuration
+      label_automatic_configuration: Автоматично конфигуриране
       label_optional_configuration: Optional configuration
       label_advanced_configuration: Advanced configuration
-      label_configuration_details: Metadata
+      label_configuration_details: Метаданни
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Създаване на карта на атрибути
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Все още не са дефинирани доставчици.
       plural: OpenID доставчици

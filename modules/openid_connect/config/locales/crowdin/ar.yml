@@ -4,7 +4,7 @@ ar:
     description: "يضيف مزودي استراتيجية OmniAuth OpenID Connect إلى OpenProject."
   logout_warning: >
     لقد تم تسجيل خروجك. قد يتم فقدان محتويات أي نموذج تقوم بإرساله. يرجى [تسجيل الدخول].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: الاسم
@@ -29,7 +29,6 @@ ar:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -99,7 +98,7 @@ ar:
       label_empty_title: No OpenID providers configured yet.
       label_empty_description: Add a provider to see them here.
       label_metadata: OpenID Connect Discovery Endpoint
-      label_automatic_configuration: Automatic configuration
+      label_automatic_configuration: التكوين التلقائي
       label_optional_configuration: Optional configuration
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata

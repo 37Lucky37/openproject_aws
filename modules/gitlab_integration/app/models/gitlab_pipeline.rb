@@ -33,7 +33,7 @@ class GitlabPipeline < ApplicationRecord
   belongs_to :gitlab_merge_request, touch: true
 
   # TODO: confirm with the gitlab documentation what are the different statuses.
-  enum status: {
+  enum :status, {
     created: "created",
     running: "running",
     success: "success",

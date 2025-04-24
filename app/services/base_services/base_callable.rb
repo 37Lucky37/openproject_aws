@@ -33,11 +33,11 @@ module BaseServices
 
     include ::WithReversibleState
 
-    def call(params = {})
-      self.params = params.to_h.deep_symbolize_keys
+    def call(*args)
+      self.params = extract_options!(args).deep_symbolize_keys
 
       run_callbacks(:call) do
-        perform(**self.params)
+        perform(*args, **params)
       end
     end
 
@@ -47,6 +47,18 @@ module BaseServices
 
     def perform(*)
       raise NotImplementedError
+    end
+
+    private
+
+    def extract_options!(args)
+      if args.last.is_a?(Hash)
+        args.pop
+      elsif args.last.respond_to?(:permitted?) && args.last.respond_to?(:to_h)
+        args.pop.to_h
+      else
+        {}
+      end
     end
   end
 end

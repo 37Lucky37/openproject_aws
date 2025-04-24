@@ -30,6 +30,7 @@ it:
         overridden_costs: "Costi eccedenti"
         spent: "Trascorso"
         spent_on: "Data"
+        logged_by: "Registrato da"
       cost_type:
         unit: "Nome dell'unità"
         unit_plural: "Nome unità pluralizzato"
@@ -56,14 +57,24 @@ it:
         start_time: Ora di inizio
         end_time: Ora di fine
     models:
+      time_entry:
+        one: "Voce tempo"
+        other: "Voci tempi"
+      cost_entry:
+        one: "Voce costi"
+        other: "Voci costi"
       cost_type:
         one: "Tipo di costo"
         other: "Tipo di costo"
+      time_entry_activity:
+        one: "Attività di monitoraggio dei tempi"
+        other: "Attività di monitoraggio dei tempi"
       rate: "Tariffa"
     errors:
       models:
         time_entry:
           invalid_time: "deve essere compresa tra le 00:00 e le 23:59."
+          cannot_log_for_this_work_package: "Impossibile registrare il tempo per questa macro-attività."
         work_package:
           is_not_a_valid_target_for_cost_entries: "La macro-attività (work package) #%{id} non è una destinazione valida per riassegnare le entrate del costo."
           nullify_is_not_valid_for_cost_entries: "Voci di costo non possono essere assegnate a un progetto."
@@ -79,6 +90,7 @@ it:
   button_add_rate: "Aggiungi tariffa"
   button_log_costs: "Registra unità di costo"
   button_log_time: "Registra"
+  button_add_activity: "Attività"
   caption_booked_on_project: "Prenotato su progetto"
   caption_default: "Predefinito"
   caption_default_rate_history_for: "Cronologia tariffe predefinite per %{user}"
@@ -92,6 +104,8 @@ it:
   caption_show_locked: "Mostra tipi bloccati"
   caption_log_time_dialog: "Registra tempo"
   description_date_for_new_rate: "Data per la nuova tariffa"
+  description_costs_settings: "Specifica il formato desiderato per i costi in tutti i progetti."
+  description_time_settings: "Specifica quali campi sono obbligatori da riempire quando si registra il tempo in tutti i progetti."
   group_by_others: "non in qualsiasi gruppo"
   label_between: "tra"
   label_cost_filter_add: "Aggiungi filtro sulla voce di costo"
@@ -118,6 +132,8 @@ it:
   label_kind: "Tipo"
   label_less_or_equal: "<="
   label_log_costs: "Registra unità di costo"
+  label_new_time_entry_activity: "Nuova attività di inserimento nel tempo"
+  label_time_entry_activity_form_description: "Le modifiche a questa attività di registrazione temporale si rifletteranno in tutti i progetti in cui è abilitata."
   label_no: "No"
   label_option_plural: "Opzioni"
   label_overall_costs: "Costi complessivi"
@@ -130,6 +146,10 @@ it:
   label_until: "finché"
   label_valid_from: "Valido dal"
   label_yes: "Si"
+  label_time: "Ora"
+  label_cost: "Costo"
+  label_costs: "Costi"
+  label_mandatory_fields: "Campi obbligatori"
   placeholder_activity_select_work_package_first: Prima è necessario selezionare la macro-attività
   notice_something_wrong: "Qualcosa è andato storto. Si prega di riprovare."
   notice_successful_restore: "Ripristino eseguito con successo."
@@ -161,8 +181,6 @@ it:
   text_reassign_time_and_cost_entries: "Riassegna orari e costi segnalati a questa macro-attività (work package):"
   text_warning_hidden_elements: "Alcune voci potrebbero essere state escluse dall'aggregazione."
   week: "settimana"
-  js:
-    text_are_you_sure: "Sei sicuro/a?"
   api_v3:
     errors:
       validation:

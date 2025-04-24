@@ -1047,28 +1047,178 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
     end
   end
 
+  describe "automatic scheduling mode switching" do
+    let(:state) { {} }
+
+    subject(:call_result) do
+      described_class.new(user:, work_package: initiator_work_package)
+                      .with_state(state)
+                      .call(%i(parent))
+    end
+
+    context "when a manually scheduled work package becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        subject       | scheduling mode
+        future parent | manual
+        future child  | manual
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "switches the new parent to automatic scheduling mode" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(false)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package becomes parent for the second time" do
+      let_work_packages(<<~TABLE)
+        hierarchy        | scheduling mode
+        parent           | manual
+          existing child | manual
+        future child     | manual
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent:)
+      end
+
+      it "keeps the parent in manual scheduling mode" do
+        expect(call_result).to be_success
+        expect(parent.reload.schedule_manually).to be(true)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package with a direct predecessor " \
+            "becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        subject       | scheduling mode | predecessors
+        predecessor   | manual          |
+        future parent | manual          | predecessor
+        future child  | manual          |
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "keeps the parent in manual scheduling mode" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(true)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package with an indirect predecessor " \
+            "becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        hierarchy               | scheduling mode | predecessors
+        grandparent predecessor | manual          |
+        grandparent             | automatic       | grandparent predecessor
+          future parent         | manual          |
+        future child            | manual          |
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "keeps the parent in manual scheduling mode" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(true)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package with a manually scheduled parent with a predecessor " \
+            "becomes parent for the first time" do
+      let_work_packages(<<~TABLE)
+        hierarchy               | scheduling mode | predecessors
+        grandparent predecessor | manual          |
+        grandparent             | manual          | grandparent predecessor
+          future parent         | manual          |
+        future child            | manual          |
+      TABLE
+      let(:initiator_work_package) { future_child }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "switches the new parent to automatic scheduling mode (because no predecessors)" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(false)
+
+        # The child is still manually scheduled
+        expect(future_child.reload.schedule_manually).to be(true)
+      end
+    end
+
+    context "when a manually scheduled work package becomes parent for the first time, " \
+            "but it's part of a bulk copy in progress" do
+      let_work_packages(<<~TABLE)
+        subject       | scheduling mode
+        future parent | manual
+        future child  | manual
+      TABLE
+      let(:initiator_work_package) { future_child }
+      let(:state) { { bulk_copy_in_progress: true } }
+
+      before do
+        future_child.update!(parent: future_parent)
+      end
+
+      it "keeps the scheduling mode (or it would not be an exact copy anymore)" do
+        expect(call_result).to be_success
+        expect(future_parent.reload.schedule_manually).to be(true)
+      end
+    end
+  end
+
   describe "ignore_non_working_days propagation" do
     shared_let(:grandgrandparent) do
       create(:work_package,
-             subject: "grandgrandparent")
+             subject: "grandgrandparent",
+             schedule_manually: false)
     end
     shared_let(:grandparent) do
       create(:work_package,
              subject: "grandparent",
-             parent: grandgrandparent)
+             parent: grandgrandparent,
+             schedule_manually: false)
     end
     shared_let(:parent) do
       create(:work_package,
              subject: "parent",
-             parent: grandparent)
+             parent: grandparent,
+             schedule_manually: false)
     end
     shared_let(:sibling) do
       create(:work_package,
              subject: "sibling",
+             schedule_manually: true,
              parent:)
     end
     shared_let(:work_package) do
-      create(:work_package)
+      create(:work_package,
+             subject: "main",
+             schedule_manually: true)
     end
 
     subject do
@@ -1080,8 +1230,6 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
              work_package:)
         .call(%i(parent))
     end
-
-    let(:new_parent) { parent }
 
     context "for the previous ancestors (parent removed)" do
       let(:new_parent) { nil }
@@ -1127,13 +1275,16 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
       end
     end
 
-    context "for the new ancestors where the grandparent is on manual scheduling" do
+    context "for the new ancestors where the initiator is ignoring non-working days " \
+            "and the grandparent is on manual scheduling" do
+      let(:new_parent) { parent }
+
       before do
-        [grandgrandparent, work_package].each do |wp|
+        [work_package].each do |wp|
           wp.update_column(:ignore_non_working_days, true)
         end
 
-        [grandparent, parent, sibling].each do |wp|
+        [grandgrandparent, grandparent, parent, sibling].each do |wp|
           wp.update_column(:ignore_non_working_days, false)
         end
 
@@ -1147,12 +1298,13 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
           .to be_success
       end
 
-      it "returns the former ancestors in the dependent results" do
+      it "returns the updated new ancestors in the dependent results where only the parent is updated" do
         expect(subject.dependent_results.map(&:result))
           .to contain_exactly(parent)
       end
 
-      it "sets the ignore_non_working_days property of the new ancestors" do
+      it "updates the parent's ignore_non_working_days attribute to true " \
+         "and does not propagate to the grandparent because it is manually scheduled" do
         subject
 
         expect(parent.reload.ignore_non_working_days)
@@ -1162,7 +1314,7 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
           .to be_falsey
 
         expect(grandgrandparent.reload.ignore_non_working_days)
-          .to be_truthy
+          .to be_falsey
 
         expect(sibling.reload.ignore_non_working_days)
           .to be_falsey
@@ -1170,6 +1322,8 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
     end
 
     context "for the new ancestors where the parent is on manual scheduling" do
+      let(:new_parent) { parent }
+
       before do
         [grandgrandparent, grandparent, work_package].each do |wp|
           wp.update_column(:ignore_non_working_days, true)
@@ -1189,22 +1343,23 @@ RSpec.describe WorkPackages::UpdateAncestorsService,
           .to be_success
       end
 
-      it "returns the former ancestors in the dependent results" do
+      it "returns the updated new ancestors in the dependent results" do
         expect(subject.dependent_results.map(&:result))
-          .to be_empty
+          .to contain_exactly(grandparent, grandgrandparent)
       end
 
-      it "sets the ignore_non_working_days property of the new ancestors" do
+      it "sets the ignore_non_working_days property of the grand parent and grand grand parent to " \
+         "match the parent's value because it's manually scheduled and that's where inheritance chain starts" do
         subject
 
         expect(parent.reload.ignore_non_working_days)
           .to be_falsey
 
         expect(grandparent.reload.ignore_non_working_days)
-          .to be_truthy
+          .to be_falsey
 
         expect(grandgrandparent.reload.ignore_non_working_days)
-          .to be_truthy
+          .to be_falsey
 
         expect(sibling.reload.ignore_non_working_days)
           .to be_falsey

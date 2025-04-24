@@ -21,9 +21,7 @@ class WorkPackageRelationsTab::IndexComponent < ApplicationComponent
   delegate :work_package,
            :visible_children,
            :ghost_children,
-           :directionally_aware_grouped_relations,
-           :any_relations?,
-           :any_children?,
+           :relation_groups,
            to: :relations_mediator
 
   # Initialize the component with required data
@@ -57,34 +55,34 @@ class WorkPackageRelationsTab::IndexComponent < ApplicationComponent
     should_render_add_child? || should_render_add_relations?
   end
 
-  def render_relation_group(title:, relation_type:, items:, &_block)
+  def render_relation_group(title:, relation_group:, &)
     render(border_box_container(
              padding: :condensed,
-             data: { test_selector: "op-relation-group-#{relation_type}" }
+             data: { test_selector: "op-relation-group-#{relation_group.type}" }
            )) do |border_box|
-      if relation_type == :children && should_render_add_child?
-        render_children_header(border_box, title, items)
+      if relation_group.type.child? && should_render_add_child?
+        render_children_header(border_box, title, relation_group.count)
       else
-        render_header(border_box, title, items)
+        render_header(border_box, title, relation_group.count)
       end
 
-      render_items(border_box, items, &_block)
+      render_items(border_box, relation_group.all_relation_items, &)
     end
   end
 
-  def render_header(border_box, title, items)
+  def render_header(border_box, title, count)
     border_box.with_header(py: 3) do
       concat render(Primer::Beta::Text.new(mr: 2, font_size: :normal, font_weight: :bold)) { title }
-      concat render(Primer::Beta::Counter.new(count: items.size, round: true, scheme: :primary))
+      concat render(Primer::Beta::Counter.new(count:, round: true, scheme: :primary))
     end
   end
 
-  def render_children_header(border_box, title, items) # rubocop:disable Metrics/AbcSize
+  def render_children_header(border_box, title, count) # rubocop:disable Metrics/AbcSize
     border_box.with_header(py: 3) do
       flex_layout(justify_content: :space_between, align_items: :center) do |header|
         header.with_column(mr: 2) do
           concat render(Primer::Beta::Text.new(mr: 2, font_size: :normal, font_weight: :bold)) { title }
-          concat render(Primer::Beta::Counter.new(count: items.size, round: true, scheme: :primary))
+          concat render(Primer::Beta::Counter.new(count:, round: true, scheme: :primary))
         end
         header.with_column do
           render(Primer::Alpha::ActionMenu.new(menu_id: NEW_CHILD_ACTION_MENU)) do |menu|
@@ -117,7 +115,7 @@ class WorkPackageRelationsTab::IndexComponent < ApplicationComponent
     end
 
     menu.with_item(
-      label: t("work_package_relations_tab.relations.existing_child"),
+      label: t("work_package_relations_tab.relations.child"),
       href: new_work_package_children_relation_path(work_package),
       content_arguments: {
         data: { turbo_stream: true }
@@ -127,13 +125,15 @@ class WorkPackageRelationsTab::IndexComponent < ApplicationComponent
     end
   end
 
-  def render_items(border_box, items)
-    items.each do |relation, visibility|
+  def render_items(border_box, relation_items)
+    relation_items.each do |relation_item|
+      relation = relation_item.relation || relation_item.related
+      visibility = relation_item.visibility
       border_box.with_row(
         test_selector: row_test_selector(relation, visibility),
         data: data_attribute(relation)
       ) do
-        yield(relation, visibility)
+        yield(relation_item)
       end
     end
   end

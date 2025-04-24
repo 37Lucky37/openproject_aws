@@ -172,28 +172,14 @@ Reporting.Filters = function($){
   };
 
   var operator_changed = function (field, select) {
-    var option_tag, arity, first;
+    var option_tag, arity, forcedType;
     if (select === null) {
       return;
     }
-    first = false;
-    if (!select.attr("data-first")) {
-      first = true;
-      $(select).attr("data-first", "false");
-    }
     option_tag = select.find('option[value="' + select.val() + '"]');
     arity = parseInt(option_tag.attr("data-arity"));
-    change_argument_visibility(field, arity);
-    if (option_tag.attr("data-forced")) {
-      force_type(option_tag, first);
-    }
-  };
-
-  // Overwrite to customize input enforcements.
-  // option: 'option' HTMLElement
-  // first: Boolean indicating whether the operator changed for the first time
-  var force_type = function (option, first) {
-    return true;
+    forcedType = option_tag.attr("data-forced");
+    change_argument_visibility(field, arity, forcedType);
   };
 
   var value_changed = function (field) {
@@ -210,20 +196,37 @@ Reporting.Filters = function($){
     }
   };
 
-  var change_argument_visibility = function (field, arg_nr) {
-    var params, i;
-    params = [$('#' + field + '_arg_1'), $('#' + field + '_arg_2')];
+  // 'integers' currently seems to be the only forced typed.
+  // See lib/report/operator.rb
+  var knownForcedTypes = ['integers'];
 
-    for (i = 0; i < 2; i += 1) {
-      if (params[i] !== null) {
-        if (arg_nr >= (i + 1) || arg_nr <= (-1 - i)) {
-          params[i].show();
-          params[i].children().show();
-        } else {
-          params[i].hide();
-          params[i].children().hide();
-        }
-      }
+  // Hides/Displays the various inputs for the filter arguments.
+  // Those fields are already completely rendered and are then displayed/hidden
+  // depending on the arity of the operator.
+  // argNr (the arity) apparently can be 0, 1, 2 and -1. -1 seems to be used for an arity of 1.
+  var change_argument_visibility = function (fieldName, argNr, forcedType) {
+    const fields = [
+      ['#' + fieldName + '_arg_1', [1, 2, -1].includes(argNr)],
+      ['#' + fieldName + '_arg_2', argNr === 2]
+    ];
+
+    for (const [fieldSelector, active] of fields) {
+      set_active_state(fieldSelector, active && !forcedType);
+      knownForcedTypes.forEach(function (knownForcedType) {
+        set_active_state(fieldSelector + '_' + knownForcedType, active && forcedType === knownForcedType);
+      });
+    }
+  };
+
+  var set_active_state = function(selector, active) {
+    const input = document.querySelector(selector);
+
+    if (!input) { return; }
+
+    input.hidden = !active;
+    for (const child of input.children) {
+      child.hidden = !active;
+      child.disabled = !active;
     }
   };
 

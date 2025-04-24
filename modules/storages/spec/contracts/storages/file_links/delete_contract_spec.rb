@@ -36,8 +36,9 @@ RSpec.describe Storages::FileLinks::DeleteContract do
   let(:current_user) { create(:user) }
   let(:role) { create(:project_role, permissions: [:manage_file_links]) }
   let(:project) { create(:project, members: { current_user => role }) }
-  let(:work_package) { create(:work_package, project:) }
-  let(:file_link) { create(:file_link, container: work_package) }
+  let(:container) { create(:work_package, project:) }
+  let(:creator) { create(:user) }
+  let(:file_link) { create(:file_link, container:, creator:) }
   let(:contract) { described_class.new(file_link, current_user) }
 
   before do
@@ -48,15 +49,33 @@ RSpec.describe Storages::FileLinks::DeleteContract do
   # This tests works with manage_files_in_project permissions for current_user.
   it_behaves_like "contract is valid"
 
+  # Generic checks that the contract is valid for valid admin, but invalid otherwise
+  it_behaves_like "contract is valid for active admins and invalid for regular users"
+
+  include_examples "contract reuses the model errors"
+
   # Now we remove the permissions from the user by creating a role without special perms.
   context "without manage_files_in_project permission for project" do
     let(:role) { create(:project_role) }
 
     it_behaves_like "contract is invalid"
+
+    context "and when the current user initially created the file link" do
+      let(:creator) { current_user }
+
+      it_behaves_like "contract is invalid"
+    end
   end
 
-  # Generic checks that the contract is valid for valid admin, but invalid otherwise
-  it_behaves_like "contract is valid for active admins and invalid for regular users"
+  context "when there is no associated container" do
+    let(:container) { nil }
 
-  include_examples "contract reuses the model errors"
+    it_behaves_like "contract is invalid"
+
+    context "and when the current user initially created the file link" do
+      let(:creator) { current_user }
+
+      it_behaves_like "contract is valid"
+    end
+  end
 end

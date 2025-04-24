@@ -32,6 +32,39 @@ require "spec_helper"
 require_module_spec_helper
 
 RSpec.describe Storages::Storage do
+  describe "#oauth_access_granted?" do
+    let(:storage) { build(:storage, oauth_client:) }
+    let(:oauth_client) { create(:oauth_client) }
+    let(:user) { create(:user) }
+    let(:selector_class) { Storages::Peripherals::StorageInteraction::AuthenticationMethodSelector }
+    let(:mocked_instance) { instance_double(selector_class, authentication_method:) }
+
+    before do
+      allow(selector_class).to receive(:new).and_return(mocked_instance)
+    end
+
+    context "when user is authenticated through storage oauth" do
+      let(:authentication_method) { :storage_oauth }
+
+      it "responds with true if oauth_client_token exists" do
+        create(:oauth_client_token, user: user, oauth_client:)
+        expect(storage.oauth_access_granted?(user)).to be true
+      end
+
+      it "responds with false if oauth_client_token does not exist" do
+        expect(storage.oauth_access_granted?(user)).to be false
+      end
+    end
+
+    context "when user is authenticated through sso" do
+      let(:authentication_method) { :sso }
+
+      it "responds with true" do
+        expect(storage.oauth_access_granted?(user)).to be true
+      end
+    end
+  end
+
   describe "#health_notifications_should_be_sent?" do
     let(:storage) { build(:storage, provider_fields: {}) }
 

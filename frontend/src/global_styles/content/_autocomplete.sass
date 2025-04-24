@@ -26,7 +26,7 @@
 // See COPYRIGHT and LICENSE files for more details.
 //++
 
-/***** Auto-complete ****
+/***** Auto-complete ****/
 
 div.autocomplete
   position: absolute
@@ -104,6 +104,7 @@ div.autocomplete
 
 // Override some basic styles to ensure that ngSelect matches the current theme
 .ng-select-container,
+.ng-optgroup:not(.ng-option-marked, .ng-option-disabled),
 .ng-option:not(.ng-option-marked, .ng-option-disabled),
 .ng-dropdown-panel,
 .ng-dropdown-panel-items,
@@ -147,7 +148,7 @@ div.autocomplete
 .ng-option-label
   vertical-align: top
 
-.ng-option
+.ng-option, .ng-optgroup
   line-height: 22px
   font-size: var(--body-font-size)
 

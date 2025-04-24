@@ -26,35 +26,22 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-life_cycles:
-  - reference: :default_life_cycle_initiating
+project_phases:
+  - reference: :default_project_phase_initiating
     t_name: Initiating
-    type: Project::StageDefinition
     color_name: :default_color_pm2_orange
-  - reference: :default_life_cycle_ready_for_planning
-    t_name: Ready for Planning
-    type: Project::GateDefinition
-    color_name: :default_color_pm2_purple
-  - reference: :default_life_cycle_planning
+  - reference: :default_project_phase_planning
     t_name: Planning
-    type: Project::StageDefinition
     color_name: :default_color_pm2_red
-  - reference: :default_life_cycle_ready_for_executing
-    t_name: Ready for Executing
-    type: Project::GateDefinition
-    color_name: :default_color_pm2_purple
-  - reference: :default_life_cycle_executing
+    t_start_gate: Ready for Planning
+  - reference: :default_project_phase_executing
     t_name: Executing
-    type: Project::StageDefinition
     color_name: :default_color_pm2_magenta
-  - reference: :default_life_cycle_ready_for_closing
-    t_name: Ready for Closing
-    type: Project::GateDefinition
-    color_name: :default_color_pm2_purple
-  - reference: :default_life_cycle_closing
+    t_start_gate: Ready for Executing
+  - reference: :default_project_phase_closing
     t_name: Closing
-    type: Project::StageDefinition
     color_name: :default_color_pm2_green_yellow
+    t_start_gate: Ready for Closing
 
 priorities:
   - reference: :default_priority_low
@@ -104,7 +91,7 @@ projects:
     types:
       - :default_type_task
       - :default_type_milestone
-      - :default_type_phase
+      - :default_type_summary_task
     t_categories:
       - Category 1 (to be changed in Project settings)
     queries:
@@ -243,7 +230,7 @@ projects:
           options:
             t_name: 'Milestones'
             queryId: '##query.id:demo_project__query__milestones'
-    # For all dates, the reference is the monday of the current week
+    # For all dates, the reference is the Monday of the current week
     # So
     # * start: 0 references Monday
     # * start: 4 references Friday
@@ -255,13 +242,15 @@ projects:
         status: :default_status_closed
         type: :default_type_milestone
         duration: 1
-        schedule_manually: false
+        schedule_manually: true
       - start: 0
         t_subject: Organize open source conference
         reference: :organize_open_source_conference
         description: ''
         status: :default_status_in_progress
-        type: :default_type_phase
+        type: :default_type_summary_task
+        duration: 15
+        schedule_manually: false
         children:
           - start: 0
             t_subject: Set date and location of conference
@@ -269,6 +258,8 @@ projects:
             description: ''
             status: :default_status_in_progress
             type: :default_type_task
+            duration: 4
+            schedule_manually: false
             children:
               - start: 0
                 t_subject: Send invitation to speakers
@@ -288,8 +279,6 @@ projects:
                 status: :default_status_new
                 type: :default_type_task
                 duration: 4
-            duration: 4
-            schedule_manually: false
           - start: 4
             t_subject: Invite attendees to conference
             reference: :invite_attendees_to_conference
@@ -297,10 +286,10 @@ projects:
             status: :default_status_new
             type: :default_type_task
             duration: 1
+            schedule_manually: false
             relations:
               - to: :set_date_and_location_of_conference
                 type: follows
-            schedule_manually: false
           - start: 4
             t_subject: Setup conference website
             reference: :setup_conference_website
@@ -308,12 +297,10 @@ projects:
             status: :default_status_new
             type: :default_type_task
             duration: 11
+            schedule_manually: false
             relations:
               - to: :set_date_and_location_of_conference
                 type: follows
-            schedule_manually: false
-        duration: 15
-        schedule_manually: true
       - start: 15
         t_subject: Conference
         description: ''
@@ -329,7 +316,9 @@ projects:
         reference: :follow_up_tasks
         description: ''
         status: :default_status_to_be_scheduled
-        type: :default_type_phase
+        type: :default_type_summary_task
+        duration: 11
+        schedule_manually: false
         children:
           - start: 21
             t_subject: Upload presentations to website
@@ -338,7 +327,6 @@ projects:
             status: :default_status_new
             type: :default_type_task
             duration: 10
-            schedule_manually: false
           - start: 31
             t_subject: Party for conference supporters :-)
             t_description: |-
@@ -349,19 +337,16 @@ projects:
             status: :default_status_new
             type: :default_type_task
             duration: 1
-            schedule_manually: false
-        duration: 11
-        schedule_manually: false
       - start: 32
         t_subject: End of project
         description:
         status: :default_status_new
         type: :default_type_milestone
         duration: 1
+        schedule_manually: false
         relations:
           - to: :follow_up_tasks
             type: follows
-        schedule_manually: false
     t_wiki: |
       _In this wiki you can collaboratively create and edit pages and sub-pages to create a project wiki._
 
@@ -466,7 +451,7 @@ projects:
     types:
       - :default_type_task
       - :default_type_milestone
-      - :default_type_phase
+      - :default_type_summary_task
       - :default_type_epic
       - :default_type_user_story
       - :default_type_bug
@@ -480,7 +465,7 @@ projects:
         sort_by: id
         type:
           - :default_type_milestone
-          - :default_type_phase
+          - :default_type_summary_task
         timeline: true
       - t_name: Product backlog
         status: open
@@ -619,6 +604,7 @@ projects:
         type: :default_type_epic
         start: 0
         duration: 29
+        schedule_manually: false
         children:
           - t_subject: Newsletter registration form
             status: :default_status_in_progress
@@ -638,6 +624,7 @@ projects:
             story_points: 3
             start: 28
             duration: 1
+            schedule_manually: false
             children:
               - t_subject: Create wireframes for new landing page
                 status: :default_status_in_progress
@@ -659,6 +646,7 @@ projects:
         version: :scrum_project__version__sprint_1
         position: 3
         story_points: 5
+        schedule_manually: false
         children:
           - t_subject: Make screenshots for feature tour
             status: :default_status_closed
@@ -705,6 +693,7 @@ projects:
         story_points: 3
         start: 25
         duration: 1
+        schedule_manually: false
         children:
           - t_subject: Set up navigation concept for website.
             status: :default_status_in_specification
@@ -722,42 +711,45 @@ projects:
       - t_subject: Develop v1.0
         reference: :develop_v1_0
         status: :default_status_in_progress
-        type: :default_type_phase
+        type: :default_type_summary_task
         start: 14
-        duration: 3
+        duration: 4
       - t_subject: Release v1.0
         status: :default_status_new
         type: :default_type_milestone
         start: 18
         duration: 1
+        schedule_manually: false
         relations:
           - to: :develop_v1_0
             type: follows
       - t_subject: Develop v1.1
         reference: :develop_v1_1
         status: :default_status_new
-        type: :default_type_phase
+        type: :default_type_summary_task
         start: 21
-        duration: 3
+        duration: 4
       - t_subject: Release v1.1
         status: :default_status_new
         type: :default_type_milestone
         start: 25
         duration: 1
+        schedule_manually: false
         relations:
           - to: :develop_v1_1
             type: follows
       - t_subject: Develop v2.0
         reference: :develop_v2_0
         status: :default_status_new
-        type: :default_type_phase
+        type: :default_type_summary_task
         start: 28
-        duration: 3
+        duration: 4
       - t_subject: Release v2.0
         status: :default_status_new
         type: :default_type_milestone
         start: 32
         duration: 1
+        schedule_manually: false
         relations:
           - to: :develop_v2_0
             type: follows
@@ -911,8 +903,8 @@ types:
     color_name: :default_color_green_light
     is_milestone: true
     position: 2
-  - reference: :default_type_phase
-    t_name: Phase
+  - reference: :default_type_summary_task
+    t_name: Summary task
     is_default: true
     color_name: 'orange-5'
     position: 3
@@ -940,80 +932,80 @@ types:
 workflows:
   - type: :default_type_task
     statuses:
-    - :default_status_new
-    - :default_status_in_progress
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
+      - :default_status_new
+      - :default_status_in_progress
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
   - type: :default_type_milestone
     statuses:
-    - :default_status_new
-    - :default_status_to_be_scheduled
-    - :default_status_scheduled
-    - :default_status_in_progress
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
-  - type: :default_type_phase
+      - :default_status_new
+      - :default_status_to_be_scheduled
+      - :default_status_scheduled
+      - :default_status_in_progress
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
+  - type: :default_type_summary_task
     statuses:
-    - :default_status_new
-    - :default_status_to_be_scheduled
-    - :default_status_scheduled
-    - :default_status_in_progress
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
+      - :default_status_new
+      - :default_status_to_be_scheduled
+      - :default_status_scheduled
+      - :default_status_in_progress
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
   - type: :default_type_feature
     statuses:
-    - :default_status_new
-    - :default_status_in_specification
-    - :default_status_specified
-    - :default_status_in_progress
-    - :default_status_developed
-    - :default_status_in_testing
-    - :default_status_tested
-    - :default_status_test_failed
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
+      - :default_status_new
+      - :default_status_in_specification
+      - :default_status_specified
+      - :default_status_in_progress
+      - :default_status_developed
+      - :default_status_in_testing
+      - :default_status_tested
+      - :default_status_test_failed
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
   - type: :default_type_epic
     statuses:
-    - :default_status_new
-    - :default_status_in_specification
-    - :default_status_specified
-    - :default_status_in_progress
-    - :default_status_developed
-    - :default_status_in_testing
-    - :default_status_tested
-    - :default_status_test_failed
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
+      - :default_status_new
+      - :default_status_in_specification
+      - :default_status_specified
+      - :default_status_in_progress
+      - :default_status_developed
+      - :default_status_in_testing
+      - :default_status_tested
+      - :default_status_test_failed
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
   - type: :default_type_user_story
     statuses:
-    - :default_status_new
-    - :default_status_in_specification
-    - :default_status_specified
-    - :default_status_in_progress
-    - :default_status_developed
-    - :default_status_in_testing
-    - :default_status_tested
-    - :default_status_test_failed
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
+      - :default_status_new
+      - :default_status_in_specification
+      - :default_status_specified
+      - :default_status_in_progress
+      - :default_status_developed
+      - :default_status_in_testing
+      - :default_status_tested
+      - :default_status_test_failed
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
   - type: :default_type_bug
     statuses:
-    - :default_status_new
-    - :default_status_confirmed
-    - :default_status_in_progress
-    - :default_status_developed
-    - :default_status_in_testing
-    - :default_status_tested
-    - :default_status_test_failed
-    - :default_status_on_hold
-    - :default_status_rejected
-    - :default_status_closed
+      - :default_status_new
+      - :default_status_confirmed
+      - :default_status_in_progress
+      - :default_status_developed
+      - :default_status_in_testing
+      - :default_status_tested
+      - :default_status_test_failed
+      - :default_status_on_hold
+      - :default_status_rejected
+      - :default_status_closed
 
 welcome:
   t_title: "Welcome to OpenProject!"

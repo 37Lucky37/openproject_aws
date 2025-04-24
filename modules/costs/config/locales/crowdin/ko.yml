@@ -30,6 +30,7 @@ ko:
         overridden_costs: "재정의된 비용"
         spent: "소비"
         spent_on: "날짜"
+        logged_by: "기록자"
       cost_type:
         unit: "단위 이름"
         unit_plural: "복수형 단위 이름"
@@ -56,13 +57,20 @@ ko:
         start_time: 시작 시간
         end_time: 완료 시간
     models:
+      time_entry:
+        other: "시간 항목"
+      cost_entry:
+        other: "비용 항목"
       cost_type:
         other: "비용 유형"
+      time_entry_activity:
+        other: "시간 추적 활동"
       rate: "요금"
     errors:
       models:
         time_entry:
           invalid_time: "- 00:00에서 23:59 사이여야 합니다."
+          cannot_log_for_this_work_package: "이 작업 패키지에 대한 시간을 기록할 수 없습니다."
         work_package:
           is_not_a_valid_target_for_cost_entries: "작업 패키지 #%{id}은(는) 비용 항목 재할당에 올바른 대상이 아닙니다."
           nullify_is_not_valid_for_cost_entries: "비용 항목은 프로젝트에 할당할 수 없습니다."
@@ -78,6 +86,7 @@ ko:
   button_add_rate: "요금 추가"
   button_log_costs: "단위 비용 기록"
   button_log_time: "기록"
+  button_add_activity: "활동"
   caption_booked_on_project: "프로젝트에서 예약됨"
   caption_default: "기본값"
   caption_default_rate_history_for: "%{user}에 대한 기본 요금 기록"
@@ -91,6 +100,8 @@ ko:
   caption_show_locked: "잠긴 유형 표시"
   caption_log_time_dialog: "시간 기록"
   description_date_for_new_rate: "새로운 요금의 날짜"
+  description_costs_settings: "모든 프로젝트의 비용에 대한 원하는 형식을 정의합니다."
+  description_time_settings: "모든 프로젝트에서 시간을 기록할 때 반드시 입력해야 하는 필드를 정의합니다."
   group_by_others: "어떤 그룹에도 없음"
   label_between: "사이에"
   label_cost_filter_add: "비용 항목 필터 추가"
@@ -117,6 +128,8 @@ ko:
   label_kind: "유형"
   label_less_or_equal: "<="
   label_log_costs: "단위 비용 기록"
+  label_new_time_entry_activity: "새로운 시간 입력 활동"
+  label_time_entry_activity_form_description: "이 시간 입력 활동의 변경 사항은 이 활동이 활성화된 모든 프로젝트에서 반영됩니다."
   label_no: "아니요"
   label_option_plural: "옵션"
   label_overall_costs: "전체 비용"
@@ -129,6 +142,10 @@ ko:
   label_until: "다음까지:"
   label_valid_from: "다음부터 유효함"
   label_yes: "예"
+  label_time: "시간"
+  label_cost: "비용"
+  label_costs: "비용"
+  label_mandatory_fields: "필수 필드"
   placeholder_activity_select_work_package_first: 먼저 작업 패키지 선택이 필요합니다
   notice_something_wrong: "문제가 발생했습니다. 다시 시도해 주세요."
   notice_successful_restore: "성공적으로 복원되었습니다."
@@ -160,8 +177,6 @@ ko:
   text_reassign_time_and_cost_entries: "보고된 시간 및 비용을 이 작업 패키지에 다시 할당:"
   text_warning_hidden_elements: "일부 항목이 집계에서 제외되었을 수 있습니다."
   week: "주"
-  js:
-    text_are_you_sure: "계속하시겠습니까?"
   api_v3:
     errors:
       validation:

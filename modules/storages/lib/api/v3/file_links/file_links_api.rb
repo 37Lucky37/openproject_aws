@@ -48,9 +48,11 @@ class API::V3::FileLinks::FileLinksAPI < API::OpenProjectAPI
       after_validation do
         @file_link = Storages::FileLink.find(params[:file_link_id])
 
-        unless @file_link.container.present? &&
-               current_user.allowed_in_project?(:view_file_links, @file_link.project) &&
-               @file_link.project.storage_ids.include?(@file_link.storage_id)
+        if @file_link.container.blank?
+          # New file links (no associated container yet) can be accessed by their creator, but no one else
+          raise ::API::Errors::NotFound.new if current_user != @file_link.creator
+        elsif !current_user.allowed_in_project?(:view_file_links, @file_link.project) ||
+              @file_link.project.storage_ids.exclude?(@file_link.storage_id)
           raise ::API::Errors::NotFound.new
         end
       end

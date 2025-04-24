@@ -41,13 +41,13 @@ import {
   switchMap,
 } from 'rxjs/operators';
 
-import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
 import { IStorage } from 'core-app/core/state/storages/storage.model';
-import { OpModalService } from 'core-app/shared/components/modal/modal.service';
-import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
+import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.model';
+import { OpenProjectPluginContext } from 'core-app/features/plugins/plugin-context';
 import {
   LocationPickerModalComponent,
 } from 'core-app/shared/components/storages/location-picker-modal/location-picker-modal.component';
+import { PortalOutletTarget } from 'core-app/shared/components/modal/portal-outlet-target.enum';
 import { storageConnected } from 'core-app/shared/components/storages/storages-constants.const';
 
 export default class ProjectStorageFormController extends Controller {
@@ -98,22 +98,27 @@ export default class ProjectStorageFormController extends Controller {
   selectProjectFolder(_evt:Event):void {
     const locals = {
       projectFolderHref: this.projectFolderHref,
+      createFolderHref: `${this.storage._links.self.href}/folders`,
       storage: this.storage,
     };
 
-    this.modalService
-      .pipe(
-        switchMap((service) => service.show(LocationPickerModalComponent, 'global', locals, false, false, this.OutletTarget)),
-        switchMap((modal) => modal.closingEvent),
-        filter((modal) => modal.submitted),
-      )
-      .subscribe((modal) => {
-        if (this.hasProjectFolderIdValidationTarget) {
-          this.projectFolderIdValidationTarget.style.display = 'none';
-        }
-        this.selectedFolderTextTarget.innerText = modal.location.name;
-        this.projectFolderIdInputTarget.value = modal.location.id as string;
+    this.pluginContext.subscribe((context) => {
+      context.runInZone(() => {
+        context.services.opModalService
+          .show(LocationPickerModalComponent, 'global', locals, false, false, this.OutletTarget)
+          .pipe(
+            switchMap((modal) => modal.closingEvent),
+            filter((modal) => modal.submitted),
+          )
+          .subscribe((modal) => {
+            if (this.hasProjectFolderIdValidationTarget) {
+              this.projectFolderIdValidationTarget.style.display = 'none';
+            }
+            this.selectedFolderTextTarget.innerText = modal.location.name;
+            this.projectFolderIdInputTarget.value = modal.location.id as string;
+          });
       });
+    });
   }
 
   updateForm(evt:InputEvent):void {
@@ -143,13 +148,12 @@ export default class ProjectStorageFormController extends Controller {
     this.setProjectFolderModeQueryParam(mode);
   }
 
-  protected get OutletTarget():PortalOutletTarget {
-    return PortalOutletTarget.Default;
+  protected get pluginContext():Observable<OpenProjectPluginContext> {
+    return from(window.OpenProject.getPluginContext());
   }
 
-  protected get modalService():Observable<OpModalService> {
-    return from(window.OpenProject.getPluginContext())
-      .pipe(map((pluginContext) => pluginContext.services.opModalService));
+  protected get OutletTarget():PortalOutletTarget {
+    return PortalOutletTarget.Default;
   }
 
   protected get storage():IStorage {

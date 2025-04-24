@@ -30,6 +30,7 @@ ar:
         overridden_costs: "تكاليف متجاوزة"
         spent: "أنفق"
         spent_on: "التاريخ"
+        logged_by: "Logged by"
       cost_type:
         unit: "اسم الوحدة"
         unit_plural: "اسم الوحدة متعددة الأقطاب"
@@ -46,16 +47,30 @@ ar:
       user:
         default_rates: "المعدلات المفترضة"
       time_entry:
-        project: Project
-        user: User
-        work_package: Work package
+        project: مشروع
+        user: المستخدم
+        work_package: مجموعة العمل
         hours: الساعات
-        comments: Comment
+        comments: تعليق
         activity: النشاط
         spent_on: التاريخ
         start_time: Start time
         end_time: Finish time
     models:
+      time_entry:
+        zero: "Time entries"
+        one: "Time entry"
+        two: "Time entries"
+        few: "Time entries"
+        many: "Time entries"
+        other: "Time entries"
+      cost_entry:
+        zero: "Cost entries"
+        one: "Cost entry"
+        two: "Cost entries"
+        few: "Cost entries"
+        many: "Cost entries"
+        other: "Cost entries"
       cost_type:
         zero: "أنواع التكلفة"
         one: "أنواع التكلفة"
@@ -63,11 +78,19 @@ ar:
         few: "أنواع التكلفة"
         many: "أنواع التكلفة"
         other: "أنواع التكلفة"
+      time_entry_activity:
+        zero: "Time tracking activities"
+        one: "Time tracking activity"
+        two: "Time tracking activities"
+        few: "Time tracking activities"
+        many: "Time tracking activities"
+        other: "Time tracking activities"
       rate: "المعدل"
     errors:
       models:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
+          cannot_log_for_this_work_package: "Cannot log time for this work package."
         work_package:
           is_not_a_valid_target_for_cost_entries: "مجموعة العمل #%{id} ليست هدفًا صالحًا لإعادة تعيين إدخالات التكلفة."
           nullify_is_not_valid_for_cost_entries: "لا يمكن تعيين إدخالات التكلفة للمشروع."
@@ -83,6 +106,7 @@ ar:
   button_add_rate: "أضِف المعدل"
   button_log_costs: "سجل تكاليف الوحدة"
   button_log_time: "Log"
+  button_add_activity: "النشاط"
   caption_booked_on_project: "حُجِِز على المشروع"
   caption_default: "الافتراضي"
   caption_default_rate_history_for: "تاريخ المعدل الافتراضي ل %{user}"
@@ -94,8 +118,10 @@ ar:
   caption_save_rate: "معدل التوفير"
   caption_set_rate: "ضبط المعدل الحالي"
   caption_show_locked: "إظهار الأنواع المغلقة"
-  caption_log_time_dialog: "Log time"
+  caption_log_time_dialog: "وقت السجل"
   description_date_for_new_rate: "تاريخ المعدل الجديد"
+  description_costs_settings: "Define the desired format for the costs in all projects."
+  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
   group_by_others: "ليس في أي مجموعة"
   label_between: "بين"
   label_cost_filter_add: "أضِف عامل تصفية لإدخال التكلفة"
@@ -122,18 +148,24 @@ ar:
   label_kind: "النّوع"
   label_less_or_equal: "=>"
   label_log_costs: "سجل تكاليف الوحدة"
+  label_new_time_entry_activity: "New time entry activity"
+  label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
   label_no: "لا"
   label_option_plural: "الخيارات"
   label_overall_costs: "التكاليف الإجمالية"
   label_rate: "المعدل"
   label_rate_plural: "الأسعار"
   label_status_finished: "مكتمل"
-  label_show: "Show"
+  label_show: "إظهار"
   label_units: "وحدات التكلفة"
   label_user: "المستخدم"
   label_until: "حتى"
   label_valid_from: "صالح من"
   label_yes: "نعم"
+  label_time: "الوقت"
+  label_cost: "Cost"
+  label_costs: "التكاليف"
+  label_mandatory_fields: "Mandatory fields"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "حصل خطأ ما. من فضلك حاول مرة أخرى."
   notice_successful_restore: "استعادة ناجحة."
@@ -155,8 +187,8 @@ ar:
   permission_view_own_time_entries: "عرض الوقت الخاص الذي تم قضاؤه"
   project_module_costs: "الوقت والتكاليف"
   setting_allow_tracking_start_and_end_times: "Allow users to track start and end time on time records"
-  setting_costs_currency: "Currency"
-  setting_costs_currency_format: "Format of currency"
+  setting_costs_currency: "العملة"
+  setting_costs_currency_format: "شكل العملة"
   setting_enforce_tracking_start_and_end_times: "Force users to set start and end time on time records"
   text_assign_time_and_cost_entries_to_project: "تعيين الساعات والتكاليف التي تمّ الإبلاغ عنها للمشروع"
   text_destroy_cost_entries_question: "%{cost_entries} تم الإبلاغ عنها في مجموعات العمل التي توشك أن تلغيها. ماذا تريد أن تفعل؟"
@@ -165,8 +197,6 @@ ar:
   text_reassign_time_and_cost_entries: "إعادة تعيين الساعات والتكاليف التي تم التبليغ عنها لمجموعة العمل هذه:"
   text_warning_hidden_elements: "من الممكن أنه تمّ استبعاد بعض الإدخالات من التجميع."
   week: "الأسبوع"
-  js:
-    text_are_you_sure: "هل أنت متأكد؟"
   api_v3:
     errors:
       validation:

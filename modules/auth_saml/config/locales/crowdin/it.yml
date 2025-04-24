@@ -1,5 +1,5 @@
 it:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nome
@@ -23,7 +23,6 @@ it:
         digest_method: Algoritmo di digest
         format: "Formato"
         icon: "Icona personalizzata"
-  activerecord:
     errors:
       models:
         saml/provider:

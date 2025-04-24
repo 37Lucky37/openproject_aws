@@ -26,16 +26,17 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::UpdateAncestorsService
+class WorkPackages::UpdateAncestorsService < BaseServices::BaseCallable
   attr_accessor :user,
                 :initiator_work_package
 
   def initialize(user:, work_package:)
+    super()
     self.user = user
     self.initiator_work_package = work_package
   end
 
-  def call(attributes)
+  def perform(attributes)
     updated_work_packages = update_current_and_former_ancestors(attributes)
 
     set_journal_note(ancestors(updated_work_packages))
@@ -101,6 +102,7 @@ class WorkPackages::UpdateAncestorsService
       #
       %i[estimated_hours remaining_hours status status_id] => :derive_total_estimated_and_remaining_hours,
       %i[estimated_hours remaining_hours done_ratio status status_id] => :derive_done_ratio,
+      %i[] => :switch_to_automatic_mode,
       %i[ignore_non_working_days] => :derive_ignore_non_working_days
     }.each do |derivative_attributes, method|
       if attributes.intersect?(derivative_attributes + %i[parent parent_id])
@@ -159,6 +161,33 @@ class WorkPackages::UpdateAncestorsService
       .map { |child| child.derived_done_ratio || child.done_ratio || 0 }
   end
 
+  # Switches the direct parent of the initiator to automatic scheduling mode if
+  # it is manually scheduled and has no direct or indirect predecessors and no
+  # other children.
+  #
+  # This method is called only when parent or parent_id attribute of the
+  # initiator work package has been changed
+  def switch_to_automatic_mode(work_package, loader)
+    # it only applies to the initiator's direct parent
+    return if initiator_work_package.parent_id.nil?
+    return if initiator_work_package.parent_id != work_package.id
+
+    # it only applies if there is no bulk copy in progress: if it's a copy, the copy must stay exact
+    return if state.bulk_copy_in_progress
+
+    # it only applies if the parent is manually scheduled
+    return if work_package.schedule_automatically?
+
+    # it only applies if the parent has no other children
+    return if loader.children_of(work_package).count != 1
+
+    # it only applies if the parent has no direct or indirect predecessors
+    return if Relation.used_for_scheduling_of(work_package).any?
+
+    # it can switch to automatic scheduling mode
+    work_package.schedule_manually = false
+  end
+
   # Sets the ignore_non_working_days to true if any descendant has its value set to true.
   # If there is no value returned from the descendants, that means that the work package in
   # question no longer has a descendant. But since we are in the service going up the ancestor chain,
@@ -209,9 +238,7 @@ class WorkPackages::UpdateAncestorsService
   end
 
   def ignore_non_working_days_of_descendants(ancestor, loader)
-    children = loader
-                 .children_of(ancestor)
-                 .reject(&:schedule_manually)
+    children = loader.children_of(ancestor)
 
     if children.any?
       children.any?(&:ignore_non_working_days)

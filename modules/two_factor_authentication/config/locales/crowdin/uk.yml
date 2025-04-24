@@ -9,8 +9,12 @@ uk:
       two_factor_authentication/device:
         identifier: "Ідентифікатор"
         default: "Використовувати за замовчуванням"
+        channel: "Канал"
       two_factor_authentication/device/sms:
         phone_number: "Номер телефону"
+      two_factor_authentication/device/webauthn:
+        webauthn_external: "ID WebAuthn"
+        webauthn_public_key: "Загальнодоступний ключ WebAuthn"
     errors:
       models:
         two_factor_authentication/device:

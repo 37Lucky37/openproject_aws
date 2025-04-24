@@ -57,9 +57,7 @@ class WorkPackageRelationsTab::WorkPackageRelationFormComponent < ApplicationCom
   def displayable_field_value
     return nil if related_work_package.nil?
 
-    if relation_to_matches_wp?
-      "#{related_work_package.type.name.upcase} ##{related_work_package.id} - #{related_work_package.subject}"
-    end
+    "#{related_work_package.type.name.upcase} ##{related_work_package.id} - #{related_work_package.subject}"
   end
 
   def direction

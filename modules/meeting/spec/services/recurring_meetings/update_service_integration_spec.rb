@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -36,7 +38,7 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
   shared_let(:series, refind: true) do
     create(:recurring_meeting,
            project:,
-           start_time: Time.zone.today + 10.hours,
+           start_time: Time.zone.tomorrow + 10.hours,
            frequency: "daily",
            interval: 1,
            end_after: "specific_date",
@@ -54,19 +56,32 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       create(:scheduled_meeting,
              :cancelled,
              recurring_meeting: series,
-             start_time: Time.zone.today + 1.day + 10.hours)
+             start_time: Time.zone.tomorrow + 1.day + 10.hours)
     end
 
-    context "when updating the start_date to the same time" do
+    context "when updating the start_date to the time of the first cancellation" do
       let(:params) do
-        { start_date: Time.zone.today + 1.day }
+        { start_date: Time.zone.tomorrow + 1.day }
       end
 
-      it "keeps that cancelled occurrence" do
+      it "removes the cancelled occurrence" do
         expect(service_result).to be_success
-        expect(updated_meeting.start_time).to eq(Time.zone.today + 1.day + 10.hours)
+        expect(updated_meeting.start_time).to eq(Time.zone.tomorrow + 1.day + 10.hours)
 
-        expect { scheduled_meeting.reload }.not_to raise_error
+        expect { scheduled_meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context "when updating only the start time hour" do
+      let(:params) do
+        { start_time_hour: "09:00" }
+      end
+
+      it "updates the cancelled occurrence" do
+        expect(service_result).to be_success
+
+        scheduled_meeting.reload
+        expect(scheduled_meeting.start_time).to eq(Time.zone.tomorrow + 1.day + 9.hours)
       end
     end
 
@@ -96,13 +111,13 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
       end
     end
 
-    context "when updating the frequency and start_time" do
+    context "when updating the frequency and start_time",
+            with_good_job: RecurringMeetings::InitNextOccurrenceJob do
       let(:params) do
         { start_time: Time.zone.today + 2.days + 11.hours }
       end
 
       before do
-        ActiveJob::Base.disable_test_adapter
         RecurringMeetings::InitNextOccurrenceJob
           .set(wait_until: Time.zone.today + 1.day + 10.hours)
           .perform_later(series)
@@ -155,6 +170,124 @@ RSpec.describe RecurringMeetings::UpdateService, "integration", type: :model do
         expect(ActionMailer::Base.deliveries.count).to eq(1)
         expect(ActionMailer::Base.deliveries.first.subject)
           .to eq "[#{project.name}] Meeting series '#{series.title}' rescheduled"
+      end
+    end
+  end
+
+  describe "rescheduling occurrences" do
+    let!(:scheduled_meetings) do
+      Array.new(3) do |i|
+        create(:scheduled_meeting,
+               :persisted,
+               recurring_meeting: series,
+               start_time: Time.zone.today + (i + 1).days + 10.hours)
+      end
+    end
+
+    context "when only changing the time of day" do
+      let(:params) do
+        { start_time_hour: "14:30" }
+      end
+
+      it "updates the time while keeping the same dates" do
+        expect(service_result).to be_success
+
+        # Verify each scheduled meeting keeps its date but changes time
+        scheduled_meetings.each_with_index do |meeting, index|
+          meeting.reload
+          expect(meeting.start_time).to eq(Time.zone.today + (index + 1).days + 14.hours + 30.minutes)
+        end
+      end
+    end
+
+    context "when changing the frequency from daily to weekly" do
+      let(:params) do
+        { frequency: "weekly" }
+      end
+
+      it "reschedules all future occurrences to weekly intervals" do
+        expect(service_result).to be_success
+
+        # Verify each scheduled meeting is moved to weekly intervals
+        scheduled_meetings.each_with_index do |meeting, index|
+          meeting.reload
+          expect(meeting.start_time).to eq(Time.zone.tomorrow + (index * 7).days + 10.hours)
+        end
+      end
+
+      context "when one of the scheduled meetings is cancelled" do
+        let!(:cancelled_meeting) do
+          create(:scheduled_meeting,
+                 :cancelled,
+                 recurring_meeting: series,
+                 start_time: Time.zone.today + 5.days + 10.hours)
+        end
+
+        it "removes cancelled schedules" do
+          expect(service_result).to be_success
+          expect { cancelled_meeting.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+  end
+
+  describe "updating end conditions" do
+    let!(:scheduled_meetings) do
+      Array.new(3) do |i|
+        create(:scheduled_meeting,
+               :persisted,
+               recurring_meeting: series,
+               start_time: Time.zone.tomorrow + i.days + 10.hours)
+      end
+    end
+
+    context "when changing end_after to iterations with fewer iterations than scheduled meetings" do
+      let(:params) do
+        {
+          end_after: "iterations",
+          iterations: 1
+        }
+      end
+
+      it "fails validation" do
+        expect(service_result).not_to be_success
+        expect(service_result.errors.messages[:base]).to include(
+          I18n.t("activerecord.errors.models.recurring_meeting.must_cover_existing_meetings", count: 2)
+        )
+      end
+    end
+
+    context "when changing interval to 2, so that previous occurrences overlap" do
+      let(:params) do
+        {
+          interval: 2
+        }
+      end
+
+      it "succeeds" do
+        expect(service_result).to be_success
+
+        # Verify each scheduled meeting is moved to weekly intervals
+        scheduled_meetings.each_with_index do |meeting, index|
+          meeting.reload
+          expect(meeting.start_time).to eq(Time.zone.tomorrow + (index * 2).days + 10.hours)
+        end
+      end
+    end
+
+    context "when changing end_date to before the last scheduled meeting" do
+      let(:params) do
+        {
+          end_after: "specific_date",
+          end_date: Time.zone.today + 2.days
+        }
+      end
+
+      it "fails validation" do
+        expect(service_result).not_to be_success
+        expect(service_result.errors.messages[:base]).to include(
+          I18n.t("activerecord.errors.models.recurring_meeting.must_cover_existing_meetings", count: 1)
+        )
       end
     end
   end

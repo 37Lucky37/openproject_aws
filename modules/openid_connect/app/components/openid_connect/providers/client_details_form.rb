@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,7 +37,7 @@ module OpenIDConnect
         %i[client_id client_secret].each do |attr|
           f.text_field(
             name: attr,
-            label: I18n.t("activemodel.attributes.openid_connect/provider.#{attr}"),
+            label: I18n.t("activerecord.attributes.openid_connect/provider.#{attr}"),
             caption: I18n.t("openid_connect.instructions.#{attr}"),
             disabled: provider.seeded_from_env?,
             required: true,
@@ -44,7 +46,7 @@ module OpenIDConnect
         end
         f.text_field(
           name: :post_logout_redirect_uri,
-          label: I18n.t("activemodel.attributes.openid_connect/provider.post_logout_redirect_uri"),
+          label: I18n.t("activerecord.attributes.openid_connect/provider.post_logout_redirect_uri"),
           caption: I18n.t("openid_connect.instructions.post_logout_redirect_uri"),
           disabled: provider.seeded_from_env?,
           required: false,
@@ -52,8 +54,7 @@ module OpenIDConnect
         )
         f.text_field(
           name: :scope,
-          label: I18n.t("activemodel.attributes.openid_connect/provider.scope"),
-          placeholder: "openid email profile",
+          label: I18n.t("activerecord.attributes.openid_connect/provider.scope"),
           caption: link_translate(
             "openid_connect.instructions.scope",
             links: {
@@ -66,7 +67,7 @@ module OpenIDConnect
         )
         f.check_box(
           name: :limit_self_registration,
-          label: I18n.t("activemodel.attributes.openid_connect/provider.limit_self_registration"),
+          label: I18n.t("activerecord.attributes.openid_connect/provider.limit_self_registration"),
           caption: I18n.t("openid_connect.instructions.limit_self_registration"),
           disabled: provider.seeded_from_env?,
           required: true

@@ -52,16 +52,16 @@ RSpec.describe Projects::SettingsController do
     end
 
     it do
-      expect(get("/projects/123/settings/custom_fields"))
+      expect(get("/projects/123/settings/work_packages/custom_fields"))
         .to route_to(
-          controller: "projects/settings/custom_fields", action: "show", project_id: "123"
+          controller: "projects/settings/work_packages/custom_fields", action: "show", project_id: "123"
         )
     end
 
     it do
-      expect(patch("/projects/123/settings/custom_fields"))
+      expect(patch("/projects/123/settings/work_packages/custom_fields"))
         .to route_to(
-          controller: "projects/settings/custom_fields", action: "update", project_id: "123"
+          controller: "projects/settings/work_packages/custom_fields", action: "update", project_id: "123"
         )
     end
 
@@ -73,9 +73,9 @@ RSpec.describe Projects::SettingsController do
     end
 
     it do
-      expect(get("/projects/123/settings/categories"))
+      expect(get("/projects/123/settings/work_packages/categories"))
         .to route_to(
-          controller: "projects/settings/categories", action: "show", project_id: "123"
+          controller: "projects/settings/work_packages/categories", action: "show", project_id: "123"
         )
     end
 
@@ -94,16 +94,16 @@ RSpec.describe Projects::SettingsController do
     end
 
     it do
-      expect(get("/projects/123/settings/types"))
+      expect(get("/projects/123/settings/work_packages/types"))
         .to route_to(
-          controller: "projects/settings/types", action: "show", project_id: "123"
+          controller: "projects/settings/work_packages/types", action: "show", project_id: "123"
         )
     end
 
     it do
-      expect(patch("/projects/123/settings/types"))
+      expect(patch("/projects/123/settings/work_packages/types"))
         .to route_to(
-          controller: "projects/settings/types", action: "update", project_id: "123"
+          controller: "projects/settings/work_packages/types", action: "update", project_id: "123"
         )
     end
   end

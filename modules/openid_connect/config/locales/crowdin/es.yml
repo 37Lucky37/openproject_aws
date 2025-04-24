@@ -4,7 +4,7 @@ es:
     description: "Añade proveedores de estrategia OmniAuth OpenID Connect a OpenProject."
   logout_warning: >
     Se ha cerrado la sesión. Puede que se haya perdido el contenido de cualquier formulario que haya enviado. [Inicie la sesión].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nombre
@@ -29,7 +29,6 @@ es:
         claims: Reclamaciones
         acr_values: Valores ACR
         redirect_url: URL de redirección
-  activerecord:
     errors:
       models:
         openid_connect/provider:

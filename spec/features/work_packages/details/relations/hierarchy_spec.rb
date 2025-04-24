@@ -68,13 +68,11 @@ RSpec.shared_examples "work package relations tab", :js, :with_cuprite do
       ##
       # Add child #1
       relations.add_existing_child(child)
-      expect_and_dismiss_flash(message: "Successful update.")
       relations.expect_child(child)
 
       ##
       # Add child #2
       relations.add_existing_child(child2)
-      expect_and_dismiss_flash(message: "Successful update.")
       relations.expect_child(child2)
 
       # Count child relations in split view
@@ -161,7 +159,6 @@ RSpec.shared_examples "work package relations tab", :js, :with_cuprite do
           ##
           # Add child
           relations.add_existing_child(child)
-          expect_and_dismiss_flash(message: "Successful update.")
           relations.expect_child(child)
 
           # Expect counter to add up child to the existing relations

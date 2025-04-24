@@ -1,13 +1,13 @@
 ca:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
-        display_name: Name
-        identifier: Identifier
+        display_name: Nom
+        identifier: Identificador
         secret: Secret
-        scope: Scope
+        scope: Abast
         assertion_consumer_service_url: ACS (Assertion consumer service) URL
-        limit_self_registration: Limit self registration
+        limit_self_registration: Limitar el registre per part dels propis usuaris
         sp_entity_id: Service entity ID
         metadata_url: Identity provider metadata URL
         name_identifier_format: Name identifier format
@@ -23,7 +23,6 @@ ca:
         digest_method: Digest algorithm
         format: "Format"
         icon: "Custom icon"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -60,7 +59,7 @@ ca:
       plural: SAML identity providers
       singular: SAML identity provider
       requested_attributes: Requested attributes
-      attribute_mapping: Attribute mapping
+      attribute_mapping: Associació d'atributs
       attribute_mapping_text: >
         The following fields control which attributes provided by the SAML identity provider are used to provide user attributes in OpenProject
       metadata:
@@ -75,7 +74,7 @@ ca:
         format: 'Attribute format'
       section_headers:
         configuration: "Primary configuration"
-        attributes: "Attributes"
+        attributes: "Atributs"
       section_texts:
         display_name: "Configure the display name of the SAML provider."
         metadata: "Pre-fill configuration using a metadata URL or by pasting metadata XML"
@@ -104,7 +103,7 @@ ca:
       metadata_xml: >
         Your identity provider provides a metadata XML download.
       limit_self_registration: >
-        If enabled users can only register using this provider if the self registration setting allows for it.
+        Si s'activa, els usuaris només poden registrar-se utilitzant aquest proveïdor en cas que la configuració de registre per part dels propis usuaris ho permet.
       sp_entity_id: >
         The entity ID of the service provider (SP). Sometimes also referred to as Audience. This is the unique client identifier of the OpenProject instance.
       idp_sso_service_url: >
@@ -138,7 +137,7 @@ ca:
       authn_requests_signed: >
         If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using it's own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
       certificate: >

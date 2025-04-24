@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,6 +38,7 @@ FactoryBot.define do
     interval { 1 }
     iterations { 10 }
     end_after { "specific_date" }
+    time_zone { "UTC" }
 
     location { "https://some-url.com" }
     m.sequence(:title) { |n| "Meeting series #{n}" }
@@ -47,6 +49,7 @@ FactoryBot.define do
 
       # create template
       template = create(:structured_meeting_template,
+                        :author_participates,
                         author: recurring_meeting.author,
                         recurring_meeting:,
                         project:)

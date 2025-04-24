@@ -33,7 +33,7 @@ module JobStatus
     belongs_to :user
     belongs_to :reference, polymorphic: true
 
-    enum status: {
+    enum :status, {
       in_queue: "in_queue",
       error: "error",
       in_process: "in_process",

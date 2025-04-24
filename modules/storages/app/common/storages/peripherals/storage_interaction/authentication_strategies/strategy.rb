@@ -33,7 +33,7 @@ module Storages
     module StorageInteraction
       module AuthenticationStrategies
         class Strategy
-          attr_reader :key, :user, :use_cache
+          attr_reader :key, :user, :use_cache, :token
 
           def initialize(key)
             @key = key
@@ -49,6 +49,11 @@ module Storages
 
           def with_cache(use_cache)
             @use_cache = use_cache
+            self
+          end
+
+          def with_token(token)
+            @token = token
             self
           end
         end

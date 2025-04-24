@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,7 +31,7 @@
 class Journal::MeetingAgendaItemJournal < Journal::BaseJournal
   self.table_name = "meeting_agenda_item_journals"
 
-  enum item_type: MeetingAgendaItem::ITEM_TYPES
+  enum :item_type, MeetingAgendaItem::ITEM_TYPES
 
   belongs_to :meeting
   belongs_to :work_package, optional: true

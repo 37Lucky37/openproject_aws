@@ -36,6 +36,18 @@ module WorkPackages
         (start_date..due_date).count
       end
 
+      # Returns the number of working days between a predecessor date and
+      # successor date, exclusive.
+      def lag(predecessor_date, successor_date)
+        # lag is *always* excluding non-working days (at least for now)
+        WorkingDays.new.lag(predecessor_date, successor_date)
+      end
+
+      def add_lag(date, lag)
+        # lag is *always* excluding non-working days (at least for now)
+        WorkingDays.new.add_lag(date, lag)
+      end
+
       def start_date(due_date, duration)
         return nil unless due_date && duration
         raise ArgumentError, "duration must be strictly positive" if duration.is_a?(Integer) && duration <= 0
@@ -50,9 +62,8 @@ module WorkPackages
         start_date + duration - 1
       end
 
-      def soonest_working_day(date, lag: nil)
-        lag ||= 0
-        date + lag.days if date
+      def soonest_working_day(date)
+        date
       end
 
       def working?(_date)

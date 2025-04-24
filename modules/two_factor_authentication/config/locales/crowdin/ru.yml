@@ -9,8 +9,12 @@ ru:
       two_factor_authentication/device:
         identifier: "Идентификатор"
         default: "Использовать по умолчанию"
+        channel: "Канал"
       two_factor_authentication/device/sms:
         phone_number: "Номер телефона"
+      two_factor_authentication/device/webauthn:
+        webauthn_external: "Идентификатор WebAuthn"
+        webauthn_public_key: "Публичный ключ WebAuthn"
     errors:
       models:
         two_factor_authentication/device:

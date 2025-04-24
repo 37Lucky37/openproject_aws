@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,7 +32,7 @@ require "spec_helper"
 RSpec.describe Journal do
   describe "#journable" do
     it "raises no error on a new journal without a journable" do
-      expect(Journal.new.journable)
+      expect(described_class.new.journable)
         .to be_nil
     end
   end

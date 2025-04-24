@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +35,7 @@ module OpenIDConnect
         f.hidden(name: :oidc_provider, value: provider.oidc_provider)
         f.text_field(
           name: :display_name,
-          label: I18n.t("activemodel.attributes.openid_connect/provider.display_name"),
+          label: I18n.t("activerecord.attributes.openid_connect/provider.display_name"),
           required: true,
           disabled: provider.seeded_from_env?,
           caption: I18n.t("openid_connect.instructions.display_name"),

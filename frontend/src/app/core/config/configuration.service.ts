@@ -87,6 +87,10 @@ export class ConfigurationService {
     return this.systemPreference('perPageOptions');
   }
 
+  public get allowedLinkProtocols():string[]|null {
+    return this.systemPreference('allowedLinkProtocols') || null;
+  }
+
   public dateFormatPresent():boolean {
     return !!this.systemPreference('dateFormat');
   }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -32,6 +34,7 @@ module RecurringMeetings
 
     validate :user_allowed_to_edit
     validate :not_before_scheduled_time
+    validate :all_instantiated_meetings_covered
 
     def user_allowed_to_edit
       unless user.allowed_in_project?(:edit_meetings, model.project)
@@ -48,6 +51,26 @@ module RecurringMeetings
         else
           errors.add :start_time_hour, :datetime_must_be_in_future
         end
+      end
+    end
+
+    def all_instantiated_meetings_covered
+      return if model.end_after_never?
+      return unless model.reschedule_required?
+
+      validate_meeting_coverage
+    end
+
+    private
+
+    def validate_meeting_coverage
+      upcoming_count = model.scheduled_instances.not_cancelled.count
+      remaining_count = model.remaining_occurrences.count
+
+      if remaining_count < upcoming_count
+        errors.add :base,
+                   :must_cover_existing_meetings,
+                   count: upcoming_count - remaining_count
       end
     end
   end

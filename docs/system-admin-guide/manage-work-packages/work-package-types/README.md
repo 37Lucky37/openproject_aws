@@ -8,16 +8,15 @@ keywords: work package types
 
 # Manage work package types
 
-You can have as many work package types in the system as needed, e.g. Tasks, Bugs, Ideas, Risks, Features.
+In OpenProject, you can create and manage as many work package types as needed, such as Tasks, Bugs, Ideas, Risks, and Features.
 
-In the **Administration -> Work packages -> Types** you can add or edit the work package types.
+To add or modify work package types, navigate to *Administration → Work packages → Types*.
 
-You will see a list of all work package types in the system.
+Here, you will see a list of all existing work package types.
 
-1. Click the work package type name to **edit an existing work package type**.
-2. Click the arrows (up or down) to change the order how work package types should be displayed, e.g. in the list when creating new work packages or when changing the type.
-   The work package type you moved to the top of the list is the current default type and will be selected when you create a new work package.
-3. Delete work package types.
+1. Click on a work package type name to **edit an existing type**.
+2. Use the up and down arrows to **reorder work package types**. The type at the top of the list becomes the default and is automatically selected when creating a new work package.
+3. Click the delete icon to **remove a work package type**.
 
 ![System-admin-work-packages-types](openproject_system_guide_work_package_types.png)
 
@@ -26,15 +25,15 @@ You will see a list of all work package types in the system.
 Click the green **+ Type** button to add a new work package type in the system, e.g. Risk.
 
 1. Give the new work package type a **name** that easily identifies what kind of work should be tracked.
-2. Choose whether the type should be displayed in the [roadmap](../../../user-guide/roadmap/) by default.
-3. Choose a **color** from the drop-down list which should be used for this work package type in the Gantt chart. You can configure new colors [here](../../colors).
-4. Select if the work package type should be **active in new projects by default**. This way work package types will not need to be [activated in the project settings](../../../user-guide/projects/project-settings/work-package-types/) but will be available for every project.
+2. Choose a **color** from the drop-down list which should be used for this work package type in the Gantt chart. You can configure new colors [here](../../colors).
+3. You can **copy a [workflow](../work-package-workflows)** from an existing type.
+4. You can enter a **default text for the work package description field**, which always be shown when creating new work package from this type. This way, you can easily create work package templates, e.g. for risk management or bug tracking which already contain certain required information in the description.
 5. Choose whether the type should be a **milestone**, e.g. displayed as a milestone in the Gantt chart with the same start and finish date.
-6. You can **copy a [workflow](../work-package-workflows)** from an existing type.
-7. You can enter a **default text for the work package description field**, which always be shown when creating new work package from this type. This way, you can easily create work package templates, e.g. for risk management or bug tracking which already contain certain required information in the description.
-8. Click the **Create** button to add the new type.
+6. Choose whether the type should be displayed in the [roadmap](../../../user-guide/roadmap/) by default.
+7. Select if the work package type should be **active in new projects by default**. This way work package types will not need to be [activated in the project settings](../../../user-guide/projects/project-settings/work-packages/#work-package-types) but will be available for every project.
+8. Click the **Save** button to add the new type.
 
-![Sys-admin-add-work-package-type](openproject_system_guide_new_work_package_typ.png)
+![Create a new work package type in OpenProject administration](openproject_system_guide_new_work_package_typ.png)
 
 ## Work package form configuration (Enterprise add-on)
 
@@ -98,13 +97,16 @@ The embedded related work package table in the work package form will look like 
 
 ## Activate work package types for projects
 
-Under **Administration -> Work packages -> Types** on the tab **Projects** you can select for which projects this work package type should be activated.
+Under *Administration -> Work packages -> Types* on the tab **Projects** you can select for which projects this work package type should be activated.
 
 The **Activated for new projects by default** setting in the Types will only activate this type for new projects. For existing projects, the type needs to be activated manually.
 This can be also configured in the [project settings](../../../user-guide/projects/project-settings).
 
 ![activate projects for work package types](image-20200116150513323.png)
 
-## Work package subject configuration (Enterprise add-on)
+## Activate templates for PDF exports
 
-Under **Administration -> Work packages -> Types** on the tab **Subject configuration** you can choose whether work package subjects should be defined automatically.
+Under the **Generate PDF** tab of  *Administration -> Work packages -> Types* you can select which templates from currently available ones should be enabled for the PDF export of this specific type. 
+
+The template determines the design and attributes visible in the exported PDF of a work package using this type. The first  template on the list is selected by default.
+

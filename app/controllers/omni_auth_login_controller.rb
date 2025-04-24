@@ -71,14 +71,6 @@ class OmniAuthLoginController < ApplicationController
     message&.to_s || "Unknown error"
   end
 
-  def redirect_omniauth_register_modal(user, auth_hash)
-    # Store a timestamp so we can later make sure that authentication information can
-    # only be reused for a short time.
-    session[:auth_source_registration] = auth_hash.merge(omniauth: true, timestamp: Time.current)
-    @user = user
-    render template: "/account/register"
-  end
-
   # Avoid remembering the back_url if we're coming from the login page
   def remember_back_url?
     return false if omniauth_back_url.blank?

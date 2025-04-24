@@ -1,11 +1,27 @@
 de:
   activerecord:
     attributes:
+      oauth_client:
+        client_id: Client-ID
+        client_secret: Client-Secret
+      project:
+        project_folder_type: Projektordner-Typ
       storages/file_link:
-        origin_id: Ursprungs-ID
-      storages/project_storage:
+        origin: Ursprung
         storage: Speicherung
+      storages/nextcloud_storage:
+        authentication_methods:
+          oauth2_sso: Single-Sign-On über OpenID Connect Identity Provider
+          oauth2_sso_with_two_way_oauth2_fallback: Single-Sign-On mit Zwei-Wege OAuth 2.0 als Fallback
+          two_way_oauth2: Zwei-Wege OAuth 2.0 Authorization-Code-Flow
+        storage_audience: Speicher-Audience
+      storages/project_storage:
+        project_folder: Projektordner
+        project_folder_mode: Projektordnermodus
+        storage: Speicherung
+        storage_url: Speicher-URL
       storages/storage:
+        authentication_method: Authentifizierungsmethode
         creator: Ersteller
         drive: Laufwerk ID
         host: Host
@@ -199,15 +215,19 @@ de:
         manual_management_description: Erstellen und verwalten Sie Ordner pro Projekt manuell. Sie müssen händisch sicherstellen, dass die entsprechenden Benutzer Zugriff haben.
         setup_incomplete: Wählen Sie die Art der Verwaltung des Benutzerzugriffs und der Ordnererstellung.
         subtitle: Zugriffsverwaltung
-        title: Zugriff und Projektordner
+      access_management_section: Zugriff und Projektordner
       automatically_managed_folders: Automatisch verwaltete Projektordner
       general_information: Allgemeine Informationen
-      nextcloud_oauth: Nextcloud OAuth
-      oauth_applications: OAuth-Anwendungen
+      oauth_configuration: OAuth-Konfiguration
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Projektordner
       redirect_uri: Umleitungs-URI
+      storage_audience: Speicher-Audience
+      storage_audience_blank: Keine Audience wurde konfiguriert.
+      storage_audience_description: Erhalten von Token für die Audience "%{audience}".
+      storage_audience_idp: Verwendung des ersten vom Identitätsanbieter erhaltenen Zugriffstokens, unabhängig von der Zielgruppe.
+      storage_oauth: Nextcloud OAuth
       storage_provider: Speicheranbieter
     health:
       checked: Zuletzt geprüft %{datetime}
@@ -222,6 +242,14 @@ de:
         host_not_found: Kein Nextcloud-Server unter der konfigurierten Host-URL gefunden. Bitte überprüfen Sie die Konfiguration.
         missing_dependencies: 'Eine erforderliche Abhängigkeit fehlt auf dem Datei-Speicher. Bitte fügen Sie die folgende Abhängigkeit hinzu: %{dependency}.'
         not_configured: Die Verbindung konnte nicht validiert werden. Bitte schließen Sie zuerst die Konfiguration ab.
+        oauth_request_not_found: OpenProject konnte den Hauptordner von Nextcloud mit dem aktuellen eingeloggten Benutzer nicht finden. Bitte überprüfen Sie die Server-Logs für weitere Informationen.
+        oauth_request_unauthorized: Der aktuelle Benutzer ist nicht berechtigt, den Hauptordner von Nextcloud zu sehen, oder wir konnten keinen Token hierfür erhalten. Bitte überprüfen Sie die Serverprotokolle für weitere Informationen.
+        oauth_token_missing: OpenProject kann die Kommunikation auf Benutzerebene mit Nextcloud nicht testen, da kein Token für den aktuellen Benutzer vorhanden ist.
+        oidc_cant_acquire_token: Dein OpenID Connect Setup bietet weder die nötige Audience noch bietet es Tokenaustausch Möglichkeiten. Bitte lies unsere Dokumentation für weitere Informationen.
+        oidc_cant_exchange_token: Es scheint ein Problem mit dem Token Exchange Setup auf Ihrem OpenID Connect Provider zu geben. Bitte überprüfen Sie die Konfiguration und versuchen Sie es erneut.
+        oidc_cant_refresh_token: Beim Versuch, Ihren Zugriff auf den Speicher zu überprüfen, ist ein Fehler aufgetreten. Bitte überprüfen Sie die Server-Protokolle auf weitere Informationen.
+        oidc_non_oidc_user: Der aktuelle Benutzer wurde zwar bereitgestellt, aber nicht von einem OpenID Connect (OIDC) Identity Provider. Bitte wiederholen Sie die Prüfung mit einem OIDC-bereitgestellten Benutzer.
+        oidc_non_provisioned_user: Der aktuelle Benutzer wird nicht von einem OpenID Connect Identity Provider bereitgestellt. Bitte führen Sie die Prüfung mit einem bereitgestellten Benutzer erneut durch.
         placeholder: Überprüfen Sie Ihre Verbindung mit dem Server.
         subtitle: Verbindungsvalidierung
         tenant_id_wrong: Die konfigurierte Verzeichnis-(Mandanten-)ID ist ungültig. Bitte überprüfen Sie die Konfiguration.
@@ -250,6 +278,7 @@ de:
       project_folder_bulk: Der Projektordner ist der Standardordner für Datei-Uploads für alle ausgewählten Projekte. Sie können dies in jeder Projekteinstellung individuell ändern. Benutzer können trotzdem Dateien an andere Orte hochladen.
     instructions:
       all_available_storages_already_added: Alle verfügbaren Speicher sind dem Projekt bereits hinzugefügt.
+      authentication_method: Die Art und Weise, wie Anfragen zwischen OpenProject und dem Speicher authentifiziert werden.
       automatic_folder: Dies wird automatisch einen Stammordner für dieses Projekt erstellen und die Zugriffsberechtigungen für jedes Projektmitglied verwalten.
       empty_project_folder_validation: Die Auswahl eines Ordners ist zwingend erforderlich, um fortzufahren.
       existing_manual_folder: Sie können einen existierenden Ordner als Hauptordner für dieses Projekt definieren. Die Berechtigungen werden jedoch nicht automatisch verwaltet, der Administrator muss manuell sicherstellen, dass relevante Benutzer Zugriff haben. Der ausgewählte Ordner kann von mehreren Projekten verwendet werden.
@@ -262,6 +291,8 @@ de:
         integration: Nextcloud Administration / OpenProject
         oauth_configuration: Kopieren Sie diese Werte aus der %{application_link_text}.
         provider_configuration: Bitte stellen Sie sicher, dass Sie Administrationsrechte in Ihrer Nextcloud-Instanz haben und die %{application_link_text} vor dem Setup installiert wurde.
+        storage_audience: Bitte geben Sie die Client-ID ein, die die Nextcloud-Instanz für die Kommunikation mit dem Identitätsanbieter verwendet.
+        storage_audience_placeholder: z.B. Nextcloud
       no_specific_folder: Standardmäßig startet jeder Benutzer in seinem eigenen Home-Ordner, wenn er eine Datei hochlädt.
       no_storage_set_up: Es sind noch keine Dateispeicher eingerichtet.
       not_logged_into_storage: Bitte melden Sie sich zunächst an, um einen Projektordner auszuwählen
@@ -293,6 +324,7 @@ de:
     label_creator: Ersteller
     label_delete_storage: Dateispeicher löschen
     label_edit_storage_access_management: Speicherzugriffsverwaltung bearbeiten
+    label_edit_storage_audience: Speicher-Audience bearbeiten
     label_edit_storage_automatically_managed_folders: Automatisch verwaltete Projektordner des Dateispeichers bearbeiten
     label_edit_storage_host: Dateispeicher-Host bearbeiten
     label_existing_manual_folder: Vorhandener Ordner mit manuell verwalteten Berechtigungen
@@ -321,6 +353,7 @@ de:
       connected: Verbunden
       connected_no_permissions: Benutzerrolle hat keine Speicherberechtigungen
       not_connected: Nicht verbunden. Der Benutzer sollte sich über diesen %{link} anmelden.
+      not_connected_sso: Noch nicht verbunden, SSO sollte sie automatisch verbinden, wenn Sie sich die Dateien anschauen.
     members_no_results: Keine Mitglieder zum Anzeigen.
     no_results: Noch keine Dateispeicher eingerichtet.
     oauth_access_granted_modal:
@@ -382,8 +415,15 @@ de:
         name: OneDrive/SharePoint
         name_placeholder: z.B. OneDrive
     show_attachments_toggle:
-      description: 'Wenn Sie diese Option deaktivieren, wird die Liste der Anhänge auf dem Dateien Tab von Arbeitspaketen für neue Projekte ausgeblendet. Die Dateien, die in der Beschreibung eines Arbeitspakets angehängt sind, werden weiterhin in den internen Speicher für Anhänge hochgeladen.'
+      description: Beim Deaktivieren dieser Option wird die Liste der Anhänge auf der Registerkarte Arbeitspakete ausgeblendet. Die in der Beschreibung eines Arbeitspakets angehängten Dateien werden weiterhin im internen Anhang gespeichert.
       label: Anhänge auf dem Dateien-Tab der Arbeitspakete anzeigen
+    storage_audience:
+      idp:
+        helptext: OpenProject verwendet das erste Zugangs-Token des Identity Providers, um Anfragen an den Speicher zu authentifizieren. Es wird nicht versuchen, ein neues Token zu erhalten.
+        label: Benutze den ersten Zugangs-Token des Identitätsanbieters
+      manual:
+        helptext: Ermöglicht es Ihnen, die Audience des Speichers festzulegen. OpenProject wird versuchen, ein Token für die angegebene Audience vom Identity Provider zu erhalten.
+        label: Speicher-Audience manuell definieren
     storage_list_blank_slate:
       description: Fügen Sie einen Dateispeicher hinzu, um ihn hier zu sehen.
       heading: Sie haben noch keine Dateispeicher.

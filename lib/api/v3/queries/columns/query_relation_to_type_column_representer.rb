@@ -43,7 +43,7 @@ module API
           end
 
           def json_cache_key
-            [represented.name, represented.type.cache_key]
+            [represented.name, represented.type.cache_key_with_version]
           end
         end
       end

@@ -46,22 +46,47 @@ module Storages
     end
 
     describe "#call" do
+      shared_let(:oidc_provider) { create(:oidc_provider) }
+
       shared_let(:admin) { create(:admin) }
       shared_let(:multiple_projects_user) { create(:user) }
       shared_let(:single_project_user) { create(:user) }
       shared_let(:non_signed_on_user) { create(:user) }
-
+      shared_let(:oidc_user) do
+        identity_url = "#{oidc_provider.slug}:qweqweqweqwe"
+        create(:user, identity_url:)
+      end
+      shared_let(:oidc_admin) do
+        identity_url = "#{oidc_provider.slug}:zxczxczxczxc"
+        create(:admin, identity_url:)
+      end
       shared_let(:storage) { create(:nextcloud_storage_with_complete_configuration, :as_automatically_managed) }
 
       shared_let(:remote_identities) do
-        [create(:remote_identity, user: admin, oauth_client: storage.oauth_client, origin_user_id: "admin"),
+        [create(:remote_identity,
+                user: admin,
+                auth_source: storage.oauth_client,
+                integration: storage,
+                origin_user_id: "admin"),
          create(:remote_identity,
                 user: multiple_projects_user,
-                oauth_client: storage.oauth_client,
+                auth_source: storage.oauth_client,
+                integration: storage,
                 origin_user_id: "multiple_projects_user"),
          create(:remote_identity,
+                user: oidc_user,
+                auth_source: oidc_provider,
+                integration: storage,
+                origin_user_id: "oidc_user"),
+         create(:remote_identity,
+                user: oidc_admin,
+                auth_source: oidc_provider,
+                integration: storage,
+                origin_user_id: "oidc_admin"),
+         create(:remote_identity,
                 user: single_project_user,
-                oauth_client: storage.oauth_client,
+                auth_source: storage.oauth_client,
+                integration: storage,
                 origin_user_id: "single_project_user")]
       end
 
@@ -102,7 +127,7 @@ module Storages
       let(:create_folder) { class_double(Peripherals::StorageInteraction::Nextcloud::CreateFolderCommand) }
       let(:add_user) { class_double(Peripherals::StorageInteraction::Nextcloud::AddUserToGroupCommand) }
       let(:remove_user) { class_double(Peripherals::StorageInteraction::Nextcloud::RemoveUserFromGroupCommand) }
-      let(:auth_strategy) { Peripherals::StorageInteraction::AuthenticationStrategies::Strategy.new(key: :basic_auth) }
+      let(:auth_strategy) { Peripherals::StorageInteraction::AuthenticationStrategies::Strategy.new(:basic_auth) }
 
       let(:root_folder_id) { "root_folder_id" }
       let(:file_path_to_id_map_result) do
@@ -190,6 +215,16 @@ module Storages
                                                   group: storage.group)
                                             .and_return(group_users_result)
         # Updating the group users
+        allow(add_user).to receive(:call).with(storage:,
+                                               auth_strategy:,
+                                               user: "oidc_user",
+                                               group: storage.group)
+                                         .and_return(add_user_result)
+        allow(add_user).to receive(:call).with(storage:,
+                                               auth_strategy:,
+                                               user: "oidc_admin",
+                                               group: storage.group)
+                                         .and_return(add_user_result)
         allow(add_user).to receive(:call).with(storage:,
                                                auth_strategy:,
                                                user: "single_project_user",
@@ -417,7 +452,9 @@ module Storages
           [
             { user_id: "OpenProject", permissions: OpenProject::Storages::Engine.external_file_permissions },
             { user_id: "admin", permissions: OpenProject::Storages::Engine.external_file_permissions },
+            { user_id: "oidc_admin", permissions: OpenProject::Storages::Engine.external_file_permissions },
             { user_id: "multiple_projects_user", permissions: %i[read_files] },
+            { user_id: "oidc_user", permissions: %i[read_files] },
             { user_id: "single_project_user", permissions: %i[read_files] },
             { group_id: "OpenProject", permissions: [] }
           ]
@@ -427,6 +464,7 @@ module Storages
           [
             { user_id: "OpenProject", permissions: OpenProject::Storages::Engine.external_file_permissions },
             { user_id: "admin", permissions: OpenProject::Storages::Engine.external_file_permissions },
+            { user_id: "oidc_admin", permissions: OpenProject::Storages::Engine.external_file_permissions },
             { user_id: "multiple_projects_user", permissions: %i[read_files write_files] },
             { user_id: "single_project_user", permissions: %i[read_files write_files] },
             { group_id: "OpenProject", permissions: [] }
@@ -437,6 +475,7 @@ module Storages
           [
             { user_id: "OpenProject", permissions: OpenProject::Storages::Engine.external_file_permissions },
             { user_id: "admin", permissions: OpenProject::Storages::Engine.external_file_permissions },
+            { user_id: "oidc_admin", permissions: OpenProject::Storages::Engine.external_file_permissions },
             { user_id: "multiple_projects_user", permissions: %i[read_files write_files] },
             { group_id: "OpenProject", permissions: [] }
           ]

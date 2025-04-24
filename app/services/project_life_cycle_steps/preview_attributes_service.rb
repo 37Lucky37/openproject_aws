@@ -39,7 +39,7 @@ module ProjectLifeCycleSteps
     def clear_unchanged_fields(service_call)
       service_call
         .result
-        .available_life_cycle_steps
+        .available_phases
         .select(&:not_set?)
         .each { _1.errors.clear }
     end

@@ -40,16 +40,5 @@ module Shared
     def self.build(state = {})
       self === state ? state : new(state)
     end
-
-    ##
-    # Remember that the state was passed to the given service
-    def called!(service)
-      service_chain << service
-    end
-
-    # Remembered service calls this context was used against
-    def service_chain
-      @service_chain ||= []
-    end
   end
 end

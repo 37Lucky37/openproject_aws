@@ -103,7 +103,6 @@ pt-PT:
     button_settings: "Definições"
     button_uncheck_all: "Anular selecção"
     button_update: "Atualizar"
-    button_export-pdf: "Transferir PDF"
     button_export-atom: "Transferir Atom"
     button_generate_pdf: "Gerar PDF"
     button_create: "Criar"
@@ -222,6 +221,8 @@ pt-PT:
             label_maximum_users: "Máximo de utilizadores ativos"
             label_starts_at: "Começa em"
             label_expires_at: "Expira a"
+            label_plan: "Plano"
+            label_additional_features: "Funcionalidades adicionais"
             receive_newsletter: Quero receber a <a target="_blank" href="%{link}">newsletter</a> do OpenProject.
             taken_domain: Só pode haver um teste ativo por domínio.
             domain_mismatch: O nome de host da requisição atual não corresponde ao nome de host configurado. Verifique novamente as configurações do seu sistema.
@@ -357,21 +358,21 @@ pt-PT:
           learn_about: "Saiba mais sobre os novos recursos"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                A versão traz várias funcionalidades e melhorias para si, por exemplo, <br> <ul class="%{list_styling_class}"> <li>Agende reuniões recorrentes para simplificar os seus compromissos semanais, quinzenais ou personalizados.</li> <li>Crie pacotes de trabalho secundários diretamente a partir do separador Relações.</li> <li>Inclua somas totais nas exportações de folhas de horas em PDF para obter melhores informações.</li> <li>Inclua pacotes de trabalho secundários em relatórios de custos para um controlo mais preciso.</li> <li>Veja as datas de relações anteriormente ocultas e com restrições de permissão para tomar decisões de agendamento informadas.</li> </ul>
+                A versão inclui diversas funcionalidades e melhorias para si, como o <br> <ul class="%{list_styling_class}"> <li>Filtro para descendentes (filhos e netos) de pacotes de trabalho.</li> <li>Tire partido de uma acessibilidade avançada no seletor de datas.</li> <li>Veja a % de conclusão incluída nas somas da tabela do pacote de trabalho.</li> <li>Inclua uma coluna para filhos nas tabelas de pacotes de trabalho.</li> <li>Melhor utilização do seletor de datas em ecrãs de dispositivos móveis.</li> <li>Exportações de PDF que correspondem à disposição do formulário configurada.</li> </ul>
     ical_sharing_modal:
       title: "Subscrever o calendário"
       inital_setup_error_message: "Ocorreu um erro ao recuperar os dados."
-      description: "Pode utilizar o URL (iCalendar) para subscrever este calendário num cliente externo e visualizar informações atualizadas sobre o pacote de trabalho a partir daí."
+      description: "Pode utilizar o URL (iCalendar) para subscrever este calendário num cliente externo e ver informações atualizadas sobre o pacote de trabalho a partir daí."
       warning: "Não partilhe este URL com outros utilizadores. Qualquer pessoa com este link poderá ver os detalhes do pacote de trabalho sem uma conta ou palavra-passe."
       token_name_label: "Onde irá utilizar isto?"
       token_name_placeholder: 'Escreva um nome, por exemplo, "Telefone"'
       token_name_description_text: 'Se subscrever este calendário a partir de vários dispositivos, este nome irá ajudá-lo a distinguir entre eles na sua lista de <a href="my/access_token", target="_blank">tokens de acesso</a>.'
       copy_url_label: "Copiar URL"
       ical_generation_error_text: "Ocorreu um erro ao gerar o URL do calendário."
-      success_message: 'O URL "%{name}" foi copiado com sucesso para a área de transferência. Cole-o no seu cliente de calendário para concluir a subscrição.'
+      success_message: 'O URL "%{name}" foi copiado com sucesso para a área de transferência. Cole-o no seu cliente de Calendários para concluir a subscrição.'
     label_activate: "Ativar"
     label_assignee: "Responsável"
     label_add_column_after: "Adicionar coluna após"
@@ -600,7 +601,7 @@ pt-PT:
           timeline: "Aqui pode <b>editar o seu plano de projeto</b>, criar novos pacotes de trabalho, tais como tarefas, marcos, fases e muito mais, bem como <b>adicionar dependências</b>. Todos os membros da equipa podem ver e atualizar o plano mais recente a qualquer momento."
         team_planner:
           overview: "O planeador de equipa permite atribuir tarefas visualmente aos membros da equipa e obter uma visão geral de quem está a trabalhar e no quê (onde)."
-          calendar: "O quadro de planeamento semanal ou quinzenal exibe todos os pacotes de trabalho atribuídos aos membros de sua equipa."
+          calendar: "O quadro de planeamento semanal ou quinzenal apresenta todos os pacotes de trabalho atribuídos aos membros da sua equipa."
           add_assignee: "Para começar, adicione responsáveis ao planeador da equipa."
           add_existing: "Pesquise pacotes de trabalho existentes e arraste-os para o planeador de equipa para atribuí-los instantaneamente a um membro da equipa e definir as datas de início e término."
           card: "Arraste os pacotes de trabalho horizontalmente para os mover para trás ou para frente no tempo, arraste as bordas para alterar as datas de início e término, e arraste verticalmente para uma linha diferente para atribuir a outro membro."
@@ -718,17 +719,18 @@ pt-PT:
       description: "Descrição: Clique para editar..."
       relation_description: "Clique para adicionar a descrição para esta relação"
     project:
-      required_outside_context: >
-        Por favor escolha um projeto onde criar o pacote de trabalho de forma a ver todos os atributos. Só pode selecionar projetos com o tipo acima ativado.
-      context: "Contexto do projeto"
-      click_to_switch_to_project: "Projeto: %{projectname}"
-      confirm_template_load: "Mudar o modelo irá recarregar a página e vai perder todas as entradas feitas neste formulário. Continuar?"
-      use_template: "Utilizar modelo"
-      no_template_selected: "(Nenhum)"
-      copy:
-        copy_options: "Opções de cópia"
       autocompleter:
         label: "Conclusão automática do Projecto"
+      click_to_switch_to_project: "Projeto: %{projectname}"
+      confirm_template_load: "Mudar o modelo irá recarregar a página e vai perder todas as entradas feitas neste formulário. Continuar?"
+      context: "Contexto do projeto"
+      copy:
+        copy_options: "Opções de cópia"
+      not_available: "Projeto N/A"
+      no_template_selected: "(Nenhum)"
+      required_outside_context: >
+        Por favor escolha um projeto onde criar o pacote de trabalho de forma a ver todos os atributos. Só pode selecionar projetos com o tipo acima ativado.
+      use_template: "Utilizar modelo"
     reminders:
       settings:
         daily:
@@ -797,6 +799,7 @@ pt-PT:
       typeahead_placeholder: Procurar possíveis observadores
     relation_labels:
       parent: "Mãe"
+      child: "Secundário"
       children: "Filhos"
       relates: "Relacionado com"
       duplicates: "Repetidos"
@@ -826,7 +829,7 @@ pt-PT:
       add_new_child: "Criar novo filho"
       create_new: "Criar novo"
       add_existing: "Adicionar existente"
-      add_existing_child: "Adicionar filho existente"
+      add_existing_child: "Adicionar secundário"
       remove_child: "Remover filho"
       add_new_relation: "Criar nova relação"
       add_existing_relation: "Adicionar relação existente"
@@ -852,8 +855,6 @@ pt-PT:
       select_branch: "Selecionar o branch"
     field_value_enter_prompt: "Insira um valor para '%{field}'"
     project_menu_details: "Detalhes"
-    scheduling:
-      manual: "Agendamento manual"
     sort:
       sorted_asc: "Ordenação crescente aplicada, "
       sorted_dsc: "Ordenação decrescente aplicada, "
@@ -901,15 +902,6 @@ pt-PT:
       comment_send_failed: "Ocorreu um erro. Não foi possível submeter o comentário."
       comment_updated: "O comentário foi atualizado com sucesso."
       confirm_edit_cancel: "Tem certeza que deseja cancelar a edição do pacote de trabalho?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Agendado automaticamente. As datas são derivadas das relações."
-        manually_scheduled: "Agendamento manual habilitado, todas as relações ignoradas."
-        start_date_limited_by_relations: "As datas de início e término disponíveis são limitadas pelas relações."
-        changing_dates_affects_follow_relations: "Alterar estas datas vai afetar datas de pacotes de trabalho relacionados."
-        click_on_show_relations_to_open_gantt: 'Clique em "%{button_name}" para uma visão geral do GANTT.'
-        show_relations: "Mostrar relações"
-        ignore_non_working_days:
-          title: "Apenas dias úteis"
       description_filter: "Filtro"
       description_enter_text: "Digite o texto"
       description_options_hide: "Ocultar opções"

@@ -158,7 +158,7 @@ module WorkPackagesHelper
   end
 
   def work_package_dates_icon(work_package)
-    work_package.schedule_manually ? :pin : :calendar
+    work_package.schedule_manually ? :pin : "op-auto-date"
   end
 
   def work_package_formatted_dates(work_package)

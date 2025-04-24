@@ -31,7 +31,7 @@ mn:
         budget_ratio: "Spent (ratio)"
         description: "Description"
         spent: "Spent"
-        status: "Status"
+        status: "Төлөв"
         subject: "Subject"
         type: "Cost type"
         labor_budget: "Planned labor costs"
@@ -43,7 +43,7 @@ mn:
       material_budget_item: "Unit"
   activity:
     filter:
-      budget: "Budgets"
+      budget: "Төсөв"
   attributes:
     budget: "Budget"
   button_add_budget_item: "Add planned costs"
@@ -54,7 +54,7 @@ mn:
   caption_labor: "Labor"
   caption_labor_costs: "Actual labor costs"
   caption_material_costs: "Actual unit costs"
-  budgets_title: "Budgets"
+  budgets_title: "Төсөв"
   events:
     budget: "Budget edited"
   help_click_to_edit: "Click here to edit."
@@ -62,7 +62,7 @@ mn:
   help_override_rate: "Enter a value here to override the default rate."
   label_budget: "Budget"
   label_budget_new: "New budget"
-  label_budget_plural: "Budgets"
+  label_budget_plural: "Төсөв"
   label_budget_id: "Budget #%{id}"
   label_deliverable: "Budget"
   label_example_placeholder: 'e.g., %{decimal}'
@@ -72,7 +72,7 @@ mn:
   notice_no_budgets_available: "No budgets available."
   permission_edit_budgets: "Edit budgets"
   permission_view_budgets: "View budgets"
-  project_module_budgets: "Budgets"
+  project_module_budgets: "Төсөв"
   text_budget_reassign_to: "Reassign them to this budget:"
   text_budget_delete: "Delete the budget from all work packages"
   text_budget_destroy_assigned_wp: "There are %{count} work packages assigned to this budget. What do you want to do?"

@@ -38,6 +38,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:past) do
     create(:structured_meeting,
+           :author_participates,
            title: "an earlier meeting",
            start_time: DateTime.parse("2025-01-29T06:00:00Z"),
            project:,
@@ -46,6 +47,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:today) do
     create(:structured_meeting,
+           :author_participates,
            title: "meeting starting soon",
            start_time: DateTime.parse("2025-01-29T10:00:00Z"),
            project:,
@@ -54,6 +56,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:tomorrow) do
     create(:structured_meeting,
+           :author_participates,
            title: "meeting starting tomorrow",
            start_time: DateTime.parse("2025-01-30T10:00:00Z"),
            project:,
@@ -62,6 +65,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:saturday) do
     create(:structured_meeting,
+           :author_participates,
            title: "weekend meeting on saturday",
            start_time: DateTime.parse("2025-02-01T10:00:00Z"),
            project:,
@@ -70,6 +74,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:sunday) do
     create(:structured_meeting,
+           :author_participates,
            title: "weekend meeting on sunday",
            start_time: DateTime.parse("2025-02-02T10:00:00Z"),
            project:,
@@ -78,6 +83,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:next_monday) do
     create(:structured_meeting,
+           :author_participates,
            title: "meeting on next monday",
            start_time: DateTime.parse("2025-02-03T10:00:00Z"),
            project:,
@@ -86,6 +92,7 @@ RSpec.describe "Meeting index",
 
   shared_let(:next_friday) do
     create(:structured_meeting,
+           :author_participates,
            title: "meeting on next friday",
            start_time: DateTime.parse("2025-02-07T10:00:00Z"),
            project:,
@@ -254,7 +261,7 @@ RSpec.describe "Meeting index",
     end
   end
 
-  describe "paginating options" do
+  describe "paginating options", with_settings: { start_of_week: 1 } do
     context "when requesting the first page with limit=1" do
       let(:request) { get "/projects/#{project.id}/meetings?limit=1" }
 

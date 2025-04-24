@@ -30,6 +30,7 @@ sv:
         overridden_costs: "Åsidosatta kostnader"
         spent: "Spenderat"
         spent_on: "Datum"
+        logged_by: "Logged by"
       cost_type:
         unit: "Enhetsnamn"
         unit_plural: "Enhetsnamn plural"
@@ -46,24 +47,34 @@ sv:
       user:
         default_rates: "Standardtimpris"
       time_entry:
-        project: Project
-        user: User
-        work_package: Work package
+        project: Projekt
+        user: Användare
+        work_package: Arbetspaket
         hours: Timmar
-        comments: Comment
+        comments: Kommentar
         activity: Aktivitet
         spent_on: Datum
         start_time: Start time
         end_time: Finish time
     models:
+      time_entry:
+        one: "Time entry"
+        other: "Time entries"
+      cost_entry:
+        one: "Cost entry"
+        other: "Cost entries"
       cost_type:
         one: "Kostnadstyp"
         other: "Kostnadstyper"
+      time_entry_activity:
+        one: "Time tracking activity"
+        other: "Time tracking activities"
       rate: "Timpris"
     errors:
       models:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
+          cannot_log_for_this_work_package: "Cannot log time for this work package."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Arbetspaket #%{id} är inte ett giltigt mål för omfördelning av kostnadsposterna."
           nullify_is_not_valid_for_cost_entries: "Kostnadsposterna kan inte tilldelas till ett projekt."
@@ -79,6 +90,7 @@ sv:
   button_add_rate: "Lägg till timpris"
   button_log_costs: "Logga enhetskostnader"
   button_log_time: "Log"
+  button_add_activity: "Aktivitet"
   caption_booked_on_project: "Bokade på projekt"
   caption_default: "Standard"
   caption_default_rate_history_for: "Historiskt standardtimpris för %{user}"
@@ -90,8 +102,10 @@ sv:
   caption_save_rate: "Spara timpris"
   caption_set_rate: "Ange aktuellt timpris"
   caption_show_locked: "Visa låst typer"
-  caption_log_time_dialog: "Log time"
+  caption_log_time_dialog: "Logga tid"
   description_date_for_new_rate: "Datum för nytt timpris"
+  description_costs_settings: "Define the desired format for the costs in all projects."
+  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
   group_by_others: "inte i någon grupp"
   label_between: "mellan"
   label_cost_filter_add: "Lägg till filter för kostnadspost"
@@ -118,6 +132,8 @@ sv:
   label_kind: "Typ"
   label_less_or_equal: "<="
   label_log_costs: "Logga enhetskostnader"
+  label_new_time_entry_activity: "New time entry activity"
+  label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
   label_no: "Nej"
   label_option_plural: "Alternativ"
   label_overall_costs: "Totalkostnader"
@@ -130,6 +146,10 @@ sv:
   label_until: "fram till"
   label_valid_from: "Gäller från"
   label_yes: "Ja"
+  label_time: "Tid"
+  label_cost: "Cost"
+  label_costs: "Kostnader"
+  label_mandatory_fields: "Mandatory fields"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Ett fel inträffade. Försök igen."
   notice_successful_restore: "Lyckad återställning."
@@ -151,8 +171,8 @@ sv:
   permission_view_own_time_entries: "Visa egen spenderad tid"
   project_module_costs: "Tid och kostnader"
   setting_allow_tracking_start_and_end_times: "Allow users to track start and end time on time records"
-  setting_costs_currency: "Currency"
-  setting_costs_currency_format: "Format of currency"
+  setting_costs_currency: "Valuta"
+  setting_costs_currency_format: "Formatet för valuta"
   setting_enforce_tracking_start_and_end_times: "Force users to set start and end time on time records"
   text_assign_time_and_cost_entries_to_project: "Tilldela rapporterade timmar och kostnader till projektet"
   text_destroy_cost_entries_question: "%{cost_entries} rapporterades på de arbetspaket som du håller på och tar bort. Vad vill du göra?"
@@ -161,8 +181,6 @@ sv:
   text_reassign_time_and_cost_entries: "Tilldela rapporterade timmar och kostnader på detta arbetspaket:"
   text_warning_hidden_elements: "Vissa poster kan ha undantagits från summeringen."
   week: "vecka"
-  js:
-    text_are_you_sure: "Är du säker?"
   api_v3:
     errors:
       validation:

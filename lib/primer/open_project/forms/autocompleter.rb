@@ -20,24 +20,40 @@ module Primer
           @wrapper_data_attributes = wrapper_data_attributes
         end
 
-        def extend_autocomplete_inputs(inputs) # rubocop:disable Metrics/AbcSize,Metrics/PerceivedComplexity
-          inputs[:classes] = "ng-select--primerized #{@input.invalid? ? '-error' : ''}"
-          inputs[:inputName] ||= builder.field_name(@input.name)
-          inputs[:labelForId] ||= builder.field_id(@input.name)
-          inputs[:defaultData] = true unless inputs.key?(:defaultData)
+        def extend_autocomplete_inputs(inputs)
+          inputs = autocomplete_input_defaults(inputs)
 
           if inputs.delete(:decorated)
-            inputs[:items] = @input.select_options.map(&:to_h)
-            selected = @input.select_options.filter_map { |option| option.to_h if option.selected }
-            inputs[:model] = inputs[:multiple] ? selected : selected.first
-            inputs[:defaultData] = false
-            inputs[:additionalClassProperty] = "classes"
-            inputs[:bindLabel] = "name"
+            inputs = autocomplete_input_decorated(inputs)
           elsif builder.object
             inputs[:inputValue] ||= builder.object.send(@input.name)
           end
 
           inputs
+        end
+
+        private
+
+        def autocomplete_input_defaults(inputs)
+          inputs[:classes] = "ng-select--primerized #{@input.invalid? ? '-error' : ''}"
+          inputs[:inputName] ||= builder.field_name(@input.name)
+          inputs[:labelForId] ||= builder.field_id(@input.name)
+          inputs[:defaultData] = true unless inputs.key?(:defaultData)
+          inputs
+        end
+
+        def autocomplete_input_decorated(inputs)
+          selected = @input.select_options.filter_map { |option| option.to_h if option.selected }
+          model = inputs[:multiple] ? selected : selected.first
+
+          inputs.merge(
+            items: @input.select_options.map(&:to_h),
+            model:,
+            defaultData: false,
+            additionalClassProperty: "classes",
+            bindLabel: "name",
+            bindValue: "id"
+          )
         end
       end
     end

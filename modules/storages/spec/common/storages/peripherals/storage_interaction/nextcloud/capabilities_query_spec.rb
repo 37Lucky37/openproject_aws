@@ -110,7 +110,7 @@ RSpec.describe Storages::Peripherals::StorageInteraction::Nextcloud::Capabilitie
 
       error = result.errors
       expect(error).to be_a(Storages::StorageError)
-      expect(error.code).to eq(:error)
+      expect(error.code).to eq(:invalid_version_number)
       expect(error.log_message).to include("not a valid version string")
     end
   end

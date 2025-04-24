@@ -4,7 +4,7 @@ ja:
     description: "OmniAuth OpenID Connect ストラテジープロバイダを OpenProject に追加します。"
   logout_warning: >
     ログアウトしています。送信したフォームの内容は失われる可能性があります。 [ログイン] してください。
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: 名称
@@ -25,11 +25,10 @@ ja:
         issuer: 発行者
         tenant: テナント
         metadata_url: メタデータURL
-        icon: カスタム アイコン
+        icon: カスタムアイコン
         claims: クレーム
         acr_values: ACR値
         redirect_url: リダイレクトURL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -99,12 +98,12 @@ ja:
       label_empty_title: No OpenID providers configured yet.
       label_empty_description: Add a provider to see them here.
       label_metadata: OpenID Connect Discovery Endpoint
-      label_automatic_configuration: Automatic configuration
+      label_automatic_configuration: 自動設定
       label_optional_configuration: Optional configuration
       label_advanced_configuration: Advanced configuration
-      label_configuration_details: Metadata
+      label_configuration_details: メタデータ
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: 属性のマッピング
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: プロバイダーが定義されていません。
       plural: OpenID プロバイダー

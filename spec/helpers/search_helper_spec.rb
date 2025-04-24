@@ -130,9 +130,9 @@ RSpec.describe "search/index" do
     context "with the token in the description" do
       let(:tokens) { %w(description) }
 
-      it "shows the text in the description" do
+      it "shows the formatted text in the description" do
         expect(helper.highlight_tokens_in_event(event, tokens))
-          .to eql 'The <span class="search-highlight token-0">description</span> of the event'
+          .to eql '<p class="op-uc-p">The <span class="search-highlight token-0">description</span> of the event</p>'
       end
     end
 
@@ -140,9 +140,28 @@ RSpec.describe "search/index" do
       let(:tokens) { %w(description) }
       let(:journal_notes) { "" }
 
-      it "shows the text in the description" do
+      it "shows the formatted text in the description" do
         expect(helper.highlight_tokens_in_event(event, tokens))
-          .to eql 'The <span class="search-highlight token-0">description</span> of the event'
+          .to eql '<p class="op-uc-p">The <span class="search-highlight token-0">description</span> of the event</p>'
+      end
+
+      context "with elaborate markdown formatting in the description" do
+        let(:event_description) do
+          <<~MARKDOWN
+            This is a paragraph with **bold** and *italic* text #{'hello ' * 100}.
+          MARKDOWN
+        end
+        let(:tokens) { %w(bold) }
+
+        it "formats it to abbreviated HTML" do
+          expectation = <<~HTML.squish
+            <p class="op-uc-p">This is a paragraph with
+            <strong><span class="search-highlight token-0">bold</span></strong>
+            and <em>italic</em> text #{'hello ' * 15} hello...</p>
+          HTML
+
+          expect(helper.highlight_tokens_in_event(event, tokens)).to eql(expectation)
+        end
       end
     end
 
@@ -179,9 +198,9 @@ RSpec.describe "search/index" do
     context "with the token in neither" do
       let(:tokens) { %w(bogus) }
 
-      it "shows the description (without highlight)" do
+      it "shows the formatted description (without highlight)" do
         expect(helper.highlight_tokens_in_event(event, tokens))
-          .to eql "The description of the event"
+          .to eql '<p class="op-uc-p">The description of the event</p>'
       end
     end
   end

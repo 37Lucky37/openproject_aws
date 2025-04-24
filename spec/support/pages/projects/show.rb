@@ -51,12 +51,12 @@ module Pages
 
       def expect_no_visible_sidebar
         expect_angular_frontend_initialized
-        expect(page).to have_no_css(".op-grid-page--sidebar")
+        expect(page).to have_no_css(".Layout-sidebar")
       end
 
       def expect_visible_sidebar
         expect_angular_frontend_initialized
-        expect(page).to have_css(".op-grid-page--sidebar")
+        expect(page).to have_css(".Layout-sidebar")
       end
 
       def within_project_attributes_sidebar(&)

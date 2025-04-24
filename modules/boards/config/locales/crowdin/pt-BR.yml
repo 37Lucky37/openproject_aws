@@ -31,7 +31,7 @@ pt-BR:
       version: >
         Quadro com colunas automatizadas baseado no atributo da versão. Ideal para planejar desenvolvimento de produto.
       subproject: >
-        Quadro com colunas automatizadas para subprojetos. Arrastar pacotes de trabalho para outras listas atualiza os (sub)projetos de acordo.
+        Quadro com colunas automatizadas para subprojetos. Arrastar pacotes de trabalho para outras listas atualiza os (sub)projetos de acordo. 
       subtasks: >
         Quadro com colunas automatizadas para subelementos. Arrastar pacotes de trabalho para outras listas atualiza os pais de acordo.
     upsale:

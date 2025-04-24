@@ -403,6 +403,7 @@ import {
 import {
   WorkPackageSplitViewEntryComponent,
 } from 'core-app/features/work-packages/routing/wp-split-view/wp-split-view-entry.component';
+import { OpWpDatePickerModalComponent } from 'core-app/shared/components/datepicker/wp-date-picker-modal/wp-date-picker.modal';
 
 @NgModule({
   imports: [
@@ -637,6 +638,8 @@ import {
     OpBaselineComponent,
     OpBaselineLoadingComponent,
     OpBaselineLegendsComponent,
+
+    OpWpDatePickerModalComponent,
   ],
   exports: [
     WorkPackagesTableComponent,
@@ -668,6 +671,7 @@ import {
     WorkPackageSingleViewComponent,
     WorkPackageSplitViewComponent,
     BackButtonComponent,
+    OpWpDatePickerModalComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

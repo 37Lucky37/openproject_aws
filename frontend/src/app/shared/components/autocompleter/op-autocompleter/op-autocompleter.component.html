@@ -183,7 +183,6 @@
           [ngClass]="highlighting('status',item.status?.id)"
           class="op-autocompleter--wp-status"
         ></span>
-
       </div>
     </div>
   </ng-container>
@@ -196,7 +195,10 @@
       class="op-autocompleter--option-principal-avatar"
       size="mini"
     ></op-principal>
-    <span [ngOptionHighlight]="search">{{ item.name }}</span>
+    <span
+      [attr.data-hover-card-trigger-target]="getHoverCardTriggerTarget(item)"
+      [attr.data-hover-card-url]="getHoverCardUrl(item)"
+      [ngOptionHighlight]="search">{{ item.name }}</span>
     <span
       class="op-autocompleter__option-principal-email"
       *ngIf="item.email"
@@ -207,6 +209,8 @@
     *ngSwitchCase="resource ==='subproject' || resource ==='version' || resource ==='status' || resource ==='default' || (!resource && !item.depth)">
     <span
       [ngClass]=" additionalClassProperty ? item[additionalClassProperty] : ''"
+      [attr.data-hover-card-trigger-target]="getHoverCardTriggerTarget(item)"
+      [attr.data-hover-card-url]="getHoverCardUrl(item)"
       [ngOptionHighlight]="search">{{ item.name }}
     </span>
     <span

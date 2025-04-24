@@ -235,7 +235,7 @@ RSpec.describe API::V3::WorkPackages::Schema::WorkPackageSchemaRepresenter do
       it_behaves_like "has basic schema properties" do
         let(:path) { "lockVersion" }
         let(:type) { "Integer" }
-        let(:name) { I18n.t("api_v3.attributes.lock_version") }
+        let(:name) { I18n.t("attributes.lock_version") }
         let(:required) { true }
         let(:writable) { true }
       end

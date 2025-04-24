@@ -1,11 +1,15 @@
 <%# Highlightable resources %>
-<%= resource_color_css('status', ::Status) %>
-<%= resource_color_css('priority', ::IssuePriority) %>
-<%= resource_color_css('type', ::Type, inline_foreground: true) %>
+<%= resources_scope_color_css("status", ::Status) %>
+<%= resources_scope_color_css("priority", ::IssuePriority) %>
+<%= resources_scope_color_css("type", ::Type, inline_foreground: true) %>
 <%# Color coded icons %>
-<%= resource_color_css('life_cycle_step_definition', Project::LifeCycleStepDefinition, inline_foreground: true) %>
+<%= resources_scope_color_css("project_phase_definition", Project::PhaseDefinition, inline_foreground: true) %>
 
-<%= color_css() %>
+<% Meetings::Statuses::AVAILABLE.each do |meeting_status| %>
+<%= resource_color_css("meeting_status", meeting_status) %>
+<% end %>
+
+<%= color_css %>
 
 <%# Overdue tasks %>
 .__hl_date_due_today { color: #F76707 !important; }

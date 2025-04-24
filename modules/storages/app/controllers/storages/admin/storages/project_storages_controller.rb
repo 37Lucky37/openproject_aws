@@ -53,7 +53,7 @@ class Storages::Admin::Storages::ProjectStoragesController < ApplicationControll
 
   def new
     respond_with_dialog(
-      if storage_oauth_access_granted?(storage: @storage)
+      if @project_storage.storage.oauth_access_granted?(User.current)
         ::Storages::Admin::Storages::ProjectsStorageModalComponent.new(
           project_storage: @project_storage, last_project_folders: {}
         )

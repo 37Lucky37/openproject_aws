@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -129,6 +131,8 @@ module Meetings
       end
 
       def update_new_button_via_turbo_stream(disabled: false, meeting: @meeting, meeting_section: nil)
+        return unless User.current.allowed_in_project?(:manage_agendas, @meeting.project)
+
         update_via_turbo_stream(
           component: MeetingAgendaItems::NewButtonComponent.new(
             disabled:,
@@ -140,7 +144,7 @@ module Meetings
 
       def render_agenda_item_form_via_turbo_stream(meeting: @meeting, meeting_section: @meeting_section, type: :simple)
         if meeting.sections.empty?
-          render_agenda_item_form_for_empty_meeting_via_turbo_stream(meeting:, type:)
+          render_agenda_item_form_for_empty_meeting_via_turbo_stream(type:)
         else
           render_agenda_item_form_in_section_via_turbo_stream(meeting:, meeting_section:, type:)
         end
@@ -148,7 +152,7 @@ module Meetings
         update_new_button_via_turbo_stream(disabled: true)
       end
 
-      def render_agenda_item_form_for_empty_meeting_via_turbo_stream(meeting: @meeting, type: :simple)
+      def render_agenda_item_form_for_empty_meeting_via_turbo_stream(type: :simple)
         update_new_component_via_turbo_stream(
           hidden: false,
           meeting_section: nil,
@@ -170,6 +174,17 @@ module Meetings
             type:
           )
         end
+      end
+
+      def render_base_outcome_component_via_turbo_stream(meeting:, meeting_agenda_item:, meeting_outcome:, edit:)
+        update_via_turbo_stream(
+          component: MeetingAgendaItems::Outcomes::BaseComponent.new(
+            meeting:,
+            meeting_agenda_item:,
+            meeting_outcome:,
+            edit:
+          )
+        )
       end
 
       def update_list_via_turbo_stream(meeting: @meeting, form_hidden: true, form_type: :simple)

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -56,6 +56,15 @@ module WorkPackages
 
         def form_row_display_value
           form_hidden_initially ? :none : :block
+        end
+
+        def adding_restricted_comment_allowed?
+          OpenProject::FeatureDecisions.comments_with_restricted_visibility_active? &&
+            User.current.allowed_in_project?(:add_comments_with_restricted_visibility, work_package.project)
+        end
+
+        def learn_more_static_link_url
+          ::OpenProject::Static::Links.url_for(:user_guides_work_package_activity)
         end
       end
     end

@@ -2,6 +2,8 @@ require "spec_helper"
 require "support/pages/work_packages/abstract_work_package"
 
 RSpec.describe "multi version custom field", :js do
+  include Components::Autocompleter::NgSelectAutocompleteHelpers
+
   shared_let(:admin) { create(:admin) }
   let(:current_user) { admin }
   let(:wp_page) { Pages::FullWorkPackage.new work_package }
@@ -98,8 +100,12 @@ RSpec.describe "multi version custom field", :js do
       expect(page).to have_text "Version Current"
 
       page.find(".inline-edit--display-field", text: "Version Old").click
-
       cf_edit_field.unset_value "Version Old", multi: true
+
+      expect_ng_option(cf_edit_field, version_old, grouping: project.name, results_selector: "body")
+      expect_no_ng_option(cf_edit_field, version_current, results_selector: "body")
+      expect_ng_option(cf_edit_field, version_future, grouping: project.name, results_selector: "body")
+
       cf_edit_field.set_value "Version Future"
 
       click_on "Fix version: Save"

@@ -1,10 +1,10 @@
 pl:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nazwa
         identifier: Identyfikator
-        secret: Tajny klucz
+        secret: Klucz tajny
         scope: Zakres
         assertion_consumer_service_url: Adres URL usługi ACS (Assertion consumer service)
         limit_self_registration: Ogranicz samodzielną rejestrację
@@ -22,8 +22,7 @@ pl:
         signature_method: Algorytm sygnatury
         digest_method: Algorytm skrótu
         format: "Format"
-        icon: "Niestandardowa ikona"
-  activerecord:
+        icon: "Ikona niestandardowa"
     errors:
       models:
         saml/provider:

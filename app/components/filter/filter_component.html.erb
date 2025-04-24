@@ -5,7 +5,6 @@
                'filter--filters-form-target': 'filterForm',
                action: 'submit->filter--filters-form#sendForm:prevent'
              }) do %>
-  <% operators_without_values = %w[* !* t w] %>
   <fieldset class="advanced-filters--container">
     <a title="<%= t('js.close_form_title') %>"
        class="advanced-filters--close icon-context icon-close"
@@ -39,29 +38,28 @@
                              'filter-name': filter.name
                            } %>
           <% end %>
-          <% value_visibility = operators_without_values.include?(selected_operator) ? 'hidden' : '' %>
           <% if autocomplete_filter %>
             <%= render partial: 'filters/autocomplete',
-                       locals: { value_visibility: value_visibility,
+                       locals: { value_visibility: value_hidden_class(selected_operator),
                                  filter: filter,
                                  autocomplete_options: additional_options[:autocomplete_options] } %>
           <% elsif filter_boolean %>
             <%= render partial: 'filters/boolean',
-                       locals: { value_visibility: value_visibility,
+                       locals: { value_visibility: value_hidden_class(selected_operator),
                                  filter: filter } %>
           <% elsif %i(list list_optional list_all).include? filter.type %>
             <%= render partial: 'filters/list/input_options',
-                       locals: { value_visibility: value_visibility,
+                       locals: { value_visibility: value_hidden_class(selected_operator),
                                  filter: filter } %>
           <% elsif [:datetime_past, :date].include? filter.type %>
             <%= render partial: 'filters/date/input_options',
-                       locals: { value_visibility: value_visibility,
+                       locals: { value_visibility: value_hidden_class(selected_operator),
                                  filter: filter,
                                  selected_operator: selected_operator } %>
           <% else %>
             <%# All other simple types %>
             <%= render partial: 'filters/text',
-                       locals: { value_visibility: value_visibility,
+                       locals: { value_visibility: value_hidden_class(selected_operator),
                                  filter: filter } %>
           <% end %>
 

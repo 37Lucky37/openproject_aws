@@ -8,6 +8,7 @@ import { OpModalBannerComponent } from 'core-app/shared/components/modal/modal-b
 import { OpModalOverlayComponent } from 'core-app/shared/components/modal/modal-overlay.component';
 import { CommonModule } from '@angular/common';
 import { OpCustomModalOverlayComponent } from 'core-app/shared/components/modal/custom-modal-overlay.component';
+import { ModalWithTurboContentDirective } from 'core-app/shared/components/fields/edit/modal-with-turbo-content/modal-with-turbo-content.directive';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { OpCustomModalOverlayComponent } from 'core-app/shared/components/modal/
     OpModalOverlayComponent,
     OpCustomModalOverlayComponent,
     OpModalBannerComponent,
+    ModalWithTurboContentDirective,
   ],
   providers: [
     OpModalWrapperAugmentService,
@@ -29,6 +31,7 @@ import { OpCustomModalOverlayComponent } from 'core-app/shared/components/modal/
     OpModalBannerComponent,
     OpModalOverlayComponent,
     OpCustomModalOverlayComponent,
+    ModalWithTurboContentDirective,
   ],
 })
 export class OpenprojectModalModule { }

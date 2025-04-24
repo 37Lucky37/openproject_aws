@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -35,8 +35,12 @@ module OpenIDConnect
     # application for which we know the audience name, which is typically the application's
     # client_id at an identity provider that OpenProject and the application have in common.
     class FetchService
-      include Dry::Monads[:result]
-      include Dry::Monads::Do.for(:access_token_for, :refreshed_access_token_for)
+      include Dry::Monads::Result(TokenOperationError)
+      include Dry::Monads::Do.for(:access_token_for)
+
+      TOKEN_OBTAINED_EVENT = "access_token_obtained"
+
+      attr_reader :user
 
       def initialize(user:,
                      jwt_parser: JwtParser.new(verify_audience: false, verify_expiration: false),
@@ -46,6 +50,7 @@ module OpenIDConnect
         @token_exchange = token_exchange
         @token_refresh = token_refresh
         @jwt_parser = jwt_parser
+        @error = TokenOperationError.new(source: self.class)
       end
 
       ##
@@ -61,43 +66,43 @@ module OpenIDConnect
       # for the target audience either can't be found or it has expired, but has no available refresh token.
       def access_token_for(audience:)
         token = yield token_with_audience(audience)
-        token = yield @token_refresh.call(token) if expired?(token.access_token)
+        token = yield @token_refresh.call(token) if expired?(token)
 
-        Success(token.access_token)
-      end
-
-      ##
-      # Obtains an access token that can be used to make requests in the user's name at the
-      # remote service identified by the +audience+ parameter.
-      #
-      # The access token will always be refreshed before being returned by this method.
-      # It is advised to use this method, after learning that a remote service rejected
-      # an access token, because it was expired.
-      #
-      # A token exchange is attempted, if the provider supports OAuth 2.0 Token Exchange and a token
-      # for the target audience either can't be found or it has expired, but has no available refresh token.
-      def refreshed_access_token_for(audience:)
-        token = yield token_with_audience(audience)
-        token = yield @token_refresh.call(token)
+        emit_event(token, audience)
         Success(token.access_token)
       end
 
       private
 
-      def token_with_audience(aud)
-        token = @user.oidc_user_tokens.where("audiences ? :aud", aud:).first
-        return Success(token) if token
-
-        return @token_exchange.call(aud) if @token_exchange.supported?
-
-        Failure("No token for audience '#{aud}'")
+      def emit_event(token, audience)
+        OpenProject::Notifications.send(TOKEN_OBTAINED_EVENT, audience:, token:)
       end
 
-      def expired?(token_string)
-        exp = @jwt_parser.parse(token_string).fmap { |decoded, _| decoded["exp"] }.value_or(nil)
-        return false if exp.nil?
+      def token_with_audience(aud)
+        token = @user.oidc_user_tokens.with_audience(aud).first
+        return Success(token) if token
 
-        exp <= Time.now.to_i
+        if @token_exchange.supported?
+          @token_exchange.call(aud)
+        else
+          Failure(@error.with(code: :no_token_for_audience, payload: "No token for audience '#{aud}'"))
+        end
+      end
+
+      def expired?(token)
+        exp_time = expires_at(token)
+        return false if exp_time.nil?
+
+        exp_time.past?
+      end
+
+      def expires_at(token)
+        return token.expires_at if token.expires_at.present?
+
+        exp = @jwt_parser.parse(token.access_token).fmap { |decoded, _| decoded["exp"] }.value_or(nil)
+        return nil if exp.nil?
+
+        Time.zone.at(exp)
       end
     end
   end

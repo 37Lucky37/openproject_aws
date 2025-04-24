@@ -84,6 +84,12 @@ ms:
         ifc_attachment: "Fail IFC"
         is_default: "Model default"
         attachments: "Fail IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Peringkat"
+        viewpoint: "Sudut pandangan"
     errors:
       models:
         bim/ifc_models/ifc_model:

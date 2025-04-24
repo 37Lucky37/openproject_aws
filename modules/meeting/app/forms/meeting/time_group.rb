@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -40,7 +41,8 @@ class Meeting::TimeGroup < ApplicationForm
         required: true,
         autofocus: false,
         data: {
-          action: "input->recurring-meetings--form#updateFrequencyText"
+          action: "input->recurring-meetings--form#updateFrequencyText \
+                   input->meetings--form#updateTimezoneText"
         }
       )
 
@@ -51,11 +53,13 @@ class Meeting::TimeGroup < ApplicationForm
         placeholder: Meeting.human_attribute_name(:start_time),
         label: Meeting.human_attribute_name(:start_time),
         required: true,
-        caption: formatted_time_zone_offset,
+        caption: timezone_caption,
         data: {
-          action: "input->recurring-meetings--form#updateFrequencyText"
+          action: "input->recurring-meetings--form#updateFrequencyText \
+                   input->meetings--form#updateTimezoneText"
         }
       )
+
       group.text_field(
         name: :duration,
         type: :text,
@@ -77,8 +81,8 @@ class Meeting::TimeGroup < ApplicationForm
     super()
 
     @meeting = meeting
-    @initial_time = meeting.start_time_hour.presence || format_time(meeting.start_time, include_date: false, format: "%H:%M")
-    @initial_date = meeting.start_date.presence || format_time_as_date(meeting.start_time, format: "%Y-%m-%d")
+    @initial_time = meeting.start_time_hour.presence
+    @initial_date = meeting.start_date.presence
 
     duration = duration_value(meeting)
     @duration = duration.nil? ? "" : ChronicDuration.output(duration * 3600, format: :hours_only)
@@ -92,5 +96,9 @@ class Meeting::TimeGroup < ApplicationForm
     else
       meeting.duration
     end
+  end
+
+  def timezone_caption
+    friendly_timezone_name(User.current.time_zone, period: @meeting.start_time)
   end
 end

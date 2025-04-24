@@ -103,7 +103,6 @@
     button_settings: "Innstillinger"
     button_uncheck_all: "Avmerk alle"
     button_update: "Oppdater"
-    button_export-pdf: "Last ned PDF"
     button_export-atom: "Last ned Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Opprett"
@@ -222,6 +221,8 @@
             label_maximum_users: "Maksimalt antall aktive brukere"
             label_starts_at: "Starter på"
             label_expires_at: "Utløper på"
+            label_plan: "Abonnement"
+            label_additional_features: "Additional features"
             receive_newsletter: Jeg vil motta OpenProject <a target="_blank" href="%{link}">nyhetsbrev</a>.
             taken_domain: Det kan kun være en aktiv prøveversjon per domene.
             domain_mismatch: Gjeldende forespørselsnavnet samsvarer ikke med det konfigurerte vertsnavnet. Vennligst dobbeltsjekk systeminnstillingene.
@@ -357,10 +358,10 @@
           learn_about: "Lær mer om de nye funksjonene"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Abonner på kalender"
       inital_setup_error_message: "En feil oppstod under henting av data."
@@ -613,7 +614,7 @@
         assigned: "Deltaker"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
-        responsible: "Accountable"
+        responsible: "Ansvarlig"
         created: "Opprettet"
         scheduled: "Planlagt"
         commented: "Kommentert"
@@ -643,7 +644,7 @@
           with_current_filter: "Det er ingen varsler i denne visningen for øyeblikket"
         mark_all_read: "Merk alle som lest"
         mark_as_read: "Merk som lest"
-        text_update_date_by: "%{date} by"
+        text_update_date_by: "%{date} av"
         total_count_warning: "Viser de %{newest_count} nyeste varsler. %{more_count} flere er ikke vist."
         empty_state:
           no_notification: "Ser ut som du er helt oppdatert."
@@ -718,17 +719,18 @@
       description: "Beskrivelse: Klikk for å redigere..."
       relation_description: "Klikk for å legge til beskrivelse for denne relasjonen"
     project:
-      required_outside_context: >
-        Velg et prosjekt for å opprette arbeidspakken og se alle egenskaper. Du kan bare velge prosjekter som har typen ovenfor aktivert.
-      context: "Prosjekt kontekst"
-      click_to_switch_to_project: "Prosjekt: %{projectname}"
-      confirm_template_load: "Bytte av mal vil laste siden på nytt, og du vil miste alle data på dette skjemaet. Vil du fortsette?"
-      use_template: "Bruk mal"
-      no_template_selected: "(Ingen)"
-      copy:
-        copy_options: "Kopier alternativer"
       autocompleter:
         label: "Prosjektet autofullføring"
+      click_to_switch_to_project: "Prosjekt: %{projectname}"
+      confirm_template_load: "Bytte av mal vil laste siden på nytt, og du vil miste alle data på dette skjemaet. Vil du fortsette?"
+      context: "Prosjekt kontekst"
+      copy:
+        copy_options: "Kopier alternativer"
+      not_available: "Project N/A"
+      no_template_selected: "(Ingen)"
+      required_outside_context: >
+        Velg et prosjekt for å opprette arbeidspakken og se alle egenskaper. Du kan bare velge prosjekter som har typen ovenfor aktivert.
+      use_template: "Bruk mal"
     reminders:
       settings:
         daily:
@@ -797,6 +799,7 @@
       typeahead_placeholder: Søk etter mulige overvåkere
     relation_labels:
       parent: "Overordnet"
+      child: "Child"
       children: "Underordnede"
       relates: "Relatert til"
       duplicates: "Duplikater"
@@ -826,7 +829,7 @@
       add_new_child: "Opprett ny underordnet"
       create_new: "Opprett ny"
       add_existing: "Legg til eksisterende"
-      add_existing_child: "Legg til eksisterende underordnet"
+      add_existing_child: "Add child"
       remove_child: "Fjern underordnet"
       add_new_relation: "Lag ny relasjon"
       add_existing_relation: "Legg til eksisterende relasjon"
@@ -852,8 +855,6 @@
       select_branch: "Velg gren"
     field_value_enter_prompt: "Angi en verdi for '%{field}'"
     project_menu_details: "Detaljer"
-    scheduling:
-      manual: "Manuell planlegging"
     sort:
       sorted_asc: "Stigende sortering er valgt,"
       sorted_dsc: "Synkende sortering er valgt,"
@@ -901,15 +902,6 @@
       comment_send_failed: "En feil har oppstått.  Kommentaren kunne ikke sendes inn."
       comment_updated: "Kommentaren ble lagt til."
       confirm_edit_cancel: "Er du sikker å at du vil avbryte redigeringen av arbeidspakken?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatisk planlagt.  Datoer er hentet fra relasjoner."
-        manually_scheduled: "Manuell planlegging er aktivert, alle realsjoner vil bli ignorert."
-        start_date_limited_by_relations: "Tilgjengelige start- og sluttdatoer er begrenset av relasjoner."
-        changing_dates_affects_follow_relations: "Endring av disse datoene vil ha innvirkning på daoter i relaterte arbeidspakker."
-        click_on_show_relations_to_open_gantt: 'Klikk på "%{button_name}" for GANTT oversikt.'
-        show_relations: "Vis relasjoner"
-        ignore_non_working_days:
-          title: "Kun arbeidsdager"
       description_filter: "Filter"
       description_enter_text: "Skriv tekst"
       description_options_hide: "Skjul alternativer"

@@ -121,4 +121,7 @@ Rails.application.configure do
 
   # Speed up tests by lowering BCrypt's cost function
   BCrypt::Engine.cost = BCrypt::Engine::MIN_COST
+
+  # use ActiveJob test adapter
+  config.active_job.queue_adapter = :test
 end

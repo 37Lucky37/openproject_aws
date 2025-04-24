@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,7 +41,7 @@ module Storages
       end
 
       def render?
-        @storage.automatically_managed?
+        @storage.automatic_management_enabled?
       end
 
       def notification_status

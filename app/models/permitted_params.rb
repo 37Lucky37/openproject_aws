@@ -211,7 +211,6 @@ class PermittedParams
   def user_create_as_admin(external_authentication,
                            change_password_allowed,
                            additional_params = [])
-
     additional_params << :ldap_auth_source_id unless external_authentication
 
     if current_user.admin?
@@ -290,9 +289,9 @@ class PermittedParams
     whitelist.merge(custom_field_values(:project))
   end
 
-  def project_life_cycles
+  def project_phases
     params.require(:project).permit(
-      available_life_cycle_steps_attributes: %i[id date date_range]
+      available_phases_attributes: %i[id date date_range]
     )
   end
 

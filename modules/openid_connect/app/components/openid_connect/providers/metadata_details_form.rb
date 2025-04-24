@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -33,7 +35,7 @@ module OpenIDConnect
         OpenIDConnect::Provider::DISCOVERABLE_STRING_ATTRIBUTES_ALL.each do |attr|
           f.text_field(
             name: attr,
-            label: I18n.t("activemodel.attributes.openid_connect/provider.#{attr}"),
+            label: I18n.t("activerecord.attributes.openid_connect/provider.#{attr}"),
             disabled: provider.seeded_from_env?,
             required: OpenIDConnect::Provider::DISCOVERABLE_STRING_ATTRIBUTES_MANDATORY.include?(attr),
             input_width: :large
@@ -43,7 +45,7 @@ module OpenIDConnect
         if OpenProject::FeatureDecisions.oidc_token_exchange_active?
           f.text_field(
             name: :grant_types_supported,
-            label: I18n.t("activemodel.attributes.openid_connect/provider.grant_types_supported"),
+            label: I18n.t("activerecord.attributes.openid_connect/provider.grant_types_supported"),
             disabled: provider.seeded_from_env?,
             required: false,
             input_width: :large
@@ -52,7 +54,7 @@ module OpenIDConnect
 
         f.text_field(
           name: :icon,
-          label: I18n.t("activemodel.attributes.openid_connect/provider.icon"),
+          label: I18n.t("activerecord.attributes.openid_connect/provider.icon"),
           caption: I18n.t("saml.instructions.icon"),
           disabled: provider.seeded_from_env?,
           required: false,

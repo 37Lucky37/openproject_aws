@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -71,19 +73,19 @@ module Meetings
     end
 
     def meeting_series_menu_items # rubocop:disable Metrics/AbcSize
-      series = RecurringMeeting
+      all_series = RecurringMeeting
         .visible
         .includes(:project)
         .reorder("LOWER(title)")
 
       if project
-        series = series.where(project_id: project.id)
+        all_series = all_series.where(project_id: project.id)
       end
 
       current_href = params[:current_href]
       current_recurring_meeting_id = extracted_id(current_href)
 
-      series.all.map do |series|
+      all_series.all.map do |series|
         href = project_recurring_meeting_path(series.project, series)
         OpenProject::Menu::MenuItem.new(title: series.title,
                                         selected: select_status(href, current_href, current_recurring_meeting_id),

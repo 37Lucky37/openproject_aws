@@ -4,7 +4,7 @@ fr:
     description: "Ajoute des fournisseurs de stratégie OmniAuth OpenID Connect à OpenProject."
   logout_warning: >
     Vous avez été déconnecté. Le contenu de tout formulaire que vous soumettez peut être perdu. Veuillez [vous connecter].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nom
@@ -13,7 +13,7 @@ fr:
         client_id: ID du client
         client_secret: Clé secrète du client
         secret: Secret
-        scope: Portée
+        scope: Périmètre
         grant_types_supported: Types d'autorisations pris en charge
         limit_self_registration: Limiter l'inscription automatique
         authorization_endpoint: Point de terminaison d'autorisation
@@ -29,7 +29,6 @@ fr:
         claims: Réclamations
         acr_values: Valeurs ACR
         redirect_url: URL de redirection
-  activerecord:
     errors:
       models:
         openid_connect/provider:

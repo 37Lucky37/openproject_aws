@@ -21,6 +21,7 @@
 #++
 ja:
   js:
+    text_are_you_sure: "よろしいですか？"
     work_packages:
       property_groups:
         costs: "コスト"

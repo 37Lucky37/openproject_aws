@@ -2,6 +2,7 @@
 ro:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Link-ul fişierelor în %{storageType}"
       link_existing_files: "Legaţi fişierele existente"
       upload_files: "Încarcă fişiere"
@@ -19,6 +20,7 @@ ro:
         one_drive: "OneDrive/SharePoint"
         default: "Depozitare"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Unele setări %{storageType} nu funcționează. Vă rugăm să contactați administratorul %{storageType}.
         live_data_error: "Eroare la preluarea detaliilor fișierului"
@@ -27,6 +29,8 @@ ro:
         no_file_links: "Pentru a conecta fișierele la acest pachet de lucru, vă rugăm să le faceți prin intermediul %{storageType}."
         not_logged_in: >
           Pentru a adăuga un link, vezi sau încarcă fișiere asociate cu acest pachet de lucru, te rog să te autentifici la %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Acest fișier există deja"
         already_existing_body: >

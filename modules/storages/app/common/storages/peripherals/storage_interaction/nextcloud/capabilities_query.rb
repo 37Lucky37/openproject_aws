@@ -34,7 +34,7 @@ module Storages
       module Nextcloud
         class CapabilitiesQuery
           include Dry::Monads[:result]
-          include Dry::Monads::Do.for(:call, :parse_capabilities)
+          include Dry::Monads::Do.for(:parse_capabilities)
 
           def self.call(storage:, auth_strategy:)
             new(storage).call(auth_strategy:)
@@ -47,9 +47,7 @@ module Storages
           def call(auth_strategy:)
             http_options = Util.ocs_api_request.deep_merge(Util.accept_json)
             result = Authentication[auth_strategy].call(storage: @storage, http_options:) do |http|
-              json = yield handle_response(http.get(url))
-
-              parse_capabilities(json)
+              handle_response(http.get(url))
             end
 
             to_service_result(result)
@@ -64,7 +62,8 @@ module Storages
 
             case response
             in { status: 200..299 }
-              Success(response.json(symbolize_keys: true))
+              json = response.json(symbolize_keys: true)
+              parse_capabilities(json)
             in { status: 404 }
               Failure(StorageError.new(code: :not_found,
                                        log_message: "Outbound request destination not found!",
@@ -98,7 +97,8 @@ module Storages
           # rubocop:enable Metrics/AbcSize
 
           def version(str)
-            failure = Failure(StorageError.new(code: :error, log_message: "'#{str}' is not a valid version string"))
+            failure = Failure(StorageError.new(code: :invalid_version_number,
+                                               log_message: "'#{str}' is not a valid version string"))
 
             return failure if str.nil?
 

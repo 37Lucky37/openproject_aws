@@ -34,6 +34,8 @@ es:
   enumeration_doc_categories: "Categorías de documentos"
   documents:
     label_attachment_author: "Autor del archivo adjunto"
+    label_categories: "Categorías"
+    new_category: "Nueva categoría"
   label_document_added: "Documento agregado"
   label_document_new: "Nuevo documento"
   label_document_plural: "Documentos"

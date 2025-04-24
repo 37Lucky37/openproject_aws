@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -252,7 +254,7 @@ RSpec.describe "baseline rendering",
       .result
   end
 
-  shared_let(:query) do
+  let(:query) do
     query = create(:query,
                    name: "Timestamps Query",
                    project:,
@@ -262,8 +264,7 @@ RSpec.describe "baseline rendering",
     query.add_filter("type_id", "=", [type_task.id, type_milestone.id])
     query.column_names =
       %w[id subject status type start_date due_date version priority assigned_to responsible] +
-      CustomField.all.pluck(:id).map { |id| "cf_#{id}" }
-    query.save!(validate: false)
+        CustomField.pluck(:id).map { |id| "cf_#{id}" }
 
     query
   end
@@ -274,6 +275,10 @@ RSpec.describe "baseline rendering",
   let(:baseline_modal) { Components::WorkPackages::BaselineModal.new }
 
   current_user { user }
+
+  before do
+    query.save!(validate: false)
+  end
 
   describe "with EE", with_ee: %i[baseline_comparison] do
     it "does show changes" do

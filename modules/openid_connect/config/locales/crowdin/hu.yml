@@ -4,16 +4,16 @@ hu:
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     Kijelentkeztél. A benyújtott űrlap tartalma elveszhet. Kérjük jelentkezz be.
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Név
         slug: Unique identifier
         display_name: Megjelenített név
-        client_id: Client ID
-        client_secret: Client secret
-        secret: Titok
-        scope: Hatókör
+        client_id: Ügyfél azonosító
+        client_secret: Kliens titok
+        secret: Titkos
+        scope: Terjedelem
         grant_types_supported: Supported grant types
         limit_self_registration: Limit self registration
         authorization_endpoint: Authorization endpoint
@@ -29,7 +29,6 @@ hu:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@ hu:
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Attribútum-leképezés
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Nincs szolgáltató definiálva
       plural: OpenID szolgáltatók

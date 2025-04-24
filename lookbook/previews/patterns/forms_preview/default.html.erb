@@ -13,6 +13,7 @@
         name: :ultimate_answer,
         label: "Small",
         required: true,
+        caption: "Small fields cannot contain a much longer caption. It will overflow until it reaches the form width.",
         input_width: :small
       )
 
@@ -36,14 +37,12 @@
         city_list.option(label: "Seattle", value: "seattle")
       end
 
-
       f.text_field(
         name: :lots_of_text,
         label: "XLarge",
         required: true,
         input_width: :xlarge
       )
-
 
       f.text_field(
         name: :lots_of_text,

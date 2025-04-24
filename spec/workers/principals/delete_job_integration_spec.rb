@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -346,7 +348,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
       shared_examples_for "public query rewriting" do
         let(:filter_symbol) { filter.to_s.demodulize.underscore.to_sym }
 
-        describe "with the filter has the deleted user as it's value" do
+        describe "with the filter has the deleted user as its value" do
           before do
             query.filter(filter_symbol, values: [principal.id.to_s], operator: "=")
             query.save!
@@ -360,7 +362,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
           end
         end
 
-        describe "with the filter has another user as it's value" do
+        describe "with the filter has another user as its value" do
           before do
             query.filter(filter_symbol, values: [other_user.id.to_s], operator: "=")
             query.save!
@@ -380,7 +382,7 @@ RSpec.describe Principals::DeleteJob, type: :model do
           end
         end
 
-        describe "with the filter has the deleted user and another user as it's value" do
+        describe "with the filter has the deleted user and another user as its value" do
           before do
             query.filter(filter_symbol, values: [principal.id.to_s, other_user.id.to_s], operator: "=")
             query.save!
@@ -512,6 +514,25 @@ RSpec.describe Principals::DeleteJob, type: :model do
           job
 
           expect(watched.watchers.reload).to be_empty
+        end
+      end
+    end
+
+    context "with a service account" do
+      describe "service account association" do
+        let(:principal) { create(:service_account, service:) }
+        let(:service) { create(:oauth_application) }
+
+        before do
+          principal.save!
+        end
+
+        it "deletes the service account association" do
+          expect { job }.to change(ServiceAccountAssociation, :count).from(1).to(0)
+        end
+
+        it "does not delete the service associated to the service account" do
+          expect { job }.not_to change(Doorkeeper::Application, :count)
         end
       end
     end

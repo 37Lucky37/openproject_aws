@@ -222,7 +222,7 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def journal_params
-    params.require(:journal).permit(:notes)
+    params.expect(journal: %i[notes restricted])
   end
 
   def handle_successful_create_call(call)
@@ -295,13 +295,16 @@ class WorkPackages::ActivitiesTabController < ApplicationController
   end
 
   def create_journal_service_call
-    ### taken from ActivitiesByWorkPackageAPI
     AddWorkPackageNoteService
       .new(user: User.current,
            work_package: @work_package)
       .call(journal_params[:notes],
-            send_notifications: !(params.has_key?(:notify) && params[:notify] == "false"))
-    ###
+            send_notifications: to_boolean(params[:notify], true),
+            restricted: to_boolean(journal_params[:restricted], false))
+  end
+
+  def to_boolean(value, default)
+    ActiveRecord::Type::Boolean.new.cast(value.presence || default)
   end
 
   def update_journal_service_call

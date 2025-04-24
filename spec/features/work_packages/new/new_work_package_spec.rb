@@ -358,6 +358,8 @@ RSpec.describe "new work package", :js do
       date_field = wp_page.edit_field(:combinedDate)
       date_field.click_to_open_datepicker
 
+      date_field.enable_start_date
+
       # Select date
       start = (Time.zone.today - 1.day).iso8601
       date_field.set_start_date start

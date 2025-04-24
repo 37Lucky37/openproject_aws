@@ -73,18 +73,22 @@ See COPYRIGHT and LICENSE files for more details.
       <% end %>
       <% if authorize_for(:meetings, :copy) %>
         <li>
-          <%= link_to(t(:button_copy),
-                      copy_project_meeting_path(@project, @meeting),
-                      class: "icon-context icon-copy") %>
+          <%= link_to(
+                t(:button_copy),
+                copy_project_meeting_path(@project, @meeting),
+                class: "icon-context icon-copy"
+              ) %>
         </li>
       <% end %>
       <% if authorize_for(:meetings, :destroy) %>
         <li>
-          <%= link_to(t(:button_delete),
-                      project_meeting_path(@project, @meeting),
-                      class: "icon-context icon-delete",
-                      method: :delete,
-                      data: { confirm: t(:text_are_you_sure) }) %>
+          <%= link_to(
+                t(:button_delete),
+                project_meeting_path(@project, @meeting),
+                class: "icon-context icon-delete",
+                method: :delete,
+                data: { confirm: t(:text_are_you_sure) }
+              ) %>
         </li>
       <% end %>
     </ul>

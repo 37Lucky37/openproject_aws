@@ -390,11 +390,14 @@ RSpec.describe "Work package sharing",
 
     before do
       work_package_page.visit!
-      work_package_page.click_share_button
+
+      retry_block do
+        work_package_page.click_share_button
+        share_modal.expect_open
+      end
     end
 
     it "allows inviting and directly sharing with a user who is not part of the instance yet" do
-      share_modal.expect_open
       share_modal.expect_shared_count_of(6)
 
       # Invite a user that does not exist yet
@@ -435,7 +438,6 @@ RSpec.describe "Work package sharing",
     end
 
     it "shows an error message when inviting an existing locked user" do
-      share_modal.expect_open
       share_modal.expect_shared_count_of(6)
 
       # Try to invite the locked user

@@ -8,7 +8,7 @@ info:
 
     ## Introduction
 
-    The documentation for the APIv3 is written according to the [OpenAPI 3.0 Specification](https://swagger.io/specification/).
+    The documentation for the APIv3 is written according to the [OpenAPI 3.1 Specification](https://swagger.io/specification/).
     You can either view the static version of this documentation on the [website](https://www.openproject.org/docs/api/introduction/)
     or the interactive version, rendered with [OpenAPI Explorer](https://github.com/Rhosys/openapi-explorer/blob/main/README.md),
     in your OpenProject installation under `/api/docs`.

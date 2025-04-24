@@ -21,7 +21,23 @@
 #See docs/COPYRIGHT.rdoc for more details.
 #++
 uk:
+  attributes:
+    commit: "Коміт"
+    gitlab: "Ідентифікатор GitLab"
+    gitlab_avatar_url: "URL-адреса аватара"
+    gitlab_email: "Електронна адреса GitLab"
+    gitlab_html_url: "URL-адреса HTML GitLab"
+    gitlab_merge_request: "Запит на злиття"
+    gitlab_name: "Назва GitLab"
+    gitlab_updated_at: "Оновлено о"
+    gitlab_user_avatar_url: "URL-адреса аватара GitLab"
+    gitlab_username: "Ім’я користувача GitLab"
   activerecord:
+    attributes:
+      gitlab_pipeline:
+        ci_details: "Деталі CI"
+      gitlab_merge_request:
+        labels: "Мітки"
     errors:
       models:
         gitlab_issue:

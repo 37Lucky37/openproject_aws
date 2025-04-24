@@ -57,7 +57,7 @@ class WorkflowsController < ApplicationController
   def update
     call = Workflows::BulkUpdateService
            .new(role: @role, type: @type)
-           .call(params["status"])
+           .call(permitted_status_params)
 
     if call.success?
       flash[:notice] = I18n.t(:notice_successful_update)
@@ -147,5 +147,11 @@ class WorkflowsController < ApplicationController
     else
       roles
     end
+  end
+
+  def permitted_status_params
+    params["status"]
+      .to_unsafe_h
+      .select { |key, value| /\A\d+\z/.match?(key) && value.keys.all? { /\A\d+\z/.match?(it) } }
   end
 end

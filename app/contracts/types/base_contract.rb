@@ -47,6 +47,7 @@ module Types
     validate :validate_current_user_is_admin
     validate :validate_attribute_group_names
     validate :validate_attribute_groups
+    validate :validate_subject_generation_pattern
 
     def validate_current_user_is_admin
       unless user.admin?
@@ -100,5 +101,23 @@ module Types
         end
       end
     end
+
+    def validate_subject_generation_pattern
+      blueprint = model.patterns.subject&.blueprint
+      return if blueprint.nil?
+
+      valid_tokens = flat_valid_token_list
+      invalid_tokens = blueprint.scan(PatternResolver::TOKEN_REGEX)
+                                .reduce([]) do |acc, match|
+        token = Patterns::Token.build(match).key
+        valid_tokens.include?(token) ? acc : acc << token
+      end
+
+      if invalid_tokens.any?
+        errors.add(:patterns, :invalid_tokens)
+      end
+    end
+
+    def flat_valid_token_list = Patterns::TokenPropertyMapper.new.tokens_for_type(model).values.map(&:keys).flatten
   end
 end

@@ -30,8 +30,10 @@
 
 FactoryBot.define do
   factory :remote_identity do
-    user
-    oauth_client
+    user factory: %i[user]
+
+    auth_source factory: %i[oauth_client]
+    integration factory: %i[nextcloud_storage]
 
     sequence(:origin_user_id) { |n| "remote-user-identifier-#{n}" }
   end

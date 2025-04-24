@@ -21,6 +21,7 @@
 #++
 vi:
   js:
+    text_are_you_sure: "Bạn có chắc không?"
     work_packages:
       property_groups:
         costs: "Chi phí"

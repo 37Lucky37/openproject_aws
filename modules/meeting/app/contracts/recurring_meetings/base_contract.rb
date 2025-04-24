@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -43,6 +44,7 @@ module RecurringMeetings
     attribute :end_date
     attribute :iterations
     attribute :interval
+    attribute :time_zone
 
     # Virtual attributes for the form
     attribute :duration

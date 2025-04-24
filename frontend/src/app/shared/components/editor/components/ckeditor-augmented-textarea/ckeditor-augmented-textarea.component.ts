@@ -84,6 +84,8 @@ export class CkeditorAugmentedTextareaComponent extends UntilDestroyedMixin impl
   // Output save requests (ctrl+enter and cmd+enter)
   @Output() saveRequested = new EventEmitter<string>();
 
+  @Output() editorEscape = new EventEmitter<string>();
+
   // Output keyup events
   @Output() editorKeyup = new EventEmitter<void>();
 

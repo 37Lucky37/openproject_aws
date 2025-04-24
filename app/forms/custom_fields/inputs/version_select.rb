@@ -38,23 +38,21 @@ module CustomFields
       end
 
       def additional_attributes
+        autocomplete_options = { groupBy: "group_by" }
+
         if @object.blank? || (@object.respond_to?(:project) && @object.project.blank?)
-          {
-            autocomplete_options: {
-              disabled: true,
-              placeholder: I18n.t("custom_fields.placeholder_version_select")
-            }
-          }
-        else
-          {}
+          autocomplete_options[:disabled] = true
+          autocomplete_options[:placeholder] = I18n.t("custom_fields.placeholder_version_select")
         end
+
+        { autocomplete_options: }
       end
 
       def assignable_versions(only_open:)
         if @object.is_a?(Project)
-          @object.assignable_versions(only_open: only_open)
+          @object.assignable_versions(only_open:)
         elsif @object.respond_to?(:project) && @object.project.present?
-          @object.project.assignable_versions(only_open: only_open)
+          @object.project.assignable_versions(only_open:)
         else
           Version.none
         end

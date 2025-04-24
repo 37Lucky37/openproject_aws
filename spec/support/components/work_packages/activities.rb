@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -82,7 +84,10 @@ module Components
       end
 
       def within_journal_entry(journal, &)
-        wait_for { page }.to have_test_selector("op-wp-journal-entry-#{journal.id}") # avoid flakyness
+        retry_block(screenshot: true) do
+          expect(page).to have_test_selector("op-wp-journal-entry-#{journal.id}")
+        end
+
         page.within_test_selector("op-wp-journal-entry-#{journal.id}", &)
       end
 
@@ -227,7 +232,7 @@ module Components
         page.find_test_selector("op-submit-work-package-journal-form").click
       end
 
-      def add_comment(text: nil, save: true)
+      def add_comment(text: nil, save: true, restricted: false)
         if page.find_test_selector("op-open-work-package-journal-form-trigger")
           open_new_comment_editor
         else
@@ -236,6 +241,12 @@ module Components
 
         page.within_test_selector("op-work-package-journal-form-element") do
           get_editor_form_field_element.set_value(text)
+
+          if restricted
+            expect(page).to have_test_selector("op-work-package-journal-restricted-comment-checkbox")
+            page.check("Restrict visibility")
+          end
+
           page.find_test_selector("op-submit-work-package-journal-form").click if save
         end
 
@@ -287,14 +298,26 @@ module Components
         end
 
         expect(page).to have_test_selector("op-work-package-journal-form-element")
+      end
 
-        page.within_test_selector("op-work-package-journal-form-element") do
-          page.find_test_selector("op-submit-work-package-journal-form").click
+      def dismiss_comment_editor_with_esc
+        page.find_test_selector("op-work-package-journal-form-element").send_keys(:escape)
+      end
+
+      def dismiss_comment_editor_with_cancel_button
+        page.within_test_selector("op-work-package-journal-form") do
+          click_on "Cancel"
         end
       end
 
-      def get_all_comments_as_arrary
+      def get_all_comments_as_array
         page.all(".work-packages-activities-tab-journals-item-component--journal-notes-body").map(&:text)
+      end
+
+      def expect_comments_order(items)
+        retry_block do
+          expect(get_all_comments_as_array).to eq(items)
+        end
       end
 
       def filter_journals(filter, default_sorting: User.current.preference&.comments_sorting || "desc")
@@ -310,8 +333,8 @@ module Components
         end
 
         # Ensure the journals are reloaded
-        # wait_for { page }.to have_test_selector("op-wp-journals-#{filter}-#{default_sorting}")
-        # the wait_for will not work as the selector will be switched to the target filter before the page is updated
+        wait_for { page }.to have_test_selector("op-wp-journals-#{filter}-#{default_sorting}")
+        # the wait_for will not work on it's own as the selector will be switched to the target filter before the page is updated
         # so we still need to wait statically unfortuntately to avoid flakyness
         sleep 1
       end

@@ -21,6 +21,7 @@
 #++
 fr:
   js:
+    text_are_you_sure: "Êtes-vous sûr ?"
     work_packages:
       property_groups:
         costs: "Coûts"

@@ -103,7 +103,6 @@ et:
     button_settings: "Seaded"
     button_uncheck_all: "Tühjenda valik"
     button_update: "Uuenda"
-    button_export-pdf: "Download PDF"
     button_export-atom: "Download Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Loo uus"
@@ -222,6 +221,8 @@ et:
             label_maximum_users: "Maximum active users"
             label_starts_at: "Starts at"
             label_expires_at: "Aegub"
+            label_plan: "Plan"
+            label_additional_features: "Additional features"
             receive_newsletter: I want to receive the OpenProject <a target="_blank" href="%{link}">newsletter</a>.
             taken_domain: There can only be one active trial per domain.
             domain_mismatch: The current request host name does not match the configured host name. Please double check your system settings.
@@ -294,7 +295,7 @@ et:
       embedded_table_loading: "The embedded view could not be loaded: %{message}"
     enumeration_activities: "Tegevused (ajajälgimine)"
     enumeration_doc_categories: "Dokumentide kategooriad"
-    enumeration_work_package_priorities: "Teemade prioriteedid"
+    enumeration_work_package_priorities: "Tööpakettide prioriteedid"
     filter:
       more_values_not_shown: "There are %{total} more results, search to filter results."
       description:
@@ -357,10 +358,10 @@ et:
           learn_about: "Learn more about the new features"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -387,7 +388,7 @@ et:
     label_ago: "päeva tagasi"
     label_all: "kõik"
     label_all_uppercase: "Kõik"
-    label_all_work_packages: "kõik teemad"
+    label_all_work_packages: "kõik tööpaketid"
     label_and: "ja"
     label_ascending: "Kasvav"
     label_author: "Author: %{user}"
@@ -399,7 +400,7 @@ et:
     label_board_sticky: "Külgejääv"
     label_change: "Muuda"
     label_create: "Loo uus"
-    label_create_work_package: "Lisa uus teema"
+    label_create_work_package: "Lisa uus tööpakett"
     label_created_by: "Created by"
     label_current: "current"
     label_date: "Kuupäev"
@@ -526,9 +527,9 @@ et:
     label_value_derived_from_children: "(value derived from children)"
     label_children_derived_duration: "Work package's children derived duration"
     label_warning: "Hoiatus"
-    label_work_package: "Teema"
+    label_work_package: "Tööpakett"
     label_work_package_parent: "Parent work package"
-    label_work_package_plural: "Teemad"
+    label_work_package_plural: "Tööpaketid"
     label_watch: "Vaata"
     label_watch_work_package: "Watch work package"
     label_watcher_added_successfully: "Watcher successfully added!"
@@ -718,17 +719,18 @@ et:
       description: "Description: Click to edit..."
       relation_description: "Click to add description for this relation"
     project:
-      required_outside_context: >
-        Please choose a project to create the work package in to see all attributes. You can only select projects which have the type above activated.
-      context: "Project context"
-      click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
-      use_template: "Use template"
-      no_template_selected: "(None)"
-      copy:
-        copy_options: "Copy options"
       autocompleter:
         label: "Project autocompletion"
+      click_to_switch_to_project: "Project: %{projectname}"
+      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
+      context: "Project context"
+      copy:
+        copy_options: "Copy options"
+      not_available: "Project N/A"
+      no_template_selected: "(None)"
+      required_outside_context: >
+        Please choose a project to create the work package in to see all attributes. You can only select projects which have the type above activated.
+      use_template: "Use template"
     reminders:
       settings:
         daily:
@@ -797,6 +799,7 @@ et:
       typeahead_placeholder: Search for possible watchers
     relation_labels:
       parent: "Pärineb teemast"
+      child: "Child"
       children: "Lapsed"
       relates: "Related To"
       duplicates: "Duplicates"
@@ -826,7 +829,7 @@ et:
       add_new_child: "Create new child"
       create_new: "Create new"
       add_existing: "Add existing"
-      add_existing_child: "Add existing child"
+      add_existing_child: "Add child"
       remove_child: "Remove child"
       add_new_relation: "Create new relation"
       add_existing_relation: "Add existing relation"
@@ -852,8 +855,6 @@ et:
       select_branch: "Select branch"
     field_value_enter_prompt: "Enter a value for '%{field}'"
     project_menu_details: "Üksikasjad"
-    scheduling:
-      manual: "Manual scheduling"
     sort:
       sorted_asc: "Ascending sort applied, "
       sorted_dsc: "Descending sort applied, "
@@ -862,7 +863,7 @@ et:
       activate_asc: "activate to apply an ascending sort"
       activate_dsc: "activate to apply a descending sort"
       activate_no: "activate to remove the sort"
-    text_work_packages_destroy_confirmation: "Oled Sa kindel oma soovis valitud teema(d) kustutada?"
+    text_work_packages_destroy_confirmation: "Oled kindel, et soovid valitud tööpaketti(d) kustutada?"
     text_query_destroy_confirmation: "Are you sure you want to delete the selected view?"
     tl_toolbar:
       zooms: "Suumi tase"
@@ -901,15 +902,6 @@ et:
       comment_send_failed: "An error has occurred. Could not submit the comment."
       comment_updated: "The comment was successfully updated."
       confirm_edit_cancel: "Are you sure you want to cancel editing the work package?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatically scheduled. Dates are derived from relations."
-        manually_scheduled: "Manual scheduling enabled, all relations ignored."
-        start_date_limited_by_relations: "Available start and finish dates are limited by relations."
-        changing_dates_affects_follow_relations: "Changing these dates will affect dates of related work packages."
-        click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for GANTT overview.'
-        show_relations: "Show relations"
-        ignore_non_working_days:
-          title: "Working days only"
       description_filter: "Filter"
       description_enter_text: "Sisestage tekst"
       description_options_hide: "Peida valikud"
@@ -937,13 +929,13 @@ et:
         modification_label: "Modified within the comparison time period"
         column_incompatible: "This column does not show changes in Baseline mode."
       filters:
-        title: "Filtreeri teemasid"
+        title: "Filtreeri tööpakette"
         baseline_incompatible: "This filter attribute is not taken into consideration in Baseline mode."
         baseline_warning: "Baseline mode is on but some of your active filters are not included in the comparison."
       inline_create:
         title: "Click here to add a new work package to this list"
       create:
-        title: "Uus teema"
+        title: "Uus tööpakett"
         header: "New %{type}"
         header_no_type: "New work package (Type not yet set)"
         header_with_parent: "New %{type} (Child of %{parent_type} #%{id})"

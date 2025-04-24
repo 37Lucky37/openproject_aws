@@ -1,14 +1,14 @@
 ru:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Имя
         identifier: Идентификатор
-        secret: Ключ
-        scope: Область применения
+        secret: Закрытый ключ
+        scope: Масштаб
         assertion_consumer_service_url: URL-адрес ACS (Служба Поддержки Потребителей)
         limit_self_registration: Ограничение самостоятельной регистрации
-        sp_entity_id: Идентификатор объекта обслуживания
+        sp_entity_id: ID сервисной организации
         metadata_url: URL метаданных провайдера идентификации
         name_identifier_format: Формат идентификатора имени
         idp_sso_service_url: Конечная точка входа провайдера идентификации
@@ -23,7 +23,6 @@ ru:
         digest_method: Алгоритм дайджеста
         format: "Формат"
         icon: "Пользовательская иконка"
-  activerecord:
     errors:
       models:
         saml/provider:

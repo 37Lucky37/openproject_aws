@@ -103,7 +103,6 @@ pt-BR:
     button_settings: "Configurações"
     button_uncheck_all: "Desmarcar todos"
     button_update: "Atualizar"
-    button_export-pdf: "Baixar PDF"
     button_export-atom: "Baixar Atom"
     button_generate_pdf: "Gerar PDF"
     button_create: "Criar"
@@ -221,6 +220,8 @@ pt-BR:
             label_maximum_users: "Máximo de usuários ativos"
             label_starts_at: "Começa em"
             label_expires_at: "Expira em"
+            label_plan: "Plano"
+            label_additional_features: "Funcionalidades adicionais"
             receive_newsletter: Quero receber o <a target="_blank" href="%{link}">boletim informativo</a> do OpenProject.
             taken_domain: Pode haver somente uma avaliação ativa por domínio.
             domain_mismatch: O nome do host da solicitação atual não corresponde ao nome do host configurado. Verifique novamente as configurações de seu sistema.
@@ -356,10 +357,10 @@ pt-BR:
           learn_about: "Saiba mais sobre os novos recursos"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                A atualização traz diversas melhorias e novas funcionalidades para você, como:<br> <ul class="%{list_styling_class}"> <li>Agendar reuniões recorrentes para facilitar seus compromissos semanais, quinzenais ou personalizados.</li> <li>Criar pacotes de trabalho filhos diretamente na aba Relações.</li> <li>Incluir totais nas exportações em PDF das planilhas de horas para obter mais insights.</li> <li>Incluir pacotes de trabalho filhos nos relatórios de custos para um acompanhamento mais preciso.</li> <li>Visualizar datas de relações anteriormente ocultas, com restrição de permissão, para tomar decisões de agendamento mais informadas.</li> </ul>
+                A nova versão traz várias funcionalidades e melhorias para você, por ex.: <br> <ul class="%{list_styling_class}"> <li>Filtro para descendentes (filhos e netos) de pacotes de trabalho.</li> <li>Aproveite a acessibilidade avançada no seletor de datas.</li> <li>Veja a % de Conclusão incluída nas somas da tabela de pacotes de trabalho.</li> <li>Inclua uma coluna para filhos nas tabelas de pacotes de trabalho.</li> <li>Melhor uso do seletor de datas em telas móveis.</li> <li>Exportações em PDF com o layout do formulário configurado.</li> </ul>
     ical_sharing_modal:
       title: "Assinar calendário"
       inital_setup_error_message: "Ocorreu um erro ao buscar dados."
@@ -717,17 +718,18 @@ pt-BR:
       description: "Descrição: Clique em editar..."
       relation_description: "Clique para adicionar a descrição para esta relação"
     project:
-      required_outside_context: >
-        Por favor, escolha o projeto onde vai criar o pacote de trabalho para visualizar todos os atributos. Você pode selecionar somente projetos que possuam o tipo acima ativado.
-      context: "Contexto do projeto"
-      click_to_switch_to_project: "Projeto: %{projectname}"
-      confirm_template_load: "Mudar o modelo irá recarregar a página e todos os dados inseridos nesse formulário serão perdidos. Continuar?"
-      use_template: "Usar modelo"
-      no_template_selected: "(Nenhum)"
-      copy:
-        copy_options: "Opções de cópia"
       autocompleter:
         label: "Autocompletar projeto"
+      click_to_switch_to_project: "Projeto: %{projectname}"
+      confirm_template_load: "Mudar o modelo irá recarregar a página e todos os dados inseridos nesse formulário serão perdidos. Continuar?"
+      context: "Contexto do projeto"
+      copy:
+        copy_options: "Opções de cópia"
+      not_available: "Projeto N/A"
+      no_template_selected: "(Nenhum)"
+      required_outside_context: >
+        Por favor, escolha o projeto onde vai criar o pacote de trabalho para visualizar todos os atributos. Você pode selecionar somente projetos que possuam o tipo acima ativado.
+      use_template: "Usar modelo"
     reminders:
       settings:
         daily:
@@ -796,6 +798,7 @@ pt-BR:
       typeahead_placeholder: Procurar possíveis observadores
     relation_labels:
       parent: "Pai"
+      child: "Filho"
       children: "Filhos"
       relates: "Relacionado a"
       duplicates: "Duplicados"
@@ -825,7 +828,7 @@ pt-BR:
       add_new_child: "Criar novo filho"
       create_new: "Criar novo"
       add_existing: "Adicionar existente"
-      add_existing_child: "Adicionar filho existente"
+      add_existing_child: "Adicionar filho"
       remove_child: "Remover filho"
       add_new_relation: "Criar nova relação"
       add_existing_relation: "Adicionar relação existente"
@@ -851,8 +854,6 @@ pt-BR:
       select_branch: "Selecionar ramificação"
     field_value_enter_prompt: "Insira um valor para '%{field}'"
     project_menu_details: "Detalhes"
-    scheduling:
-      manual: "Planejamento manual"
     sort:
       sorted_asc: "Ordenação crescente aplicada, "
       sorted_dsc: "Ordenação decrescente aplicada, "
@@ -900,15 +901,6 @@ pt-BR:
       comment_send_failed: "Ocorreu um erro. Não foi possível enviar o comentário."
       comment_updated: "O comentário foi atualizado com sucesso."
       confirm_edit_cancel: "Tem certeza que deseja cancelar a edição do pacote de trabalho?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Planejado automaticamente. As datas são derivadas das relações."
-        manually_scheduled: "Planejamento manual habilitado, todas as relações são ignoradas."
-        start_date_limited_by_relations: "As datas de início e de conclusão disponíveis são limitadas pelas relações."
-        changing_dates_affects_follow_relations: "A alteração dessas datas afetará as datas de pacotes de trabalho relacionados."
-        click_on_show_relations_to_open_gantt: 'Clique em "%{button_name}" para ter uma visão geral do GANTT.'
-        show_relations: "Mostrar relações"
-        ignore_non_working_days:
-          title: "Apenas dias úteis"
       description_filter: "Filtro"
       description_enter_text: "Inserir texto"
       description_options_hide: "Ocultar opções"

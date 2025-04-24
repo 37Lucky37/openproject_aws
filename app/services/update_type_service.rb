@@ -43,9 +43,10 @@ class UpdateTypeService < BaseTypeService
   def set_params_and_validate(params)
     # Set patterns includes a data validation before assigning the value to the attribute.
     # A validation failure should return a service call failure.
-    if params[:patterns].present?
-      validate_enterprise_action(params[:patterns])
-      set_patterns(params[:patterns])
+    patterns = params[:patterns]
+    if patterns.present?
+      validate_enterprise_action(patterns)
+      set_patterns(patterns)
       return [false, type.errors] if type.errors.any?
     end
 

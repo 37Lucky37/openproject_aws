@@ -43,7 +43,7 @@ et:
       material_budget_item: "Ühik"
   activity:
     filter:
-      budget: "Budgets"
+      budget: "Eelarved"
   attributes:
     budget: "Eelarve"
   button_add_budget_item: "Lisa planeeritud kulud"
@@ -61,11 +61,11 @@ et:
   help_currency_format: "Format of displayed currency values. %n is replaced with the currency value, %u ist replaced with the currency unit."
   help_override_rate: "Enter a value here to override the default rate."
   label_budget: "Eelarve"
-  label_budget_new: "New budget"
-  label_budget_plural: "Budgets"
-  label_budget_id: "Budget #%{id}"
+  label_budget_new: "Uus eelarve"
+  label_budget_plural: "Eelarved"
+  label_budget_id: "Eelarve #%{id}"
   label_deliverable: "Eelarve"
-  label_example_placeholder: 'e.g., %{decimal}'
+  label_example_placeholder: 'nt., %{decimal}'
   label_view_all_budgets: "View all budgets"
   label_yes: "Jah"
   notice_budget_conflict: "Work packages must be of the same project."

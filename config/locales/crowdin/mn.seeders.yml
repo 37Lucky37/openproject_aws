@@ -34,16 +34,14 @@ mn:
           name: Grey (dark)
         item_13:
           name: Black
-      life_cycle_colors:
+      project_phase_colors:
         item_0:
           name: PM2 Orange
         item_1:
-          name: PM2 Purple
-        item_2:
           name: PM2 Red
-        item_3:
+        item_2:
           name: PM2 Magenta
-        item_4:
+        item_3:
           name: PM2 Green Yellow
       document_categories:
         item_0:
@@ -81,21 +79,18 @@ mn:
         item_1:
           name: Standard global role
     standard:
-      life_cycles:
+      project_phases:
         item_0:
           name: Initiating
         item_1:
-          name: Ready for Planning
-        item_2:
           name: Planning
-        item_3:
-          name: Ready for Executing
-        item_4:
+          start_gate: Ready for Planning
+        item_2:
           name: Executing
-        item_5:
-          name: Ready for Closing
-        item_6:
+          start_gate: Ready for Executing
+        item_3:
           name: Closing
+          start_gate: Ready for Closing
       priorities:
         item_0:
           name: Low
@@ -123,11 +118,11 @@ mn:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Чухал үеүүд
             item_2:
               name: Tasks
             item_3:
-              name: Team planner
+              name: Багийн төлөвлөгч
           boards:
             kanban:
               name: Kanban board
@@ -173,7 +168,7 @@ mn:
                   name: Work packages
               item_6:
                 options:
-                  name: Milestones
+                  name: Чухал үеүүд
           work_packages:
             item_0:
               subject: Start of project
@@ -466,7 +461,7 @@ mn:
         item_10:
           name: Test failed
         item_11:
-          name: Closed
+          name: Хаагдсан
         item_12:
           name: On hold
         item_13:
@@ -486,11 +481,11 @@ mn:
           name: Other
       types:
         item_0:
-          name: Task
+          name: Даалгавар
         item_1:
           name: Milestone
         item_2:
-          name: Phase
+          name: Summary task
         item_3:
           name: Feature
         item_4:

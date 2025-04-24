@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -37,5 +37,10 @@ module OpenIDConnect
     belongs_to :user
 
     scope :idp, -> { where(audience: IDP_AUDIENCE) }
+    scope :with_audience, ->(audience) { where("audiences ? :aud", aud: audience) }
+
+    def auth_source
+      user.authentication_provider
+    end
   end
 end

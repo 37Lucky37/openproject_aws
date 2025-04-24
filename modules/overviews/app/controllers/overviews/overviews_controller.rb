@@ -91,7 +91,7 @@ module ::Overviews
                 .new(user: current_user,
                      model: @project,
                      contract_class: ProjectLifeCycleSteps::UpdateContract)
-                .call(permitted_params.project_life_cycles)
+                .call(permitted_params.project_phases)
 
       update_via_turbo_stream(
         component: ProjectLifeCycles::Sections::EditComponent.new(service_call.result),
@@ -105,7 +105,7 @@ module ::Overviews
     def update_project_life_cycles
       service_call = ::ProjectLifeCycleSteps::UpdateService
                       .new(user: current_user, model: @project)
-                      .call(permitted_params.project_life_cycles)
+                      .call(permitted_params.project_phases)
 
       if service_call.success?
         update_via_turbo_stream(
@@ -139,8 +139,8 @@ module ::Overviews
         @project.project_custom_fields.visible.any?
       @life_cycles_sidebar_enabled =
         OpenProject::FeatureDecisions.stages_and_gates_active? &&
-        User.current.allowed_in_project?(:view_project_stages_and_gates, @project) &&
-        @project.life_cycle_steps.active.any?
+        User.current.allowed_in_project?(:view_project_phases, @project) &&
+        @project.phases.active.any?
     end
 
     def handle_errors(project_with_errors, section)

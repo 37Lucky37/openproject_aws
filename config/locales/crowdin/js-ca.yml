@@ -103,7 +103,6 @@ ca:
     button_settings: "Configuració"
     button_uncheck_all: "Desmarca-ho tot"
     button_update: "Actualitzar"
-    button_export-pdf: "Descarregar PDF"
     button_export-atom: "Descarregar Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Crear"
@@ -222,6 +221,8 @@ ca:
             label_maximum_users: "Nombre màxim d'usuaris actius"
             label_starts_at: "Comença el"
             label_expires_at: "Caduca el"
+            label_plan: "Pla"
+            label_additional_features: "Additional features"
             receive_newsletter: Vull rebre el <a target="_blank" href="%{link}">butlletí de notícies</a> d'OpenProject.
             taken_domain: Només hi pot haver una prova gratuïta activa per domini.
             domain_mismatch: El nom d'allotjament proveït no coincideix amb el nom d'allotjament configurat. Si us plau, valida la teva configuració de sistema.
@@ -357,10 +358,10 @@ ca:
           learn_about: "Més informació sobre les noves funcions"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "S'ha produït un error en carregar les dades."
@@ -613,7 +614,7 @@ ca:
         assigned: "Assignat a"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
-        responsible: "Accountable"
+        responsible: "Responsable"
         created: "Creat"
         scheduled: "Programat"
         commented: "Comentat"
@@ -643,7 +644,7 @@ ca:
           with_current_filter: "En aquest moment no hi han notificacions en aquesta vista"
         mark_all_read: "Marca tot com a llegit"
         mark_as_read: "Marca com a llegit"
-        text_update_date_by: "%{date} by"
+        text_update_date_by: "%{date} per"
         total_count_warning: "Mostrant el %{newest_count} de notificacions recents. %{more_count} no s'estan mostrant."
         empty_state:
           no_notification: "Sembla que ja estàs al dia."
@@ -718,17 +719,18 @@ ca:
       description: "Descripció: Fes clic per editar..."
       relation_description: "Fes clic per afegir una descripció per aquesta relació"
     project:
-      required_outside_context: >
-        Si us plau, selecciona un projecte on crear el paquet de treball per a veure tots els atributs. Només pots seleccionar projectes que tinguin activat la classe indicada anteriorment.
-      context: "Context del projecte"
-      click_to_switch_to_project: "Projecte: %{projectname}"
-      confirm_template_load: "Canviar la plantilla tornarà a carregar la pàgina i perdràs totes les dades del formulari. Continuar?"
-      use_template: "Utilitzar plantilla"
-      no_template_selected: "(Cap)"
-      copy:
-        copy_options: "Opcions de còpia"
       autocompleter:
         label: "Autoemplenament del projecte"
+      click_to_switch_to_project: "Projecte: %{projectname}"
+      confirm_template_load: "Canviar la plantilla tornarà a carregar la pàgina i perdràs totes les dades del formulari. Continuar?"
+      context: "Context del projecte"
+      copy:
+        copy_options: "Opcions de còpia"
+      not_available: "Project N/A"
+      no_template_selected: "(Cap)"
+      required_outside_context: >
+        Si us plau, selecciona un projecte on crear el paquet de treball per a veure tots els atributs. Només pots seleccionar projectes que tinguin activat la classe indicada anteriorment.
+      use_template: "Utilitzar plantilla"
     reminders:
       settings:
         daily:
@@ -761,7 +763,7 @@ ca:
           label: "Pausa els correu electrònic recordatori temporalment"
           first_day: "Primer dia"
           last_day: "Últim dia"
-    text_are_you_sure: "N'estas segur?"
+    text_are_you_sure: "N'esteu segur?"
     text_data_lost: "Totes les dades entrades es perdran."
     text_user_wrote: "%{value} va escriure:"
     types:
@@ -797,6 +799,7 @@ ca:
       typeahead_placeholder: Cercar possibles observadors
     relation_labels:
       parent: "Pare"
+      child: "Child"
       children: "Fills"
       relates: "Relacionats amb"
       duplicates: "Duplica"
@@ -826,7 +829,7 @@ ca:
       add_new_child: "Crear nou fill"
       create_new: "Crear nou"
       add_existing: "Afegir existent"
-      add_existing_child: "Afegir fill existent"
+      add_existing_child: "Add child"
       remove_child: "Eliminar fill"
       add_new_relation: "Crea una nova relació"
       add_existing_relation: "Afegir relació existent"
@@ -852,8 +855,6 @@ ca:
       select_branch: "Seleccionar branca"
     field_value_enter_prompt: "Introduïu un valor per a '%{field}'"
     project_menu_details: "Detalls"
-    scheduling:
-      manual: "Planificació manual"
     sort:
       sorted_asc: "Ordre ascendent aplicat,"
       sorted_dsc: "Ordre descendent aplicat,"
@@ -901,15 +902,6 @@ ca:
       comment_send_failed: "S'ha produït un error. No s'ha pogut sotmetre el comentari."
       comment_updated: "El comentari s'ha actualitzat correctament."
       confirm_edit_cancel: "Estàs segur que vols cancel·lar l'edició del paquet de treball?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Planificació automàtica. Les dates es derivaran de les relacions."
-        manually_scheduled: "Planificació manual habilitada, totes les relacions seran ignorades."
-        start_date_limited_by_relations: "Les dates d'inici i final disponibles estan limitades per les relacions."
-        changing_dates_affects_follow_relations: "Canviar aquestes dates afectarà les dates dels paquets de treball relacionats."
-        click_on_show_relations_to_open_gantt: 'Fes clic a "%{button_name}" per obtenir una visió general GANTT.'
-        show_relations: "Mostra les relacions"
-        ignore_non_working_days:
-          title: "Només dies laborables"
       description_filter: "Filtre"
       description_enter_text: "Introduïu text"
       description_options_hide: "Amagar opcions"

@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -47,7 +47,7 @@ module Saml
 
             form_group.select_list(
               name: :"requested_#{attribute}_format",
-              label: I18n.t("activemodel.attributes.saml/provider.format"),
+              label: I18n.t("activerecord.attributes.saml/provider.format"),
               input_width: :large,
               disabled: provider.seeded_from_env?,
               caption: link_translate(

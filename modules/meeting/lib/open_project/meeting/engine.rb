@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -51,7 +53,7 @@ module OpenProject::Meeting
                    permissible_on: :project
         permission :create_meetings,
                    {
-                     meetings: %i[new create copy new_dialog],
+                     meetings: %i[new create copy new_dialog fetch_timezone],
                      recurring_meetings: %i[new create copy init template_completed],
                      "recurring_meetings/schedule": %i[update_text],
                      "meetings/menus": %i[show]
@@ -87,7 +89,8 @@ module OpenProject::Meeting
                    require: :member
         permission :manage_agendas,
                    {
-                     meeting_agenda_items: %i[new cancel_new create edit cancel_edit update destroy drop move],
+                     meeting_agenda_items: %i[new cancel_new create edit cancel_edit update destroy drop move
+                                              move_to_next_meeting],
                      meeting_sections: %i[new cancel_new create edit cancel_edit update destroy drop move]
                    },
                    permissible_on: :project, # TODO: Change this to :meeting when MeetingRoles are available
@@ -111,7 +114,10 @@ module OpenProject::Meeting
                    permissible_on: :project,
                    require: :member
         permission :create_meeting_minutes,
-                   { meeting_minutes: %i[update preview] },
+                   {
+                     meeting_minutes: %i[update preview],
+                     meeting_outcomes: %i[new cancel_new create edit cancel_edit update destroy]
+                   },
                    permissible_on: :project,
                    require: :member
         permission :send_meeting_minutes_notification,
@@ -127,8 +133,7 @@ module OpenProject::Meeting
       menu :project_menu,
            :meetings, { controller: "/meetings", action: "index" },
            caption: :project_module_meetings,
-           after: :wiki,
-           before: :members,
+           after: :boards,
            icon: "comment-discussion"
 
       menu :project_menu,
@@ -157,14 +162,14 @@ module OpenProject::Meeting
            :meetings, { controller: "/meetings", action: "index", project_id: nil },
            context: :modules,
            caption: :label_meeting_plural,
-           last: true,
+           after: :boards,
            icon: "comment-discussion",
            if: should_render_global_menu_item
 
       menu :global_menu,
            :meetings, { controller: "/meetings", action: "index", project_id: nil },
            caption: :label_meeting_plural,
-           last: true,
+           after: :boards,
            icon: "comment-discussion",
            if: should_render_global_menu_item
 

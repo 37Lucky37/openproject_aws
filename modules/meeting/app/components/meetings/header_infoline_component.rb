@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,6 +29,8 @@
 
 module Meetings
   class HeaderInfolineComponent < ApplicationComponent
+    include OpPrimer::ComponentHelpers
+
     def initialize(meeting)
       super
       @meeting = meeting

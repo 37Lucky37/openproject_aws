@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,6 +29,8 @@
 #++
 
 module ColorsHelper
+  include Primer::JoinStyleArgumentsHelper
+
   def options_for_colors(colored_thing)
     colors = []
     Color.find_each do |c|
@@ -57,39 +61,52 @@ module ColorsHelper
   #
   # Styles to display the color of attributes (type, status etc.) for example in the WP view
   ##
-  def resource_color_css(name, scope, inline_foreground: false)
+  def resources_scope_color_css(name, scope, inline_foreground: false)
     scope.includes(:color).find_each do |entry|
-      color = entry.color
-
-      if color.nil?
-        concat ".#{hl_inline_class(name, entry)}::before { display: none }\n"
-        next
-      end
-
-      if inline_foreground
-        set_foreground_colors_for(class_name: ".#{hl_inline_class(name, entry)}", color:)
-      else
-        set_background_colors_for(class_name: ".#{hl_inline_class(name, entry)}::before", color:)
-      end
-
-      set_background_colors_for(class_name: ".#{hl_background_class(name, entry)}", color:)
+      resource_color_css(name, entry, inline_foreground: inline_foreground)
     end
   end
 
+  def resource_color_css(name, entry, inline_foreground: false)
+    color = entry.color
+
+    if color.nil?
+      concat ".#{hl_inline_class(name, entry)}::before { display: none }\n"
+      return
+    end
+
+    if inline_foreground
+      set_foreground_colors_for(class_name: ".#{hl_inline_class(name, entry)}", color:)
+    else
+      set_background_colors_for(class_name: ".#{hl_inline_class(name, entry)}::before", color:)
+    end
+
+    set_background_colors_for(class_name: ".#{hl_background_class(name, entry)}", color:)
+  end
+
   def hl_inline_class(name, model)
-    "__hl_inline_#{name}_#{model.id}"
+    id = model.respond_to?(:id) ? model.id : model
+    "__hl_inline_#{name}_#{id}"
   end
 
   def hl_background_class(name, model)
-    "__hl_background_#{name}_#{model.id}"
+    id = model.respond_to?(:id) ? model.id : model
+    "__hl_background_#{name}_#{id}"
   end
 
   def icon_for_color(color, options = {})
     return unless color
+    return if color.hexcode.blank?
 
-    options.merge! class: "color--preview " + options[:class].to_s,
+    style = join_style_arguments(
+      "background-color: #{color.hexcode}",
+      "border-color: #{color.darken(0.5)}50",
+      options[:style]
+    )
+
+    options.merge!(class: "color--preview #{options[:class]}",
                    title: color.name,
-                   style: "background-color: #{color.hexcode};" + options[:style].to_s
+                   style:)
 
     content_tag(:span, " ", options)
   end
@@ -161,11 +178,12 @@ module ColorsHelper
      background: rgb(var(--color-r), var(--color-g), var(--color-b)) !important;"
     mode = User.current.pref.theme
 
-    if mode == "light_high_contrast"
-      style += "border: 1px solid hsla(var(--color-h), calc(var(--color-s) * 1%), calc((var(--color-l) - 75) * 1%), 1) !important;"
-    else
-      style += "border: 1px solid hsl(var(--color-h), calc(var(--color-s) * 1%), calc((var(--color-l) - 15) * 1%)) !important;"
-    end
+    style +=
+      if mode == "light_high_contrast"
+        "border: 1px solid hsla(var(--color-h), calc(var(--color-s) * 1%), calc((var(--color-l) - 75) * 1%), 1) !important;"
+      else
+        "border: 1px solid hsl(var(--color-h), calc(var(--color-s) * 1%), calc((var(--color-l) - 15) * 1%)) !important;"
+      end
 
     style
   end
@@ -183,5 +201,6 @@ module ColorsHelper
       "color: hsla(var(--color-h), calc(var(--color-s) * 1%), calc((var(--color-l) - (var(--color-l) * 0.22)) * 1%), 1) !important;"
     end
   end
+
   # rubocop:enable Layout/LineLength
 end

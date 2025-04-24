@@ -1,5 +1,5 @@
 pt-PT:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nome
@@ -23,7 +23,6 @@ pt-PT:
         digest_method: Algoritmo de resumo
         format: "Formato"
         icon: "Ícone personalizado"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -122,7 +121,8 @@ pt-PT:
       mapping_login: >
         Atributos SAML da resposta utilizados para o início de sessão.
       mapping_mail: >
-        Atributos SAML da resposta utilizados para o e-mail do utilizador.
+        Atributos SAML da resposta utilizados
+        para o e-mail do utilizador.
       mapping_firstname: >
         Atributos SAML da resposta utilizados para o nome indicado.
       mapping_lastname: >

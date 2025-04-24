@@ -27,7 +27,7 @@ de:
       status: >
         Kanban-ähnliches Board mit dynamischen Spalten je Status für das Abbilden von Workflows.
       assignee: >
-        Board mit dynamischen Spalten auf zugewiesene Nutzer von Arbeitspaketen. Ideal für die Verteilung von Aufgaben.
+        Board mit dynamischen Spalten auf zugewiesene Nutzer von Arbeitspaketen. Ideal für die Verteilung von Aufgaben. 
       version: >
         Board mit dynamischen Spalten, das auf dem Versions-Attribut basiert. Ideal für die Planung der Produktentwicklung.
       subproject: >

@@ -40,7 +40,11 @@ import { IStorageFile } from 'core-app/core/state/storage-files/storage-file.mod
 import { OpModalLocalsMap } from 'core-app/shared/components/modal/modal.types';
 import { OpModalLocalsToken } from 'core-app/shared/components/modal/modal.service';
 import { SortFilesPipe } from 'core-app/shared/components/storages/pipes/sort-files.pipe';
-import { isDirectory, storageLocaleString } from 'core-app/shared/components/storages/functions/storages.functions';
+import {
+  isDirectory,
+  makeFilesCollectionLink,
+  storageLocaleString,
+} from 'core-app/shared/components/storages/functions/storages.functions';
 import { StorageFilesResourceService } from 'core-app/core/state/storage-files/storage-files.service';
 import {
   StorageFileListItem,
@@ -195,7 +199,12 @@ export class LocationPickerModalComponent extends FilePickerBaseModalComponent {
         parent_id: this.currentDirectory.id,
       },
     ).subscribe({
-      next: (newlyCreatedDirectory) => this.changeLevel(newlyCreatedDirectory),
+      next: (newlyCreatedDirectory) => {
+        // clear cache for the current directory
+        const cacheKey = makeFilesCollectionLink(this.storage._links.self, this.currentDirectory.location);
+        this.storageFilesResourceService.removeCollection(cacheKey);
+        this.changeLevel(newlyCreatedDirectory);
+      },
       error: (_) => this.showAlert.next('cannotCreateFolder'),
     });
   }

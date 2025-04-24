@@ -2,6 +2,7 @@
 it:
   js:
     storages:
+      authentication_error: "Autenticazione con %{storageType} fallita"
       link_files_in_storage: "Collega file in %{storageType}"
       link_existing_files: "Collega file esistenti"
       upload_files: "Caricare i files"
@@ -19,6 +20,7 @@ it:
         one_drive: "OneDrive/SharePoint"
         default: "Archivio"
       information:
+        authentication_error: "La richiesta di %{storageType} non può essere autenticata, è un errore."
         connection_error: >
           Alcune impostazioni %{storageType} non funzionano. Contatta l'amministratore %{storageType}.
         live_data_error: "Errore nel recupero dei dettagli del file"
@@ -27,6 +29,8 @@ it:
         no_file_links: "Per collegare i file a questa macro-attività, farlo tramite %{storageType}."
         not_logged_in: >
           Per aggiungere un link, vedere o caricare i file relativi a questo pacchetto di lavoro, accedi a %{storageType}.
+        suggest_logout: Puoi provare a risolvere il problema disconnettendoti e riconnettendoti.
+        suggest_relink: Puoi provare a risolvere il problema ricollegando il tuo account tramite il pulsante di accesso qui sotto.
       files:
         already_existing_header: "Questo file esiste già"
         already_existing_body: >

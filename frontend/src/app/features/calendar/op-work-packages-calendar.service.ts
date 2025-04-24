@@ -124,7 +124,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     if (this.isMilestone(workPackage)) {
       return workPackage.date;
     }
-    return workPackage[`${type}Date`] as string;
+    return workPackage[`${type}Date`];
   }
 
   isMilestone(workPackage:WorkPackageResource):boolean {
@@ -133,11 +133,13 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
   warnOnTooManyResults(collection:WorkPackageCollectionResource, isStatic = false):void {
     if (collection.count < collection.total) {
-      this.tooManyResultsText = this.I18n.t('js.calendar.too_many',
+      this.tooManyResultsText = this.I18n.t(
+        'js.calendar.too_many',
         {
           count: collection.total,
           max: OpWorkPackagesCalendarService.MAX_DISPLAYED,
-        });
+        },
+      );
     } else {
       this.tooManyResultsText = null;
     }
@@ -180,7 +182,6 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
     // 3. We are already loaded and are refetching data (for changed dates, e.g.)
     let queryProps:string|undefined;
 
-
     if (this.initializingWithQuery) {
       // This is the case on initially loading the calendar with a query_id present in the url params but no
       // query props to overwrite the query settings.
@@ -201,7 +202,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       // There might also be a query_id but the settings persisted in it are overwritten by the props.
       if (this.urlParams.query_props) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const oldQueryProps:{ [key:string]:unknown } = JSON.parse(this.urlParams.query_props);
+        const oldQueryProps:{ [key:string]:unknown } = JSON.parse(this.urlParams.query_props as string);
 
         // Update the date period of the calendar in the filter
         const newQueryProps = {
@@ -231,9 +232,9 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
 
     return Promise.all([this
       .wpListService
-      .fromQueryParams({ query_id: queryId, query_props: queryProps, }, projectIdentifier || undefined)
+      .fromQueryParams({ query_id: queryId, query_props: queryProps }, projectIdentifier || undefined)
       .toPromise(),
-    ])
+    ]);
   }
 
   public generateQueryProps(
@@ -360,6 +361,7 @@ export class OpWorkPackagesCalendarService extends UntilDestroyedMixin {
       dayGridClassNames: (data:DayCellContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
       slotLaneClassNames: (data:SlotLaneContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
       slotLabelClassNames: (data:SlotLabelContentArg) => this.calendarService.applyNonWorkingDay(data, this.nonWorkingDays),
+      dayHeaderContent: (data:DayHeaderContentArg) => this.calendarService.dayHeaderContent(data),
     };
   }
 

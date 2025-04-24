@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -163,7 +165,7 @@ RSpec.describe "Work package create uses attributes from filters", :js, :seleniu
 
       # Assignee is synced
       assignee_field = split_view_create.edit_field :assignee
-      expect(assignee_field.input_element.find(".ng-value-label").text).to eql("An assignee")
+      expect(assignee_field.input_element.find(".ng-value-label")).to have_text("An assignee")
 
       within ".work-packages--edit-actions" do
         click_button "Save"

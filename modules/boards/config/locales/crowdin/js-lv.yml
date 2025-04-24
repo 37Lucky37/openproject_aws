@@ -21,7 +21,7 @@ lv:
         edit_version: 'Edit version'
         show_version: 'Show version'
         locked: 'Slēgts'
-        closed: 'Closed'
+        closed: 'Aizvērts'
       new_board: 'New board'
       add_list: 'Add list to board'
       add_card: 'Add card'

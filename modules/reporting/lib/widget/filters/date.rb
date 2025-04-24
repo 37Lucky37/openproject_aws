@@ -30,41 +30,58 @@ class Widget::Filters::Date < Widget::Filters::Base
   include AngularHelper
 
   def render # rubocop:disable Metrics/AbcSize
-    @calendar_headers_tags_included = true
-
     name = "values[#{filter_class.underscore_name}][]"
     id_prefix = "#{filter_class.underscore_name}_"
 
     write(content_tag(:span, class: "advanced-filters--filter-value -binary") do
       label1 = label_tag "#{id_prefix}arg_1_val",
-                         h(filter_class.label) + " " + I18n.t(:label_filter_value),
+                         value_label,
                          class: "hidden-for-sighted"
 
       arg1 = content_tag :span, id: "#{id_prefix}arg_1" do
         text1 = angular_component_tag "opce-basic-single-date-picker",
                                       inputs: {
-                                        value: filter.values.first.to_s,
-                                        id: "#{id_prefix}arg_1_val",
+                                        value: filter.operator.forced == :integers ? "" : filter.values.first.to_s,
+                                        inputId: "#{id_prefix}arg_1_val",
                                         name:
                                       }
         label1 + text1
       end
 
       label2 = label_tag "#{id_prefix}arg_2_val",
-                         h(filter_class.label) + " " + I18n.t(:label_filter_value),
+                         value_label,
                          class: "hidden-for-sighted"
 
       arg2 = content_tag :span, id: "#{id_prefix}arg_2", class: "advanced-filters--filter-value2" do
         text2 = angular_component_tag "opce-basic-single-date-picker",
                                       inputs: {
-                                        value: filter.values.second.to_s,
-                                        id: "#{id_prefix}arg_2_val",
+                                        value: filter.operator.forced == :integers ? "" : filter.values.second.to_s,
+                                        inputId: "#{id_prefix}arg_2_val",
                                         name: name.to_s
                                       }
         label2 + text2
       end
 
-      arg1 + arg2
+      arg3 = content_tag :span, id: "#{id_prefix}arg_1_integers", class: "advanced-filters--integer" do
+        label3 = label_tag "#{id_prefix}arg_1_integers_val",
+                           value_label,
+                           class: "hidden-for-sighted"
+
+        label3 + text_field_tag(name,
+                                filter.operator.forced == :integers ? filter.values.first.to_s : "",
+                                type: "number",
+                                min: 0,
+                                steps: 1,
+                                class: "advanced-filters--text-field -slim",
+                                id: "#{id_prefix}arg_1_integers_val",
+                                "data-filter-name": filter_class.underscore_name)
+      end
+
+      arg1 + arg2 + arg3
     end)
+  end
+
+  def value_label
+    "#{filter_class.label} #{I18n.t(:label_filter_value)}"
   end
 end

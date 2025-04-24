@@ -4,14 +4,14 @@ sl:
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     Bili ste izpisani. Oddana vsebina katerekoli oblike se lahko izgubi. Prosim [prijavi se].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Ime
         slug: Unique identifier
         display_name: Prikazno ime
-        client_id: Client ID
-        client_secret: Client secret
+        client_id: ID odjemalca
+        client_secret: Skrivnost odjemalca
         secret: Skrivnost
         scope: Področje
         grant_types_supported: Supported grant types
@@ -29,7 +29,6 @@ sl:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@ sl:
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Povezovanje lastnosti
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Zaenkrat še ni opredeljenih ponudnikov.
       plural: OpenID ponudniki

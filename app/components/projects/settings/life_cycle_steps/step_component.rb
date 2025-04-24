@@ -37,6 +37,32 @@ module Projects
         options :definition,
                 :active?
 
+        # TODO: Remove these helper methods once the Projects::LifeCycleComponent
+        # has been refactored.
+        def icon
+          :"op-phase"
+        end
+
+        def icon_color_class
+          helpers.hl_inline_class("project_phase_definition", definition)
+        end
+
+        def gate_info
+          if definition.start_gate? && definition.finish_gate?
+            I18n.t("settings.project_phase_definitions.both_gate")
+          elsif definition.start_gate?
+            I18n.t("settings.project_phase_definitions.start_gate")
+          elsif definition.finish_gate?
+            I18n.t("settings.project_phase_definitions.finish_gate")
+          else
+            I18n.t("settings.project_phase_definitions.no_gate")
+          end
+        end
+
+        def gate_text_options
+          { color: :muted, font_size: :small }.merge(options)
+        end
+
         def toggle_aria_label
           I18n.t("projects.settings.life_cycle.step.use_in_project", step: definition.name)
         end

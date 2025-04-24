@@ -33,12 +33,16 @@ import { I18nService } from 'core-app/core/i18n/i18n.service';
 import { imagePath } from 'core-app/shared/helpers/images/path-helper';
 
 // The key used in the I18n files to distinguish between versions.
-const OpVersionI18n = '15_3';
+const OpVersionI18n = '15_5';
+// The key used to identify the svg representing the central feature in the version.
+// This might be different to OpVersionI18n for a while since the teaser text is often ready
+// before the image is.
+const OpVersionImage = '15_5';
 
 const OpReleaseURL = 'https://www.openproject.org/docs/release-notes';
 
 /** Update the teaser image to the next version */
-const featureTeaserImage = `${OpVersionI18n}_features.svg`;
+const featureTeaserImage = `${OpVersionImage}_features.svg`;
 
 @Component({
   template: `
@@ -70,7 +74,7 @@ const featureTeaserImage = `${OpVersionI18n}_features.svg`;
 export class HomescreenNewFeaturesBlockComponent {
   public isStandardEdition:boolean;
 
-  /** Set to true if BIM has it's own changes */
+  /** Set to true if BIM has its own changes */
   hasBimChanges = false;
 
   /** Update the feature image appropriately */

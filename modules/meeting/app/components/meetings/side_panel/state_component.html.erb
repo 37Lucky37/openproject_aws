@@ -5,20 +5,60 @@
 
       case @meeting.state
       when "open"
-        section.with_description(display: [:none, nil, :block]) { t("text_meeting_open_description") }
         flex_layout(classes: "op-meeting-sidebar-state") do |open_state|
           open_state.with_row do
-            render(Primer::Beta::State.new(title: "state", scheme: :open)) do
-              flex_layout do |open_state_label|
-                open_state_label.with_column(mr: 1) do
-                  render(Primer::Beta::Octicon.new(icon: "issue-opened"))
-                end
+            status_button
+          end
 
-                open_state_label.with_column do
-                  render(Primer::Beta::Text.new) { t("label_meeting_state_open") }
-                end
-              end
+          open_state.with_row(mt: 3, classes: "hidden-for-mobile") do
+            render(Primer::Beta::Text.new(color: :subtle)) { t("text_meeting_open_description") }
+          end
+
+          if edit_enabled?
+            section.with_footer_button(
+              tag: :a,
+              href: change_state_project_meeting_path(@project, @meeting, state: "in_progress"),
+              classes: "hide-when-print",
+              data: { "turbo-stream": true, "turbo-method": "put" },
+              test_selector: "close-meeting-button"
+            ) do |button|
+              button.with_leading_visual_icon(icon: :play)
+              t("label_meeting_in_progress_action")
             end
+          end
+        end
+
+      when "closed"
+        flex_layout(classes: "op-meeting-sidebar-state") do |closed_state|
+          closed_state.with_row do
+            status_button
+          end
+
+          closed_state.with_row(mt: 3, classes: "hidden-for-mobile") do
+            render(Primer::Beta::Text.new(color: :subtle)) { t("text_meeting_closed_description") }
+          end
+
+          if edit_enabled?
+            section.with_footer_button(
+              tag: :a,
+              href: change_state_project_meeting_path(@project, @meeting, state: "open"),
+              classes: "hide-when-print",
+              data: { "turbo-stream": true, "turbo-method": "put" }
+            ) do |button|
+              button.with_leading_visual_icon(icon: :unlock)
+              t("label_meeting_reopen_action")
+            end
+          end
+        end
+
+      when "in_progress"
+        flex_layout(classes: "op-meeting-sidebar-state") do |in_progress_state|
+          in_progress_state.with_row do
+            status_button
+          end
+
+          in_progress_state.with_row(mt: 3, classes: "hidden-for-mobile") do
+            render(Primer::Beta::Text.new(color: :subtle)) { t("text_meeting_in_progress_description") }
           end
 
           if edit_enabled?
@@ -31,36 +71,6 @@
             ) do |button|
               button.with_leading_visual_icon(icon: :unlock)
               t("label_meeting_close_action")
-            end
-          end
-        end
-      when "closed"
-        section.with_description(display: [:none, nil, :block]) { t("text_meeting_closed_description") }
-
-        flex_layout(classes: "op-meeting-sidebar-state") do |closed_state|
-          closed_state.with_row do
-            render(Primer::Beta::State.new(title: "state", scheme: :default)) do
-              flex_layout do |closed_state_label|
-                closed_state_label.with_column(mr: 1) do
-                  render(Primer::Beta::Octicon.new(icon: "issue-closed"))
-                end
-
-                closed_state_label.with_column do
-                  render(Primer::Beta::Text.new) { t("label_meeting_state_closed") }
-                end
-              end
-            end
-          end
-
-          if edit_enabled?
-            section.with_footer_button(
-              tag: :a,
-              href: change_state_project_meeting_path(@project, @meeting, state: "open"),
-              classes: "hide-when-print",
-              data: { "turbo-stream": true, "turbo-method": "put" }
-            ) do |button|
-              button.with_leading_visual_icon(icon: :unlock)
-              t("label_meeting_reopen_action")
             end
           end
         end

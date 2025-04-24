@@ -134,7 +134,8 @@ RSpec.describe "Project storage members connection status view", :js do
 
   def create_remote_identities_for_users(oauth_client:, users:)
     users.each do |user|
-      create(:remote_identity, oauth_client:, user:, origin_user_id: "origin-user-id-#{user.id}")
+      create(:remote_identity, auth_source: oauth_client, integration: oauth_client.integration, user:,
+                               origin_user_id: "origin-user-id-#{user.id}")
     end
   end
 end

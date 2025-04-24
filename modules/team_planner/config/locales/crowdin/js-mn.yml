@@ -5,7 +5,7 @@ mn:
       add_existing: 'Add existing'
       add_existing_title: 'Add existing work packages'
       create_label: 'Багийн төлөвлөгч'
-      create_title: 'Create new team planner'
+      create_title: 'Шинэ баг төлөвлөгч үүсгэх'
       unsaved_title: 'Unnamed team planner'
       no_data: 'Add assignees to set up your team planner.'
       add_assignee: 'Даалгагч'

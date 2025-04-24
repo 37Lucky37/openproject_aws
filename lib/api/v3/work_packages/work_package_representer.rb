@@ -137,11 +137,9 @@ module API
              cache_if: -> { export_work_packages_allowed? } do
           next if represented.new_record?
 
-          next unless OpenProject::FeatureDecisions.generate_pdf_from_work_package_active?
-
           {
             href: generate_pdf_dialog_work_package_path(id: represented.id),
-            type: "application/pdf",
+            type: "text/vnd.turbo-stream.html",
             title: "Generate PDF"
           }
         end

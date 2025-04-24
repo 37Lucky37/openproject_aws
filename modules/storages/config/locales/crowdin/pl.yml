@@ -1,11 +1,27 @@
 pl:
   activerecord:
     attributes:
+      oauth_client:
+        client_id: Identyfikator klienta
+        client_secret: Klucz tajny klienta
+      project:
+        project_folder_type: Typ folderu projektu
       storages/file_link:
-        origin_id: Identyfikator pochodzenia
+        origin: Pochodzenie
+        storage: Magazyn
+      storages/nextcloud_storage:
+        authentication_methods:
+          oauth2_sso: Logowanie jednokrotne za pośrednictwem dostawcy tożsamości OpenID Connect
+          oauth2_sso_with_two_way_oauth2_fallback: Logowanie jednokrotne z dwukierunkowym OAuth 2.0 jako rozwiązaniem awaryjnym
+          two_way_oauth2: Przepływ kodu autoryzacji dwukierunkowego OAuth 2.0
+        storage_audience: Odbiorcy magazynu
       storages/project_storage:
+        project_folder: Folder projektu
+        project_folder_mode: Tryb folderu projektu
         storage: Magazyn danych
+        storage_url: Adres URL magazynu
       storages/storage:
+        authentication_method: Metoda uwierzytelniania
         creator: Twórca
         drive: Identyfikator dysku
         host: Host
@@ -199,15 +215,19 @@ pl:
         manual_management_description: Samodzielnie ręcznie twórz foldery każdego projektu i zarządzaj nimi. Trzeba będzie ręcznie zapewnić dostęp odpowiednim użytkownikom.
         setup_incomplete: Wybierz typ zarządzania dostępem użytkowników i tworzeniem folderów.
         subtitle: Zarządzanie dostępem
-        title: Dostęp i foldery projektu
+      access_management_section: Dostęp i foldery projektu
       automatically_managed_folders: Automatycznie zarządzane foldery
       general_information: Informacje ogólne
-      nextcloud_oauth: Nextcloud OAuth
-      oauth_applications: Aplikacje OAuth
+      oauth_configuration: Konfiguracja OAuth
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Foldery projektu
       redirect_uri: Przekieruj URI
+      storage_audience: Odbiorcy magazynu
+      storage_audience_blank: Nie skonfigurowano żadnych odbiorców.
+      storage_audience_description: Uzyskiwanie tokenów dla odbiorców „%{audience}”.
+      storage_audience_idp: Użycie tokena pierwszego dostępu otrzymanego przez dostawcę tożsamości, niezależnie od odbiorców.
+      storage_oauth: Nextcloud OAuth
       storage_provider: Dostawca magazynu
     health:
       checked: Ostatnio sprawdzono %{datetime}
@@ -222,6 +242,14 @@ pl:
         host_not_found: Nie znaleziono serwera Nextcloud pod skonfigurowanym adresem URL hosta. Sprawdź konfigurację.
         missing_dependencies: 'Brakuje wymaganej zależności magazynu plików. Dodaj następującą zależność: %{dependency}.'
         not_configured: Nie można zweryfikować połączenia. Najpierw zakończ konfigurację.
+        oauth_request_not_found: Aplikacja OpenProject nie może znaleźć folderu głównego Nextcloud przy użyciu bieżącego zalogowanego użytkownika. Aby uzyskać dodatkowe informacje, sprawdź dzienniki serwera.
+        oauth_request_unauthorized: Bieżący użytkownik nie jest upoważniony do przeglądania głównego folderu Nextcloud lub nie mogliśmy uzyskać tokenu. W celu uzyskania dodatkowych informacji sprawdź dzienniki serwera.
+        oauth_token_missing: OpenProject nie może przetestować komunikacji na poziomie użytkownika z Nextcloud, ponieważ dla bieżącego użytkownika nie ma żadnego tokenu.
+        oidc_cant_acquire_token: Twoja konfiguracja OpenID Connect nie zapewnia niezbędnych odbiorców ani możliwości wymiany tokenów. Sprawdź naszą dokumentację, aby uzyskać więcej informacji.
+        oidc_cant_exchange_token: Wygląda na to, że wystąpił problem z konfiguracją wymiany tokenów u Twojego dostawcy OpenID Connect. Sprawdź jego konfigurację i spróbuj ponownie.
+        oidc_cant_refresh_token: Podczas próby sprawdzenia Twojego dostępu do magazynu wystąpił błąd. Aby uzyskać dalsze informacje, sprawdź dzienniki serwera.
+        oidc_non_oidc_user: Bieżący użytkownik, choć otrzymał konfigurację, nie otrzymał konfiguracji od dostawcy tożsamości OpenID Connect (OIDC). Przeprowadź ponowne sprawdzenie z użytkownikiem, który otrzymał konfigurację od OIDC.
+        oidc_non_provisioned_user: Bieżący użytkownik nie jest dostarczany przez dostawcę tożsamości OpenID Connect. Ponownie uruchom sprawdzanie z dostarczonym użytkownikiem.
         placeholder: Sprawdź połączenie z serwerem.
         subtitle: Weryfikacja połączenia
         tenant_id_wrong: Skonfigurowany katalog (dzierżawca) jest nieprawidłowy. Sprawdź konfigurację.
@@ -250,6 +278,7 @@ pl:
       project_folder_bulk: Folder projektu jest domyślnym folderem do przesyłania plików dla wszystkich wybranych projektów. Możesz to zmienić indywidualnie w ustawieniach poszczególnych projektów. Użytkownicy mogą jednak przesyłać pliki do innych lokalizacji.
     instructions:
       all_available_storages_already_added: Wszystkie dostępne magazyny zostały już dodane do projektu.
+      authentication_method: Sposób, w jaki są uwierzytelniane żądania między OpenProject a magazynem.
       automatic_folder: Spowoduje to automatyczne utworzenie katalogu głównego dla tego projektu i zarządzanie uprawnieniami dostępu każdego członka projektu.
       empty_project_folder_validation: Wybranie folderu jest obowiązkowe w celu kontynuacji.
       existing_manual_folder: Możesz wyznaczyć istniejący folder jako folder główny tego projektu. Uprawnienia nie są jednak zarządzane automatycznie, administrator musi ręcznie upewnić się, że odpowiedni użytkownicy mają dostęp. Wybrany folder może być używany przez wiele projektów.
@@ -262,6 +291,8 @@ pl:
         integration: Administracja Nextcloud / OpenProject
         oauth_configuration: Skopiuj te wartości z %{application_link_text}.
         provider_configuration: Przed wykonaniem konfiguracji upewnij się, że masz uprawnienia administracyjne w swoim wystąpieniu Nextcloud oraz zainstalowaną aplikację %{application_link_text}.
+        storage_audience: Wprowadź identyfikator klienta, którego wykorzystuje wystąpienie Nextcloud do komunikowania się z dostawcą tożsamości.
+        storage_audience_placeholder: np. nextcloud
       no_specific_folder: Domyślnie każdy użytkownik rozpocznie we własnym folderze domowym po przesłaniu pliku.
       no_storage_set_up: Nie ma jeszcze skonfigurowanych magazynów plików.
       not_logged_into_storage: Aby wybrać folder projektu, najpierw się zaloguj
@@ -293,11 +324,12 @@ pl:
     label_creator: Twórca
     label_delete_storage: Usuń magazyn
     label_edit_storage_access_management: Edytuj zarządzania dostępem do magazynu
+    label_edit_storage_audience: Edytuj odbiorców magazynu
     label_edit_storage_automatically_managed_folders: Edytuj automatycznie zarządzane foldery magazynu
     label_edit_storage_host: Edytuj hosta magazynu
     label_existing_manual_folder: Istniejący folder z ręcznie zarządzanymi uprawnieniami
     label_file_storage: Magazyn plików
-    label_host: Adres URL hosta
+    label_host: Adres URL hosta 
     label_inactive: Nieaktywny
     label_managed_project_folders:
       application_password: Hasło aplikacji
@@ -321,6 +353,7 @@ pl:
       connected: Połączono
       connected_no_permissions: Rola użytkownika nie ma uprawnień do magazynów
       not_connected: Nie połączono. Użytkownik powinien zalogować się do magazynu za pomocą %{link}.
+      not_connected_sso: Jeszcze nie powiązano, usługa SSO powinna je automatycznie powiązać po sprawdzeniu plików.
     members_no_results: Brak członków do wyświetlenia.
     no_results: Brak skonfigurowanych magazynów.
     oauth_access_granted_modal:
@@ -382,8 +415,15 @@ pl:
         name: OneDrive/SharePoint
         name_placeholder: np. OneDrive
     show_attachments_toggle:
-      description: 'Wyłączenie tej opcji spowoduje ukrycie listy załączników na karcie plików pakietów roboczych. Pliki załączone w opisie pakietu roboczego będą nadal przesyłane do wewnętrznego magazynu załączników.'
+      description: Wyłączenie tej opcji spowoduje ukrycie listy załączników na karcie plików pakietów roboczych. Pliki załączone w opisie pakietu roboczego będą nadal przesyłane do wewnętrznego magazynu załączników.
       label: Pokaż załączniki na karcie plików pakietów roboczych
+    storage_audience:
+      idp:
+        helptext: OpenProject użyje pierwszego tokena dostępu otrzymanego przez dostawcę tożsamości w celu uwierzytelnienia żądań do magazynu. Nie spowoduje to próby otrzymania kolejnego tokena.
+        label: Użyj pierwszego tokena dostępu uzyskanego przez dostawcę tożsamości
+      manual:
+        helptext: Umożliwia ustawienie odbiorców magazynu. OpenProject spróbuje uzyskać token dla podanych odbiorców od dostawcy tożsamości.
+        label: Zdefiniuj odbiorców magazynu ręcznie
     storage_list_blank_slate:
       description: Dodaj magazyn, aby zobaczyć go tutaj.
       heading: Nie masz jeszcze żadnych magazynów.

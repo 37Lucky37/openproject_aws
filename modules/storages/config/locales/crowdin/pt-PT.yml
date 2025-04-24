@@ -1,11 +1,27 @@
 pt-PT:
   activerecord:
     attributes:
+      oauth_client:
+        client_id: ID do cliente
+        client_secret: Segredo do cliente
+      project:
+        project_folder_type: Tipo de pasta do projeto
       storages/file_link:
-        origin_id: ID de Origem
-      storages/project_storage:
+        origin: Origem
         storage: Armazenamento
+      storages/nextcloud_storage:
+        authentication_methods:
+          oauth2_sso: Início de sessão único através do fornecedor de identidades OpenID Connect
+          oauth2_sso_with_two_way_oauth2_fallback: Início de sessão único com OAuth 2.0 bidirecional como alternativa
+          two_way_oauth2: Fluxo de código de autorização bidirecional OAuth 2.0
+        storage_audience: Público do armazenamento
+      storages/project_storage:
+        project_folder: Pasta do projeto
+        project_folder_mode: Modo da pasta do projeto
+        storage: Armazenamento
+        storage_url: URL do armazenamento
       storages/storage:
+        authentication_method: Método de autenticação
         creator: Criador
         drive: ID da unidade
         host: Hospedeiro
@@ -199,15 +215,19 @@ pt-PT:
         manual_management_description: Crie e gira manualmente as pastas por projeto por conta própria. Terá de garantir manualmente que os utilizadores relevantes têm acesso.
         setup_incomplete: Selecione o tipo de gestão do acesso dos utilizadores e da criação de pastas.
         subtitle: Gestão de acesso
-        title: Pastas de acesso e de projeto
+      access_management_section: Pastas de acesso e de projeto
       automatically_managed_folders: Pastas geridas automaticamente
       general_information: Informação geral
-      nextcloud_oauth: Nextcloud OAuth
-      oauth_applications: Aplicações OAuth
+      oauth_configuration: Configuração OAuth
       one_drive_oauth: Azure OAuth
       openproject_oauth: OAuth do OpenProject
       project_folders: Pastas do projeto
       redirect_uri: Redirecionar URI
+      storage_audience: Público do armazenamento
+      storage_audience_blank: Não foi configurado nenhum público.
+      storage_audience_description: A obter tokens para o público "%{audience}".
+      storage_audience_idp: Utilizar o primeiro token de acesso recebido pelo fornecedor de identidade, independentemente da audiência.
+      storage_oauth: Nextcloud OAuth
       storage_provider: Fornecedor de armazenamento
     health:
       checked: Última verificação em %{datetime}
@@ -222,6 +242,14 @@ pt-PT:
         host_not_found: Não foi encontrado nenhum servidor do Nextcloud no URL do anfitrião configurado. Verifique a configuração.
         missing_dependencies: 'Está em falta uma dependência necessária no armazenamento de ficheiros. Adicione a seguinte dependência: %{dependency}.'
         not_configured: Não foi possível validar a ligação.Termine, primeiro, a configuração.
+        oauth_request_not_found: O OpenProject não conseguiu encontrar a pasta raiz do Nextcloud usando o utilizador com sessão iniciada atualmente. Consulte os registos do servidor para obter mais informações.
+        oauth_request_unauthorized: O utilizador atual não está autorizado a ver a pasta principal do Nextcloud ou não conseguirmos adquirir uma ficha. Consulte os registos do servidor para obter mais informações.
+        oauth_token_missing: O OpenProject não pode testar a comunicação de nível de utilizador com o Nextcloud uma vez que não existe ficha para o utilizador atual.
+        oidc_cant_acquire_token: A sua configuração do OpenID Connect não fornece o público necessário, nem fornece capacidades de troca de tokens. Consulte a nossa documentação para obter mais informações.
+        oidc_cant_exchange_token: Parece haver um problema com a configuração do Token Exchange no seu fornecedor OpenID Connect. Verifique a sua configuração e tente novamente.
+        oidc_cant_refresh_token: Ocorreu um erro ao tentar verificar o seu acesso ao armazenamento. Consulte os registos do servidor para obter mais informações.
+        oidc_non_oidc_user: O utilizador atual, embora aprovisionado, não foi aprovisionado por um fornecedor de identidade OpenID Connect (OIDC). Volte a executar a verificação com um utilizador aprovisionado pelo OIDC.
+        oidc_non_provisioned_user: O utilizador atual não é fornecido por um fornecedor de identidade OpenID Connect. Volte a executar a verificação com um utilizador fornecido.
         placeholder: Verifique a sua ligação com o servidor.
         subtitle: Validação da ligação
         tenant_id_wrong: O ID do diretório (inquilino) configurado é inválido. Verifique a configuração.
@@ -250,6 +278,7 @@ pt-PT:
       project_folder_bulk: A pasta do projeto é a pasta predefinida para o carregamento de ficheiros para todos os projetos selecionados. Pode modificar esta opção individualmente nas definições de cada projeto. No entanto, os utilizadores podem carregar ficheiros para outras localizações.
     instructions:
       all_available_storages_already_added: Todos os armazenamentos disponíveis já foram adicionados ao projeto.
+      authentication_method: A forma como os pedidos entre o OpenProject e o armazenamento são autenticados.
       automatic_folder: Isto irá criar automaticamente uma pasta raiz para este projeto e gerir as permissões de acesso para cada membro do projeto.
       empty_project_folder_validation: Tem de selecionar uma pasta para avançar.
       existing_manual_folder: Pode designar uma pasta existente como a pasta de raiz para este projeto. No entanto, as permissões não são geridas automaticamente, o administrador tem de garantir manualmente que os utilizadores relevantes têm acesso. A pasta selecionada pode ser utilizada por vários projetos.
@@ -262,6 +291,8 @@ pt-PT:
         integration: Administração do Nextcloud / OpenProject
         oauth_configuration: Copie estes valores de %{application_link_text}.
         provider_configuration: 'Garanta que tem privilégios administrativos na sua instância de Nextcloud e tenha a aplicação %{application_link_text} instalada antes de fazer a configuração:'
+        storage_audience: Introduza o ID do cliente que a instância Nextcloud utiliza para comunicar com o fornecedor de identidade.
+        storage_audience_placeholder: 'exemplo: Nextcloud'
       no_specific_folder: Por predefinição, cada utilizador irá começar a sua própria pasta pessoal quando carrega um ficheiro.
       no_storage_set_up: Não há armazenamento de ficheiros configurado.
       not_logged_into_storage: Para selecionar uma pasta do projeto, primeiro inicie a sessão
@@ -293,6 +324,7 @@ pt-PT:
     label_creator: Criador
     label_delete_storage: Eliminar armazenamento
     label_edit_storage_access_management: Editar a gestão do acesso ao armazenamento
+    label_edit_storage_audience: Editar público do armazenamento
     label_edit_storage_automatically_managed_folders: Editar o armazenamento pastas geridas automaticamente
     label_edit_storage_host: Editar anfitrião de armazenamento
     label_existing_manual_folder: Pasta existente com permissões geridas manualmente
@@ -321,6 +353,7 @@ pt-PT:
       connected: Ligado
       connected_no_permissions: A função de utilizador não tem permissões de armazenamento
       not_connected: Não ligado. O utilizador deve iniciar sessão no armazenamento através do seguinte %{link}.
+      not_connected_sso: Ainda não está ligado, o SSO deve ligá-los automaticamente, quando estiver a olhar para os ficheiros.
     members_no_results: Nenhum membro a exibir.
     no_results: Não há armazenamento configurado.
     oauth_access_granted_modal:
@@ -382,8 +415,15 @@ pt-PT:
         name: OneDrive/SharePoint
         name_placeholder: p. ex., OneDrive
     show_attachments_toggle:
-      description: 'Se desativar esta opção, irá ocultar a lista de anexos no separador de ficheiros dos pacotes de trabalho. Os ficheiros anexados na descrição de um pacote de trabalho irão continuar a ser carregados no armazenamento interno de anexos.'
+      description: Se desativar esta opção, irá ocultar a lista de anexos no separador de ficheiros dos pacotes de trabalho. Os ficheiros anexados na descrição de um pacote de trabalho irão continuar a ser carregados no armazenamento interno de anexos.
       label: Mostrar anexos no separador dos ficheiros dos pacotes de trabalho
+    storage_audience:
+      idp:
+        helptext: O OpenProject irá utilizar o primeiro token de acesso recebido pelo fornecedor de identidade para autenticar os pedidos ao armazenamento. Não tentará obter outro token.
+        label: Use o primeiro token de acesso obtido pelo fornecedor de identidade
+      manual:
+        helptext: Permite-lhe definir o público do armazenamento. O OpenProject irá tentar obter um token para o público dado a partir do fornecedor de identidade.
+        label: Definir o público do armazenamento manualmente
     storage_list_blank_slate:
       description: Adicione um armazenamento para vê-lo aqui.
       heading: Ainda não tem nenhum armazenamento.

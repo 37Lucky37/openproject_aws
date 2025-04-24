@@ -17,7 +17,7 @@ ru:
     board_type_attributes:
       assignee: Назначенный
       status: Статус
-      version: Версия
+      version: Версия 
       subproject: Подпроект
       subtasks: Родитель-Потомок
       basic: Базовый

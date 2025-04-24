@@ -183,6 +183,10 @@ export class OpSettingsMenuDirective extends OpContextMenuTrigger {
     params['columns[]'] = this.wpTableColumns.getColumns().map((column) => column.id);
     params.title = this.queryTitle(query);
     const url = new URL(window.location.href);
+    if (url.pathname.includes('/details')) {
+      // we are in a split screen, but need a work package list or gantt view or wherever the export menu item is
+      url.pathname = url.pathname.split('/details')[0];
+    }
     const queryId = url.searchParams.get('query_id');
     if (queryId) {
       params.query_id = queryId;

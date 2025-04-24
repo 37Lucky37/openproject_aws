@@ -9,8 +9,12 @@ pl:
       two_factor_authentication/device:
         identifier: "Identyfikator"
         default: "Użyj jako domyślnego"
+        channel: "Kanał"
       two_factor_authentication/device/sms:
         phone_number: "Numer telefonu"
+      two_factor_authentication/device/webauthn:
+        webauthn_external: "Identyfikator WebAuthn"
+        webauthn_public_key: "Klucz publiczny WebAuthn"
     errors:
       models:
         two_factor_authentication/device:

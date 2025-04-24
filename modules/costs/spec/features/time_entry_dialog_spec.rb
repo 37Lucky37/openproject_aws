@@ -28,7 +28,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-require File.expand_path("#{File.dirname(__FILE__)}/../spec_helper.rb")
+require_relative "../spec_helper"
 
 RSpec.describe "time entry dialog", :js, with_flag: :track_start_and_end_times_for_time_entries do
   include Redmine::I18n
@@ -209,6 +209,70 @@ RSpec.describe "time entry dialog", :js, with_flag: :track_start_and_end_times_f
 
       time_logging_modal.has_field_with_value("end_time", "14:30")
       time_logging_modal.has_field_with_value("hours", "2.5h")
+    end
+  end
+
+  describe "when the user can edit time entries" do
+    let(:permissions) { %i[log_own_time view_own_time_entries edit_own_time_entries view_work_packages] }
+    let!(:time_entry) { create(:time_entry, work_package: work_package_a, project: work_package_a.project, user: user) }
+
+    context "with work packages from different projects" do
+      let(:other_project) { create(:project_with_types) }
+      let(:work_package_c) { create(:work_package, subject: "WP C", project: other_project) }
+
+      let(:user) { create(:user, member_with_permissions: { project => permissions, other_project => permissions }) }
+
+      it "allows switching to a work package of a different project (Regression #62066)" do
+        visit cost_reports_path(work_package_a.project_id,
+                                { fields: ["WorkPackageId"],
+                                  operators: { WorkPackageId: "=" },
+                                  values: { WorkPackageId: [work_package_a.id, work_package_b.id, work_package_c.id] },
+                                  set_filter: 1 })
+
+        # make sure that the work package is shown in the table
+        expect(page).to have_css("#result-table td[raw-data='#{work_package_a.id}']", text: work_package_a.subject)
+
+        find("opce-time-entry-trigger-actions .icon-edit").click
+
+        time_logging_modal.is_visible(true)
+        time_logging_modal.update_field("work_package_id", work_package_c.id)
+        wait_for_network_idle # form refresh is happening here
+        time_logging_modal.submit
+        wait_for_network_idle
+
+        expect(page).to have_css("#result-table td[raw-data='#{work_package_c.id}']", text: work_package_c.subject)
+
+        # also check that everything is updated in the database
+        time_entry.reload
+        expect(time_entry.work_package).to eq(work_package_c)
+      end
+    end
+
+    it "updates the time entry instead of creating a new one (Regression #61657)" do
+      visit cost_reports_path(work_package_a.project_id,
+                              { fields: ["WorkPackageId"],
+                                operators: { WorkPackageId: "=" },
+                                values: { WorkPackageId: [work_package_a.id, work_package_b.id] },
+                                set_filter: 1 })
+
+      # make sure that the work package is shown in the table
+      expect(page).to have_css("#result-table td[raw-data='#{work_package_a.id}']", text: work_package_a.subject)
+
+      find("opce-time-entry-trigger-actions .icon-edit").click
+
+      expect do
+        time_logging_modal.is_visible(true)
+        time_logging_modal.update_field("work_package_id", work_package_b.id)
+        wait_for_network_idle # form refresh is happening here
+        time_logging_modal.submit
+        wait_for_network_idle
+      end.not_to change(TimeEntry, :count)
+
+      expect(page).to have_css("#result-table td[raw-data='#{work_package_b.id}']", text: work_package_b.subject)
+
+      # also check that everything is updated in the database
+      time_entry.reload
+      expect(time_entry.work_package).to eq(work_package_b)
     end
   end
 end

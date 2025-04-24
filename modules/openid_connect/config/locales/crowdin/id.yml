@@ -4,18 +4,18 @@ id:
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     Anda telah keluar.  Isi formulir apa pun yang Anda kirim mungkin akan hilang.  Silahkan [log in].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nama
         slug: Unique identifier
         display_name: Nama tampilan
-        client_id: Client ID
-        client_secret: Client secret
-        secret: Rahasia
+        client_id: ID Pelanggan
+        client_secret: Rahasia klien
+        secret: Kunci Rahasia
         scope: Cakupan
         grant_types_supported: Supported grant types
-        limit_self_registration: Limit self registration
+        limit_self_registration: Batasi pendaftaran mandiri
         authorization_endpoint: Authorization endpoint
         userinfo_endpoint: User information endpoint
         token_endpoint: Token endpoint
@@ -24,12 +24,11 @@ id:
         jwks_uri: JWKS URI
         issuer: Issuer
         tenant: Tenant
-        metadata_url: Metadata URL
-        icon: Custom icon
+        metadata_url: URL Metadata
+        icon: Ikon kustom
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -85,7 +84,7 @@ id:
       endpoint_url: Endpoint URL
     providers:
       label_providers: "Providers"
-      seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
+      seeded_from_env: "Penyedia ini diunggulkan dari konfigurasi lingkungan. Tidak dapat diedit."
       google:
         name: Google
       microsoft_entra:
@@ -97,14 +96,14 @@ id:
       label_add_new: Tambahkan penyedia OpenID baru
       label_edit: Edit penyedia OpenID %{name}
       label_empty_title: No OpenID providers configured yet.
-      label_empty_description: Add a provider to see them here.
+      label_empty_description: Tambahkan penyedia untuk melihatnya di sini.
       label_metadata: OpenID Connect Discovery Endpoint
-      label_automatic_configuration: Automatic configuration
+      label_automatic_configuration: Konfigurasi otomatis
       label_optional_configuration: Optional configuration
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Pemetaan atribut
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Belum ada penyedia yang ditentukan.
       plural: penyedia OpenID

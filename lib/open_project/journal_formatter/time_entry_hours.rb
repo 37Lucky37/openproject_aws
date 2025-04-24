@@ -28,7 +28,7 @@
 
 class OpenProject::JournalFormatter::TimeEntryHours < JournalFormatter::Base
   def render(_key, values, options = { html: true })
-    label_text = "Spent time"
+    label_text = I18n.t(:label_spent_time)
     label_text << ":" if !values.first
     label_text = content_tag(:strong, label_text) if options[:html]
 

@@ -518,7 +518,17 @@ RSpec.describe "API v3 file links resource" do
     context "if file link does not have a container." do
       let(:file_link) { create(:file_link) }
 
-      it_behaves_like "not found"
+      context "and the current user is the creator of the link" do
+        let(:current_user) { file_link.creator }
+
+        it "is successful" do
+          expect(subject.status).to be 200
+        end
+      end
+
+      context "and the current user is not the creator of the link" do
+        it_behaves_like "not found"
+      end
     end
   end
 

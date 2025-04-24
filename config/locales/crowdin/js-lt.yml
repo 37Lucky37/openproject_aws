@@ -103,7 +103,6 @@ lt:
     button_settings: "Nustatymai"
     button_uncheck_all: "Atžymėti visus"
     button_update: "Atnaujinti"
-    button_export-pdf: "Atsisiųsti PDF"
     button_export-atom: "Atsisiųsti Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Kurti"
@@ -222,6 +221,8 @@ lt:
             label_maximum_users: "Maksimalus aktyvių naudotojų skaičius"
             label_starts_at: "Prasideda nuo"
             label_expires_at: "Nustoja galioti"
+            label_plan: "Planas"
+            label_additional_features: "Additional features"
             receive_newsletter: Noriu gauti OpenProject <a target="_blank" href="%{link}">naujienlaiškį</a>.
             taken_domain: Gali būti tik vienas aktyvus bandomasis periodas domenui.
             domain_mismatch: Dabartinės užklausos stoties pavadinimas neatitinka sukonfigūruoto stoties vardo. Prašome patikrinti jūsų sistemos nustatymus.
@@ -357,10 +358,10 @@ lt:
           learn_about: "Sužinokite daugiau apie naujas galimybes"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Prenumeruoti kalendorių"
       inital_setup_error_message: "Gaunant duomenis įvyko klaida."
@@ -613,7 +614,7 @@ lt:
         assigned: "Paskirtas"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
-        responsible: "Accountable"
+        responsible: "Atsakingas"
         created: "Sukurta"
         scheduled: "Suplanuota"
         commented: "Komentavo"
@@ -645,7 +646,7 @@ lt:
           with_current_filter: "Šiuo metu šiame vaizde pranešimų nėra"
         mark_all_read: "Pažymėti visus kaip perskaitytus"
         mark_as_read: "Žymėti kaip skaitytą"
-        text_update_date_by: "%{date} by"
+        text_update_date_by: "%{date} "
         total_count_warning: "Rodomi %{newest_count} paskutiniai pranešimai. Dar %{more_count} yra nerodomi."
         empty_state:
           no_notification: "Panašu, kad jūs pilnai pasivijote."
@@ -720,17 +721,18 @@ lt:
       description: "Aprašymas: spauskite, kad keistumėte..."
       relation_description: "Paspauskite, kad pridėtumėte šio ryšio aprašymą"
     project:
-      required_outside_context: >
-        Prašau pasirinkti projektą, kuriame turi būti sukurtas darbo paketas, kad matytumėte visus atributus. Jūs galite pasirinkti tik tuos projektus, kurie turi aukščiau nurodytą tipą.
-      context: "Projekto kontekstas"
-      click_to_switch_to_project: "Projektas: %{projectname}"
-      confirm_template_load: "Šablono pakeitimas perkraus puslapį ir jūs prarasite visą šioje formoje įvestą informaciją. Tęsti?"
-      use_template: "Naudoti šabloną"
-      no_template_selected: "(Nėra)"
-      copy:
-        copy_options: "Kopijos nustatymai"
       autocompleter:
         label: "Projekto autoužpildymas"
+      click_to_switch_to_project: "Projektas: %{projectname}"
+      confirm_template_load: "Šablono pakeitimas perkraus puslapį ir jūs prarasite visą šioje formoje įvestą informaciją. Tęsti?"
+      context: "Projekto kontekstas"
+      copy:
+        copy_options: "Kopijos nustatymai"
+      not_available: "Project N/A"
+      no_template_selected: "(Nėra)"
+      required_outside_context: >
+        Prašau pasirinkti projektą, kuriame turi būti sukurtas darbo paketas, kad matytumėte visus atributus. Jūs galite pasirinkti tik tuos projektus, kurie turi aukščiau nurodytą tipą.
+      use_template: "Naudoti šabloną"
     reminders:
       settings:
         daily:
@@ -799,6 +801,7 @@ lt:
       typeahead_placeholder: Ieškoti galimų stebėtojų
     relation_labels:
       parent: "Tėvas"
+      child: "Child"
       children: "Pasekėjai"
       relates: "Susiję su"
       duplicates: "Dublikatai"
@@ -828,7 +831,7 @@ lt:
       add_new_child: "Sukurti naują vaiką"
       create_new: "Sukurti naują"
       add_existing: "Pridėti esamą"
-      add_existing_child: "Pridėti jau esamą vaiką"
+      add_existing_child: "Add child"
       remove_child: "Pašalinti vaiką"
       add_new_relation: "Sukurti naują ryšį"
       add_existing_relation: "Pridėti esamą sąryšį"
@@ -854,8 +857,6 @@ lt:
       select_branch: "Parinkti padalinį"
     field_value_enter_prompt: "Įveskite \"%{field}\" reikšmę "
     project_menu_details: "Detalės"
-    scheduling:
-      manual: "Rankinis laiko parinkimas"
     sort:
       sorted_asc: "Pritaikytas didėjantis rikiavimas, "
       sorted_dsc: "Pritaikytas mažėjantis rikiavimas, "
@@ -903,15 +904,6 @@ lt:
       comment_send_failed: "Įvyko klaida. Neįmanoma pateikti komentaro."
       comment_updated: "Komentaras sėkmingai atnaujintas."
       confirm_edit_cancel: "Ar Jūs tikrai norite atšaukti darbo paketo redagavimą?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Suplanuota automatiškai. Datos paskaičiuotos pagal ryšius."
-        manually_scheduled: "Įjungtas rankinis planavimas, visi ryšiai ignoruojami."
-        start_date_limited_by_relations: "Galimos pradžios ir pabaigos datos ribojamos pagal ryšius."
-        changing_dates_affects_follow_relations: "Šių datų keitimas įtakos susijusių darbo paketų datas."
-        click_on_show_relations_to_open_gantt: 'Spauskite „%{button_name}“ GANTT vaizdui.'
-        show_relations: "Rodyti ryšius"
-        ignore_non_working_days:
-          title: "Tik darbo dienos"
       description_filter: "Filtras"
       description_enter_text: "Įveskite tekstą"
       description_options_hide: "Slėpti parinktis"

@@ -1,33 +1,38 @@
 <%=
   component_wrapper(class: "work-packages-activities-tab-journals-new-component") do
-    flex_layout(my: 2, data: { test_selector: "op-work-package-journal-form" }) do |new_form_container|
+    flex_layout(data: { test_selector: "op-work-package-journal-form" }) do |new_form_container|
       new_form_container.with_row(
         display: button_row_display_value,
         data: {
           "work-packages--activities-tab--index-target": "buttonRow"
-        }) do
+        }
+      ) do
         flex_layout(justify_content: :space_between) do |button_row|
           button_row.with_column(classes: "work-packages-activities-tab-journals-new-component--input-trigger-column", mr: 2) do
-            render(Primer::Beta::Button.new(
+            render(
+              Primer::Beta::Button.new(
                 text_align: :left,
                 scheme: :default,
                 size: :medium,
                 block: true,
                 data: {
-                  "action": "click->work-packages--activities-tab--index#showForm dragover->work-packages--activities-tab--index#showForm",
-                  "test_selector": "op-open-work-package-journal-form-trigger"
+                  action: "click->work-packages--activities-tab--index#showForm dragover->work-packages--activities-tab--index#showForm",
+                  test_selector: "op-open-work-package-journal-form-trigger"
                 }
-              )) do
+              )
+            ) do
               render(Primer::Beta::Text.new(color: :muted, font_weight: :normal)) { t("activities.work_packages.activity_tab.label_type_to_comment") }
             end
           end
           button_row.with_column do
-            render(Primer::Beta::IconButton.new(
+            render(
+              Primer::Beta::IconButton.new(
                 scheme: :default,
                 icon: :"paper-airplane",
                 "aria-label": t("activities.work_packages.activity_tab.label_submit_comment"),
                 disabled: true
-              ))
+              )
+            )
           end
         end
       end
@@ -44,28 +49,49 @@
             turbo_stream: true,
             "work-packages--activities-tab--index-target": "form",
             action: "submit->work-packages--activities-tab--index#onSubmit",
-            "test_selector": "op-work-package-journal-form-element"
+            test_selector: "op-work-package-journal-form-element"
           },
-          url: work_package_activities_path(work_package_id: work_package.id),
+          url: work_package_activities_path(work_package_id: work_package.id)
         ) do |f|
-          flex_layout(justify_content: :space_between, align_items: :flex_end) do |form_container|
-            form_container.with_column(
+          flex_layout do |form_container|
+            form_container.with_row(
               classes: "work-packages-activities-tab-journals-new-component--ck-editor-column",
-              mr: 2
+              mb: 3
             ) do
               render(WorkPackages::ActivitiesTab::Journals::NotesForm.new(f))
             end
-            form_container.with_column do
-              render(Primer::Beta::IconButton.new(
-                scheme: :default,
-                icon: :"paper-airplane",
-                "aria-label": t("activities.work_packages.activity_tab.label_submit_comment"),
-                type: :submit,
-                data: {
-                  "test_selector": "op-submit-work-package-journal-form",
-                  "work-packages--activities-tab--index-target": "formSubmitButton"
-                }
-              ))
+
+            form_container.with_row(flex_layout: true, justify_content: adding_restricted_comment_allowed? ? :space_between : :flex_end) do |form_container_row|
+              if adding_restricted_comment_allowed?
+                form_container_row.with_column(flex_layout: true, align_items: :center) do |restricted_comment_container|
+                  restricted_comment_container.with_column(mr: 2, test_selector: "op-work-package-journal-restricted-comment-checkbox") do
+                    render(WorkPackages::ActivitiesTab::Journals::RestrictedNoteForm.new(f))
+                  end
+
+                  restricted_comment_container.with_column(
+                    display: :none,
+                    data: { "work-packages--activities-tab--restricted-comment-target": "learnMoreLink" },
+                    pb: 1
+                  ) do
+                    render(Primer::Beta::Link.new(href: learn_more_static_link_url, target: "_blank")) do |link|
+                      link.with_trailing_visual_icon(icon: "link-external", size: :small)
+                      I18n.t("label_learn_more")
+                    end
+                  end
+                end
+              end
+
+              form_container_row.with_column(flex_layout: true, align_items: :center) do |submit_container|
+                submit_container.with_column(mr: 2) do
+                  render(Primer::Beta::Button.new(scheme: :secondary, size: :medium, data: { action: "click->work-packages--activities-tab--index#closeEditor" })) do
+                    t("button_cancel")
+                  end
+                end
+
+                submit_container.with_column do
+                  render(WorkPackages::ActivitiesTab::Journals::Submit.new(f, label: I18n.t("button_submit")))
+                end
+              end
             end
           end
         end

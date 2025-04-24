@@ -32,15 +32,6 @@
 # Rails 7.0+ default is OpenSSL::Digest::SHA256.
 # Rails.application.config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
 
-# https://guides.rubyonrails.org/configuring.html#config-active-support-hash-digest-class
-# Change the digest class for ActiveSupport::Digest.
-# Changing this default means that for example Etags change and
-# various cache keys leading to cache invalidation.
-# Rails 5.1 and before used OpenSSL::Digest::MD5.
-# Rails 5.2 to 6.1 default is OpenSSL::Digest::SHA1.
-# Rails 7.0+ default is OpenSSL::Digest::SHA256.
-# Rails.application.config.active_support.hash_digest_class = OpenSSL::Digest::SHA256
-
 # https://guides.rubyonrails.org/configuring.html#config-active-support-remove-deprecated-time-with-zone-name
 # Don't override ActiveSupport::TimeWithZone.name and use the default Ruby
 # implementation.

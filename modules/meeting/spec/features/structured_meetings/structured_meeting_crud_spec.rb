@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -87,7 +89,7 @@ RSpec.describe "Structured meetings CRUD",
   end
 
   it "can create a structured meeting and add agenda items" do
-    expect_flash(type: :success, message: "Successful creation")
+    expect_and_dismiss_flash(type: :success, message: "Successful creation")
 
     # Does not send invitation mails by default
     perform_enqueued_jobs
@@ -176,6 +178,7 @@ RSpec.describe "Structured meetings CRUD",
     end
 
     show_page.select_action(item, I18n.t(:label_sort_lowest))
+    show_page.assert_agenda_order! "Important task", "Updated title"
 
     show_page.add_agenda_item do
       fill_in "Title", with: "My agenda item"

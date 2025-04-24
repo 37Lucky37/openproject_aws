@@ -3,7 +3,7 @@ mn:
   plugin_openproject_calendar:
     name: "OpenProject Хуанли"
     description: "Хуанли харах боломжийг олгодог."
-  label_calendar: "Calendar"
+  label_calendar: "Хуанли"
   label_calendar_plural: "Хуанли"
   label_new_calendar: "Шинэ хуанли"
   permission_view_calendar: "Хуанли харах"

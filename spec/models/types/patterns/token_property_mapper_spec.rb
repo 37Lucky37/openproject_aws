@@ -33,17 +33,37 @@ require "spec_helper"
 RSpec.describe Types::Patterns::TokenPropertyMapper do
   shared_let(:responsible) { create(:user, firstname: "Responsible") }
   shared_let(:assignee) { create(:user, firstname: "Assignee") }
+  shared_let(:parent_assignee) { create(:user, firstname: "Parent", lastname: "Assignee") }
 
   shared_let(:category) { create(:category) }
 
   shared_let(:project) { create(:project, parent: create(:project), status_code: 1, status_explanation: "A Mess") }
 
   shared_let(:work_package_parent) do
-    create(:work_package, project:, category:, start_date: Date.yesterday, estimated_hours: 120, due_date: 3.months.from_now)
+    create(:work_package, project:, category:, start_date: Date.yesterday, estimated_hours: 120,
+                          due_date: 3.months.from_now, assigned_to: parent_assignee)
   end
+
   shared_let(:work_package) do
-    create(:work_package, responsible:, project:, category:, due_date: 1.month.from_now,
-                          assigned_to: assignee, parent: work_package_parent, start_date: Time.zone.today, estimated_hours: 30)
+    create(:work_package, responsible:, project:, category:, due_date: 1.month.from_now, assigned_to: assignee,
+                          parent: work_package_parent, start_date: Time.zone.today, estimated_hours: 30)
+  end
+
+  shared_let(:string_custom_field) do
+    create(:string_wp_custom_field).tap do |custom_field|
+      project.work_package_custom_fields << custom_field
+      work_package.type.custom_fields << custom_field
+    end
+  end
+
+  shared_let(:mult_list_custom_field) do
+    create(:multi_list_wp_custom_field).tap do
+      project.work_package_custom_fields << it
+      work_package.type.custom_fields << it
+
+      work_package.send(:"custom_field_#{it.id}=", it.possible_values.take(2))
+      work_package.save
+    end
   end
 
   described_class::TOKEN_PROPERTY_MAP.each_pair do |key, details|
@@ -53,10 +73,17 @@ RSpec.describe Types::Patterns::TokenPropertyMapper do
     end
   end
 
+  it "multi value fields are supported" do
+    function = described_class.new.fetch :"custom_field_#{mult_list_custom_field.id}"
+    expect(function.call(work_package)).to eq(%w[A B])
+  end
+
   it "returns all possible tokens" do
+    cf = string_custom_field
     tokens = described_class.new.tokens_for_type(work_package.type)
 
     expect(tokens.keys).to match_array(%i[work_package project parent])
     expect(tokens[:project][:project_status]).to eq(Project.human_attribute_name(:status_code))
+    expect(tokens[:work_package][:"custom_field_#{cf.id}"]).to eq(cf.name)
   end
 end

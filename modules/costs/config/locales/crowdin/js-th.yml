@@ -21,6 +21,7 @@
 #++
 th:
   js:
+    text_are_you_sure: "คุณแน่ใจหรือไม่ ?"
     work_packages:
       property_groups:
         costs: "Costs"

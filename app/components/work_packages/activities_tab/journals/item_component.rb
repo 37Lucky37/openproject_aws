@@ -1,6 +1,6 @@
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2023 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,9 +31,10 @@ module WorkPackages
     module Journals
       class ItemComponent < ApplicationComponent
         include ApplicationHelper
-        include WorkPackages::ActivitiesTab::SharedHelpers
         include OpPrimer::ComponentHelpers
         include OpTurbo::Streamable
+        include WorkPackages::ActivitiesTab::SharedHelpers
+        include WorkPackages::ActivitiesTab::StimulusControllers
 
         def initialize(journal:, filter:, grouped_emoji_reactions:, state: :show)
           super
@@ -58,6 +59,30 @@ module WorkPackages
             "application-target": "dynamic",
             "work-packages--activities-tab--item-activity-url-value": activity_url(journal)
           }
+        end
+
+        def container_classes
+          [].tap do |classes|
+            if journal.restricted?
+              classes << "work-packages-activities-tab-journals-item-component--container__restricted-comment"
+            end
+          end
+        end
+
+        def comment_header_classes
+          [].tap do |classes|
+            if journal.restricted?
+              classes << "work-packages-activities-tab-journals-item-component--header__restricted-comment"
+            end
+          end
+        end
+
+        def comment_body_classes
+          ["work-packages-activities-tab-journals-item-component--journal-notes-body"].tap do |classes|
+            if journal.restricted?
+              classes << "work-packages-activities-tab-journals-item-component--journal-notes-body__restricted-comment"
+            end
+          end
         end
 
         def show_comment_container?
@@ -116,15 +141,26 @@ module WorkPackages
           menu.with_item(label: t("js.label_quote_comment"),
                          tag: :button,
                          content_arguments: {
-                           data: {
-                             action: "click->work-packages--activities-tab--index#quote",
-                             "content-param": journal.notes,
-                             "user-name-param": I18n.t(:text_user_wrote, value: ERB::Util.html_escape(journal.user)),
-                             test_selector: "op-wp-journal-#{journal.id}-quote"
-                           }
+                           data: quote_action_data_attributes
                          }) do |item|
             item.with_leading_visual_icon(icon: :quote)
           end
+        end
+
+        def quote_action_data_attributes # rubocop:disable Metrics/AbcSize
+          {
+            controller: quote_comments_stimulus_controller,
+            "application-target": "dynamic",
+            action: "click->#{quote_comments_stimulus_controller}#quote:prevent",
+            quote_comments_stimulus_controller("-content-param") => journal.notes,
+            quote_comments_stimulus_controller("-user-id-param") => journal.user_id,
+            quote_comments_stimulus_controller("-user-name-param") => journal.user.name,
+            quote_comments_stimulus_controller("-is-restricted-param") => journal.restricted?,
+            quote_comments_stimulus_controller("-text-wrote-param") => I18n.t(:text_wrote),
+            quote_comments_stimulus_controller("-#{index_stimulus_controller}-outlet") => items_index_selector,
+            quote_comments_stimulus_controller("-#{restricted_comment_stimulus_controller}-outlet") => add_comment_selector,
+            test_selector: "op-wp-journal-#{journal.id}-quote"
+          }
         end
       end
     end

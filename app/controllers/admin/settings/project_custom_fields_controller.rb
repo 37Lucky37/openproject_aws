@@ -145,7 +145,7 @@ module Admin::Settings
     def destroy
       @custom_field.destroy
 
-      update_section_via_turbo_stream(project_custom_field_section: @custom_field.project_custom_field_section)
+      update_section_via_turbo_stream(project_custom_field_section: @custom_field.project_custom_field_section.reload)
 
       respond_with_turbo_streams
     end

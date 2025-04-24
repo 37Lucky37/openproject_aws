@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,13 +31,13 @@
 class GithubCheckRun < ApplicationRecord
   belongs_to :github_pull_request, touch: true
 
-  enum status: {
+  enum :status, {
     completed: "completed",
     in_progress: "in_progress",
     queued: "queued"
   }
 
-  enum conclusion: {
+  enum :conclusion, {
     action_required: "action_required",
     cancelled: "cancelled",
     failure: "failure",

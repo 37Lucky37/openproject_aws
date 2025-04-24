@@ -281,7 +281,7 @@ class RecurringMeetingsController < ApplicationController
   end
 
   def set_direction
-    @direction = params[:direction]
+    @direction = params.fetch(:direction, "upcoming")
   end
 
   def build_meeting_limits

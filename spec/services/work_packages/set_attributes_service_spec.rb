@@ -47,7 +47,7 @@ RSpec.describe WorkPackages::SetAttributesService,
   end
 
   let(:work_package) do
-    wp = build_stubbed(:work_package, project:, status: status_0_pct_complete)
+    wp = build_stubbed(:work_package, project:, subject: "work_package", status: status_0_pct_complete)
     wp.type = initial_type
     wp.clear_changes_information
 
@@ -523,40 +523,40 @@ RSpec.describe WorkPackages::SetAttributesService,
   end
 
   context "for start_date & due_date & duration" do
-    context "with a parent" do
+    context "with a parent scheduled manually" do
       let(:expected_attributes) { {} }
       let(:work_package) { new_work_package }
       let(:parent) do
         build_stubbed(:work_package,
+                      schedule_manually: true,
                       start_date: parent_start_date,
                       due_date: parent_due_date)
       end
       let(:parent_start_date) { Time.zone.today - 5.days }
       let(:parent_due_date) { Time.zone.today + 10.days }
 
-      context "with the parent having dates and not providing own dates" do
+      context "with the parent having dates and work package not providing its own dates" do
         let(:call_attributes) { { parent: } }
+        let(:parent_start_date) { Time.zone.today - 5.days }
+        let(:parent_due_date) { Time.zone.today + 10.days }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the parent`s start_date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_start_date
-          end
-
-          it "sets the due_date to the parent`s due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_due_date
+        it_behaves_like "service call", description: "sets the start and due dates to the parent's dates" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_start_date,
+              due_date: parent_due_date
+            }
           end
         end
       end
 
-      context "with the parent having dates and not providing own dates and with the parent`s" \
-              "soonest_start being before the start_date (e.g. because the parent is manually scheduled)" do
+      context "with the parent having dates and work package not providing its own dates " \
+              "and with the parent's soonest_start being later than its start_date " \
+              "(e.g. because the parent is manually scheduled and his predecessor " \
+              "due date is later than its own start date)" do
         let(:call_attributes) { { parent: } }
+        let(:parent_start_date) { Time.zone.today - 5.days }
+        let(:parent_due_date) { Time.zone.today + 10.days }
 
         before do
           allow(parent)
@@ -564,221 +564,151 @@ RSpec.describe WorkPackages::SetAttributesService,
             .and_return(parent_start_date + 3.days)
         end
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the parent`s start_date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_start_date
-          end
-
-          it "sets the due_date to the parent`s due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_due_date
+        it_behaves_like "service call", description: "sets the start and due dates to the parent's dates" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_start_date,
+              due_date: parent_due_date
+            }
           end
         end
       end
 
-      context "with the parent having start date (no due) and not providing own dates" do
+      context "with the parent having start date (no due) and work package not providing its own dates" do
         let(:call_attributes) { { parent: } }
         let(:parent_due_date) { nil }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the parent`s start_date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_start_date
-          end
-
-          it "sets the due_date to nil" do
-            subject
-
-            expect(work_package.due_date)
-              .to be_nil
+        it_behaves_like "service call", description: "sets the start to the parent's start date and sets due date to nil" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_start_date,
+              due_date: nil
+            }
           end
         end
       end
 
-      context "with the parent having due date (no start) and not providing own dates" do
+      context "with the parent having due date (no start) and work package not providing its own dates" do
         let(:call_attributes) { { parent: } }
         let(:parent_start_date) { nil }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to nil" do
-            subject
-
-            expect(work_package.start_date)
-              .to be_nil
-          end
-
-          it "sets the due_date to the parent`s due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_due_date
+        it_behaves_like "service call", description: "sets the start to the parent's start date and sets due date to nil" do
+          let(:expected_attributes) do
+            {
+              start_date: nil,
+              due_date: parent_due_date
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing own dates" do
+      context "with the parent having dates but work package providing its own dates" do
         let(:call_attributes) { { parent:, start_date: Time.zone.today, due_date: Time.zone.today + 1.day } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the provided date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql Time.zone.today
-          end
-
-          it "sets the due_date to the provided date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql Time.zone.today + 1.day
+        it_behaves_like "service call", description: "sets the start and due dates to the provided dates" do
+          let(:expected_attributes) do
+            {
+              start_date: Time.zone.today,
+              due_date: Time.zone.today + 1.day
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing own start_date" do
+      context "with the parent having dates but work package providing its own start_date" do
         let(:call_attributes) { { parent:, start_date: Time.zone.today } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the provided date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql Time.zone.today
-          end
-
-          it "sets the due_date to the parent's due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_due_date
+        it_behaves_like "service call",
+                        description: "sets the start_date to the provided date and the due_date to the parent's due_date" do
+          let(:expected_attributes) do
+            {
+              start_date: Time.zone.today,
+              due_date: parent_due_date
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing own due_date" do
+      context "with the parent having dates but work package providing its own due_date" do
         let(:call_attributes) { { parent:, due_date: Time.zone.today + 4.days } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the parent's start date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_start_date
-          end
-
-          it "sets the due_date to the provided date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql Time.zone.today + 4.days
+        it_behaves_like "service call",
+                        description: "sets the start_date to the parent's start date and the due_date to the provided date" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_start_date,
+              due_date: Time.zone.today + 4.days
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing own empty start_date" do
+      context "with the parent having dates but work package providing its own empty start_date" do
         let(:call_attributes) { { parent:, start_date: nil } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to nil" do
-            subject
-
-            expect(work_package.start_date)
-              .to be_nil
-          end
-
-          it "sets the due_date to the parent's due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_due_date
+        it_behaves_like "service call",
+                        description: "sets the start_date to nil and the due_date to the parent's due_date" do
+          let(:expected_attributes) do
+            {
+              start_date: nil,
+              due_date: parent_due_date
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing own empty due_date" do
+      context "with the parent having dates but work package providing its own empty due_date" do
         let(:call_attributes) { { parent:, due_date: nil } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the parent's start date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_start_date
-          end
-
-          it "sets the due_date to nil" do
-            subject
-
-            expect(work_package.due_date)
-              .to be_nil
+        it_behaves_like "service call",
+                        description: "sets the start_date to the parent's start date and the due_date to nil" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_start_date,
+              due_date: nil
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing a start date that is before parent`s due date`" do
+      context "with the parent having dates but work package providing its own start date that is before parent's due date" do
         let(:call_attributes) { { parent:, start_date: parent_due_date - 4.days } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the provided date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_due_date - 4.days
-          end
-
-          it "sets the due_date to the parent's due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_due_date
+        it_behaves_like "service call",
+                        description: "sets the start_date to the provided date and the due_date to the parent's due_date" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_due_date - 4.days,
+              due_date: parent_due_date
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing a start date that is after the parent`s due date`" do
+      context "with the parent having dates but work package providing its own start date that is after the parent's due date" do
         let(:call_attributes) { { parent:, start_date: parent_due_date + 1.day } }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the provided date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql parent_due_date + 1.day
-          end
-
-          it "leaves the due date empty" do
-            subject
-
-            expect(work_package.due_date)
-              .to be_nil
+        it_behaves_like "service call",
+                        description: "sets the start_date to the provided date and the due_date to nil" do
+          let(:expected_attributes) do
+            {
+              start_date: parent_due_date + 1.day,
+              due_date: nil
+            }
           end
         end
       end
 
-      context "with the parent having dates but providing a due date that is before the parent`s start date`" do
+      context "with the parent having dates but work package providing its own due date that is before the parent's start date" do
         let(:call_attributes) { { parent:, due_date: parent_start_date - 3.days } }
 
-        it_behaves_like "service call" do
-          it "leaves the start date empty" do
-            subject
-
-            expect(work_package.start_date)
-              .to be_nil
-          end
-
-          it "set the due date to the provided date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql parent_start_date - 3.days
+        it_behaves_like "service call",
+                        description: "leaves the start date empty and sets the due date to the provided date" do
+          let(:expected_attributes) do
+            {
+              start_date: nil,
+              due_date: parent_start_date - 3.days
+            }
           end
         end
       end
@@ -787,20 +717,8 @@ RSpec.describe WorkPackages::SetAttributesService,
         let(:call_attributes) { { parent_id: -1 } }
         let(:work_package) { build_stubbed(:work_package, start_date: Time.zone.today, due_date: Time.zone.today + 2.days) }
 
-        it_behaves_like "service call" do
-          it "sets the start_date to the parent`s start_date" do
-            subject
-
-            expect(work_package.start_date)
-              .to eql Time.zone.today
-          end
-
-          it "sets the due_date to the parent`s due_date" do
-            subject
-
-            expect(work_package.due_date)
-              .to eql Time.zone.today + 2.days
-          end
+        it_behaves_like "service call", description: "keeps its own dates" do
+          let(:expected_kept_attributes) { %w[start_date due_date] }
         end
       end
     end
@@ -935,8 +853,48 @@ RSpec.describe WorkPackages::SetAttributesService,
       end
     end
 
-    context "with start date changed" do
-      let(:work_package) { build_stubbed(:work_package, start_date: Time.zone.today, due_date: Time.zone.today + 5.days) }
+    context "with start date changed on a manually scheduled work package" do
+      let(:work_package) do
+        build_stubbed(:work_package, schedule_manually: true,
+                                     start_date: Time.zone.today,
+                                     due_date: Time.zone.today + 5.days)
+      end
+      let(:call_attributes) { { start_date: Time.zone.today + 1.day } }
+      let(:expected_attributes) { {} }
+
+      it_behaves_like "service call" do
+        it "sets the start date value" do
+          subject
+
+          expect(work_package.start_date)
+            .to eq(Time.zone.today + 1.day)
+        end
+
+        it "keeps the due date value" do
+          subject
+
+          expect(work_package.due_date)
+            .to eq(Time.zone.today + 5.days)
+        end
+
+        it "updates the duration" do
+          subject
+
+          expect(work_package.duration)
+            .to eq 5
+        end
+      end
+    end
+
+    # TODO: update this test: on an automatically scheduled work package, the
+    # start date is set to the soonest start date and cannot be changed. An
+    # error is to be expected!
+    context "with start date changed on an automatically scheduled work package" do
+      let(:work_package) do
+        build_stubbed(:work_package, schedule_manually: false,
+                                     start_date: Time.zone.today,
+                                     due_date: Time.zone.today + 5.days)
+      end
       let(:call_attributes) { { start_date: Time.zone.today + 1.day } }
       let(:expected_attributes) { {} }
 
@@ -1075,6 +1033,50 @@ RSpec.describe WorkPackages::SetAttributesService,
             expect(work_package.duration)
               .to eq 1
           end
+        end
+      end
+    end
+
+    context "with negative duration" do
+      let(:work_package) do
+        build_stubbed(:work_package, start_date: Time.zone.today, due_date: Time.zone.today + 5.days)
+      end
+      let(:call_attributes) { { duration: -1 } }
+      let(:expected_attributes) { {} }
+
+      it_behaves_like "service call" do
+        it "keeps the dates and duration values (error to be detected by contract)" do
+          subject
+
+          expect(work_package.start_date)
+            .to eq(Time.zone.today)
+          expect(work_package.due_date)
+            .to eq(Time.zone.today + 5.days)
+          expect(work_package.duration)
+            .to eq(-1)
+        end
+      end
+    end
+
+    context "with invalid duration (when the duration is text)" do
+      let(:work_package) do
+        build_stubbed(:work_package, start_date: Time.zone.today, due_date: Time.zone.today + 5.days)
+      end
+      let(:call_attributes) { { duration: "I am invalid" } }
+      let(:expected_attributes) { {} }
+
+      it_behaves_like "service call" do
+        it "keeps the dates, sets duration to 0 but remembers the string that was used (error to be detected by contract)" do
+          subject
+
+          expect(work_package.start_date)
+            .to eq(Time.zone.today)
+          expect(work_package.due_date)
+            .to eq(Time.zone.today + 5.days)
+          expect(work_package.duration)
+            .to eq(0)
+          expect(work_package.duration_before_type_cast)
+            .to eq("I am invalid")
         end
       end
     end
@@ -1337,12 +1339,12 @@ RSpec.describe WorkPackages::SetAttributesService,
         let(:call_attributes) { { ignore_non_working_days: true } }
 
         it_behaves_like "service call" do
-          it "updates the due date from start date and duration to include the non-working days" do
-            # start_date and duration are checked too to ensure they did not change
+          it "keeps the dates and updates duration to include the non-working days" do
+            # start_date and due_date are checked too to ensure they did not change
             expect { subject }
               .to change { work_package.slice(:start_date, :due_date, :duration) }
               .from(start_date: monday, due_date: next_monday, duration: 6)
-              .to(start_date: monday, due_date: next_monday - 2.days, duration: 6)
+              .to(start_date: monday, due_date: next_monday, duration: 8)
           end
         end
       end
@@ -1354,12 +1356,12 @@ RSpec.describe WorkPackages::SetAttributesService,
         let(:call_attributes) { { ignore_non_working_days: false } }
 
         it_behaves_like "service call" do
-          it "updates the due date from start date and duration to skip the non-working days" do
+          it "keeps the dates and updates duration to include the non-working days" do
             # start_date and duration are checked too to ensure they did not change
             expect { subject }
               .to change { work_package.slice(:start_date, :due_date, :duration) }
               .from(start_date: monday, due_date: next_monday, duration: 8)
-              .to(start_date: monday, due_date: next_monday + 2.days, duration: 8)
+              .to(start_date: monday, due_date: next_monday, duration: 6)
           end
         end
       end
@@ -1371,22 +1373,23 @@ RSpec.describe WorkPackages::SetAttributesService,
         let(:call_attributes) { { ignore_non_working_days: false } }
 
         it_behaves_like "service call" do
-          it "updates the start date to be on next working day, and due date to accommodate duration" do
+          it "updates the start date to be on next working day, keeps due date, and updates duration accordingly" do
             expect { subject }
               .to change { work_package.slice(:start_date, :due_date, :duration) }
               .from(start_date: monday - 1.day, due_date: friday, duration: 6)
-              .to(start_date: monday, due_date: next_monday, duration: 6)
+              .to(start_date: monday, due_date: friday, duration: 5)
           end
         end
 
-        context "with a new work package" do
+        context 'with a new work package when "ignore non-working days" is switched to false, ' \
+                "start date is on a non-working day, and duration is explicitly set" do
           let(:work_package) do
             build(:work_package, start_date: monday - 1.day, due_date: friday, ignore_non_working_days: true)
           end
           let(:call_attributes) { { ignore_non_working_days: false, duration: 6 } }
 
           it_behaves_like "service call" do
-            it "updates the start date to be on next working day, and due date to accommodate duration" do
+            it "updates the start date to be on next working day, and updates due date to accommodate duration" do
               expect { subject }
                 .to change { work_package.slice(:start_date, :due_date, :duration) }
                 .from(start_date: monday - 1.day, due_date: friday, duration: 6)
@@ -1428,18 +1431,18 @@ RSpec.describe WorkPackages::SetAttributesService,
         end
       end
 
-      context 'when "ignore non-working days" is changed AND "finish date" is set to another date' do
+      context 'when "ignore non-working days" is changed to true AND "finish date" is set to another date' do
         let(:work_package) do
-          build_stubbed(:work_package, start_date: monday, due_date: next_monday, ignore_non_working_days: true)
+          build_stubbed(:work_package, start_date: monday, due_date: wednesday, ignore_non_working_days: true)
         end
-        let(:call_attributes) { { due_date: wednesday, ignore_non_working_days: false } }
+        let(:call_attributes) { { due_date: next_monday, ignore_non_working_days: false } }
 
         it_behaves_like "service call" do
-          it "updates the start date from due date and duration to skip the non-working days" do
+          it "keeps the dates and updates the duration to include the non-working days" do
             expect { subject }
               .to change { work_package.slice(:start_date, :due_date, :duration) }
-              .from(start_date: monday, due_date: next_monday, duration: 8)
-              .to(start_date: wednesday - 9.days, due_date: wednesday, duration: 8)
+              .from(start_date: monday, due_date: wednesday, duration: 3)
+              .to(start_date: monday, due_date: next_monday, duration: 6)
           end
         end
       end
@@ -1456,6 +1459,96 @@ RSpec.describe WorkPackages::SetAttributesService,
               .to change { work_package.slice(:start_date, :due_date, :duration) }
               .from(start_date: monday, due_date: next_monday, duration: 8)
               .to(start_date: friday, due_date: next_tuesday, duration: 3)
+          end
+        end
+      end
+
+      context 'when "ignore non-working days" is changed AND "finish date" and "duration" are changed' do
+        let(:work_package) do
+          build_stubbed(:work_package, start_date: monday, due_date: next_monday, ignore_non_working_days: true)
+        end
+        let(:call_attributes) { { due_date: next_tuesday, duration: 3, ignore_non_working_days: false } }
+
+        it_behaves_like "service call" do
+          it "updates the start date from due date and duration according to the ignore non-working days value" do
+            expect { subject }
+              .to change { work_package.slice(:start_date, :due_date, :duration) }
+              .from(start_date: monday, due_date: next_monday, duration: 8)
+              .to(start_date: friday, due_date: next_tuesday, duration: 3)
+          end
+        end
+      end
+
+      context "without changing anything, when scheduling mode is automatic " \
+              "and start date initial date is different from the calculated soonest start" do
+        let(:work_package) do
+          build_stubbed(:work_package, start_date: monday,
+                                       due_date: friday,
+                                       ignore_non_working_days: true)
+        end
+        let(:call_attributes) { {} }
+
+        before do
+          allow(work_package).to receive(:soonest_start).and_return(wednesday)
+        end
+
+        context "when scheduling mode is automatic" do
+          before do
+            work_package.schedule_manually = false
+          end
+
+          it_behaves_like "service call" do
+            it "moves the start date to the calculated soonest start, keeps duration and adjusts due date" do
+              expect { subject }
+                .to change { work_package.slice(:start_date, :due_date, :duration) }
+                .from(start_date: monday, due_date: friday, duration: 5)
+                .to(start_date: wednesday, due_date: sunday, duration: 5)
+            end
+          end
+        end
+
+        context "when scheduling mode is manual" do
+          before do
+            work_package.schedule_manually = true
+          end
+
+          it_behaves_like "service call" do
+            it "does not change any dates" do
+              expect { subject }
+                .not_to change { work_package.slice(:start_date, :due_date, :duration) }
+            end
+          end
+        end
+
+        context "when scheduling mode is initially manual and is changed to automatic" do
+          let(:call_attributes) { { schedule_manually: false } }
+
+          before do
+            work_package.schedule_manually = true
+          end
+
+          it_behaves_like "service call" do
+            it "moves the start date to the calculated soonest start, keeps duration and adjusts due date" do
+              expect { subject }
+                .to change { work_package.slice(:start_date, :due_date, :duration) }
+                .from(start_date: monday, due_date: friday, duration: 5)
+                .to(start_date: wednesday, due_date: sunday, duration: 5)
+            end
+          end
+        end
+
+        context "when scheduling mode is initially automatic and is changed to manual" do
+          let(:call_attributes) { { schedule_manually: true } }
+
+          before do
+            work_package.schedule_manually = false
+          end
+
+          it_behaves_like "service call" do
+            it "does not change any dates" do
+              expect { subject }
+                .not_to change { work_package.slice(:start_date, :due_date, :duration) }
+            end
           end
         end
       end
@@ -1842,22 +1935,27 @@ RSpec.describe WorkPackages::SetAttributesService,
     end
   end
 
-  context "when switching back to automatic scheduling" do
+  context "when switching back to automatic scheduling for a successor" do
+    shared_let(:project) { create(:project) }
+    let(:predecessor) do
+      create(:work_package,
+             subject: "predecessor",
+             project:,
+             ignore_non_working_days: true,
+             schedule_manually: true,
+             start_date: soonest_start - 1.day,
+             due_date: soonest_start - 1.day)
+    end
     let(:work_package) do
-      wp = build_stubbed(:work_package,
-                         project:,
-                         ignore_non_working_days: true,
-                         schedule_manually: true,
-                         start_date: Time.zone.today,
-                         due_date: Time.zone.today + 5.days)
-      wp.type = build_stubbed(:type)
-      wp.clear_changes_information
-
-      allow(wp)
-        .to receive(:soonest_start)
-        .and_return(soonest_start)
-
-      wp
+      create(:work_package,
+             subject: "work_package",
+             project:,
+             ignore_non_working_days: true,
+             schedule_manually: true,
+             start_date: Time.zone.today,
+             due_date: Time.zone.today + 5.days) do |wp|
+        create(:follows_relation, from: wp, to: predecessor)
+      end
     end
     let(:call_attributes) { { schedule_manually: false } }
     let(:expected_attributes) { {} }
@@ -1866,12 +1964,25 @@ RSpec.describe WorkPackages::SetAttributesService,
     context "when the soonest start date is later than the current start date" do
       let(:soonest_start) { Time.zone.today + 3.days }
 
-      it_behaves_like "service call" do
-        it "sets the start date to the soonest possible start date" do
-          subject
+      include_examples "service call", description: "sets the start date to the soonest possible start date" do
+        let(:expected_attributes) do
+          {
+            start_date: Time.zone.today + 3.days,
+            due_date: Time.zone.today + 8.days
+          }
+        end
+      end
+    end
 
-          expect(work_package.start_date).to eql(Time.zone.today + 3.days)
-          expect(work_package.due_date).to eql(Time.zone.today + 8.days)
+    context "when the soonest start date is earlier than the current start date" do
+      let(:soonest_start) { Time.zone.today - 3.days }
+
+      include_examples "service call", description: "sets the start date to the soonest possible start date" do
+        let(:expected_attributes) do
+          {
+            start_date: Time.zone.today - 3.days,
+            due_date: Time.zone.today + 2.days
+          }
         end
       end
     end
@@ -1886,14 +1997,13 @@ RSpec.describe WorkPackages::SetAttributesService,
         work_package.ignore_non_working_days = false
       end
 
-      it_behaves_like "service call" do
-        it "sets the start date to the soonest possible start date being a working day" do
-          subject
-
-          expect(work_package).to have_attributes(
+      include_examples "service call",
+                       description: "sets the start date to the soonest possible start date being a working day" do
+        let(:expected_attributes) do
+          {
             start_date: next_monday,
-            due_date: next_monday + 7.days
-          )
+            due_date: WorkPackages::Shared::WorkingDays.new.soonest_working_day(Time.zone.today + 5.days)
+          }
         end
       end
     end
@@ -1901,65 +2011,108 @@ RSpec.describe WorkPackages::SetAttributesService,
     context "when the soonest start date is before the current start date" do
       let(:soonest_start) { Time.zone.today - 3.days }
 
-      it_behaves_like "service call" do
-        it "sets the start date to the soonest possible start date" do
-          subject
-
-          expect(work_package.start_date).to eql(soonest_start)
-          expect(work_package.due_date).to eql(Time.zone.today + 2.days)
+      include_examples "service call", description: "sets the start date to the soonest possible start date" do
+        let(:expected_attributes) do
+          {
+            start_date: soonest_start,
+            due_date: Time.zone.today + 2.days
+          }
         end
       end
     end
 
-    context "when the soonest start date is nil" do
-      let(:soonest_start) { nil }
+    context "when the soonest start date is nil (no predecessors)" do
+      before do
+        work_package # create the relation
+        predecessor.destroy # destroy the predecessor AND the relation
+      end
 
-      it_behaves_like "service call" do
-        it "sets the start date to the soonest possible start date" do
-          subject
-
-          expect(work_package.start_date).to eql(Time.zone.today)
-          expect(work_package.due_date).to eql(Time.zone.today + 5.days)
+      include_examples "service call", description: "sets the start date to the soonest possible start date" do
+        let(:expected_attributes) do
+          {
+            start_date: Time.zone.today,
+            due_date: Time.zone.today + 5.days
+          }
         end
       end
     end
 
-    context "when the work package also has a child" do
-      let(:child) do
-        build_stubbed(:work_package,
-                      start_date: child_start_date,
-                      due_date: child_due_date)
+    context "when the work package also has a manually scheduled child" do
+      let!(:child) do
+        create(:work_package,
+               subject: "child",
+               parent: work_package,
+               schedule_manually: true,
+               start_date: child_start_date,
+               due_date: child_due_date)
       end
       let(:child_start_date) { Time.zone.today + 2.days }
       let(:child_due_date) { Time.zone.today + 10.days }
 
-      before do
-        allow(work_package)
-          .to receive(:children)
-          .and_return([child])
-      end
+      context "when the soonest start is before the child's start date" do
+        let(:soonest_start) { child_start_date - 1.day }
 
-      context "when the child`s start date is after soonest_start" do
-        it_behaves_like "service call" do
-          it "sets the dates to the child dates" do
-            subject
-
-            expect(work_package.start_date).to eql(Time.zone.today + 2.days)
-            expect(work_package.due_date).to eql(Time.zone.today + 10.days)
+        include_examples "service call",
+                         description: "sets the dates to the child dates, without moving parent to soonest start" do
+          let(:expected_attributes) do
+            {
+              start_date: child_start_date,
+              due_date: child_due_date
+            }
           end
         end
       end
 
-      context "when the child`s start date is before soonest_start" do
-        let(:soonest_start) { Time.zone.today + 3.days }
+      context "when the soonest start is after the child's start date" do
+        let(:soonest_start) { child_start_date + 1.day }
 
-        it_behaves_like "service call" do
-          it "sets the dates to soonest date and to the duration of the child" do
-            subject
-
-            expect(work_package.start_date).to eql(Time.zone.today + 3.days)
-            expect(work_package.due_date).to eql(Time.zone.today + 11.days)
+        include_examples "service call",
+                         description: "sets the dates to the child dates, regardless of the soonest date" do
+          let(:expected_attributes) do
+            {
+              start_date: child_start_date,
+              due_date: child_due_date
+            }
           end
+        end
+      end
+    end
+  end
+
+  context "when switching back to automatic scheduling for a parent" do
+    shared_let(:project) { create(:project) }
+    let!(:work_package) do
+      create(:work_package,
+             subject: "work_package",
+             project:,
+             ignore_non_working_days: true,
+             schedule_manually: true,
+             start_date: Time.zone.today,
+             due_date: Time.zone.today + 5.days)
+    end
+    let!(:child) do
+      create(:work_package,
+             subject: "child",
+             project:,
+             parent: work_package,
+             ignore_non_working_days: true,
+             schedule_manually: true,
+             start_date: child_start_date,
+             due_date: child_due_date)
+    end
+    let(:call_attributes) { { schedule_manually: false } }
+    let(:expected_attributes) { {} }
+
+    context "when the child has dates" do
+      let(:child_start_date) { Time.zone.today + 2.days }
+      let(:child_due_date) { Time.zone.today + 3.days }
+
+      include_examples "service call", description: "sets the parent dates to the child dates" do
+        let(:expected_attributes) do
+          {
+            start_date: child_start_date,
+            due_date: child_due_date
+          }
         end
       end
     end

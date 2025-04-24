@@ -1,10 +1,10 @@
 uk:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
-        display_name: Ім’я
+        display_name: Назва
         identifier: Ідентифікатор
-        secret: Секрет
+        secret: Секретний ключ
         scope: Область
         assertion_consumer_service_url: URL-адреса ACS (Служба підтримки споживачів)
         limit_self_registration: Обмежити самостійну реєстрацію
@@ -23,7 +23,6 @@ uk:
         digest_method: Алгоритм зведення
         format: "Формат"
         icon: "Користувацький значок"
-  activerecord:
     errors:
       models:
         saml/provider:

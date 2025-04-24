@@ -30,6 +30,7 @@ ka:
         overridden_costs: "გადაფარული ფასები"
         spent: "დახარჯული"
         spent_on: "თარიღი"
+        logged_by: "ჩანაწერის ავტორი"
       cost_type:
         unit: "ერთეულის სახელი"
         unit_plural: "ერთეულის სახელი მრავლობითში"
@@ -46,24 +47,34 @@ ka:
       user:
         default_rates: "ნაგულისხმევი სიხშირეები"
       time_entry:
-        project: Project
-        user: User
-        work_package: Work package
+        project: პროექტი
+        user: მომხმარებელი
+        work_package: სამუშაო პაკეტი
         hours: საათი
-        comments: Comment
+        comments: კომენტარი
         activity: აქტივობა
         spent_on: თარიღი
         start_time: Start time
         end_time: Finish time
     models:
+      time_entry:
+        one: "Time entry"
+        other: "Time entries"
+      cost_entry:
+        one: "Cost entry"
+        other: "Cost entries"
       cost_type:
         one: "ღირებულების ტიპი"
         other: "ღირებულების ტიპი"
+      time_entry_activity:
+        one: "Time tracking activity"
+        other: "Time tracking activities"
       rate: "სიხშირე"
     errors:
       models:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
+          cannot_log_for_this_work_package: "Cannot log time for this work package."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Work package #%{id} is not a valid target for reassigning the cost entries."
           nullify_is_not_valid_for_cost_entries: "ღირებულების ჩანაწერებს პროექტს ვერ მიანიჭებთ."
@@ -79,6 +90,7 @@ ka:
   button_add_rate: "სიხშირის დამატება"
   button_log_costs: "ერთეულის ფასის ჟურნალი"
   button_log_time: "Log"
+  button_add_activity: "აქტივობა"
   caption_booked_on_project: "Booked on project"
   caption_default: "ნაგულისხმევი"
   caption_default_rate_history_for: "Default rate history for %{user}"
@@ -90,8 +102,10 @@ ka:
   caption_save_rate: "ტარიფის შენახვა"
   caption_set_rate: "Set current rate"
   caption_show_locked: "Show locked types"
-  caption_log_time_dialog: "Log time"
+  caption_log_time_dialog: "ჟურნალში დროის ჩაწერა"
   description_date_for_new_rate: "Date for new rate"
+  description_costs_settings: "Define the desired format for the costs in all projects."
+  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
   group_by_others: "not in any group"
   label_between: "მითითებულ დროის შუალედში"
   label_cost_filter_add: "Add cost entry filter"
@@ -118,18 +132,24 @@ ka:
   label_kind: "ტიპი"
   label_less_or_equal: "<="
   label_log_costs: "ერთეულის ფასის ჟურნალი"
+  label_new_time_entry_activity: "New time entry activity"
+  label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
   label_no: "არა"
   label_option_plural: "მორგება"
   label_overall_costs: "ჯამური ფასი"
   label_rate: "სიხშირე"
   label_rate_plural: "ტარიფები"
   label_status_finished: "დასრულებულია"
-  label_show: "Show"
+  label_show: "ჩვენება"
   label_units: "ერთეულის ფასი"
   label_user: "მომხმარებელი"
   label_until: "დასასრულის დრო"
   label_valid_from: "Ძალაშია"
   label_yes: "დიახ"
+  label_time: "დრო"
+  label_cost: "Cost"
+  label_costs: "ხარჯები"
+  label_mandatory_fields: "Mandatory fields"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "მოხდა შეცდომა. სცადეთ თავიდან."
   notice_successful_restore: "Successful restore."
@@ -151,7 +171,7 @@ ka:
   permission_view_own_time_entries: "View own spent time"
   project_module_costs: "დრო და ღირებულებები"
   setting_allow_tracking_start_and_end_times: "Allow users to track start and end time on time records"
-  setting_costs_currency: "Currency"
+  setting_costs_currency: "ფული"
   setting_costs_currency_format: "Format of currency"
   setting_enforce_tracking_start_and_end_times: "Force users to set start and end time on time records"
   text_assign_time_and_cost_entries_to_project: "Assign reported hours and costs to the project"
@@ -161,8 +181,6 @@ ka:
   text_reassign_time_and_cost_entries: "Reassign reported hours and costs to this work package:"
   text_warning_hidden_elements: "Some entries may have been excluded from the aggregation."
   week: "კვირა"
-  js:
-    text_are_you_sure: "დარწმუნებული ბრძანდებით?"
   api_v3:
     errors:
       validation:

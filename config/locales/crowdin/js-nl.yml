@@ -103,7 +103,6 @@ nl:
     button_settings: "Instellingen"
     button_uncheck_all: "Deselecteer alles"
     button_update: "Bijwerken"
-    button_export-pdf: "Download PDF"
     button_export-atom: "Download Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Maken"
@@ -222,6 +221,8 @@ nl:
             label_maximum_users: "Maximum aantal actieve gebruikers"
             label_starts_at: "Start op"
             label_expires_at: "Verloopt op"
+            label_plan: "Pakket"
+            label_additional_features: "Additional features"
             receive_newsletter: Ik wil de OpenProject <a target="_blank" href="%{link}">nieuwsbrief</a> ontvangen.
             taken_domain: Er kan slechts één actieve proefperiode per domein zijn.
             domain_mismatch: De huidige hostnaam van de aanvraag komt niet overeen met de geconfigureerde hostnaam. Controleer uw systeeminstellingen.
@@ -357,10 +358,10 @@ nl:
           learn_about: "Meer informatie over de nieuwe functies"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Abonneren op agenda"
       inital_setup_error_message: "Er is een fout opgetreden tijdens het ophalen van gegevens."
@@ -613,7 +614,7 @@ nl:
         assigned: "Toegewezene"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
-        responsible: "Accountable"
+        responsible: "Verantwoording afleggen"
         created: "Gemaakt"
         scheduled: "Gepland"
         commented: "Becommentarieerd"
@@ -643,7 +644,7 @@ nl:
           with_current_filter: "Er zijn geen meldingen in deze weergave op dit moment"
         mark_all_read: "Alles als gelezen markeren"
         mark_as_read: "Als gelezen markeren"
-        text_update_date_by: "%{date} by"
+        text_update_date_by: "%{date} door"
         total_count_warning: "De %{newest_count} meest recente meldingen weergeven. %{more_count} meer worden niet weergegeven."
         empty_state:
           no_notification: "Het lijkt erop dat u helemaal bij bent."
@@ -718,17 +719,18 @@ nl:
       description: "Beschrijving: Klik om te bewerken..."
       relation_description: "Klik om een beschrijving voor deze relatie toe te voegen"
     project:
-      required_outside_context: >
-        Kies een project om het werkpakket in te creëren om alle attributen te zien. U kunt alleen projecten selecteren waarvan het type hierboven is geactiveerd.
-      context: "Context van het project"
-      click_to_switch_to_project: "Project: %{projectname}"
-      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
-      use_template: "Sjabloon gebruiken"
-      no_template_selected: "(Geen)"
-      copy:
-        copy_options: "Opties kopiëren"
       autocompleter:
         label: "Project auto aanvullen"
+      click_to_switch_to_project: "Project: %{projectname}"
+      confirm_template_load: "Switching the template will reload the page and you will lose all input to this form. Continue?"
+      context: "Context van het project"
+      copy:
+        copy_options: "Opties kopiëren"
+      not_available: "Project N/A"
+      no_template_selected: "(Geen)"
+      required_outside_context: >
+        Kies een project om het werkpakket in te creëren om alle attributen te zien. U kunt alleen projecten selecteren waarvan het type hierboven is geactiveerd.
+      use_template: "Sjabloon gebruiken"
     reminders:
       settings:
         daily:
@@ -797,6 +799,7 @@ nl:
       typeahead_placeholder: Zoek naar mogelijke toezichthouders
     relation_labels:
       parent: "Bovenliggend werkpakket"
+      child: "Child"
       children: "Subdocumenten"
       relates: "Verwant Met"
       duplicates: "Kopies"
@@ -826,7 +829,7 @@ nl:
       add_new_child: "Maak nieuw kind"
       create_new: "Nieuwe aanmaken"
       add_existing: "Bestaande toevoegen"
-      add_existing_child: "Voeg bestaand kind toe"
+      add_existing_child: "Add child"
       remove_child: "Verwijder kind"
       add_new_relation: "Maak nieuwe relatie"
       add_existing_relation: "Bestaande relatie toevoegen"
@@ -852,8 +855,6 @@ nl:
       select_branch: "Selecteer pad"
     field_value_enter_prompt: "Breng een waarde in voor veld '%{field}'"
     project_menu_details: "Details"
-    scheduling:
-      manual: "Handmatige planning"
     sort:
       sorted_asc: "Oplopende sorteervolgorde toegepast, "
       sorted_dsc: "Aflopende sorteervolgorde toegepast, "
@@ -901,15 +902,6 @@ nl:
       comment_send_failed: "Er is een fout opgetreden. De opmerking is niet ingediend."
       comment_updated: "De opmerking is succesvol bijgewerkt."
       confirm_edit_cancel: "Bent u zeker dat u het bewerken van het werkpakket wilt annuleren?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatically scheduled. Dates are derived from relations."
-        manually_scheduled: "Manual scheduling enabled, all relations ignored."
-        start_date_limited_by_relations: "Available start and finish dates are limited by relations."
-        changing_dates_affects_follow_relations: "Het wijzigen van deze data heeft invloed op data van gerelateerde werkpakketten."
-        click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for GANTT overview.'
-        show_relations: "Relaties tonen"
-        ignore_non_working_days:
-          title: "Alleen werkdagen"
       description_filter: "Filter"
       description_enter_text: "Tekst invoeren"
       description_options_hide: "Verberg opties"

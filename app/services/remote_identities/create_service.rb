@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,35 +32,45 @@ module RemoteIdentities
   class CreateService
     attr_reader :user, :model
 
-    def self.call(user:, oauth_config:, oauth_token:)
-      new(user:, oauth_config:, oauth_token:).call
+    def self.call(user:, integration:, token:, force_update: false)
+      new(user:, integration:, token:, force_update:).call
     end
 
-    def initialize(user:, oauth_config:, oauth_token:)
+    def initialize(user:, integration:, token:, force_update: false)
       @user = user
-      @oauth_config = oauth_config
-      @oauth_token = oauth_token
+      @integration = integration
+      @token = token
+      @force_update = force_update
 
-      @model = RemoteIdentity.find_or_initialize_by(user:, oauth_client: oauth_config.oauth_client)
-      @result = ServiceResult.success(result: @model, errors: @model.errors)
+      @model = RemoteIdentity.find_or_initialize_by(user:, auth_source: token.auth_source, integration:)
     end
 
     def call
-      @model.origin_user_id = @oauth_config.extract_origin_user_id(@oauth_token)
-      if @model.save
-        emit_event(@oauth_config.oauth_client.integration)
-      else
-        @result.success = false
+      if @model.new_record? || @force_update
+        user_id = @integration.extract_origin_user_id(@token)
+        return user_id if user_id.failure?
+
+        @model.origin_user_id = user_id.result
+        return success unless @model.changed?
+        return failure unless @model.save
+
+        OpenProject::Notifications.send(
+          OpenProject::Events::REMOTE_IDENTITY_CREATED,
+          integration: @integration
+        )
       end
 
-      @result
+      success
     end
 
-    def emit_event(integration)
-      OpenProject::Notifications.send(
-        OpenProject::Events::REMOTE_IDENTITY_CREATED,
-        integration:
-      )
+    private
+
+    def success
+      ServiceResult.success(result: @model)
+    end
+
+    def failure
+      ServiceResult.failure(result: @model, errors: @model.errors)
     end
   end
 end

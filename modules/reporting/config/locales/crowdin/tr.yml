@@ -96,7 +96,7 @@ tr:
       sum_hours: Toplam
     cost_reports:
       title: "Maliyet Raporlarınızın XLS çıktısı"
-      start_time: "Başlangıç zamanı"
+      start_time: "Başlangıç tarihi"
       end_time: "Bitiş zamanı"
   reporting:
     group_by:

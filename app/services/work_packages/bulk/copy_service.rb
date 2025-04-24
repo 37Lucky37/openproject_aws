@@ -111,6 +111,7 @@ module WorkPackages
           WorkPackages::CopyService
             .new(user:,
                  work_package:)
+            .with_state(bulk_copy_in_progress: true)
             .call(**overridden_attributes.symbolize_keys)
         end
       end

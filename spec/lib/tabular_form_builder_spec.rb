@@ -326,8 +326,8 @@ JJ Abrams</textarea>
     let(:options) { {} }
 
     subject(:output) do
-      builder.collection_check_box :enabled_module_names,
-                                   :repositories,
+      builder.collection_check_box :auth_source,
+                                   :active,
                                    true,
                                    "name",
                                    options
@@ -341,10 +341,10 @@ JJ Abrams</textarea>
       expect(output).to be_html_eql(%{
         <input checked="checked"
                class="form--check-box"
-               id="user_enabled_module_names_repositories"
-               name="user[enabled_module_names][]"
+               id="user_auth_source_active"
+               name="user[auth_source][]"
                type="checkbox"
-               value="repositories" />
+               value="active" />
       }).at_path("input:nth-of-type(2)")
     end
   end

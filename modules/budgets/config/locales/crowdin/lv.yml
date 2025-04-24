@@ -33,7 +33,7 @@ lv:
         spent: "Pavadīts"
         status: "Statuss"
         subject: "Nosaukums"
-        type: "Cost type"
+        type: "Izmaksu veids"
         labor_budget: "Planned labor costs"
         material_budget: "Planned unit costs"
       work_package:

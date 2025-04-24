@@ -473,7 +473,7 @@ RSpec.describe "BCF 2.1 topics resource", content_type: :json do
 
       it_behaves_like "bcf api unprocessable response" do
         let(:message) do
-          "Bim snippet was attempted to be written but is not writable."
+          "BIM snippet was attempted to be written but is not writable."
         end
       end
     end

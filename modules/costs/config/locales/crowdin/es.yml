@@ -30,6 +30,7 @@ es:
         overridden_costs: "Reemplazado los costos"
         spent: "Pasado"
         spent_on: "Fecha"
+        logged_by: "Registrado por"
       cost_type:
         unit: "Nombre de la unidad"
         unit_plural: "Nombre de la unidad pluralizado"
@@ -56,14 +57,24 @@ es:
         start_time: Hora de inicio
         end_time: Hora de finalización
     models:
+      time_entry:
+        one: "Entrada de tiempo"
+        other: "Entradas de tiempo"
+      cost_entry:
+        one: "Entrada de costes"
+        other: "Entradas de costes"
       cost_type:
         one: "Tipo de costo"
         other: "Tipos de costos"
+      time_entry_activity:
+        one: "Actividad de seguimiento del tiempo"
+        other: "Actividades de seguimiento del tiempo"
       rate: "Proporción"
     errors:
       models:
         time_entry:
           invalid_time: "debe estar entre las 00:00 y las 23:59."
+          cannot_log_for_this_work_package: "No se puede registrar el tiempo para este paquete de trabajo."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Paquete de trabajo #%{id} no es un objetivo válido para reasignar las entradas de costo."
           nullify_is_not_valid_for_cost_entries: "Las entradas de costo  no pueden ser asignadas a un proyecto."
@@ -79,6 +90,7 @@ es:
   button_add_rate: "Añadir tasa"
   button_log_costs: "Registrar costos unitarios"
   button_log_time: "Registro"
+  button_add_activity: "Actividad"
   caption_booked_on_project: "Reservados en proyecto"
   caption_default: "Por defecto"
   caption_default_rate_history_for: "Historial de morosidad para %{user}"
@@ -92,6 +104,8 @@ es:
   caption_show_locked: "Mostrar tipos de bloqueados"
   caption_log_time_dialog: "Tiempo registrado"
   description_date_for_new_rate: "Fecha para la nueva tarifa"
+  description_costs_settings: "Defina el formato deseado para los costes en todos los proyectos."
+  description_time_settings: "Defina qué campos es obligatorio rellenar al registrar el tiempo en todos los proyectos."
   group_by_others: "no en cualquier grupo"
   label_between: "entre"
   label_cost_filter_add: "Agregar filtro para entrada de costo"
@@ -118,6 +132,8 @@ es:
   label_kind: "Tipo"
   label_less_or_equal: "<="
   label_log_costs: "Registrar costos unitarios"
+  label_new_time_entry_activity: "Nueva actividad de entrada de tiempo"
+  label_time_entry_activity_form_description: "Los cambios en esta actividad de entrada de tiempo se reflejarán en todos los proyectos en los que esté activada."
   label_no: "No"
   label_option_plural: "Opciones"
   label_overall_costs: "Costos totales"
@@ -130,6 +146,10 @@ es:
   label_until: "hasta"
   label_valid_from: "Válido desde"
   label_yes: "Sí"
+  label_time: "Hora"
+  label_cost: "Coste"
+  label_costs: "Costes"
+  label_mandatory_fields: "Campos obligatorios"
   placeholder_activity_select_work_package_first: Primero debe seleccionar el paquete de trabajo
   notice_something_wrong: "Algo salió mal. Por favor intentelo nuevamente."
   notice_successful_restore: "Restauración exitosa."
@@ -161,8 +181,6 @@ es:
   text_reassign_time_and_cost_entries: "Reasignar horas y costos reportados para este paquete de trabajo:"
   text_warning_hidden_elements: "Algunas entradas han sido excluidas de la agregación."
   week: "semana"
-  js:
-    text_are_you_sure: "¿Estás seguro?"
   api_v3:
     errors:
       validation:

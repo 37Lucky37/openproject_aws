@@ -39,12 +39,38 @@ module Settings
       options :first?,
               :last?
 
+      # TODO: Remove these helper classes once the Projects::LifeCycleComponent
+      # has been refactored.
+      def icon
+        :"op-phase"
+      end
+
+      def icon_color_class
+        helpers.hl_inline_class("project_phase_definition", definition)
+      end
+
+      def gate_info
+        if definition.start_gate? && definition.finish_gate?
+          I18n.t("settings.project_phase_definitions.both_gate")
+        elsif definition.start_gate?
+          I18n.t("settings.project_phase_definitions.start_gate")
+        elsif definition.finish_gate?
+          I18n.t("settings.project_phase_definitions.finish_gate")
+        else
+          I18n.t("settings.project_phase_definitions.no_gate")
+        end
+      end
+
+      def gate_text_options
+        { color: :muted, font_size: :small }.merge(options)
+      end
+
       private
 
       def move_action(menu:, move_to:, label:, icon:)
         menu.with_item(
           label:,
-          href: move_admin_settings_project_life_cycle_step_definition_path(definition, move_to:),
+          href: move_admin_settings_project_phase_definition_path(definition, move_to:),
           form_arguments: {
             method: :patch
           },

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -65,7 +67,7 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
 
     if service_result.success?
       flash[:notice] = I18n.t(:notice_successful_create)
-      redirect_to_project_storages_path_with_oauth_access_grant_confirmation
+      redirect_to_project_storages_path_with_oauth_access_grant_confirmation(@project_storage.storage)
     else
       @available_storages = available_storages
       render "/storages/project_settings/new"
@@ -109,7 +111,7 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
     if service_result.success?
       @project_storage = service_result.result
       flash[:notice] = I18n.t(:notice_successful_update)
-      redirect_to_project_storages_path_with_oauth_access_grant_confirmation
+      redirect_to_project_storages_path_with_oauth_access_grant_confirmation(@project_storage.storage)
     else
       @project_storage = @object
       render "/storages/project_settings/edit"
@@ -154,8 +156,8 @@ class Storages::Admin::ProjectStoragesController < Projects::SettingsController
       .select(&:configured?)
   end
 
-  def redirect_to_project_storages_path_with_oauth_access_grant_confirmation
-    if storage_oauth_access_granted?(storage: @project_storage.storage)
+  def redirect_to_project_storages_path_with_oauth_access_grant_confirmation(storage)
+    if storage.oauth_access_granted?(User.current)
       redirect_to external_file_storages_project_settings_project_storages_path
     else
       redirect_to_project_storages_path_with_nudge_modal

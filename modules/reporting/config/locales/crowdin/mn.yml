@@ -25,7 +25,7 @@ mn:
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
   button_save_report_as: "Save report as..."
   comments: "Comment"
-  cost_reports_title: "Time and costs"
+  cost_reports_title: "Цаг хугацаа ба зардал"
   label_cost_report: "Cost report"
   label_cost_report_plural: "Cost reports"
   description_drill_down: "Show details"

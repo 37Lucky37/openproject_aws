@@ -376,7 +376,7 @@ module Redmine # :nodoc:
     #
     # Note that :view_scrums permission is required to view these events in the activity view.
     def activity_provider(*)
-      ActiveSupport::Deprecation.warn("Use ActsAsOpEngine#activity_provider instead.")
+      ActiveSupport::Deprecation.new.warn("Use ActsAsOpEngine#activity_provider instead.")
       OpenProject::Activity.register(*)
     end
 

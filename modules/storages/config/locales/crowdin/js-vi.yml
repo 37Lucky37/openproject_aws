@@ -2,6 +2,7 @@
 vi:
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Liên kết tệp trong %{storageType}"
       link_existing_files: "Liên kết các tệp hiện có"
       upload_files: "Tải lên tệp"
@@ -19,6 +20,7 @@ vi:
         one_drive: "OneDrive/SharePoint"
         default: "Lưu trữ"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Một số cài đặt %{storageType} không hoạt động. Vui lòng liên hệ với quản trị viên %{storageType} của bạn.
         live_data_error: "Lỗi khi lấy thông tin tệp"
@@ -27,6 +29,8 @@ vi:
         no_file_links: "Để liên kết các tệp với gói công việc này, vui lòng thực hiện qua %{storageType}."
         not_logged_in: >
           Để thêm liên kết, xem hoặc tải lên các tệp liên quan đến gói công việc này, vui lòng đăng nhập vào %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Tệp này đã tồn tại"
         already_existing_body: >

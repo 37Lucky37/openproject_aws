@@ -16,7 +16,8 @@ OpenProject can be setup in these different ways:
 | [Installation with Helm charts](./helm-chart)        | This allows to setup OpenProject using Helm charts                                    |
 | [Other](misc/)                                       | Extra information on installing OpenProject on specific platforms such as Kubernetes. |
 
-> **NOTE: We recommend using the DEB/RPM package installation.**
+>[!NOTE]]
+> **We recommend using the Docker installation.**
 
 ## Frequently asked questions (FAQ)
 

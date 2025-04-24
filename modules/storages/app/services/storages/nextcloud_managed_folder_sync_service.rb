@@ -90,7 +90,10 @@ module Storages
       info "Setting permissions to project folders"
       remote_admins = admin_remote_identities_scope.pluck(:origin_user_id)
 
-      active_project_storages_scope.where.not(project_folder_id: nil).find_each do |project_storage|
+      active_project_storages_scope
+        .where.not(project_folder_id: nil)
+        .order(:project_folder_id)
+        .find_each do |project_storage|
         set_folder_permissions(remote_admins, project_storage)
       end
 
@@ -318,7 +321,7 @@ module Storages
     end
 
     def remote_identities_scope
-      RemoteIdentity.includes(:user).where(oauth_client: @storage.oauth_client)
+      RemoteIdentity.includes(:user).where(integration: @storage)
     end
 
     def auth_strategy
@@ -326,7 +329,7 @@ module Storages
     end
 
     def admin_remote_identities_scope
-      RemoteIdentity.includes(:user).where(oauth_client: @storage.oauth_client, user: User.admin.active)
+      remote_identities_scope.where(user: User.admin.active)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -43,8 +45,16 @@ module Pages
       is_a?(AbstractWorkPackageCreate)
     end
 
+    def visit_query(query)
+      visit("#{path}?query_id=#{query.id}")
+    end
+
     def visit_tab!(tab)
       visit path(tab)
+    end
+
+    def relations_tab
+      Components::WorkPackages::Relations.new(work_package)
     end
 
     def switch_to_tab(tab:)
@@ -80,9 +90,9 @@ module Pages
     end
 
     def wait_for_activity_tab
-      expect(page).to have_test_selector("op-wp-activity-tab", wait: 10)
-      # wait for stimulus js component to be mounted
-      expect(page).to have_css('[data-test-selector="op-wp-activity-tab"][data-stimulus-controller-connected="true"]')
+      wait_for { page }.to have_test_selector("op-wp-activity-tab")
+      # ensure stimulus controller is mounted
+      expect(page).to have_css('[data-stimulus-controller-connected="true"]')
     end
 
     def expect_any_active_inline_edit_field

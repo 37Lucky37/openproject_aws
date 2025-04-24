@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -55,15 +57,14 @@ RSpec.describe "Repository Settings", :js do
   shared_examples "manages the repository" do |type|
     it "displays the repository" do
       expect(page).to have_css('select[name="scm_vendor"]')
-      expect(find("#attributes-group--content-#{type}", visible: true))
-        .not_to be_nil
+      expect(page).to have_css("#attributes-group--content-#{type}", visible: :visible)
     end
 
     it "deletes the repository" do
       expect(Repository.exists?(repository.id)).to be true
 
+      SeleniumHubWaiter.wait
       if type == "managed"
-        SeleniumHubWaiter.wait
         find("a.icon-delete", text: I18n.t(:button_delete)).click
 
         dangerzone = DangerZone.new(page)
@@ -82,7 +83,6 @@ RSpec.describe "Repository Settings", :js do
         SeleniumHubWaiter.wait
         dangerzone.danger_button.click
       else
-        SeleniumHubWaiter.wait
         find("a.icon-remove", text: I18n.t(:button_remove)).click
         expect(page).to have_css(".op-toast.-warning")
         SeleniumHubWaiter.wait

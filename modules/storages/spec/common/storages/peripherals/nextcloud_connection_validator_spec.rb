@@ -31,7 +31,7 @@
 require "spec_helper"
 require_module_spec_helper
 
-RSpec.describe Storages::Peripherals::NextcloudConnectionValidator do
+RSpec.describe Storages::Peripherals::NextcloudConnectionValidator, :webmock do
   before do
     Storages::Peripherals::Registry.stub("#{storage}.queries.capabilities", ->(_) { capabilities_response })
     Storages::Peripherals::Registry.stub("#{storage}.queries.files", ->(_) { files_response })
@@ -226,6 +226,142 @@ RSpec.describe Storages::Peripherals::NextcloudConnectionValidator do
         expect(subject.type).to eq(:warning)
         expect(subject.error_code).to eq(:wrn_unexpected_content)
         expect(subject.description).to eq("Unexpected content found in the managed group folder.")
+      end
+    end
+  end
+
+  describe "OpenID Connect support" do
+    let(:storage) { create(:nextcloud_storage_configured, :oidc_sso_enabled) }
+    let(:app_version) { Storages::SemanticVersion.parse("2.6.3") }
+    let(:capabilities_response) do
+      ServiceResult.success(result: Storages::NextcloudCapabilities.new(
+        app_enabled?: true,
+        app_version:,
+        group_folder_enabled?: false,
+        group_folder_version: nil
+      ))
+    end
+
+    let(:user) { create(:user, identity_url: "#{oidc_provider.slug}:UNIVERSALLY-DUPLICATED-IDENTIFIER") }
+    let!(:oidc_provider) { create(:oidc_provider) }
+
+    before do
+      User.current = user
+
+      xml_response = Rails.root.join("modules/storages/spec/support/payloads/nextcloud_user_query_success.xml")
+
+      stub_request(:get, "#{storage.uri}ocs/v1.php/cloud/user")
+        .and_return(status: 200, body: File.read(xml_response), headers: { content_type: "text/xml" })
+    end
+
+    it "returns a success" do
+      create(:oidc_user_token, user:, extra_audiences: storage.audience)
+
+      expect(subject.type).to eq(:healthy)
+      expect(subject.error_code).to eq(:none)
+    end
+
+    it "returns a validation warning if the current user isn't provisioned" do
+      user.update!(identity_url: nil)
+
+      expect(subject.type).to eq(:warning)
+      expect(subject.error_code).to eq(:oidc_non_provisioned_user)
+      expect(subject.description).to eq(I18n.t("storages.health.connection_validation.oidc_non_provisioned_user"))
+    end
+
+    it "returns a warning if the user is not provisioned by an oidc provider" do
+      user.update!(identity_url: "ldap-provider:this-will-trigger-a-warning")
+
+      expect(subject.type).to eq(:warning)
+      expect(subject.error_code).to eq(:oidc_non_oidc_user)
+      expect(subject.description).to eq(I18n.t("storages.health.connection_validation.oidc_non_oidc_user"))
+    end
+
+    describe "checks related to the token" do
+      let(:user) { create(:user, identity_url: "#{oidc_provider.slug}:UNIVERSALLY-DUPLICATED-IDENTIFIER") }
+
+      context "when the token doesn't have the necessary audiences" do
+        it "returns a validation failure in case the server does not support token exchange" do
+          create(:oidc_user_token, user:)
+
+          expect(subject.type).to eq(:error)
+          expect(subject.error_code).to eq(:oidc_cant_acquire_token)
+          expect(subject.description).to eq(I18n.t("storages.health.connection_validation.oidc_cant_acquire_token"))
+        end
+      end
+
+      describe "token refresh" do
+        let(:expired_storage_token) do
+          create(:oidc_user_token, user:, extra_audiences: storage.audience, expires_at: 10.hours.ago)
+        end
+
+        it "tries to refresh the token if it is expired" do
+          refresh_request = stub_request(:post, oidc_provider.token_endpoint)
+                            .with(body: { grant_type: "refresh_token", refresh_token: expired_storage_token.refresh_token })
+                            .and_return_json(status: 200, body: { access_token: "NEW_TOKEN" })
+
+          expect(subject.type).to eq(:healthy)
+          expect(refresh_request).to have_been_requested.once
+        end
+
+        it "returns a validation failure when the refresh response is invalid" do
+          stub_request(:post, oidc_provider.token_endpoint)
+            .with(body: { grant_type: "refresh_token", refresh_token: expired_storage_token.refresh_token })
+            .and_return_json(status: 200, body: { error: "this is a broken endpoint" })
+
+          expect(subject.type).to eq(:error)
+          expect(subject.error_code).to eq(:oidc_cant_refresh_token)
+          expect(subject.description)
+            .to eq(I18n.t("storages.health.connection_validation.oidc_cant_refresh_token"))
+        end
+
+        it "returns validation failure about an unusable token if refresh fails" do
+          stub_request(:post, oidc_provider.token_endpoint)
+            .with(body: { grant_type: "refresh_token", refresh_token: expired_storage_token.refresh_token })
+            .and_return(status: 401)
+
+          expect(subject.type).to eq(:error)
+          expect(subject.error_code).to eq(:oidc_cant_refresh_token)
+          expect(subject.description)
+            .to eq(I18n.t("storages.health.connection_validation.oidc_cant_refresh_token"))
+        end
+
+        context "when the server supports token exchange" do
+          let(:oidc_provider) { create(:oidc_provider, :token_exchange_capable) }
+          let(:exchangeable_token) { create(:oidc_user_token, user:, refresh_token: nil) }
+
+          it "perform favors token exchange when refreshing" do
+            exchange_request = stub_request(:post, oidc_provider.token_endpoint)
+                               .with(body: { audience: storage.audience, subject_token: exchangeable_token.access_token,
+                                             grant_type: OpenIDConnect::Provider::TOKEN_EXCHANGE_GRANT_TYPE })
+                               .and_return_json(status: 200, body: { access_token: "NEW_TOKEN" })
+
+            expect(subject.type).to eq(:healthy)
+            expect(exchange_request).to have_been_requested.once
+          end
+
+          it "returns a validation failure if the exchange fails with an unexpected body" do
+            exchange_request = stub_request(:post, oidc_provider.token_endpoint)
+                               .with(body: { audience: storage.audience, subject_token: exchangeable_token.access_token,
+                                             grant_type: OpenIDConnect::Provider::TOKEN_EXCHANGE_GRANT_TYPE })
+                               .and_return_json(status: 200, body: { error: "failed " })
+
+            expect(subject.type).to eq(:error)
+            expect(subject.error_code).to eq(:oidc_cant_exchange_token)
+            expect(exchange_request).to have_been_requested.once
+          end
+
+          it "returns a validation failure if the exchange fails" do
+            exchange_request = stub_request(:post, oidc_provider.token_endpoint)
+                               .with(body: { audience: storage.audience, subject_token: exchangeable_token.access_token,
+                                             grant_type: OpenIDConnect::Provider::TOKEN_EXCHANGE_GRANT_TYPE })
+                               .and_return(status: 401)
+
+            expect(subject.type).to eq(:error)
+            expect(subject.error_code).to eq(:oidc_cant_exchange_token)
+            expect(exchange_request).to have_been_requested.once
+          end
+        end
       end
     end
   end

@@ -4,16 +4,16 @@ pt-PT:
     description: "Adiciona fornecedores da estratégia OmniAuth OpenID Connect ao OpenProject."
   logout_warning: >
     A sua sessão foi terminada. O conteúdo de qualquer formulário que enviar poderá ser perdido. Por favor [inicie a sessão].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nome
         slug: Identificador único
         display_name: Nome a apresentar
-        client_id: Client ID
-        client_secret: Client Secret
+        client_id: ID de cliente
+        client_secret: Segredo do cliente
         secret: Segredo
-        scope: Contexto
+        scope: Âmbito
         grant_types_supported: Tipos de concessões suportadas
         limit_self_registration: Limitar auto-registo
         authorization_endpoint: Endpoint da autorização
@@ -29,7 +29,6 @@ pt-PT:
         claims: Reclamações
         acr_values: Valores ACR
         redirect_url: URL de Redirecionamento
-  activerecord:
     errors:
       models:
         openid_connect/provider:

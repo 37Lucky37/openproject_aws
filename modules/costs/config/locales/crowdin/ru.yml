@@ -30,6 +30,7 @@ ru:
         overridden_costs: "Переопределенные расходы"
         spent: "Потрачено"
         spent_on: "Дата"
+        logged_by: "Учтено"
       cost_type:
         unit: "Наименование количественного показателя"
         unit_plural: "Множественное наименование количественного показателя"
@@ -56,16 +57,32 @@ ru:
         start_time: Время начала
         end_time: Время окончания
     models:
+      time_entry:
+        one: "Запись о трудозатратах"
+        few: "Записи о трудозатратах"
+        many: "Записей о трудозатратах"
+        other: "Записи о трудозатратах"
+      cost_entry:
+        one: "Запись трудозатрат"
+        few: "Cost entries"
+        many: "Cost entries"
+        other: "Записи трудозатрат"
       cost_type:
         one: "Тип затрат"
         few: "Типы затрат"
         many: "Типы затрат"
         other: "Типы затрат"
+      time_entry_activity:
+        one: "Отслеживание времени"
+        few: "Отслеживания времени"
+        many: "Отслеживания времени"
+        other: "Отслеживание времени"
       rate: "Ставка"
     errors:
       models:
         time_entry:
           invalid_time: "должно быть между 00:00 и 23:59."
+          cannot_log_for_this_work_package: "Невозможно зарегистрировать время для этого пакета работ."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Пакет работ #%{id} не является допустимым объектом для назначения стимостей."
           nullify_is_not_valid_for_cost_entries: "Записи о стоимостях не могут быть присвоены проекту."
@@ -81,6 +98,7 @@ ru:
   button_add_rate: "Добавить тариф"
   button_log_costs: "Журналировать расходы на единицу"
   button_log_time: "Журнал"
+  button_add_activity: "Деятельность"
   caption_booked_on_project: "Заказано на проект"
   caption_default: "По умолчанию"
   caption_default_rate_history_for: "История тарифов по умолчанию для %{user}"
@@ -92,8 +110,10 @@ ru:
   caption_save_rate: "Сохранить тариф"
   caption_set_rate: "Установить текущий тариф"
   caption_show_locked: "Показывать Заблокированные типы"
-  caption_log_time_dialog: "Журналировать время"
+  caption_log_time_dialog: "Добавить трудозатраты"
   description_date_for_new_rate: "Дата для нового тарифа"
+  description_costs_settings: "Определите желаемый формат для затрат во всех проектах."
+  description_time_settings: "Определите, какие поля являются обязательными для заполнения при регистрации времени во всех проектах."
   group_by_others: "не в какой-либо группе"
   label_between: "между"
   label_cost_filter_add: "Добавить фильтр расходов"
@@ -120,6 +140,8 @@ ru:
   label_kind: "Тип"
   label_less_or_equal: "<="
   label_log_costs: "Внести расходы на единицу"
+  label_new_time_entry_activity: "Новая деятельность по учету рабочего времени"
+  label_time_entry_activity_form_description: "Изменения в записи этого времени будут отражаться во всех проектах, где он включен."
   label_no: "Нет"
   label_option_plural: "Параметры"
   label_overall_costs: "Общие расходы"
@@ -132,6 +154,10 @@ ru:
   label_until: "До"
   label_valid_from: "Действует с"
   label_yes: "Да"
+  label_time: "Время"
+  label_cost: "Затраты"
+  label_costs: "Затраты"
+  label_mandatory_fields: "Обязательные поля"
   placeholder_activity_select_work_package_first: Сначала необходимо выбрать пакет работ
   notice_something_wrong: "Произошла ошибка. Пожалуйста, попробуйте снова."
   notice_successful_restore: "Успешное восстановление."
@@ -163,8 +189,6 @@ ru:
   text_reassign_time_and_cost_entries: "Переназначьте сообщенные часы и расходы на этот пакет работ:"
   text_warning_hidden_elements: "Некоторые записи были исключены из агрегирования."
   week: "неделя"
-  js:
-    text_are_you_sure: "Уверены?"
   api_v3:
     errors:
       validation:

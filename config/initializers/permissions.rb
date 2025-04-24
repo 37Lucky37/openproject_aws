@@ -100,6 +100,7 @@ Rails.application.reloader.to_prepare do
                      {
                        "projects/settings/general": %i[show],
                        "projects/settings/storage": %i[show],
+                       "projects/settings/work_packages": %i[show],
                        "projects/templated": %i[create destroy],
                        "projects/identifier": %i[show update]
                      },
@@ -133,21 +134,21 @@ Rails.application.reloader.to_prepare do
                      permissible_on: :project,
                      require: :member
 
-      map.permission :view_project_stages_and_gates,
+      map.permission :view_project_phases,
                      {},
                      permissible_on: :project,
                      dependencies: :view_project,
                      visible: -> { OpenProject::FeatureDecisions.stages_and_gates_active? }
 
-      map.permission :edit_project_stages_and_gates,
+      map.permission :edit_project_phases,
                      {},
                      permissible_on: :project,
                      require: :member,
-                     dependencies: :view_project_stages_and_gates,
+                     dependencies: :view_project_phases,
                      contract_actions: { projects: %i[update] },
                      visible: -> { OpenProject::FeatureDecisions.stages_and_gates_active? }
 
-      map.permission :select_project_life_cycle,
+      map.permission :select_project_phases,
                      {
                        "projects/settings/life_cycle_steps": %i[index toggle enable_all disable_all]
                      },
@@ -183,14 +184,14 @@ Rails.application.reloader.to_prepare do
 
       map.permission :manage_types,
                      {
-                       "projects/settings/types": %i[show update]
+                       "projects/settings/work_packages/types": %i[show update]
                      },
                      permissible_on: :project,
                      require: :member
 
       map.permission :select_custom_fields,
                      {
-                       "projects/settings/custom_fields": %i[show update]
+                       "projects/settings/work_packages/custom_fields": %i[show update]
                      },
                      permissible_on: :project,
                      require: :member
@@ -309,6 +310,34 @@ Rails.application.reloader.to_prepare do
                      require: :loggedin,
                      dependencies: :view_work_packages
 
+      wpt.permission :view_comments_with_restricted_visibility,
+                     {},
+                     permissible_on: %i[project],
+                     require: :loggedin,
+                     dependencies: :view_work_packages,
+                     visible: -> { OpenProject::FeatureDecisions.comments_with_restricted_visibility_active? }
+
+      wpt.permission :add_comments_with_restricted_visibility,
+                     {},
+                     permissible_on: %i[project],
+                     require: :loggedin,
+                     dependencies: %i[view_project view_comments_with_restricted_visibility],
+                     visible: -> { OpenProject::FeatureDecisions.comments_with_restricted_visibility_active? }
+
+      wpt.permission :edit_own_comments_with_restricted_visibility,
+                     {},
+                     permissible_on: %i[project],
+                     require: :loggedin,
+                     dependencies: %i[view_project view_comments_with_restricted_visibility],
+                     visible: -> { OpenProject::FeatureDecisions.comments_with_restricted_visibility_active? }
+
+      wpt.permission :edit_others_comments_with_restricted_visibility,
+                     {},
+                     permissible_on: %i[project],
+                     require: :loggedin,
+                     dependencies: %i[view_project view_comments_with_restricted_visibility],
+                     visible: -> { OpenProject::FeatureDecisions.comments_with_restricted_visibility_active? }
+
       # WP attachments can be added with :edit_work_packages, this permission allows it without Edit WP as well.
       wpt.permission :add_work_package_attachments,
                      {},
@@ -318,7 +347,7 @@ Rails.application.reloader.to_prepare do
       # WorkPackage categories
       wpt.permission :manage_categories,
                      {
-                       "projects/settings/categories": [:show],
+                       "projects/settings/work_packages/categories": [:show],
                        categories: %i[new create edit update destroy]
                      },
                      permissible_on: :project,

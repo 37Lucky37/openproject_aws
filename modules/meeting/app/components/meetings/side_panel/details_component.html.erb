@@ -21,9 +21,9 @@
           tag: :a,
           href:,
           classes: "hide-when-print",
-          data: { controller: 'async-dialog' },
-          'aria-label': t(:label_meeting_details_edit),
-          test_selector: "edit-meeting-details-button",
+          data: { controller: "async-dialog" },
+          "aria-label": t(:label_meeting_details_edit),
+          test_selector: "edit-meeting-details-button"
         )
       end
 
@@ -61,13 +61,24 @@
             flex_layout(align_items: :center) do |time|
               time.with_column do
                 render(Primer::Beta::Text.new) do
-                  "#{format_time(@meeting.start_time, include_date: false)} - #{format_time(@meeting.end_time, include_date: false)}"
+                  if @meeting.template?
+                    time_zone = @series.time_zone
+                    start_time = format_time(@meeting.start_time, time_zone:, include_date: false)
+                    end_time = format_time(@meeting.end_time, time_zone:, include_date: false)
+                    "#{start_time} - #{end_time}"
+                  else
+                    "#{format_time(@meeting.start_time, include_date: false)} - #{format_time(@meeting.end_time, include_date: false)}"
+                  end
                 end
               end
 
               time.with_column(ml: 2) do
                 render(Primer::Beta::Text.new(color: :subtle, font_size: :small)) do
-                  formatted_time_zone_offset
+                  if @meeting.template?
+                    friendly_timezone_name(@series.time_zone, period: @meeting.start_time)
+                  else
+                    friendly_timezone_name(User.current.time_zone, period: @meeting.start_time)
+                  end
                 end
               end
             end
@@ -84,8 +95,10 @@
               if @meeting.duration_exceeded_by_agenda_items?
                 duration.with_column(ml: 2) do
                   render(Primer::Beta::Text.new(color: :danger, font_size: :small)) do
-                    "+ #{I18n.t('datetime.distance_in_words.x_minutes_abbreviated',
-                                count: @meeting.duration_exceeded_by_agenda_items_in_minutes.to_i)}"
+                    "+ #{I18n.t(
+                      'datetime.distance_in_words.x_minutes_abbreviated',
+                      count: @meeting.duration_exceeded_by_agenda_items_in_minutes.to_i
+                    )}"
                   end
                 end
               end
@@ -111,7 +124,7 @@
           end
         end
 
-        details.with_row(mt: 2, classes: 'meeting-detail-participants hide-when-print', display: [nil, nil, :none]) do
+        details.with_row(mt: 2, classes: "meeting-detail-participants hide-when-print", display: [nil, nil, :none]) do
           render_meeting_attribute_row(:people) do
             flex_layout(align_items: :center) do |people|
               people.with_column(mr: 2) do
@@ -124,14 +137,16 @@
               end
 
               people.with_column(mr: 2) do
-                render(Primer::Beta::Button.new(
-                  scheme: :link,
-                  underline: false,
-                  tag: :a,
-                  href: participants_dialog_project_meeting_path(@project, @meeting),
-                  classes: "hide-when-print",
-                  data: { controller: 'async-dialog' }
-                )) do
+                render(
+                  Primer::Beta::Button.new(
+                    scheme: :link,
+                    underline: false,
+                    tag: :a,
+                    href: participants_dialog_project_meeting_path(@project, @meeting),
+                    classes: "hide-when-print",
+                    data: { controller: "async-dialog" }
+                  )
+                ) do
                   t("label_meeting_show_all_participants")
                 end
               end

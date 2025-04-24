@@ -1,9 +1,9 @@
 hi:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
-        display_name: Name
-        identifier: Identifier
+        display_name: नाम
+        identifier: पहचानकर्ता
         secret: Secret
         scope: Scope
         assertion_consumer_service_url: ACS (Assertion consumer service) URL
@@ -23,7 +23,6 @@ hi:
         digest_method: Digest algorithm
         format: "Format"
         icon: "Custom icon"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -75,7 +74,7 @@ hi:
         format: 'Attribute format'
       section_headers:
         configuration: "Primary configuration"
-        attributes: "Attributes"
+        attributes: "गुण"
       section_texts:
         display_name: "Configure the display name of the SAML provider."
         metadata: "Pre-fill configuration using a metadata URL or by pasting metadata XML"
@@ -138,7 +137,7 @@ hi:
       authn_requests_signed: >
         If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using it's own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
       certificate: >

@@ -32,6 +32,8 @@ module Storages
   module Peripherals
     module OAuthConfigurations
       class ConfigurationInterface
+        using ServiceResultRefinements
+
         def scope = raise ::Storages::Errors::SubclassResponsibility
 
         def basic_rack_oauth_client = raise ::Storages::Errors::SubclassResponsibility

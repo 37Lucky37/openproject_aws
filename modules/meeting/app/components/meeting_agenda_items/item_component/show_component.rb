@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -32,12 +34,14 @@ module MeetingAgendaItems
     include AvatarHelper
     include OpTurbo::Streamable
     include OpPrimer::ComponentHelpers
+    include Redmine::I18n
 
     def initialize(meeting_agenda_item:, first_and_last: [])
       super
 
       @meeting_agenda_item = meeting_agenda_item
       @meeting = meeting_agenda_item.meeting
+      @series = @meeting.recurring_meeting
       @first_and_last = first_and_last
     end
 
@@ -48,11 +52,15 @@ module MeetingAgendaItems
     private
 
     def drag_and_drop_enabled?
-      @meeting.open? && User.current.allowed_in_project?(:manage_agendas, @meeting.project)
+      !@meeting.closed? && User.current.allowed_in_project?(:manage_agendas, @meeting.project)
     end
 
     def edit_enabled?
-      @meeting.open? && User.current.allowed_in_project?(:manage_agendas, @meeting.project)
+      !@meeting.closed? && User.current.allowed_in_project?(:manage_agendas, @meeting.project)
+    end
+
+    def add_outcome_action?
+      @meeting_agenda_item.editable? && @meeting.in_progress? && !@meeting_agenda_item.outcomes.exists?
     end
 
     def first?
@@ -77,6 +85,10 @@ module MeetingAgendaItems
       !@meeting.open?
     end
 
+    def recurring_meeting?
+      @series.present?
+    end
+
     def edit_action_item(menu)
       menu.with_item(label: t("label_edit"),
                      href: edit_meeting_agenda_item_path(@meeting_agenda_item.meeting, @meeting_agenda_item),
@@ -98,12 +110,49 @@ module MeetingAgendaItems
       end
     end
 
+    def add_outcome_action_item(menu)
+      menu.with_item(label: t("label_agenda_item_add_outcome"),
+                     href: new_meeting_outcome_path(@meeting_agenda_item.meeting,
+                                                    meeting_agenda_item_id: @meeting_agenda_item&.id),
+                     content_arguments: {
+                       data: { "turbo-stream": true }
+                     }) do |item|
+        item.with_leading_visual_icon(icon: :plus)
+      end
+    end
+
     def copy_action_item(menu)
       url = meeting_url(@meeting, anchor: "item-#{@meeting_agenda_item.id}")
       menu.with_item(label: t("button_copy_link_to_clipboard"),
                      tag: :"clipboard-copy",
                      content_arguments: { value: url }) do |item|
         item.with_leading_visual_icon(icon: :copy)
+      end
+    end
+
+    def move_to_next_meeting_action_item(menu)
+      return if @meeting.templated?
+      return if @series.nil?
+
+      next_date = @series.next_occurrence(from_time: @meeting.start_time)
+      return if next_date.nil?
+
+      menu.with_item(
+        label: t(:label_agenda_item_move_to_next),
+        href: move_to_next_meeting_agenda_item_path(@meeting_agenda_item.meeting,
+                                                    @meeting_agenda_item,
+                                                    datetime: next_date.iso8601),
+        form_arguments: {
+          method: :post,
+          data: {
+            confirm: t(:text_agenda_item_move_next_meeting,
+                       date: format_date(next_date),
+                       time: format_time(next_date, include_date: false)),
+            "turbo-stream": true
+          }
+        }
+      ) do |item|
+        item.with_leading_visual_icon(icon: "arrow-right")
       end
     end
 
@@ -143,6 +192,18 @@ module MeetingAgendaItems
       else
         :subtle
       end
+    end
+
+    def notes_classes
+      if @meeting.open?
+        "op-uc-container override"
+      else
+        "op-uc-container override muted-color"
+      end
+    end
+
+    def move_to_next_meeting_enabled?
+      edit_enabled? && @meeting.recurring? && @meeting.recurring_meeting&.next_occurrence.present?
     end
   end
 end

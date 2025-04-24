@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -32,6 +34,8 @@ RSpec.describe Query,
                with_ee: %i[baseline_comparison conditional_highlighting work_package_query_relation_columns] do
   let(:query) { build(:query) }
   let(:project) { create(:project) }
+  let(:project_member) { create(:user, member_with_permissions: { project => [:view_project] }) }
+  let(:user_restricted) { create(:user) }
 
   describe ".new_default" do
     it "set the default sortation" do
@@ -323,7 +327,7 @@ RSpec.describe Query,
       expect(query.displayable_columns.map(&:name)).to include :done_ratio
     end
 
-    context "results caching" do
+    context "with results caching" do
       let(:project2) { create(:project) }
 
       it "does not call the db twice" do
@@ -347,13 +351,9 @@ RSpec.describe Query,
 
         query.project = project2
 
-        expect(project2)
-          .to receive(:all_work_package_custom_fields)
-          .and_return []
-
-        expect(project2)
-          .to receive(:types)
-          .and_return []
+        allow(project2)
+          .to receive_messages(all_work_package_custom_fields: WorkPackageCustomField.none,
+                               types: Type.none)
 
         query.displayable_columns
       end
@@ -365,19 +365,24 @@ RSpec.describe Query,
 
         query.project = nil
 
-        expect(WorkPackageCustomField)
+        empty_wp_relation = double(visible_by_user: []) # rubocop:disable RSpec/VerifiedDoubles
+        # We cannot simply return `WorkPackageCustomField.none` here, as that aliases to `all` and would trigger
+        # its own expectation again. Hence, we must set up a double.
+        allow(WorkPackageCustomField)
           .to receive(:all)
-          .and_return []
+          .and_return empty_wp_relation
 
-        expect(Type)
+        allow(Type)
           .to receive(:all)
           .and_return []
 
         query.displayable_columns
+
+        expect(WorkPackageCustomField).to have_received(:all).once
       end
     end
 
-    context "relation_to_type columns" do
+    context "with relation_to_type columns" do
       let(:type_in_project) do
         type = create(:type)
         project.types << type
@@ -472,16 +477,21 @@ RSpec.describe Query,
   end
 
   describe ".available_columns" do
-    let(:custom_field) { create(:list_wp_custom_field) }
     let(:type) { create(:type) }
+    let(:custom_field) { create(:list_wp_custom_field, types: [type], projects: [project]) }
 
     before do
+      custom_field
+      project.types << type
+
       stub_const("Relation::TYPES",
                  relation1: { name: :label_relates_to, sym_name: :label_relates_to, order: 1, sym: :relation1 },
                  relation2: { name: :label_duplicates, sym_name: :label_duplicated_by, order: 2, sym: :relation2 })
     end
 
     context "with the enterprise token allowing relation columns" do
+      current_user { project_member }
+
       it "has all static columns, cf columns and relation columns" do
         expected_columns = %i(id project assigned_to author
                               category created_at due_date estimated_hours
@@ -494,9 +504,25 @@ RSpec.describe Query,
 
         expect(described_class.available_columns.map(&:name)).to include *expected_columns
       end
+
+      context "when the user cannot see the project" do
+        current_user { user_restricted }
+
+        it "does not list custom field columns" do
+          columns = described_class.available_columns.map(&:name)
+
+          # We do not really care about column details here, but let's see if we have some amount of them:
+          expect(columns.count).to be > 5
+
+          # This is the important assertion:
+          expect(columns).not_to include custom_field.column_name.to_sym
+        end
+      end
     end
 
     context "with the enterprise token disallowing relation columns", with_ee: false do
+      current_user { project_member }
+
       it "has all static columns, cf columns but no relation columns" do
         expected_columns = %i(id project assigned_to author
                               category created_at due_date estimated_hours
@@ -567,13 +593,9 @@ RSpec.describe Query,
 
     context "with filters" do
       before do
-        allow(Status)
-          .to receive(:all)
-          .and_return([valid_status])
 
         allow(Status)
-          .to receive(:exists?)
-          .and_return(true)
+          .to receive_messages(all: [valid_status], exists?: true)
 
         query.filters.clear
         query.add_filter("status_id", "=", values)

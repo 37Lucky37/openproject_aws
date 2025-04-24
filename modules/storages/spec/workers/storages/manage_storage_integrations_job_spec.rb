@@ -33,9 +33,8 @@ require_module_spec_helper
 
 RSpec.describe Storages::ManageStorageIntegrationsJob, type: :job do
   describe ".debounce" do
-    context "when has been debounced by other thread" do
-      before { ActiveJob::Base.disable_test_adapter }
-
+    context "when has been debounced by other thread",
+            with_good_job_batches: [described_class] do
       it "does not change the number of enqueued jobs" do
         expect(GoodJob::Job.count).to eq(0)
         expect(described_class.perform_later.successfully_enqueued?).to be(true)

@@ -53,9 +53,11 @@ See COPYRIGHT and LICENSE files for more details.
   render(Primer::OpenProject::PageHeader.new) do |header|
     header.with_title { @forum.name }
     header.with_description { @forum.description }
-    header.with_breadcrumbs([{ href: project_overview_path(@project.id), text: @project.name },
-                             { href: project_forums_path(@project), text: t(:label_forum_plural) },
-                             @forum.name])
+    header.with_breadcrumbs(
+      [{ href: project_overview_path(@project.id), text: @project.name },
+       { href: project_forums_path(@project), text: t(:label_forum_plural) },
+       @forum.name]
+    )
 
     watcher_action_button(header, @forum)
   end

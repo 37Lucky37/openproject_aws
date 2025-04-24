@@ -34,14 +34,14 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
   static values = {
     cancelUrl: String,
+    autofocus: Boolean,
   };
 
   declare cancelUrlValue:string;
+  declare autofocusValue:boolean;
 
-  static targets = ['titleInput', 'notesInput', 'notesAddButton'];
-  declare readonly titleInputTarget:HTMLInputElement;
+  static targets = ['notesInput'];
   declare readonly notesInputTarget:HTMLInputElement;
-  declare readonly notesAddButtonTarget:HTMLInputElement;
 
   connect():void {
     this.focusInput();
@@ -51,8 +51,7 @@ export default class extends Controller {
   focusInput():void {
     const titleInput = this.element.querySelector('input[name="meeting_agenda_item[title]"]');
 
-    this.element.scrollIntoView({ block: 'center' });
-    if (titleInput) {
+    if (titleInput && this.autofocusValue) {
       (titleInput as HTMLInputElement).focus();
       this.setCursorAtEnd(titleInput as HTMLInputElement);
     }

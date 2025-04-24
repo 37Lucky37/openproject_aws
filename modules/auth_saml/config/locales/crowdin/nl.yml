@@ -1,9 +1,9 @@
 nl:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Naam
-        identifier: Identificeerder
+        identifier: Identifier
         secret: Geheim
         scope: Scope
         assertion_consumer_service_url: ACS (Assertion consumer service) URL
@@ -23,7 +23,6 @@ nl:
         digest_method: Digest algoritme
         format: "Formaat"
         icon: "Aangepast icoon"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -60,7 +59,7 @@ nl:
       plural: SAML-identiteitsproviders
       singular: SAML-identiteitsprovider
       requested_attributes: Gevraagde kenmerken
-      attribute_mapping: Attribute mapping
+      attribute_mapping: Attribuut toewijzen
       attribute_mapping_text: >
         De volgende velden bepalen welke kenmerken verstrekt door de SAML identity provider worden gebruikt om gebruikers kenmerken te verstrekken in OpenProject
       metadata:
@@ -87,10 +86,10 @@ nl:
         encryption_form: "You may optionally want to encrypt the assertion response, or have requests from OpenProject signed."
         mapping: "Pas de mapping tussen de SAML respons en gebruikerskenmerken handmatig aan in OpenProject."
         requested_attributes: "Definieer de set kenmerken die moet worden opgevraagd in het SAML-verzoek dat naar uw identity provider wordt gestuurd."
-      seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
+      seeded_from_env: "Deze provider is geplaatst vanuit de omgevingsconfiguratie. Deze kan niet worden bewerkt."
     settings:
       metadata_none: "I don't have metadata"
-      metadata_url: "Metadata URL"
+      metadata_url: "Metagegevens URL"
       metadata_xml: "Metadata XML"
     instructions:
       documentation_link: >
@@ -138,7 +137,7 @@ nl:
       authn_requests_signed: >
         If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using it's own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
       certificate: >

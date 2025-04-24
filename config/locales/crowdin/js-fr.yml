@@ -103,7 +103,6 @@ fr:
     button_settings: "Paramètres"
     button_uncheck_all: "Tout désélectionner"
     button_update: "Mettre à jour"
-    button_export-pdf: "Télécharger le PDF"
     button_export-atom: "Télécharger Atom"
     button_generate_pdf: "Générer un fichier PDF"
     button_create: "Créer"
@@ -222,6 +221,8 @@ fr:
             label_maximum_users: "Nombre maximal d’utilisateurs actif"
             label_starts_at: "Commence à"
             label_expires_at: "Expire le"
+            label_plan: "Abonnement"
+            label_additional_features: "Fonctionnalités supplémentaires"
             receive_newsletter: Je veux recevoir la <a target="_blank" href="%{link}">newsletter OpenProject</a>.
             taken_domain: Il ne peut y avoir qu'un seul essai actif par domaine.
             domain_mismatch: Le nom d'hôte de la requête actuelle ne correspond pas au nom d'hôte configuré. Veuillez vérifier les paramètres de votre système.
@@ -357,10 +358,10 @@ fr:
           learn_about: "En savoir plus sur les nouvelles fonctionnalités"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                Cette version apporte diverses fonctionnalités et améliorations, p. ex., <br> <ul class="%{list_styling_class}"> <li>Planifiez des réunions récurrentes pour rationaliser vos rendez-vous hebdomadaires, bihebdomadaires ou personnalisés.</li> <li>Créez des lots de travaux enfants directement à partir de l'onglet Relations.</li> <li>Incluez les sommes totales dans les exportations PDF des feuilles de temps pour assurer une meilleure compréhension.</li> <li>Incluez les lots de travaux enfants dans les rapports de coûts pour assurer un suivi plus précis.</li> <li>Affichez les dates des relations précédemment cachées et limitées par des autorisations, afin de prendre des décisions éclairées en matière de planification.</li> </ul>
+                La version apporte diverses fonctionnalités et améliorations, par exemple : <br> <ul class="%{list_styling_class}"> <li>Filtre pour les descendants (enfants et petits-enfants) des lots de travaux.</li> <li>Accessibilité avancée dans le sélecteur de date.</li> <li>Affichage du pourcentage d'avancement inclus dans les totaux des tableaux de lots de travaux.</li> <li>Ajout d'une colonne pour les enfants dans les tableaux des lots de travaux.</li> <li>Utilisation améliorée du sélecteur de date sur les écrans mobiles.</li> <li>Correspondance des exportations PDF avec la mise en page configurée du formulaire.</li> </ul>
     ical_sharing_modal:
       title: "S'abonner au calendrier"
       inital_setup_error_message: "Une erreur est survenue lors de la récupération des données."
@@ -718,17 +719,18 @@ fr:
       description: "Description: Cliquez pour modifier..."
       relation_description: "Cliquez pour ajouter la description pour cette relation"
     project:
-      required_outside_context: >
-        Veuillez choisir un projet pour créer le lot de travaux et voir tous les attributs. Vous pouvez seulement sélectionner des projets ayant le type ci-dessus activé.
-      context: "Contexte du projet"
-      click_to_switch_to_project: "Projet : %{projectname}"
-      confirm_template_load: "Changer de modèle rechargera la page et vous perdrez toutes les entrées de ce formulaire. Continuer ?"
-      use_template: "Utiliser le modèle"
-      no_template_selected: "(aucun)"
-      copy:
-        copy_options: "Options de copie"
       autocompleter:
         label: "Remplissage automatique du projet"
+      click_to_switch_to_project: "Projet : %{projectname}"
+      confirm_template_load: "Changer de modèle rechargera la page et vous perdrez toutes les entrées de ce formulaire. Continuer ?"
+      context: "Contexte du projet"
+      copy:
+        copy_options: "Options de copie"
+      not_available: "Projet N/D"
+      no_template_selected: "(aucun)"
+      required_outside_context: >
+        Veuillez choisir un projet pour créer le lot de travaux et voir tous les attributs. Vous pouvez seulement sélectionner des projets ayant le type ci-dessus activé.
+      use_template: "Utiliser le modèle"
     reminders:
       settings:
         daily:
@@ -797,6 +799,7 @@ fr:
       typeahead_placeholder: Rechercher les observateurs potentiels
     relation_labels:
       parent: "Parent"
+      child: "Enfant"
       children: "Enfants"
       relates: "En relation avec"
       duplicates: "Duplique"
@@ -826,7 +829,7 @@ fr:
       add_new_child: "Créer un nouvel enfant"
       create_new: "Créer nouveau"
       add_existing: "Ajouter existant"
-      add_existing_child: "Ajouter un enfant existant"
+      add_existing_child: "Ajouter un enfant"
       remove_child: "Supprimer enfant"
       add_new_relation: "Créer une nouvelle relation"
       add_existing_relation: "Ajouter une relation existante"
@@ -852,8 +855,6 @@ fr:
       select_branch: "Sélectionner une branche"
     field_value_enter_prompt: "Saisissez une valeur pour « %{field} »"
     project_menu_details: "Détails"
-    scheduling:
-      manual: "Planification manuelle"
     sort:
       sorted_asc: "Tri par ordre croissant appliqué, "
       sorted_dsc: "Tri par ordre décroissant appliqué, "
@@ -901,15 +902,6 @@ fr:
       comment_send_failed: "Une erreur s'est produite. Impossible de soumettre le commentaire."
       comment_updated: "Le commentaire a été mis à jour avec succès."
       confirm_edit_cancel: "Êtes-vous sûr de vouloir annuler l'édition du lot de travaux ?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Planification automatique. Les dates sont dérivées des relations."
-        manually_scheduled: "La planification manuelle est activée, toutes les relations sont ignorées."
-        start_date_limited_by_relations: "Les dates de début et de fin disponibles sont limitées par les relations."
-        changing_dates_affects_follow_relations: "La modification de ces dates affectera les dates des lots de travaux connexes."
-        click_on_show_relations_to_open_gantt: 'Cliquez sur « %{button_name} » pour avoir une vue d''ensemble de GANTT.'
-        show_relations: "Afficher les relations"
-        ignore_non_working_days:
-          title: "Jours ouvrés seulement"
       description_filter: "Filtrer"
       description_enter_text: "Saisir texte"
       description_options_hide: "Masquer les options"

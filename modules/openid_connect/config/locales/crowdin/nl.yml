@@ -4,7 +4,7 @@ nl:
     description: "Voegt OmniAuth OpenID Connect strategieproviders toe aan OpenProject."
   logout_warning: >
     U bent uitgelogd. De inhoud van uw formulier kan verloren gaan. Alstublieft [log in].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Naam
@@ -15,7 +15,7 @@ nl:
         secret: Geheim
         scope: Scope
         grant_types_supported: Ondersteunde subsidietypen
-        limit_self_registration: Beperk zelf-registratie
+        limit_self_registration: Zelfregistratie beperken
         authorization_endpoint: Autorisatie eindpunt
         userinfo_endpoint: Eindpunt gebruikersinformatie
         token_endpoint: Eindpunt token
@@ -29,7 +29,6 @@ nl:
         claims: Claims
         acr_values: ACR waarden
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:

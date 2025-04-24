@@ -2,6 +2,7 @@
 "no":
   js:
     storages:
+      authentication_error: "Authentication with %{storageType} failed"
       link_files_in_storage: "Koble filer i %{storageType}"
       link_existing_files: "Koble eksisterende filer"
       upload_files: "Last opp filer"
@@ -19,6 +20,7 @@
         one_drive: "OneDrive/SharePoint"
         default: "Lagringssted"
       information:
+        authentication_error: "The request to %{storageType} could not be authenticated, that's an error."
         connection_error: >
           Noen %{storageType} innstillinger fungerer ikke. Vennligst kontakt din %{storageType} administrator.
         live_data_error: "Feil ved henting av fildetaljer"
@@ -27,6 +29,8 @@
         no_file_links: "For å koble filer til denne arbeidspakken må du gjøre det via %{storageType}."
         not_logged_in: >
           For å legge til en link, se eller last opp filer knyttet til denne arbeidspakken, vennligst logg inn på %{storageType}.
+        suggest_logout: You can try whether logging out and back in fixes this problem.
+        suggest_relink: You can try whether re-linking your account via the login button below fixes this problem.
       files:
         already_existing_header: "Denne filen eksisterer allerede"
         already_existing_body: >

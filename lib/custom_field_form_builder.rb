@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -81,17 +83,27 @@ class CustomFieldFormBuilder < TabularFormBuilder
     end
   end
 
-  # rubocop:enable Metrics/AbcSize
-
   def custom_field_input_list(field, input_options)
     customized = Array(custom_value).first&.customized
-    possible_options = custom_field.possible_values_options(customized)
-    select_options = custom_field_select_options_for_object
-    selected_options = Array(custom_value).map(&:value)
-    selectable_options = template.options_for_select(possible_options, selected_options)
+    selectable_options = custom_field_input_list_options(customized, custom_value)
     input_options[:multiple] = custom_field.multi_value?
 
-    select(field, selectable_options, select_options, input_options).html_safe
+    select(field, selectable_options, custom_field_select_options_for_object, input_options)
+  end
+
+  def custom_field_input_list_options(customized, selected)
+    options = custom_field.possible_values_options(customized)
+    selected_options = Array(selected).map(&:value)
+
+    if custom_field.version?
+      grouped_options = Hash.new { |hsh, key| hsh[key] = [] }
+      options.each do |label, value, group_key|
+        grouped_options[group_key] << [label, value]
+      end
+      template.grouped_options_for_select(grouped_options, selected_options)
+    else
+      template.options_for_select(options, selected_options)
+    end
   end
 
   def custom_field_select_options_for_object
@@ -124,7 +136,7 @@ class CustomFieldFormBuilder < TabularFormBuilder
   # Return custom field label tag
   def custom_field_label_tag(options)
     classes = "form--label"
-    classes << " error" unless Array(custom_value).flat_map(&:errors).empty?
+    classes += " error" unless Array(custom_value).flat_map(&:errors).empty?
 
     content_tag "label",
                 for: custom_field_field_id,

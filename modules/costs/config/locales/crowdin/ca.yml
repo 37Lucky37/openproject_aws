@@ -30,6 +30,7 @@ ca:
         overridden_costs: "Costs invalidats"
         spent: "Gastat"
         spent_on: "Data"
+        logged_by: "Registrat per"
       cost_type:
         unit: "Nom d'unitat"
         unit_plural: "Noms d'unitat pluralitzats"
@@ -46,24 +47,34 @@ ca:
       user:
         default_rates: "Tarifes per defecte"
       time_entry:
-        project: Project
-        user: User
-        work_package: Work package
+        project: Projecte
+        user: Usuari
+        work_package: Paquet de treball
         hours: Hores
-        comments: Comment
+        comments: Comentari
         activity: Activitat
         spent_on: Data
-        start_time: Start time
+        start_time: Hora d'inici
         end_time: Finish time
     models:
+      time_entry:
+        one: "Time entry"
+        other: "Time entries"
+      cost_entry:
+        one: "Cost entry"
+        other: "Cost entries"
       cost_type:
         one: "Estil de cost"
         other: "Estils de cost"
+      time_entry_activity:
+        one: "Time tracking activity"
+        other: "Activitats de rastrejament del temps"
       rate: "Tarifa"
     errors:
       models:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
+          cannot_log_for_this_work_package: "Cannot log time for this work package."
         work_package:
           is_not_a_valid_target_for_cost_entries: "El paquet de treball #%{id} no és un objectiu vàlid per reassignar les entrades de costs."
           nullify_is_not_valid_for_cost_entries: "Les entrades de cost no poden ser assignades a un projecte."
@@ -79,6 +90,7 @@ ca:
   button_add_rate: "Afegeix tarifa"
   button_log_costs: "Registra unitat de costs"
   button_log_time: "Log"
+  button_add_activity: "Activitat"
   caption_booked_on_project: "Registrat a un projecte"
   caption_default: "Per defecte"
   caption_default_rate_history_for: "Història de tarifa per defecte per %{user}"
@@ -90,8 +102,10 @@ ca:
   caption_save_rate: "Guardar tarifa"
   caption_set_rate: "Estableix la tarifa actual"
   caption_show_locked: "Mostra els estils fixats"
-  caption_log_time_dialog: "Log time"
+  caption_log_time_dialog: "Temps de registre"
   description_date_for_new_rate: "Data per una tarifa nova"
+  description_costs_settings: "Define the desired format for the costs in all projects."
+  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
   group_by_others: "no està a cap grup"
   label_between: "entre"
   label_cost_filter_add: "Afegeix un filtre d'entrada de cost"
@@ -118,18 +132,24 @@ ca:
   label_kind: "Tipus"
   label_less_or_equal: "<="
   label_log_costs: "Registra costs d'unitats "
+  label_new_time_entry_activity: "New time entry activity"
+  label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
   label_no: "No"
   label_option_plural: "Opcions"
   label_overall_costs: "Costs generals"
   label_rate: "Tarifa"
   label_rate_plural: "Tarifes"
   label_status_finished: "Finalitzat"
-  label_show: "Show"
+  label_show: "Mostra"
   label_units: "Cost d'unitat"
   label_user: "Usuari"
   label_until: "fins a"
   label_valid_from: "Vàlid des de"
   label_yes: "Si"
+  label_time: "Hora"
+  label_cost: "Cost"
+  label_costs: "Costs"
+  label_mandatory_fields: "Mandatory fields"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Alguna cosa ha anat malament. Si us plau, prova-ho de nou."
   notice_successful_restore: "Restaurat correctament."
@@ -151,8 +171,8 @@ ca:
   permission_view_own_time_entries: "Visualitzar el propi temps invertit"
   project_module_costs: "Temps i costs"
   setting_allow_tracking_start_and_end_times: "Allow users to track start and end time on time records"
-  setting_costs_currency: "Currency"
-  setting_costs_currency_format: "Format of currency"
+  setting_costs_currency: "Divisa"
+  setting_costs_currency_format: "Format de divisa"
   setting_enforce_tracking_start_and_end_times: "Force users to set start and end time on time records"
   text_assign_time_and_cost_entries_to_project: "Assignar les hores i costs registrats al projecte"
   text_destroy_cost_entries_question: "%{cost_entries} van ser reportades al paquet de treball que vols eliminar. Què vols fer?"
@@ -161,8 +181,6 @@ ca:
   text_reassign_time_and_cost_entries: "Reassignar les hores i costs reportats a aquest paquet de treball:"
   text_warning_hidden_elements: "Algunes entrades poden ser excloses de l'agregació"
   week: "setmana"
-  js:
-    text_are_you_sure: "N'estas segur?"
   api_v3:
     errors:
       validation:

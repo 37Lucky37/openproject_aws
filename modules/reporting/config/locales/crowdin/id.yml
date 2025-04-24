@@ -93,10 +93,10 @@ id:
       button: "Ekspor absensi PDF"
       timesheet: "Absensi"
       time: "Waktu"
-      sum_hours: Sum
+      sum_hours: Total
     cost_reports:
       title: "Ekspor XLS Laporan Biaya Anda"
-      start_time: "Start time"
+      start_time: "Waktu mulai"
       end_time: "End time"
   reporting:
     group_by:

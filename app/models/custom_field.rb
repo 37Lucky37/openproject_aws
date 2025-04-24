@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -135,12 +137,12 @@ class CustomField < ApplicationRecord
     is_required?
   end
 
-  def possible_values_options(obj = nil)
+  def possible_values_options(obj = nil, options: {})
     case field_format
     when "user"
       possible_user_values_options(obj)
     when "version"
-      possible_version_values_options(obj)
+      possible_version_values_options(obj, options:)
     when "list"
       possible_list_values_options
     else
@@ -163,8 +165,10 @@ class CustomField < ApplicationRecord
   #        You MUST NOT pass a customizable if this CF has any other format
   def possible_values(obj = nil)
     case field_format
-    when "user", "version"
-      possible_values_options(obj).map(&:last)
+    when "user"
+      possible_users(obj).pluck(:id).map(&:to_s)
+    when "version"
+      possible_versions(obj).pluck(:id).map(&:to_s)
     when "list"
       custom_options
     else
@@ -305,7 +309,7 @@ class CustomField < ApplicationRecord
 
   ##
   # Overrides cache key so that a custom field's representation
-  # is updated correctly when it's mutli_value attribute changes.
+  # is updated correctly when its multi_value attribute changes.
   def cache_key
     tag = multi_value? ? "mv" : "sv"
 
@@ -314,31 +318,26 @@ class CustomField < ApplicationRecord
 
   private
 
-  def possible_version_values_options(obj)
-    mapped_with_deduced_project(obj) do |project|
-      if project&.persisted?
-        project.shared_versions
-      else
-        Version.systemwide
-      end
-    end
+  def possible_versions(obj, options: {})
+    project = deduce_project(obj)
+    deduce_versions(project, options:)
+  end
+
+  def possible_version_values_options(obj, options: {})
+    possible_versions(obj, options:).references(:project)
+                          .sort
+                          .map { |u| [u.name, u.id.to_s, u.project.name] }
+  end
+
+  def possible_users(obj)
+    project = deduce_project(obj)
+    deduce_principals(project)
   end
 
   def possible_user_values_options(obj)
-    mapped_with_deduced_project(obj) do |project|
-      scope = if project&.persisted?
-                project.principals
-              else
-                Principal
-                  .in_visible_project_or_me(User.current)
-              end
-
-      user_format_columns = User::USER_FORMATS_STRUCTURE[Setting.user_format].map(&:to_s)
-      # Always include lastname if not already included, as Groups always need a lastname (alias for name)
-      user_format_columns << "lastname" unless user_format_columns.include?("lastname")
-
-      scope.select(*user_format_columns, "id", "type")
-    end
+    possible_users(obj).select(*user_format_columns, "id", "type")
+                       .sort
+                       .map { |u| [u.name, u.id.to_s] }
   end
 
   def possible_list_values_options
@@ -353,18 +352,38 @@ class CustomField < ApplicationRecord
     end
   end
 
-  def mapped_with_deduced_project(project)
-    project = if project.is_a?(Project)
-                project
-              elsif project.respond_to?(:project)
-                project.project
-              end
+  def deduce_project(project)
+    if project.is_a?(Project)
+      project
+    elsif project.respond_to?(:project)
+      project.project
+    end
+  end
 
-    result = yield project
+  def deduce_principals(project)
+    if project&.persisted?
+      project.principals
+    else
+      Principal
+        .in_visible_project_or_me(User.current)
+    end
+  end
 
-    result
-      .sort
-      .map { |u| [u.name, u.id.to_s] }
+  def deduce_versions(project, options: {})
+    if project&.persisted?
+      project.shared_versions
+    elsif options[:scope] == :visible
+      Version.visible.or(Version.systemwide)
+    else
+      Version.systemwide
+    end
+  end
+
+  def user_format_columns
+    user_format_columns = User::USER_FORMATS_STRUCTURE[Setting.user_format].map(&:to_s)
+    # Always include lastname if not already included, as Groups always need a lastname (alias for name)
+    user_format_columns << "lastname" unless user_format_columns.include?("lastname")
+    user_format_columns
   end
 
   def destroy_help_text

@@ -27,8 +27,8 @@ tr:
       tab_header:
         title: "Çekme istekleri"
         copy_menu:
-          label: Git snippetları
-          description: Git snippet'lerini panoya kopyala
+          label: Git kod parçaları
+          description: Git kod parçalarını panoya kopyala
         git_actions:
           branch_name: Dal adı
           commit_message: İşlem mesajı
@@ -40,13 +40,13 @@ tr:
         empty: 'Henüz bağlanan herhangi bir çekme isteği yok. PR açıklamasında <code>OP#%{wp_id}</code> kodunu kullanarak mevcut bir PR''yi bağlayın veya yeni bir PR oluşturun.'
       github_actions: Eylemler
       pull_requests:
-        message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} has been %{pr_state}."
-        merged_message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} has been %{pr_state} by %{github_user_link}."
-        referenced_message: "Pull request #%{pr_number} %{pr_link} for %{repository_link} authored by %{github_user_link} referenced this work package."
+        message: "%{github_user_link} tarafından yazılan %{repository_link} için %{pr_number} %{pr_link} numaralı çekme isteği %{pr_state} durumdadır."
+        merged_message: "%{repository_link} için %{pr_number} %{pr_link} numaralı çekme isteği %{github_user_link} tarafından %{pr_state} durumundadır."
+        referenced_message: "%{github_user_link} tarafından yazılan %{repository_link} için%{pr_number} %{pr_link} numaralı çekme isteği bu iş paketine atıfta bulunmuştur."
         states:
-          opened: 'opened'
+          opened: 'açıldı'
           closed: 'kapalı'
-          draft: 'drafted'
+          draft: 'taslak'
           merged: 'birleştirildi'
           ready_for_review: 'incelemeye hazır olarak işaretlendi'
     work_packages:

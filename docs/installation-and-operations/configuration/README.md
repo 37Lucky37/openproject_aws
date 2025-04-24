@@ -687,6 +687,12 @@ OPENPROJECT_SECURITY__BADGE__DISPLAYED="false"
 
 ### Cache configuration options
 
+
+> [!NOTE]
+> If you are using Redis as cache, you need to set the policy to one of the variants of allkeys.
+> If you don't do this, the cached data doesn't expire, and you will run out of memory.
+> You can get more information on how to set the Redis policy in the Rails [documentation](https://guides.rubyonrails.org/caching_with_rails.html#activesupport-cache-rediscachestore).
+
 * `rails_cache_store`: `memcache` for [memcached](https://www.memcached.org/), `redis` for [Redis cache](https://redis.io/), or `memory_store` (default: `file_store`)
 * When using `memcached`, the following configuration option is relevant:
   * `cache_memcache_server`: The memcache server host and IP (default: `nil`)
@@ -700,6 +706,18 @@ OPENPROJECT_SECURITY__BADGE__DISPLAYED="false"
 ### Rails asset host
 
 `rails_asset_host`: A custom host to use to serve static assets such as javascript, CSS, images, etc. (default: `nil`)
+
+### Redirect after login
+
+`after_login_default_redirect_url`: Starting in OpenProject 15.4., users are redirected to the home page after logging in. To customize this behavior (e.g., redirecting them to the My page as before), you can override this with a path.
+
+Example: 
+
+```bash
+OPENPROJECT_AFTER__LOGIN__DEFAULT__REDIRECT__URL="/my/page"
+```
+
+
 
 ### Onboarding video url
 

@@ -2,7 +2,7 @@
 
 #-- copyright
 # OpenProject is an open source project management software.
-# Copyright (C) 2012-2024 the OpenProject GmbH
+# Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
@@ -31,7 +31,7 @@
 module OpenIDConnect
   module UserTokens
     class RefreshService
-      include Dry::Monads[:result]
+      include Dry::Monads::Result(TokenOperationError)
       include Dry::Monads::Do.for(:call)
 
       def initialize(user:, token_exchange:)
@@ -40,46 +40,37 @@ module OpenIDConnect
       end
 
       def call(token)
-        if token.refresh_token.blank?
-          return exchange_instead_of_refresh(token)
-        end
+        return exchange_instead_of_refresh(token) if token.refresh_token.blank?
 
         json = yield refresh_token_request(token.refresh_token)
+        access_token, refresh_token, expires_in = json.values_at("access_token",  "refresh_token", "expires_in")
+        return failure_with(code: :token_refresh_response_invalid, payload: json) if access_token.blank?
 
-        access_token = json["access_token"]
-        refresh_token = json["refresh_token"]
-        return Failure("Refresh token response invalid") if access_token.blank?
-
-        token.update!(access_token:, refresh_token:)
-
+        token.update!(access_token:, refresh_token:, expires_at: expires_in&.seconds&.from_now)
         Success(token)
       end
 
       private
 
+      def error = TokenOperationError.new(source: self.class)
+
+      def failure_with(**) = Failure(error.with(**))
+
       def exchange_instead_of_refresh(token)
         # We can attempt a token exchange instead of a refresh, if we previously exchanged the token.
-        # For simplicity we do not consider scenarios where the original token had a wider audience,
+        # For simplicity, we do not consider scenarios where the original token had a wider audience,
         # because all tokens obtained through exchange in this service will have exactly one audience.
         if @token_exchange.supported? && token.audiences.size == 1
-          return @token_exchange.call(token.audiences.first)
+          @token_exchange.call(token.audiences.first)
+        else
+          failure_with(code: :unable_to_exchange_token)
         end
-
-        Failure("Can't refresh the access token")
       end
 
       def refresh_token_request(refresh_token)
-        response = OpenProject.httpx
-                              .basic_auth(provider.client_id, provider.client_secret)
-                              .post(provider.token_endpoint, form: {
-                                      grant_type: :refresh_token,
-                                      refresh_token:
-                                    })
-        response.raise_for_status
-
-        Success(response.json)
-      rescue HTTPX::Error => e
-        Failure(e)
+        TokenRequest.new(provider:).refresh(refresh_token).alt_map do
+          it.with(code: :"token_refresh_#{it.code}", source: self.class)
+        end
       end
 
       def provider

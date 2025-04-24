@@ -54,17 +54,27 @@ RSpec.describe "Primerized work package relations tab",
   shared_let(:type1) { create(:type) }
   shared_let(:type2) { create(:type) }
 
-  shared_let(:wp_predecessor) do
-    create(:work_package, type: type1, subject: "wp_predecessor",
+  shared_let(:wp_predecessor1) do
+    create(:work_package, type: type1, subject: "wp_predecessor1",
                           start_date: Date.current, due_date: Date.current + 1.week)
+  end
+  shared_let(:wp_predecessor2) do
+    create(:work_package, type: type1, subject: "wp_predecessor2",
+                          start_date: Date.current, due_date: Date.current + 2.weeks)
   end
   shared_let(:wp_related) { create(:work_package, type: type2, subject: "wp_related") }
   shared_let(:wp_blocker) { create(:work_package, type: type1, subject: "wp_blocker") }
 
-  shared_let(:relation_follows) do
+  shared_let(:relation_follows1) do
     create(:relation,
            from: work_package,
-           to: wp_predecessor,
+           to: wp_predecessor1,
+           relation_type: Relation::TYPE_FOLLOWS)
+  end
+  shared_let(:relation_follows2) do
+    create(:relation,
+           from: work_package,
+           to: wp_predecessor2,
            relation_type: Relation::TYPE_FOLLOWS)
   end
   shared_let(:relation_relates) do
@@ -146,9 +156,10 @@ RSpec.describe "Primerized work package relations tab",
 
       expect(page).to have_css(relations_panel_selector)
 
-      tabs.expect_counter("relations", 6)
+      tabs.expect_counter("relations", 7)
 
-      relations_tab.expect_relation(relation_follows)
+      relations_tab.expect_not_closest_relation(relation_follows1)
+      relations_tab.expect_closest_relation(relation_follows2)
       relations_tab.expect_relation(relation_relates)
       relations_tab.expect_relation(relation_blocked)
 
@@ -182,11 +193,11 @@ RSpec.describe "Primerized work package relations tab",
 
       wait_for_network_idle
 
-      relations_tab.remove_relation(relation_follows)
+      relations_tab.remove_relation(relation_follows1)
 
-      expect { relation_follows.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { relation_follows1.reload }.to raise_error(ActiveRecord::RecordNotFound)
 
-      tabs.expect_counter("relations", 5)
+      tabs.expect_counter("relations", 6)
 
       # Relations not visible due to lack of permissions on the project
       relations_tab.expect_ghost_relation(restricted_relation_relates)
@@ -201,7 +212,7 @@ RSpec.describe "Primerized work package relations tab",
       relations_tab.remove_child(child_wp)
       expect(child_wp.reload.parent).to be_nil
 
-      tabs.expect_counter("relations", 5)
+      tabs.expect_counter("relations", 6)
 
       # Relations not visible due to lack of permissions on the project
       relations_tab.expect_ghost_relation(restricted_relation_relates)
@@ -215,29 +226,29 @@ RSpec.describe "Primerized work package relations tab",
 
       wait_for_network_idle
 
-      relation_row = relations_tab.expect_relation(relation_follows)
+      relation_row = relations_tab.expect_relation(relation_follows1)
 
-      relations_tab.edit_relation_description(relation_follows, "Discovered relations have descriptions!")
+      relations_tab.edit_relation_description(relation_follows1, "Discovered relations have descriptions!")
 
-      relations_tab.edit_lag_of_relation(relation_follows, 5)
+      relations_tab.edit_lag_of_relation(relation_follows1, 5)
 
       # Reflects new description and lag
       expect(relation_row).to have_text("Discovered relations have descriptions!")
       expect(relation_row).to have_text("5 days")
 
       # Unchanged
-      tabs.expect_counter("relations", 6)
+      tabs.expect_counter("relations", 7)
       relations_tab.expect_ghost_relation(restricted_relation_relates)
       relations_tab.expect_ghost_relation(restricted_child_work_package)
 
       # Edit again
-      relations_tab.edit_relation_description(relation_follows, "And they can be edited!")
+      relations_tab.edit_relation_description(relation_follows1, "And they can be edited!")
 
       # Reflects new description
       expect(relation_row).to have_text("And they can be edited!")
 
       # Unchanged
-      tabs.expect_counter("relations", 6)
+      tabs.expect_counter("relations", 7)
 
       # Relations not visible due to lack of permissions on the project
       relations_tab.expect_ghost_relation(restricted_relation_relates)
@@ -313,7 +324,7 @@ RSpec.describe "Primerized work package relations tab",
       relations_tab.expect_relation(wp_successor)
 
       # Bumped by one
-      tabs.expect_counter("relations", 7)
+      tabs.expect_counter("relations", 8)
       # Relation is created
       expect(Relation.follows.where(from: wp_successor, to: work_package)).to exist
 
@@ -344,13 +355,13 @@ RSpec.describe "Primerized work package relations tab",
       relations_tab.expect_relation(wp_blocks)
 
       # Bumped by one
-      tabs.expect_counter("relations", 7)
+      tabs.expect_counter("relations", 8)
       # Relation is created
       expect(Relation.blocks.where(from: wp_blocks, to: work_package)).to exist
     end
 
     it "does not autocomplete unrelatable work packages" do
-      # wp_predecessor is already related to work_package as relation_follows
+      # wp_predecessor1 is already related to work_package as relation_follows
       # in a predecessor relation, so it should not be autocompleteable anymore
       # under the "Predecessor (before)" type
       relations_tab.select_relation_type "Predecessor (before)"
@@ -362,10 +373,10 @@ RSpec.describe "Primerized work package relations tab",
 
         autocomplete_field = page.find("[data-test-selector='work-package-relation-form-to-id']")
         search_autocomplete(autocomplete_field,
-                            query: wp_predecessor.subject,
+                            query: wp_predecessor1.subject,
                             results_selector: "body")
         expect_no_ng_option(autocomplete_field,
-                            wp_predecessor.subject,
+                            wp_predecessor1.subject,
                             results_selector: "body")
       end
     end
@@ -377,13 +388,13 @@ RSpec.describe "Primerized work package relations tab",
 
       wait_for_network_idle
 
-      tabs.expect_counter("relations", 6)
+      tabs.expect_counter("relations", 7)
 
       relations_tab.add_existing_child(not_child_yet_wp)
       relations_tab.expect_child(not_child_yet_wp)
 
       # Bumped by one
-      tabs.expect_counter("relations", 7)
+      tabs.expect_counter("relations", 8)
 
       # Child relation is created
       expect(not_child_yet_wp.reload.parent).to eq work_package
@@ -394,7 +405,7 @@ RSpec.describe "Primerized work package relations tab",
     end
 
     it "doesn't autocomplete parent, children, and WP itself" do
-      relations_tab.select_relation_type "Existing child"
+      relations_tab.select_relation_type "Child"
 
       wait_for_reload
 
@@ -444,7 +455,7 @@ RSpec.describe "Primerized work package relations tab",
 
       wait_for_network_idle
 
-      tabs.expect_counter("relations", 6)
+      tabs.expect_counter("relations", 7)
 
       relations_tab.expect_no_add_relation_button
       relations_tab.expect_no_relatable_action_menu(wp_related)
@@ -461,7 +472,7 @@ RSpec.describe "Primerized work package relations tab",
 
         wait_for_network_idle
 
-        tabs.expect_counter("relations", 6)
+        tabs.expect_counter("relations", 7)
 
         # The menu is shown as the user can add a relation
         relations_tab.expect_add_relation_button
@@ -476,6 +487,38 @@ RSpec.describe "Primerized work package relations tab",
       end
     end
 
+    context "when the user does not have manage_subtasks in child's project" do
+      let(:child_wp_project) { create(:project) }
+      let!(:child_wp) do
+        create(:work_package,
+               subject: "child_wp",
+               parent: work_package,
+               type: type1,
+               project: child_wp_project)
+      end
+
+      let(:restricted_role) { create(:project_role, permissions: %i[view_work_packages]) }
+
+      let(:user_without_manage_subtasks) do
+        create(:user,
+               member_with_roles: {
+                 project => create(:project_role, permissions: %i[view_work_packages manage_subtasks]),
+                 child_wp_project => restricted_role
+               })
+      end
+
+      let(:current_user) { user_without_manage_subtasks }
+
+      it "does not show the option to delete the child relation" do
+        scroll_to_element relations_panel
+
+        wait_for_network_idle
+
+        # The menu should NOT be available for child_wp since user lacks manage_subtasks permission
+        relations_tab.expect_no_relatable_action_menu(child_wp)
+      end
+    end
+
     context "with manage_subtasks permissions" do
       let(:no_permissions_role) { create(:project_role, permissions: %i(view_work_packages edit_work_packages manage_subtasks)) }
 
@@ -484,7 +527,7 @@ RSpec.describe "Primerized work package relations tab",
 
         wait_for_network_idle
 
-        tabs.expect_counter("relations", 6)
+        tabs.expect_counter("relations", 7)
 
         # The menu is shown as the user can add a child
         relations_tab.expect_add_relation_button

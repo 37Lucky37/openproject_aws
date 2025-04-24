@@ -39,31 +39,12 @@ module ProjectLifeCycles
           model.not_set?
         end
 
-        def render_value
-          render(Primer::Beta::Text.new) do
-            concat [
-              model.start_date,
-              model.end_date
-            ]
-            .compact
-            .map { |d| helpers.format_date(d) }
-            .join(" - ")
-          end
-        end
-
         def icon
-          case model
-          when Project::Stage
-            :"git-commit"
-          when Project::Gate
-            :diamond
-          else
-            raise NotImplementedError, "Unknown model #{model.class} to render a LifeCycleForm with"
-          end
+          :"op-phase"
         end
 
         def icon_color_class
-          helpers.hl_inline_class("life_cycle_step_definition", model.definition)
+          helpers.hl_inline_class("project_phase_definition", model.definition)
         end
 
         def text

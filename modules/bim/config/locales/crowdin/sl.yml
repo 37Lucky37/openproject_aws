@@ -84,6 +84,12 @@ sl:
         ifc_attachment: "Datoteka IFC"
         is_default: "Privzet model"
         attachments: "Datoteka IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Pogled/vidik"
     errors:
       models:
         bim/ifc_models/ifc_model:

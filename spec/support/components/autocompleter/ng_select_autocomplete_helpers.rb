@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Components::Autocompleter
   module NgSelectAutocompleteHelpers
     def search_autocomplete(element, query:, results_selector: nil, wait_dropdown_open: true, wait_for_fetched_options: true)
@@ -9,7 +11,7 @@ module Components::Autocompleter
       ng_find_dropdown(element, results_selector:) if wait_dropdown_open
 
       # Wait for autocompleter options to be loaded (data fetching is debounced by 250ms after creation or typing)
-      wait_for_network_idle if wait_for_fetched_options
+      wait_for_network_idle if using_cuprite? && wait_for_fetched_options
       expect(element).to have_no_css(".ng-spinner-loader")
 
       # Insert the text to find
@@ -35,7 +37,9 @@ module Components::Autocompleter
       retry_block do
         if results_selector
           results_selector = "#{results_selector} .ng-dropdown-panel" if results_selector == "body"
-          page.find(results_selector, wait: 5)
+          within_window(current_window) do
+            page.find(results_selector, wait: 5)
+          end
         else
           within(element) do
             page.find("ng-select .ng-dropdown-panel", wait: 5)
@@ -47,15 +51,40 @@ module Components::Autocompleter
       end
     end
 
-    def expect_ng_option(element, option, results_selector: nil, present: true)
+    def expect_ng_option(element, option, grouping: nil, results_selector: nil, present: true)
       within(ng_find_dropdown(element, results_selector:)) do
-        expect(page).to have_conditional_selector(present, ".ng-option", text: option)
+        if grouping && present
+          # Make sure the option is displayed under correct grouping title.
+          option_group = find(".ng-optgroup", text: grouping)
+          option = find(".ng-option.ng-option-child", text: option, visible: :visible)
+
+          expected_group = begin
+            option.find(:xpath,
+                        "preceding-sibling::*[contains(@class, 'ng-optgroup')][1]",
+                        wait: false)
+          rescue Capybara::ElementNotFound
+            raise "Unable to find the '.ng-optgroup' grouping for option '#{option.text}'"
+          end
+
+          expect(option_group).to eq(expected_group), <<~MSG
+            Expected the option '#{option.text}' to be under the group '#{option_group.text}',
+            but it was under '#{expected_group.text}' instead.
+          MSG
+        else
+          expect(page).to have_conditional_selector(present, ".ng-option", text: option)
+        end
       end
     end
 
     def expect_no_ng_option(element, option, results_selector: nil)
       within(ng_find_dropdown(element, results_selector:)) do
         expect(page).to have_no_css(".ng-option", text: option)
+      end
+    end
+
+    def expect_ng_value_label(field_id, labels)
+      Array(labels).each do |text|
+        expect(page).to have_css("##{field_id} .ng-value-label", text:)
       end
     end
 
@@ -85,7 +114,7 @@ module Components::Autocompleter
         end
       end
 
-      wait_for_network_idle if wait_for_fetched_options
+      wait_for_network_idle if using_cuprite? && wait_for_fetched_options
     end
 
     ##
@@ -96,8 +125,10 @@ module Components::Autocompleter
 
     ##
     # clear the ng select field
-    def ng_select_clear(from_element)
-      from_element.find(".ng-clear-wrapper", visible: :all).click
+    def ng_select_clear(from_element, raise_on_missing: true)
+      if raise_on_missing || from_element.has_css?(".ng-clear-wrapper", visible: :all, wait: 1)
+        from_element.find(".ng-clear-wrapper", visible: :all).click
+      end
     end
 
     def select_autocomplete(element,

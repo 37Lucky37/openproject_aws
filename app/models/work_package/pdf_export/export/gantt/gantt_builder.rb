@@ -317,7 +317,7 @@ module WorkPackage::PDFExport::Export::Gantt
       build_header_cells_parts(columns, top, height,
                                ->(date) { [date.year, date.month] },
                                ->(date, month_tuple) { date.year == month_tuple[0] && date.month == month_tuple[1] },
-                               ->(month_tuple) { Date.new(month_tuple[0], month_tuple[1], 1).strftime("%b") })
+                               ->(month_tuple) { I18n.l(Date.new(month_tuple[0], month_tuple[1], 1), format: "%b") })
     end
 
     def build_header_cells_weeks(top, height, columns)

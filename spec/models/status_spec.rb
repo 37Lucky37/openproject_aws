@@ -86,13 +86,13 @@ RSpec.describe Status do
     end
   end
 
-  describe "#cache_key" do
+  describe "#cache_key_with_version" do
     it "updates when the updated_at field changes" do
-      old_cache_key = stubbed_status.cache_key
+      old_cache_key = stubbed_status.cache_key_with_version
 
       stubbed_status.updated_at = Time.zone.now
 
-      expect(stubbed_status.cache_key)
+      expect(stubbed_status.cache_key_with_version)
         .not_to eql old_cache_key
     end
   end

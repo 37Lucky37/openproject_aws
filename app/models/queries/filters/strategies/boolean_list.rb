@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,7 +39,7 @@ module Queries::Filters::Strategies
     end
 
     def valid_values!
-      filter.values &= allowed_values.map { |v| v.last.to_s }
+      filter.values &= allowed_values.map { |_, v| v.to_s }
     end
 
     private

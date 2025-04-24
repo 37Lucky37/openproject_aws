@@ -67,12 +67,6 @@ import { CopyToClipboardService } from './components/copy-to-clipboard/copy-to-c
 import { CopyToClipboardComponent } from './components/copy-to-clipboard/copy-to-clipboard.component';
 import { OpDateTimeComponent } from './components/date/op-date-time.component';
 import { ToastComponent } from './components/toaster/toast.component';
-
-// Old datepickers
-import {
-  OpMultiDatePickerComponent,
-} from 'core-app/shared/components/datepicker/multi-date-picker/multi-date-picker.component';
-
 import { ToastsContainerComponent } from './components/toaster/toasts-container.component';
 import { UploadProgressComponent } from './components/toaster/upload-progress.component';
 import { ResizerComponent } from './components/resizer/resizer.component';
@@ -80,10 +74,6 @@ import { CollapsibleSectionComponent } from './components/collapsible-section/co
 import { NoResultsComponent } from './components/no-results/no-results.component';
 import { EditableToolbarTitleComponent } from './components/editable-toolbar-title/editable-toolbar-title.component';
 import { PersistentToggleComponent } from './components/persistent-toggle/persistent-toggle.component';
-import {
-  AddSectionDropdownComponent,
-} from './components/hide-section/add-section-dropdown/add-section-dropdown.component';
-import { HideSectionLinkComponent } from './components/hide-section/hide-section-link/hide-section-link.component';
 import { RemoteFieldUpdaterComponent } from './components/remote-field-updater/remote-field-updater.component';
 import { OpOptionListComponent } from './components/option-list/option-list.component';
 import { OpProjectIncludeComponent } from './components/project-include/project-include.component';
@@ -197,9 +187,6 @@ export function bootstrapModule(injector:Injector):void {
     OpProjectIncludeListComponent,
     OpLoadingProjectListComponent,
 
-    // Old datepickers
-    OpMultiDatePickerComponent,
-
     OpNonWorkingDaysListComponent,
   ],
   providers: [
@@ -233,8 +220,6 @@ export function bootstrapModule(injector:Injector):void {
     EditableToolbarTitleComponent,
 
     PersistentToggleComponent,
-    HideSectionLinkComponent,
-    AddSectionDropdownComponent,
     RemoteFieldUpdaterComponent,
 
     // Enterprise Edition
@@ -250,9 +235,6 @@ export function bootstrapModule(injector:Injector):void {
     OpLoadingProjectListComponent,
 
     OpNonWorkingDaysListComponent,
-
-    // Old datepickers
-    OpMultiDatePickerComponent,
 
     ShareUpsaleComponent,
   ],

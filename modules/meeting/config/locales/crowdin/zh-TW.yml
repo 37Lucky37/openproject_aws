@@ -56,13 +56,21 @@ zh-TW:
         start_time: "開始時間"
         start_time_hour: "開始時間"
         end_after: "系列會議結束"
+        end_date: "結束日期"
         iterations: "出現次數"
     errors:
+      models:
+        recurring_meeting:
+          must_cover_existing_meetings:
+            one: "該系列中有一個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"
+            other: "系列會議中，有 %{count} 個公開會議未包含在新的時間表中。調整時間表以包含所有現有會議。"
+            format: "%{message}"
       messages:
         invalid_time_format: "不是有效時間。所需格式: HH:MM"
     models:
       recurring_meeting: "重複性會議"
       structured_meeting: "一次性會議"
+      meeting: "會議"
       meeting_agenda_item: "議程項目"
       meeting_agenda: "會議大綱"
       meeting_minutes: "會議記錄"
@@ -124,11 +132,11 @@ zh-TW:
   label_recurring_meeting_restore: "恢復此事件"
   label_recurring_meeting_schedule: "排程"
   label_recurring_meeting_next_occurrence: "下一次會議"
-  label_recurring_meeting_more: "還有 %{count} 預定會議 (%{schedule})。"
   label_recurring_meeting_no_end_date: "有更多排定的會議 (%{schedule})。"
-  label_recurring_meeting_more_singular: "還有 %{count} 預定會議 (%{schedule})。"
-  label_recurring_meeting_more_past: "還有 %{count} 更多過去的會議。"
-  label_recurring_meeting_more_past_singular: "還有 %{count} 更多過去的會議。"
+  label_recurring_meeting_more:
+    other: "還有 %{count} 預定會議 (%{schedule})。"
+  label_recurring_meeting_more_past:
+    other: "還有 %{count} 個更多過去的會議。"
   label_recurring_meeting_show_more: "顯示更多"
   label_recurring_meeting_series_create: "建立會議系列"
   label_recurring_meeting_series_edit: "編輯系列會議"
@@ -205,8 +213,8 @@ zh-TW:
         new_date_time: "新日期/時間"
     label_mail_all_participants: "發送電子郵件給所有參與者"
     types:
-      classic: "經典"
-      classic_text: "將會議組織為單一可格式化的文字議程和規程。"
+      classic: "傳統(不支援)"
+      classic_text: "注意：傳統會議將在 OpenProject 的下一個版本中刪除。"
       structured: "結構化"
       one_time: "一次性"
       recurring: "重覆"
@@ -257,10 +265,12 @@ zh-TW:
       banner_html: >
         您目前正在編輯會議系列的範本： %{link}。系列會議中的每次新會議都會使用此範本。變更不會影響過去或已建立的會議。
     frequency:
+      x_daily:
+        other: "每 %{count} 天"
+      x_weekly:
+        other: "每 %{count} 週"
       every_weekday: "每個 %{day_of_the_week}"
-      daily: "每日"
       working_days: "每個工作天"
-      weekly: "每週"
     end_after:
       never: "永不"
       specific_date: "特定日期之後"
@@ -276,7 +286,7 @@ zh-TW:
       full_past: "%{base} 於 %{time}, 結束於 %{end_date}"
       never_ending: "%{base} 在 %{time}"
     open:
-      title: "開始"
+      title: "議程已建立"
       subtitle: >
         公開會議的議程可以編輯，並顯示在個別使用者的「我的會議」區段中。變更會議系列範本不會影響已開放的會議。
       blankslate:
@@ -355,12 +365,19 @@ zh-TW:
   label_agenda_item_undisclosed_wp: "工作項目 #%{id} 非可見"
   label_agenda_item_deleted_wp: "已將引用的工作項目刪除"
   label_agenda_item_actions: "議程項目行動"
+  label_agenda_item_move_to_next: "移至下次會議"
   label_agenda_item_move_to_top: "移到頂部"
   label_agenda_item_move_to_bottom: "移到底部"
   label_agenda_item_move_up: "向上移 "
   label_agenda_item_move_down: "向下移 "
   label_agenda_item_add_notes: "新增註記"
+  label_agenda_item_add_outcome: "新增結果"
   label_agenda_item_work_package: "議程工作項目"
+  label_agenda_outcome: "結果"
+  label_agenda_outcome_actions: "議程結果行動"
+  label_agenda_outcome_edit: "編輯結果"
+  label_agenda_outcome_delete: "移除結果"
+  text_outcome_not_editable_anymore: "此結果已不可編輯。"
   text_agenda_item_title: '議程項目 "%{title}"'
   text_agenda_work_package_deleted: '已刪除工作項目議程'
   text_deleted_agenda_item: '已刪除的議程項目'
@@ -377,10 +394,16 @@ zh-TW:
   label_meeting_state_planned: "已規劃"
   label_meeting_state_cancelled: "已取消"
   label_meeting_state_skipped: "已略過"
+  label_meeting_state_in_progress: "進行中"
   label_meeting_reopen_action: "重新開啟會議"
   label_meeting_close_action: "關閉會議"
-  text_meeting_open_description: "本次會議已開放。您可以新增/移除議程項目並隨時編輯它們。會議結束後，關閉後鎖定起來。"
+  label_meeting_in_progress_action: "會議開始"
+  text_meeting_open_description: "此會議是開放的。您可以新增/移除議程項目，並隨意編輯。一旦議程準備就緒，請將其標示為進行中，以記錄結果。"
   text_meeting_closed_description: "此會議已關閉。您不能再新增/移除議程項目。"
+  text_meeting_in_progress_description: "此會議正在進行中。您可以記錄每個議程項目的結果、重新排列它們，甚至新增新的項目。會議完成後，您可以將其標示為已結束，以鎖定它。"
+  text_meeting_open_dropdown_description: "任何現有的結果都會保留，但使用者將無法新增新的結果。"
+  text_meeting_in_progress_dropdown_description: "記錄會議期間的結果，例如資訊需求或所做的決策。"
+  text_meeting_closed_dropdown_description: "此會議已結束，您無法再修改議程項目或結果。"
   label_meeting_manage_participants: "管理參與者"
   label_meeting_no_participants: "沒有參與者"
   label_meeting_show_hide_participants: "顯示/隱藏 %{count} 更多"
@@ -394,6 +417,9 @@ zh-TW:
   text_add_work_package_to_meeting_description: "工作項目可以新增到一或多個會議供討論。相關的說明也可在這裡看到。"
   text_agenda_item_no_notes: "沒註記"
   text_agenda_item_not_editable_anymore: "本次會議已不可編輯。"
+  text_agenda_item_move_next_meeting: "您確定要移至 %{date} %{time}的下次會議嗎？"
+  text_agenda_item_moved_to_next_meeting: "議程項目移至下次會議討論： %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "該工作項目尚未被安排到即將舉行的會議議程中。"
+  text_agenda_item_move_next_meeting_cancelled: "由於下次會議已被取消，因此無法轉到下次會議。"
   text_work_package_add_to_meeting_hint: '使用"增加到會議"按鈕將此工作項目新增到即將舉行的會議。'
   text_work_package_has_no_past_meeting_agenda_items: "在過往會議中沒有提及本工作項目。"

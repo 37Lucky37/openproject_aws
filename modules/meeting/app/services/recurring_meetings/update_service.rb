@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -41,13 +43,14 @@ module RecurringMeetings
       return call unless call.success?
 
       recurring_meeting = call.result
-      cleanup_cancelled_schedules(recurring_meeting)
 
       if should_reschedule?(recurring_meeting)
+        reschedule_future_occurrences(recurring_meeting)
         reschedule_init_job(recurring_meeting)
         send_rescheduled_mail(recurring_meeting)
       end
 
+      cleanup_cancelled_schedules(recurring_meeting)
       update_template(call)
     end
 
@@ -60,6 +63,67 @@ module RecurringMeetings
       end
 
       call
+    end
+
+    def reschedule_future_occurrences(recurring_meeting)
+      if only_time_of_day_changed?(recurring_meeting)
+        update_time_of_day(recurring_meeting)
+      else
+        remove_cancelled_schedules(recurring_meeting)
+        reschedule_all_occurrences(recurring_meeting)
+      end
+    end
+
+    def only_time_of_day_changed?(recurring_meeting)
+      changes = recurring_meeting.previous_changes.keys
+      changes.include?("start_time_hour") && changes.exclude?("start_date")
+    end
+
+    def update_time_of_day(recurring_meeting)
+      schedule_meetings = recurring_meeting.scheduled_meetings
+
+      schedule_meetings.each do |scheduled|
+        new_time = scheduled.start_time.change(
+          hour: recurring_meeting.start_time.hour,
+          min: recurring_meeting.start_time.min
+        )
+
+        Meeting.transaction do
+          scheduled.update_column(:start_time, new_time)
+          scheduled.meeting.update_column(:start_time, new_time) if scheduled.meeting_id.present?
+        end
+      end
+    end
+
+    def remove_cancelled_schedules(recurring_meeting)
+      recurring_meeting
+        .scheduled_meetings
+        .cancelled
+        .delete_all
+    end
+
+    def reschedule_all_occurrences(recurring_meeting)
+      # Get all future scheduled meetings that have been instantiated, ordered by start time
+      future_meetings = recurring_meeting
+        .scheduled_instances
+        .instantiated
+        .not_cancelled
+
+      # Get the next occurrences from the schedule matching the number of future meetings
+      next_occurrences = recurring_meeting.scheduled_occurrences(limit: future_meetings.count)
+
+      # Update each meeting's timing to match the new schedule
+      # Wrap in transaction to allow deferrable unique constraint to work
+      Meeting.transaction do
+        future_meetings.each_with_index do |scheduled, index|
+          next_time = next_occurrences[index]&.to_time
+
+          if next_time
+            scheduled.update_column(:start_time, next_time)
+            scheduled.meeting.update_column(:start_time, next_time)
+          end
+        end
+      end
     end
 
     def cleanup_cancelled_schedules(recurring_meeting)
@@ -100,10 +164,7 @@ module RecurringMeetings
     def should_reschedule?(recurring_meeting)
       return false if recurring_meeting.next_occurrence.nil?
 
-      recurring_meeting
-        .previous_changes
-        .keys
-        .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date])
+      recurring_meeting.reschedule_required?(previous: true)
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -27,14 +29,13 @@
 #++
 
 module Storages
-  NextcloudCapabilities = Data.define(
-    :app_enabled?,
-    :app_version,
-    :group_folder_enabled?,
-    :group_folder_version
-  ) do
+  NextcloudCapabilities = Data.define(:app_enabled?, :app_version, :group_folder_enabled?, :group_folder_version) do
     def self.empty
       new(app_enabled?: false, group_folder_enabled?: false, app_version: nil, group_folder_version: nil)
     end
+
+    def group_folder_disabled? = !group_folder_enabled?
+
+    def app_disabled? = !app_enabled?
   end
 end

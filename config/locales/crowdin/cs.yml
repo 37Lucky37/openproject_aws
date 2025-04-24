@@ -27,7 +27,7 @@ cs:
     work_packages:
       activity_tab:
         no_results_title_text: Žádná aktivita k zobrazení
-        no_results_description_text: "Vyberte \"Zobrazit vše\" pro zobrazení všech aktivit a komentářů"
+        no_results_description_text: 'Vyberte "Zobrazit vše" pro zobrazení všech aktivit a komentářů'
         label_activity_show_all: "Zobrazit vše"
         label_activity_show_only_comments: "Zobrazit pouze komentáře"
         label_activity_show_only_changes: "Zobrazit pouze změny"
@@ -35,11 +35,15 @@ cs:
         label_sort_desc: "Nejnovější nahoře"
         label_type_to_comment: "Přidejte komentář. Zadejte @ pro označení lidí."
         label_submit_comment: "Odeslat komentář"
+        label_who: Who?
         changed_on: "změněno dne"
         created_on: "toto vytvořil/a dne"
         changed: "změněno"
         created: "vytvořeno"
         commented: "komentováno"
+        restrict_visibility: Restrict visibility
+        restricted_journal: Restricted comments are visible to a limited group of members.
+        unsaved_changes_confirmation_message: You have unsaved changes. Are you sure you want to close the editor?
   admin:
     plugins:
       no_results_title_text: V současné době nejsou nainstalovány žádné pluginy.
@@ -128,9 +132,9 @@ cs:
     sync_failed: "Nepodařilo se synchronizovat z LDAP: %{message}."
     back_to_index: "Kliknutím sem se vrátíte do seznamu připojení."
     technical_warning_html: |
-      Tento LDAP formulář vyžaduje technické znalosti nastavení LDAP / Active Directory.
-      <br/>
-      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Prosím navštivte naši dokumentaci pro podrobné pokyny</a>.
+      This LDAP form requires technical knowledge of your LDAP / Active Directory setup.
+      <br>
+      <a href="https://www.openproject.org/help/administration/manage-ldap-authentication/">Please visit our documentation for detailed instructions</a>.
     attribute_texts:
       name: Rozhodčí název spojení LDAP
       host: LDAP název hostitele nebo IP adresa
@@ -138,9 +142,9 @@ cs:
       generic_map: Klíč atributů v LDAP, který je namapován k atributu OpenProject `%{attribute}`
       admin_map_html: "Volitelně: Atribut klíč v LDAP, který <strong>pokud je přítomen</strong> , označí uživatele OpenProject admin. Nechte prázdné, pokud máte pochybnosti."
       system_user_dn_html: |
-        Zadejte DN systémového uživatele používaného pro přístup pouze ke čtení.
-        <br/>
-        Příklad: uid=openproject,ou=system,dc=example,dc=com
+        Enter the DN of the system user used for read-only access.
+        <br>
+        Example: uid=openproject,ou=system,dc=example,dc=com
       system_user_password: Vložte vázané heslo systémového uživatele
       base_dn: |
         Zadejte základní DN podstromu v LDAP chcete, aby OpenProject hledal uživatele a skupiny.
@@ -179,7 +183,7 @@ cs:
     tls_options:
       verify_peer: "Ověřit SSL certifikát"
       verify_peer_description_html: >
-        Umožňuje přísné SSL ověření řetězce důvěryhodných certifikátů. <br/> <strong>Varování:</strong> Odškrtnutím této možnosti zakáže SSL ověření certifikátu LDAP serveru. To odhaluje vaši vazbu na člověka při blízkovýchodních útocích.
+        Enables strict SSL verification of the certificate trusted chain. <br> <strong>Warning:</strong> Unchecking this option disables SSL verification of the LDAP server certificate. This exposes your connection to Man in the Middle attacks.
       tls_certificate_description: "Pokud LDAP server není v důvěryhodných zdrojích tohoto systému, můžete jej přidat ručně zde. Zadejte PEM X509 certifikační řetězec."
   forums:
     show:
@@ -346,6 +350,7 @@ cs:
         placeholder: "Nový seznam projektů"
       delete_modal:
         title: "Odstranit seznam projektů"
+        heading: "Smazat tento seznam projektů?"
         text: "Tato akce neodstraní žádný projekt, který seznam obsahuje. Opravdu chcete tento seznam projektů smazat?"
     settings:
       change_identifier: Změnit identifikátor
@@ -364,14 +369,14 @@ cs:
         no_results_title_text: V současné době nejsou k dispozici žádná vlastní pole.
       life_cycle:
         header:
-          title: "Životní cyklus projektu"
-          description_html: 'These project stages and gates in the project lifecycle will be displayed in your <a href=%{overview_url} target="_blank">project overview page</a> and are defined in the <a href=%{admin_settings_url} target="_blank">administration settings</a> by the administrator of the instance. You can enable or disable individual attributes.'
-        non_defined: "V současné době nejsou definovány žádné fáze ani brány."
-        section_header: "Etapy a brány"
+          title: "Project life cycle"
+          description_html: "The active project phases define this project's life cycle and are defined in the <a href=%{admin_settings_url} target=\"_blank\">administration settings</a>. Enabled phases will be displayed in your <a href=%{overview_url} target=\"_blank\">project overview</a>."
+        non_defined: "No phases are currently defined."
+        section_header: "Phases"
         step:
           use_in_project: "Použít %{step} v tomto projektu"
         filter:
-          label: "Hledat fázi projektu nebo brány"
+          label: "Search project phase"
       project_custom_fields:
         header:
           title: "Atributy projektu"
@@ -394,12 +399,14 @@ cs:
         no_results_content_text: Vytvořit novou verzi
       storage:
         no_results_title_text: Neexistuje žádné další diskové místo využívané tímto projektem.
-  project_stage:
+      work_package_priorities:
+        new_label: "nová priorita"
+  project_phase:
     working_days_count:
-      one: "Doba trvání: %{count} pracovní den"
-      few: "Doba trvání: %{count} pracovní dny"
-      many: "Doba trvání: %{count} pracovní dny"
-      other: "Doba trvání: %{count} pracovní dny"
+      one: "Duration: %{count} working day"
+      few: "Duration: %{count} working days"
+      many: "Duration: %{count} working days"
+      other: "Duration: %{count} working days"
   lists:
     create:
       success: "Upravený seznam byl uložen jako nový seznam."
@@ -489,7 +496,7 @@ cs:
   my:
     access_token:
       create_dialog:
-        title: Token generated
+        title: Token vygenerován
         header: '%{type} token byl vygenerován'
         warning: Note that this is the only time you will see this token, make sure to copy it now.
       errors:
@@ -590,10 +597,10 @@ cs:
         package is automatically set to this value when this status is selected.
         Ignored in work-based mode.
       status_readonly_html: |
-        Zaškrtněte tuto volbu k označení pracovních balíčků s tímto stavem jako jen pro čtení.
-        Žádné atributy nelze změnit s výjimkou stavu samotného.
-        <br/>
-        <strong>Poznámka</strong>: zděděné hodnoty (např. z potomků či dalších vztahů) budou platné i nadále.
+        Check this option to mark work packages with this status as read-only.
+        No attributes can be changed with the exception of the status.
+        <br>
+        <strong>Note</strong>: Inherited values (e.g., from children or relations) will still apply.
     index:
       no_results_title_text: Momentálně zde nejsou žádné stavy pracovního balíčku.
       no_results_content_text: Přidat nový stav
@@ -631,7 +638,20 @@ cs:
           caption: "Define a pattern using referenced attributes and text to automatically generate work package subjects. Users will not be able to manually edit subjects."
         pattern:
           label: "Vzor předmětu"
-          caption: "Vyhledejte atribut nebo přidejte text. Pro vytvoření mezery mezi prvky jej přidejte jako text."
+          caption: "Add text or type / to search for an attribute. You can add spaces to separate them."
+          headings:
+            work_package: "Work package"
+            parent: "Parent"
+            project: "Project"
+          insert_as_text: "No attributes found. Add as text: \"%{word}\""
+      export_configuration:
+        tab: "Vytvořit PDF"
+        intro: "Select which templates from those that are available you would like to enable for this type. The template determines the design and attributes visible in the exported PDF of a work package using this type. The first template on the list is selected by default."
+        pdf_export_templates:
+          label: "PDF Export templates"
+          actions:
+            label_enable_all: "Povolit vše"
+            label_disable_all: "Zakázat vše"
   versions:
     overview:
       work_packages_in_archived_projects: "Verze je sdílena s archivovanými projekty, které mají stále pracovní balíčky přiřazené k této verzi. Ty jsou započítány, ale nebudou se objevovat v odkazovaných zobrazeních."
@@ -646,6 +666,47 @@ cs:
     index:
       no_results_title_text: V současné době neexistují žádné pracovní postupy.
   work_packages:
+    datepicker_modal:
+      banner:
+        description:
+          automatic_mobile: "Start date derived."
+          click_on_show_relations_to_open_gantt: 'Click on "%{button_name}" for Gantt overview.'
+          manual_mobile: "Ignoruji vztahy."
+          manual_gap_between_predecessors: "There is a gap between this and all predecessors."
+          manual_overlap_with_predecessors: "Overlaps with at least one predecessor."
+          manual_with_children: "This has child work packages but their start dates are ignored."
+        title:
+          automatic_mobile: "Automaticky naplánováno."
+          automatic_with_children: "The dates are determined by child work packages."
+          automatic_with_predecessor: "The start date is set by a predecessor."
+          manual_mobile: "Manually scheduled."
+          manually_scheduled: "Manually scheduled. Dates not affected by relations."
+      blankslate:
+        title: "Žádní předchůdci"
+        description: "To enable automatic scheduling, this work package needs to have at least one predecessor. It will then automatically be scheduled to start after the closest predecessor."
+      ignore_non_working_days:
+        title: "Pouze pracovní dny"
+      mode:
+        title: "Scheduling mode"
+        automatic: "Automaticky"
+        manual: "Manuálně"
+      show_relations: "Zobrazit vztahy"
+      tabs:
+        aria_label: "Datepicker tabs"
+        children: "Potomci"
+        dates: "Data"
+        predecessors: "Predecessors"
+        successors: "Successors"
+        blankslate:
+          predecessors:
+            title: "Žádní předchůdci"
+            description: "This work package does not have any predecessors."
+          successors:
+            title: "No successors"
+            description: "This work package does not have any successors."
+          children:
+            title: "No children"
+            description: "This work package does not have any children."
     x_descendants:
       one: "Jeden potomek pracovního balíčku"
       few: "%{count} potomků pracovního balíčku"
@@ -717,10 +778,11 @@ cs:
       follows_description: "Související pracovní balíček musí být ukončen dříve, než bude možné začít tento"
       label_child_singular: "dítě"
       label_child_plural: "Potomci"
-      new_child: "Novy potomek"
+      new_child: "Create new child"
       new_child_text: "Vytvoří související pracovní balíček jako podpoložku aktuálního (nadřazeného) pracovního balíčku"
-      existing_child: "Existujici potomek"
+      child: "Child"
       child_description: "Udělá související pracovní balíček podpoložkou aktuálního (nadřazeného) pracovního balíčku"
+      label_closest: "Nejbližší"
       label_blocks_singular: "bloky"
       label_blocks_plural: "bloky"
       blocks_description: "Tento pracovní balíček nelze uzavřít, dokud není nejprve uzavřen související balíček"
@@ -797,6 +859,7 @@ cs:
       attachment:
         attachment_content: "Obsah přílohy"
         attachment_file_name: "Název souboru přílohy"
+        content_type: "Content-type"
         downloads: "Ke stažení"
         file: "Soubor"
         filename: "Soubor"
@@ -804,10 +867,10 @@ cs:
       attribute_help_text:
         attribute_name: "Atribut"
         help_text: "Text nápovědy"
+      capability:
+        context: "Kontext"
       changeset:
         repository: "Repozitář"
-      color:
-        hexcode: "Hex kód"
       comment:
         commented: "Komentované" #an object that this comment belongs to
       custom_action:
@@ -840,7 +903,10 @@ cs:
         client_credentials_user_id: "Uživatelské ID klienta"
         scopes: "Rozsah"
         confidential: "Důvěrnost"
+      emoji_reaction:
+        reactable: "Reacted on"
       enterprise_token:
+        domain: "Doména"
         starts_at: "Platné od"
         subscriber: "Odběratel"
         encoded_token: "Token podpory Enterprise."
@@ -852,6 +918,7 @@ cs:
         widgets: "Widgety"
       journal:
         notes: "Poznámky"
+        cause_type: "Cause type"
       ldap_auth_source:
         account: "Účet"
         attr_firstname: "Jméno (atribut)"
@@ -867,14 +934,17 @@ cs:
         tls_certificate_string: "SSL certifikát LDAP serveru"
       member:
         roles: "Role"
+      notification:
+        read_ian: "Read in-app"
+        resource: "Zdroj"
       oauth_client:
         client: "ID klienta"
-      planning_element_type_color:
-        hexcode: Hex kód
       project:
         active_value:
           true: "odarchivováno"
           false: "archivováno"
+        description: "Popis"
+        enabled_modules: "Povolené moduly"
         identifier: "Identifikátor"
         latest_activity_at: "Poslední aktivita"
         parent: "Nadřazený projekt"
@@ -884,7 +954,6 @@ cs:
           false: "soukromý"
         queries: "Dotazy"
         status_code: "Stav projektu"
-        description: "Popis"
         status_explanation: "Popis stavu projektu"
         status_codes:
           not_started: "Nezahájeno"
@@ -903,23 +972,53 @@ cs:
       project_custom_field:
         is_required: "Vyžadováno pro všechny projekty"
         custom_field_section: Sekce
-      project/life_cycle_step_definition:
-        name: "Název"
-        color: "Barva"
+      project/phase:
+        date_range: "Date range"
+        definition: "Definition"
+      project/phase_definition:
+        name: "Name"
+        color: "Color"
+        start_gate: "Start phase gate"
+        start_gate_name: "Start phase gate name"
+        finish_gate: "Finish phase gate"
+        finish_gate_name: "Finish phase gate name"
       query:
+        sums: "Sums"
+        columns: "Sloupce"
         column_names: "Sloupce"
         relations_to_type_column: "Vztahy s %{type}"
         relations_of_type_column: "%{type} relací"
+        child_work_packages: "Child work packages"
         group_by: "Seskupit výsledky podle"
+        sort_by: "Třídit výsledky podle"
         filters: "Filtry"
         timeline_labels: "Štítky časové osy"
+        timeline_visible: "Zobrazit Ganttův diagram"
+        timeline_zoom_level: "Gantt chart zoom level"
+        timestamps: "Baseline timestamps"
+        sort_criteria: "Kritéria pro řazení"
+        highlighted_attributes: "Zvýrazněné atributy"
+        highlighting_mode: "Highlight mode"
+        display_representation: "Zobrazovací režim"
+        show_hierarchies: "Zobrazovací režim"
+        starred: "Oblíbené"
+        hidden: "Skryté"
+        manual_sorting: "Manual sort order"
+        ordered_work_packages: "Řazení pracovních balíčků"
+        include_subprojects: "Zahrnout projekty"
+        results: "Výsledky"
       relation:
         lag: "Lag"
-        from: "Related work package"
+        from: "Související pracovní balíček"
         to: "Související pracovní balíček"
+        relation_type: "Typ vztahu"
       reminder:
+        remindable: "Reminded object"
+        remind_at: "Připomenout v"
         remind_at_date: "Datum"
         remind_at_time: "Čas"
+      reminder_notification:
+        notification: "Notifikace"
       repository:
         url: "URL"
       role:
@@ -929,6 +1028,9 @@ cs:
         is_readonly: "Pracovní balíček jen pro čtení"
         excluded_from_totals: "Vyloučit z výpočtu úhrnů v hierarchii"
         default_done_ratio: "% Dokončeno"
+      token/ical:
+        calendar: "Kalendář"
+        ical_token_query_assignment: "Query assignment"
       time_entry:
         activity: "Aktivita"
         hours: "Hodiny"
@@ -942,6 +1044,11 @@ cs:
         is_default: "Aktivováno pro nové projekty ve výchozím nastavení"
         is_milestone: "Je milník"
         color: "Barva"
+        patterns: "Patterns"
+      remote_identity:
+        auth_source: "Auth Source"
+        integration: "Integrace"
+        user: "Uživatel"
       user:
         admin: "Administrátor"
         auth_source: "Zdroj ověřování"
@@ -951,17 +1058,23 @@ cs:
         force_password_change: "Vynutit změnu hesla při příštím přihlášení"
         language: "Jazyk"
         last_login_on: "Datum posledního přihlášení"
+        failed_login_count: "Počet neúspěšných přihlášení"
+        first_name: "Křestní jméno"
+        last_name: "Příjmení"
+        first_login: "První přihlášení"
         new_password: "Nové heslo"
         password_confirmation: "Potvrzení"
         consented_at: "Souhlas udělen"
       user_preference:
         comments_sorting: "Zobrazit komentáře"
         impaired: "Režim usnadnění"
-        time_zone: "Časové pásmo"
         auto_hide_popups: "Automaticky skrýt oznámení o úspěchu"
         warn_on_leaving_unsaved: "Upozornit mě při opuštění pracovního balíčku s neuloženými změnami"
         theme: "Režim"
+        time_zone: "Časová zóna"
         mode_guideline: "Some modes will overwrite custom theme colours for accessibility and legibility. For the full custom theme, please select Light mode."
+        daily_reminders: "Daily reminders"
+        workdays: "Pracovní dny"
       version:
         effective_date: "Datum dokončení"
         sharing: "Sdílení"
@@ -970,7 +1083,9 @@ cs:
       wiki_page:
         parent_title: "Nadřazená stránka"
         redirect_existing_links: "Přesměrovat existující odkazy"
+        text: "Page content"
       work_package:
+        ancestor: "Descendants of" #used for filtering of work packages that are descendants of a given work package
         begin_insertion: "Začátek vložení"
         begin_deletion: "Začátek odstranění"
         children: "Dílčí prvky"
@@ -986,6 +1101,7 @@ cs:
           title: "Pracovní dny"
           false: "pouze pracovní dny"
           true: "zahrnuje nepracovní dny"
+        journal_restricted: Restricted Journal
         notify: "Oznámit" #used in custom actions
         parent: "Nadřazený"
         parent_issue: "Nadřazený"
@@ -1029,6 +1145,7 @@ cs:
         empty: "nemůže být prázdné."
         even: "musí být sudé."
         exclusion: "vyhrazeno."
+        feature_disabled: is not available.
         file_too_large: "je příliš velký (maximální velikost je %{count} Bajtů)."
         filter_does_not_exist: "Filtr neexistuje."
         format: "neodpovídá očekávanému formátu '%{expected}'."
@@ -1165,42 +1282,12 @@ cs:
           attributes:
             project_ids:
               blank: "Vyberte prosím projekt."
-        project/life_cycle_step_definition:
-          attributes:
-            type:
-              must_be_a_stage_or_gate: "musí být buď Project::StageDefinition nebo Project::GateDefinition"
-              type_and_class_name_mismatch: "musí odpovídat názvu instancované třídy"
-        project/gate_definition:
-          attributes:
-            type:
-              type_and_class_name_mismatch: "musí být Project::GateDefinition"
-        project/stage_definition:
-          attributes:
-            type:
-              type_and_class_name_mismatch: "musí být Project::StageDefinition"
-        project/life_cycle_step:
-          attributes:
-            type:
-              must_be_a_stage_or_gate: "must be either Project::Stage or Project::Gate"
-              must_be_a_stage: "must be a Project::Stage"
-              must_be_a_gate: "must be a Project::Gate"
-              type_and_class_name_mismatch: "must match the instantiated class name"
-        project/gate:
-          attributes:
-            base:
-              end_date_not_allowed: "Cannot assign end date to a Project::Gate"
-            type:
-              type_and_class_name_mismatch: "must be a Project::Gate"
-            date:
-              non_continuous_dates: "can't be earlier than the previous %{step}'s end date."
-        project/stage:
+        project/phase:
           attributes:
             date_range:
-              start_date_must_be_before_end_date: "Datum zahájení musí být před datem ukončení."
-              non_continuous_dates: "can't be earlier than the previous %{step}'s end date."
-              incomplete: "je neúplný."
-            type:
-              type_and_class_name_mismatch: "must be a Project::Stage"
+              start_date_must_be_before_finish_date: "start date must be before the finish date."
+              non_continuous_dates: "can't be earlier than the previous phase's end date."
+              incomplete: "is incomplete."
         query:
           attributes:
             project:
@@ -1300,6 +1387,10 @@ cs:
         work_package:
           is_not_a_valid_target_for_time_entries: "Pracovní balíček #%{id} není platný cíl pro přeřazení časových záznamů."
           attributes:
+            id:
+              format: "%{message}"
+              cannot_add_child_because_of_lack_of_permission: "Cannot add child because you don't have permissions to edit the selected work package."
+              blank: "ID nemůže být prázdné."
             assigned_to:
               format: "%{message}"
             done_ratio:
@@ -1316,6 +1407,7 @@ cs:
               smaller_than_dates: "je menší než interval mezi datem zahájení a datem ukončení."
               not_available_for_milestones: "není k dispozici pro pracovní balíčky uvedené v milnících."
               cannot_be_null: "nelze nastavit na null jako datum zahájení a datum dokončení je známé."
+              not_an_integer: "není platná doba trvání."
             parent:
               cannot_be_milestone: "nemůže být milník."
               cannot_be_self_assigned: "nemůže být přiřazeno k sobě."
@@ -1356,6 +1448,8 @@ cs:
               duplicate_group: "Název skupiny '%{group}' je použit více než jednou. Názvy skupin musí být jedinečné."
               query_invalid: "Vložený dotaz '%{group}' je neplatný: %{details}"
               group_without_name: "Nepojmenované skupiny nejsou povoleny."
+            patterns:
+              invalid_tokens: "One or more attributes inside the field are not valid. Please, fix the attributes before saving."
         user:
           attributes:
             base:
@@ -1365,7 +1459,7 @@ cs:
               confirmation: "Hesla se neshodují!"
               format: "%{message}"
             password:
-              weak: "Must contain characters of the following classes (at least %{min_count} of %{all_count}): %{rules}"
+              weak: "Musí obsahovat znaky z následujících tříd (alespoň %{min_count} z %{all_count}): %{rules}"
               lowercase: "malá písmena (například 'a')"
               uppercase: "velká písmena (například ' A')"
               numeric: "číselné (např. 1)"
@@ -1418,6 +1512,11 @@ cs:
       forum: "Fórum"
       global_role: "Globální role"
       group: "Skupina"
+      issue_priority:
+        one: "Priorita"
+        few: "Priorities"
+        many: "Priorities"
+        other: "Priorities"
       member: "Člen"
       news: "Novinky"
       notification:
@@ -1427,14 +1526,13 @@ cs:
         other: "Notifikace"
       placeholder_user: "Placeholder uživatel"
       project: "Projekt"
-      project/gate_definition: "Brána"
-      project/stage_definition: "Fáze"
       project_query:
         one: "Seznam projektů"
         few: "Project lists"
         many: "Project lists"
         other: "Project lists"
       query: "Vlastní dotaz"
+      reminder: "Připomínka"
       role:
         one: "Role"
         few: "Role"
@@ -1500,72 +1598,115 @@ cs:
       changeset: "Změny"
       message: "Fóra"
       news: "Novinky"
-      project_attribute: "Atributy projektu"
+      project_details: "Project details"
       subproject: "Zahrnout podprojekty"
       time_entry: "Strávený čas"
       wiki_edit: "Wiki"
       work_package: "Pracovní balíčky"
+    project_phase:
+      activated: "activated"
+      deactivated: "deactivated"
+      added_date: "set to %{date}"
+      changed_date: "changed from %{from} to %{to}"
+      removed_date: "date deleted %{date}"
+      phase_and_one_gate: "%{phase_message}. %{gate_message}"
+      phase_and_both_gates: "%{phase_message}. %{start_gate_message}, and %{finish_gate_message}"
   #common attributes of all models
   attributes:
     active: "Aktivní"
     assigned_to: "Řešitel"
     assignee: "Řešitel"
     attachments: "Přílohy"
+    actor: "Actor"
+    action: "Akce"
     author: "Autor"
+    avatar: "Avatar"
     base: "Obecná chyba:"
+    body: "Body"
     blocks_ids: "ID blokovaných pracovních balíčků"
     category: "Kategorie"
     comment: "Komentář"
     comments: "Komentář"
     content: "Obsah"
     color: "Barva"
+    creator: "Autor:"
     created_at: "Vytvořeno"
+    custom_field: "Vlastní pole"
     custom_options: "Možné hodnoty"
     custom_values: "Vlastní pole"
     date: "Datum"
+    dates_interval: "Časový rozsah"
     default_columns: "Výchozí sloupce"
     description: "Popis"
     derived_due_date: "Derivované Datum ukončení "
     derived_estimated_hours: "Celková práce"
     derived_start_date: "Derivované Datum zahájení "
+    direction: "Direction"
     display_sums: "Zobrazit součty"
     due_date: "Datum dokončení"
     estimated_hours: "Práce"
     estimated_time: "Práce"
+    email: "E-mail"
+    entity_type: "Entity"
     expires_at: "Vyprší za"
     firstname: "Křestní jméno"
+    filter: "Filtr"
     group: "Skupina"
     groups: "Skupiny"
+    hexcode: "Hex kód"
     id: "ID"
     is_default: "Výchozí hodnota"
     is_for_all: "Pro všechny projekty"
     public: "Veřejné"
+    principal: "User or group"
     #kept for backwards compatibility
     issue: "Pracovní balíček"
+    journal: "Deník"
+    journal_notes: "Komentář"
     lastname: "Příjmení"
     login: "Uživatelské jméno"
+    lock_version: "Uzamknout verzi"
     mail: "E-mail"
     name: "Název"
     note: "Poznámka"
+    notes: "Poznámky"
+    number: "Číslo"
+    options: "Možnosti"
+    operator: "Operátor"
     password: "Heslo"
     priority: "Priorita"
     project: "Projekt"
+    project_ids: "ID Projektu"
+    reason: "Důvod"
     responsible: "Odpovědný"
+    required: "Požadováno"
+    recipient: "Příjemce"
     role: "Role"
     roles: "Role"
+    search: "Vyhledávání"
     start_date: "Datum zahájení"
     status: "Stav"
+    state: "Stav"
     subject: "Předmět"
+    slug: "Slug"
     summary: "Souhrn"
+    time_zone: "Časová zóna"
+    text: "Text"
     title: "Název"
     type: "Typ"
+    typeahead: "Autocomplete"
     updated_at: "Aktualizováno"
     updated_on: "Aktualizováno"
     uploader: "Uploader"
     user: "Uživatel"
+    username: "Uživatelské jméno"
+    unit: "Jednotka"
     value: "Hodnota"
+    values: "Hodnoty"
     version: "Verze"
+    visible: "Viditelné"
     work_package: "Pracovní balíček"
+    work_package_id: "Pracovní balíček"
   backup:
     failed: "Záloha se nezdařila"
     label_backup_token: "Záložní token"
@@ -1907,7 +2048,7 @@ cs:
       automatic_subject_generation:
         description: "Vytváření automaticky generovaných předmětů pomocí odkazovaných atributů a textu."
       customize_life_cycle:
-        description: "Create and organize different project stages and gates than the ones provided by PM2 project cycle planning."
+        description: "Create and organize different project phases than the ones provided by PM2 project cycle planning."
       form_configuration:
         description: "Přizpůsobte si konfiguraci formuláře s těmito doplňky:"
         add_groups: "Přidat nové skupiny atributů"
@@ -1915,6 +2056,8 @@ cs:
   enumeration_activities: "Sledování času"
   enumeration_work_package_priorities: "Priority pracovního balíčku"
   enumeration_reported_project_statuses: "Nahlášený stav projektu"
+  enumeration_caption_order_changed: "Order successfully changed."
+  enumeration_could_not_be_moved: "Enumeration could not be moved."
   error_auth_source_sso_failed: "Jednotné přihlášení (SSO) pro uživatele '%{value}' selhalo"
   error_can_not_archive_project: "Tento projekt nelze archivovat: %{errors}"
   error_can_not_delete_entry: "Nelze odstranit položku"
@@ -1975,7 +2118,7 @@ cs:
     changeset: "Sada změn upravena"
     message: Zpráva upravena
     news: Novinky
-    project_attributes: "Atributy projektu upraveny"
+    project_details: "Project details edited"
     project: "Projekt upraven"
     projects: "Projekt upraven"
     reply: Zodpovězeno
@@ -2004,6 +2147,7 @@ cs:
         input_label_report: "Přidat sloupce do tabulky atributů"
         input_caption_report: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in the attribute table, but can be displayed below it."
         input_caption_table: "By default all attributes added as columns in the work package list are selected. Long text fields are not available in table based exports."
+        input_caption_required: "It is not possible to export the view without any column. Please add at least one column."
       pdf:
         export_type:
           label: "Typ exportu do PDF"
@@ -2053,6 +2197,8 @@ cs:
     your_work_packages_export: "Pracovní balíčky jsou exportovány"
     succeeded: "Export dokončen"
     failed: "Při pokusu o export pracovních balíčků došlo k chybě: %{message}"
+    errors:
+      embedded_table_with_too_many_columns: "This embedded work package table could not fit on the page, please reduce the number of columns."
     format:
       atom: "Atom"
       csv: "CSV"
@@ -2074,21 +2220,35 @@ cs:
       days: d
   pdf_generator:
     page_nr_footer: "Strana %{page} z %{total}"
+    template_attributes:
+      label: "Attributes and description"
+      caption: All the attributes present in the current form configuration using the default template.
+    template_contract:
+      label: "Smlouva"
+      caption: Work package details formatted to the standard German contract form.
     dialog:
       title: Generovat PDF
-      submit: Generovat
-      header_right:
-        label: Záhlaví vpravo
-        caption: Text, který se zobrazí vpravo od záhlaví
+      submit: Stáhnout
+      templates:
+        label: "Šablona"
+        none_enabled: "No template has been enabled for this work package type"
       footer_center:
-        label: Střed zápatí
-        caption: Text, který se zobrazí uprostřed zápatí
+        label: Text záhlaví
+        caption: This text will appear on every page at the center of the footer.
+      footer_right:
+        label: Text záhlaví
+        caption: This text will appear on every page at the right of the footer.
       hyphenation:
         label: Dělení slov
-        caption: Zlomte slova mezi řádky, abyste zlepšili odůvodnění textu a jeho čitelnost.
-      paper_size:
-        label: Velikost papíru
-        caption: Velikost papíru, který se má použít pro PDF.
+        caption: Break line between words for better layout and justification.
+      hyphenation_language:
+        label: Language and hyphenation
+      page_orientation:
+        label: Page orientation
+        caption: Select the orientation of the pages in the PDF document.
+        options:
+          portrait: Portrait
+          landscape: Landscape
   extraction:
     available:
       pdftotext: "Pdftotext k dispozici (volitelné)"
@@ -2170,6 +2330,8 @@ cs:
           Progress calculation automatically <a href="%{href}" target="_blank">set to work-based mode and adjusted with version update</a>.
         progress_calculation_adjusted: >-
           Progress calculation automatically <a href="%{href}" target="_blank">adjusted with version update</a>.
+        scheduling_mode_adjusted: >-
+          Scheduling mode automatically adjusted with version update.
         totals_removed_from_childless_work_packages: >-
           Work and progress totals automatically removed for non-parent work packages with <a href="%{href}" target="_blank">version update</a>. This is a maintenance task and can be safely ignored.
       total_percent_complete_mode_changed_to_work_weighted_average: >-
@@ -2414,6 +2576,7 @@ cs:
   label_missing_or_hidden_custom_option: "(chybí hodnota nebo chybí oprávnění k přístupu)"
   label_descending: "Sestupně"
   label_details: "Podrobnosti"
+  label_defaults: "Výchozí"
   label_development_roadmap: "Plán vývoje"
   label_diff: "rozdíl"
   label_diff_inline: "inline"
@@ -2470,6 +2633,7 @@ cs:
   label_filter: "Filtry"
   label_filter_add: "Přidat filtr"
   label_filter_by: "Filtrovat podle"
+  label_filter_any_name_attribute: "Name attributes"
   label_filter_plural: "Filtry"
   label_filters_toggle: "Zobrazit/skrýt filtry"
   label_float: "Desetinné číslo"
@@ -2629,7 +2793,7 @@ cs:
   label_none_parentheses: "(žádný)"
   label_not_contains: "neobsahuje"
   label_not_equals: "není"
-  label_life_cycle_step_plural: "Životní cyklus projektu"
+  label_life_cycle_step_plural: "Project life cycle"
   label_on: "zapnuto"
   label_operator_all: "není prázdný"
   label_operator_none: "je prázdný"
@@ -2691,7 +2855,7 @@ cs:
   label_project_new: "Nový projekt"
   label_project_plural: "Projekty"
   label_project_list_plural: "Seznamy projektů"
-  label_project_lifecycle: "Životní cyklus projektu"
+  label_project_life_cycle: "Project life cycle"
   label_project_attributes_plural: "Atributy projektu"
   label_project_custom_field_plural: "Atributy projektu"
   label_project_settings: "Nastavení projektu"
@@ -2749,6 +2913,7 @@ cs:
   label_roadmap_overdue: "%{value} pozdě"
   label_role_and_permissions: "Role a oprávnění"
   label_role_new: "Nová role"
+  label_role_grantable: "Grantable role"
   label_role_plural: "Role"
   label_role_search: "Přiřadit roli novým členům"
   label_scm: "SCM"
@@ -2802,6 +2967,10 @@ cs:
   label_title: "Název"
   label_projects_menu: "Projekty"
   label_today: "dnes"
+  label_token_version: "Token Version"
+  label_today_as_start_date: "Vyberte dnes jako počáteční datum."
+  label_today_as_due_date: "Select today as finish date."
+  label_today_as_date: "Select today as date."
   label_top_menu: "Horní menu"
   label_topic_plural: "Témata"
   label_total: "Celkem"
@@ -2914,7 +3083,7 @@ cs:
   label_global_role: "Globální role"
   label_not_changeable: "(neměnitelné)"
   label_global: "Globální"
-  label_seeded_from_env_warning: Tento záznam byl vytvořen pomocí proměnné nastavení / prostředí. Není upravitelný prostřednictvím uživatelského rozhraní.
+  label_seeded_from_env_warning: This record has been created through a setting environment variable. It is not editable through UI.
   macro_execution_error: "Chyba při provádění makra %{macro_name}"
   macro_unavailable: "Makro %{macro_name} nelze zobrazit."
   macros:
@@ -3193,6 +3362,7 @@ cs:
   permission_add_project: "Vytvořit projekty"
   permission_add_work_package_attachments: "Přidat přílohy"
   permission_add_work_package_attachments_explanation: "Umožňuje přidávat přílohy bez oprávnění upravovat pracovní balíčky"
+  permission_add_comments_with_restricted_visibility: "Write comments with restricted visibility"
   permission_archive_project: "Archivovat projekt"
   permission_create_user: "Vytvořit uživatele"
   permission_manage_user: "Upravit uživatele"
@@ -3221,12 +3391,15 @@ cs:
   permission_edit_work_package_notes_explanation: "Caution: Users with this permission are able to edit anyone's comment."
   permission_edit_work_packages: "Upravit pracovní balíčky"
   permission_edit_messages: "Upravit zprávy"
+  permission_edit_own_comments_with_restricted_visibility: "Edit own comments with restricted visibility"
   permission_edit_own_work_package_notes: "Upravit vlastní komentáře"
   permission_edit_own_messages: "Upravit vlastní zprávy"
   permission_edit_own_time_entries: "Upravit vlastní časové záznamy"
+  permission_edit_others_comments_with_restricted_visibility: "Moderate comments with restricted visibility"
+  permission_edit_others_comments_with_restricted_visibility_explanation: "Caution: Users with this permission are able to edit other users' comments with restricted visibility."
   permission_edit_project: "Upravit projekt"
   permission_edit_project_attributes: "Úprava atributů projektu"
-  permission_edit_project_stages_and_gates: "Upravit etapy a brány projektu"
+  permission_edit_project_phases: "Edit project phases"
   permission_edit_reportings: "Upravit přehledy"
   permission_edit_time_entries: "Upravit časové záznamy pro ostatní uživatele"
   permission_edit_timelines: "Úpravy časové osy"
@@ -3256,14 +3429,15 @@ cs:
   permission_search_project: "Hledat projekt"
   permission_select_custom_fields: "Vybrat vlastní pole"
   permission_select_project_custom_fields: "Vyberte atributy projektu"
-  permission_select_project_life_cycle: "Vyberte etapy a brány projektu"
-  permission_select_project_life_cycle_explanation: "Activate/Deactivate the stages and gates in a project. Enables the user to select the lifecycle appropriate for the project as inactive stages and gates will not be visible in the project overview page nor the project list."
+  permission_select_project_phases: "Select project phases"
+  permission_select_project_phases_explanation: "Activate/Deactivate the phases in a project. Enables the user to select the life cycle appropriate for the project as inactive phases will not be visible in the project overview page nor the project list."
   permission_select_project_modules: "Vyberte moduly projektu"
   permission_share_work_packages: "Sdílet pracovní balíčky"
   permission_manage_types: "Vyberte typy"
   permission_manage_own_reminders: "Vytvořit vlastní připomenutí"
   permission_view_project: "Zobrazit projekty"
   permission_view_changesets: "Zobrazit revize repozitáře v OpenProject"
+  permission_view_comments_with_restricted_visibility: "View comments with restricted visibility"
   permission_view_commit_author_statistics: "Zobrazit statistiky autora commitu"
   permission_view_dashboards: "Zobrazit dashboardy"
   permission_view_work_package_watchers: "Zobrazit seznam sledujících"
@@ -3282,7 +3456,7 @@ cs:
   permission_work_package_assigned_explanation: "Pracovní balíčky mohou být přiřazeny uživatelům a skupinám, které tuto roli vlastní v příslušném projektu"
   permission_view_project_activity: "Zobrazit aktivitu projektu"
   permission_view_project_attributes: "Zobrazit atributy projektu"
-  permission_view_project_stages_and_gates: "Zobrazit fáze a brány projektu"
+  permission_view_project_phases: "View project phases"
   permission_save_bcf_queries: "Uložit dotazy BCF"
   permission_manage_public_bcf_queries: "Spravovat veřejné dotazy BCF."
   permission_edit_attribute_help_texts: "Upravit text nápovědy atributu"
@@ -3292,6 +3466,13 @@ cs:
   placeholders:
     default: "-"
   project:
+    archive:
+      are_you_sure: "Opravdu chcete archivovat projekt '%{name}'?"
+      archived: "Archivováno"
+    count:
+      zero: "0 projektů"
+      one: "1 projekt"
+      other: "%{count} projektů"
     destroy:
       confirmation: "Pokud budete pokračovat, projekt %{identifier} bude natrvalo zničen. Pro potvrzení této akce prosím vložte název projektu do níže uvedeného pole, toto bude:"
       project_delete_result_1: "Odstranit všechna související data."
@@ -3300,23 +3481,21 @@ cs:
       project_verification: "Zadejte název projektu %{name} pro potvrzení odstranění."
       subprojects_confirmation: "Jeho podprojek(y): %{value} budou také smazány."
       title: "Odstranit projekt %{name}"
+    filters:
+      project_phase: "Project phase: %{phase}"
+      project_phase_any: "Project phase: Any"
+      project_phase_gate: "Project phase gate: %{gate}"
     identifier:
       warning_one: Členové projektu budou muset přemístit úložiště projektu.
       warning_two: Existující odkazy na projekt nebudou nadále fungovat.
       title: Změnit identifikátor projektu
+    not_available: "Project N/A"
     template:
       copying: >
         Váš projekt se vytváří z vybranéhé šablony. Budete upozorněni e-mailem, jakmile bude projekt k dispozici.
       use_template: "Použít šablonu"
       make_template: "Nastavit jako šablonu"
       remove_from_templates: "Odstranit ze šablon"
-    archive:
-      are_you_sure: "Opravdu chcete archivovat projekt '%{name}'?"
-      archived: "Archivováno"
-    count:
-      zero: "0 projektů"
-      one: "1 projekt"
-      other: "%{count} projektů"
   project_module_activity: "Aktivita"
   project_module_forums: "Fóra"
   project_module_work_package_tracking: "Pracovní balíčky"
@@ -3447,9 +3626,18 @@ cs:
     warnings:
       cannot_annotate: "Tento soubor nelze přiřadit poznámce."
   scheduling:
-    activated: "Aktivováno "
-    deactivated: "Deaktivováno"
+    manual: "set to Manual"
+    automatic: "set to Automatic"
   search_input_placeholder: "Hledat ..."
+  setting_allowed_link_protocols: "Allowed link protocols"
+  setting_allowed_link_protocols_text_html: >-
+    Allow these protocols to be rendered as links in work package descriptions, long text fields and comments. For example, %{tel_code} or %{element_code}. Enter one protocol per line. <br/> Protocols %{http_code}, %{https_code}, and %{mailto_code} are always allowed.
+  setting_after_first_login_redirect_url: "First login redirect"
+  setting_after_first_login_redirect_url_text_html: >
+    Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour. <br/> Example: <code>/my/page</code>
+  setting_after_login_default_redirect_url: "After login redirect"
+  setting_after_login_default_redirect_url_text_html: >
+    Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set. <br/> Example: <code>/my/page</code>
   setting_apiv3_cors_title: "Sdílení zdrojů Cross-Origin (CORS)"
   setting_apiv3_cors_enabled: "Povolit CORS"
   setting_apiv3_cors_origins: "API V3 Cross-Origin Resource Sharing (CORS) povolené počátky"
@@ -3676,27 +3864,27 @@ cs:
       new:
         heading: "Nový atribut"
         description: "Changes to this project attribute will be reflected in all projects where it is enabled. Required attributes cannot be disabled on a per-project basis."
-    project_life_cycle_step_definitions:
-      heading: "Životní cyklus projektu"
-      heading_description: "The project lifecycle consists of stages and gates that structure your projects. They will appear in the overview page of a project and be available in the projects list. Individual stages and gates can be selected to customize a project but reordering is not possible on a project level."
-      label_add: "Přidat"
-      label_add_description: "Přidat definici životního cyklu"
-      label_add_stage: "Etapa"
-      label_add_gate: "Gate"
+    project_phase_definitions:
+      heading: "Project life cycle"
+      heading_description: "Project life cycle define the project phases that can be used for your project planning and will appear in the overview page of each project. These attributes can be enabled or disabled but not re-ordered at a project level."
+      label_add: "Add"
+      label_add_description: "Add life cycle definition"
       filter:
-        label: "Hledat fázi projektu nebo gatey"
-      section_header: "Etapy a gatey"
-      non_defined: "V současné době nejsou definovány žádné etapy ani gatey."
+        label: "Search project phase"
+      section_header: "Phases"
+      non_defined: "No phases are currently defined."
+      phase_gates: "Phase gates"
       new:
-        description: "Změny v tomto kroku projektu se odrazí ve všech projektech, kde je povoleno."
-      new_stage:
-        heading: "Nová etapa"
-      new_gate:
-        heading: "Nová gate"
-      edit_stage:
-        heading: "Upravit etapu"
-      edit_gate:
-        heading: "Upravit gate"
+        description: "Changes to this project phase will be reflected in all projects where it is enabled."
+        heading: "New Phase"
+      edit:
+        heading: "Edit Phase"
+      both_gate: "Start and finish gate"
+      no_gate: "No gate"
+      start_gate: "Start gate"
+      start_gate_caption: "Add a gate with the start date of the phase"
+      finish_gate: "Finish gate"
+      finish_gate_caption: "Add a gate with the end date of the phase"
     projects:
       missing_dependencies: "Projektový modul %{module} byl zkontrolován, který závisí na %{dependencies}. Tyto závislosti musíte také zkontrolovat."
       section_new_projects: "Nastavení pro nové projekty"
@@ -3709,6 +3897,8 @@ cs:
     working_days:
       section_work_week: "Pracovní týden"
       section_holidays_and_closures: "Dovolená a uzávěrky"
+    work_packages:
+      not_allowed_text: "You do not have the necessary permissions to view this page."
   text_formatting:
     markdown: "Zmenšení"
     plain: "Obyčejný text"
@@ -3730,7 +3920,7 @@ cs:
   text_are_you_sure_continue: "Jste si jisti, že chcete pokračovat?"
   text_are_you_sure_with_children: "Smazat pracovní balíček a všechny podřízené pracovní balíčky?"
   text_are_you_sure_with_project_custom_fields: "Smazání tohoto atributu také smaže jeho hodnoty ve všech projektech. Jste si jisti, že to chcete udělat?"
-  text_are_you_sure_with_project_life_cycle_step: "Odstraněním tohoto kroku se také odstraní jeho použití ve všech projektech. Jste si jisti, že to chcete udělat?"
+  text_are_you_sure_with_project_life_cycle_step: "Deleting this phase will also delete its usages in all projects. Are you sure you want to do this?"
   text_assign_to_project: "Přiřadit k projektu"
   text_form_configuration: >
     Můžete si upravit, která pole budou zobrazena ve formulářích pracovních balíčků. Pole můžete volně seskupit tak, aby odrážela potřeby vaší domény.
@@ -3828,6 +4018,7 @@ cs:
   text_unallowed_characters: "Nepovolené znaky"
   text_user_invited: Uživatel byl pozván a čeká na registraci.
   text_user_wrote: "%{value} napsal:"
+  text_wrote: "wrote"
   text_warn_on_leaving_unsaved: "Pracovní balíček obsahuje neuložený text, který bude ztracen, když opustíte stránku."
   text_what_did_you_change_click_to_add_comment: "Co jste změnili? Klikněte pro přidání komentáře"
   text_wiki_destroy_confirmation: "Opravdu si přejete odstranit tuto Wiki a celý její obsah?"
@@ -4080,7 +4271,6 @@ cs:
   nothing_to_preview: "Nic pro náhled"
   api_v3:
     attributes:
-      lock_version: "Uzamknout verzi"
       property: "Vlastnost"
     errors:
       code_400: "Špatný požadavek: %{message}"
@@ -4240,6 +4430,7 @@ cs:
       connected: "Připojeno"
       error: "Chyba"
       failed_authorization: "Autorizace se nezdařila"
+      not_connected: "Nepřipojeno"
     labels:
       label_oauth_integration: "Integrace OAuth2"
       label_redirect_uri: "Přesměrovat URI"
@@ -4290,3 +4481,29 @@ cs:
   plugin_openproject_auth_saml:
     name: "OmniAuth SAML / Single-Sign On"
     description: "Přidá poskytovatele SAML OmniAuth do OpenProject"
+  enterprise_plans:
+    legacy_enterprise: "Enterprise Plan"
+  enterprise_features:
+    baseline_comparison: Baseline Comparison
+    board_view: Board View
+    conditional_highlighting: Conditional Highlighting
+    custom_actions: Custom Actions
+    custom_field_hierarchies: Custom Field Hierarchies
+    customize_life_cycle: Customize Life Cycle
+    date_alerts: Date Alerts
+    define_custom_style: Define Custom Style
+    edit_attribute_groups: Edit Attribute Groups
+    gantt_pdf_export: Gantt PDF export
+    grid_widget_wp_graph: Grid Widget Work Package Graph
+    ldap_groups: LDAP Groups
+    one_drive_sharepoint_file_storage: OneDrive/SharePoint File Storage
+    placeholder_users: Placeholder Users
+    project_list_sharing: Project List Sharing
+    readonly_work_packages: Readonly Work Packages
+    sso_auth_providers: SSO Auth Providers
+    team_planner_view: Team Planner View
+    two_factor_authentication: Two-Factor Authentication
+    virus_scanning: Attachment Virus Scanning
+    work_package_query_relation_columns: Work Package Query Relation Columns
+    work_package_sharing: Work Package Sharing
+    work_package_subject_generation: Work Package Subject Generation

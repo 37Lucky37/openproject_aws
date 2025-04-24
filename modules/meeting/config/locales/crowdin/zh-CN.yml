@@ -56,13 +56,21 @@ zh-CN:
         start_time: "开始时间"
         start_time_hour: "开始时间"
         end_after: "会议系列结束"
+        end_date: "结束日期"
         iterations: "事件"
     errors:
+      models:
+        recurring_meeting:
+          must_cover_existing_meetings:
+            one: "该系列会议中有一次公开会议未列入新时间表。请调整时间表，将会议包含在内。"
+            other: "%{count} 个公开会议未列入新时间表。请调整时间表，将会议包含在内。"
+            format: "%{message}"
       messages:
         invalid_time_format: "不是有效时间。所需格式：HH:MM"
     models:
       recurring_meeting: "定期会议"
       structured_meeting: "动态会议"
+      meeting: "会议"
       meeting_agenda_item: "议程项目"
       meeting_agenda: "议程"
       meeting_minutes: "会议记录"
@@ -124,11 +132,11 @@ zh-CN:
   label_recurring_meeting_restore: "恢复此事件"
   label_recurring_meeting_schedule: "日程"
   label_recurring_meeting_next_occurrence: "下一个事件"
-  label_recurring_meeting_more: "还有至少 %{count} 个预定会议 (%{schedule})。"
   label_recurring_meeting_no_end_date: "还有更多预定会议 (%{schedule})。"
-  label_recurring_meeting_more_singular: "还有至少 %{count} 个预定会议 (%{schedule})。"
-  label_recurring_meeting_more_past: "有至少 %{count} 个过往会议。"
-  label_recurring_meeting_more_past_singular: "有至少 %{count} 个过往会议。"
+  label_recurring_meeting_more:
+    other: "还有 %{count} 个已安排的会议 (%{schedule}）。"
+  label_recurring_meeting_more_past:
+    other: "还有 %{count} 次过往会议。"
   label_recurring_meeting_show_more: "显示更多"
   label_recurring_meeting_series_create: "创建会议系列"
   label_recurring_meeting_series_edit: "编辑会议系列"
@@ -205,8 +213,8 @@ zh-CN:
         new_date_time: "新日期/时间"
     label_mail_all_participants: "发送电子邮件给所有参与者"
     types:
-      classic: "经典"
-      classic_text: "将您的会议组织成一个单一格式的文本议程和协议。"
+      classic: "经典(不支持)"
+      classic_text: "注意：经典会议将在下一版 OpenProject 中删除。"
       structured: "结构化"
       one_time: "动态"
       recurring: "定期"
@@ -257,10 +265,12 @@ zh-CN:
       banner_html: >
         您正在编辑会议系列的模板： %{link}。系列会议中的每个新会议都将使用此模板。更改不会影响过往或已创建的会议。
     frequency:
+      x_daily:
+        other: "每 %{count} 天"
+      x_weekly:
+        other: "每 %{count} 周"
       every_weekday: "每个 %{day_of_the_week}"
-      daily: "每日"
       working_days: "每个工作日"
-      weekly: "每周"
     end_after:
       never: "从不"
       specific_date: "在指定日期之后"
@@ -276,7 +286,7 @@ zh-CN:
       full_past: "%{base} 在 %{time}，于 %{end_date}结束"
       never_ending: "%{base} 在 %{time}"
     open:
-      title: "打开"
+      title: "议程已打开"
       subtitle: >
         公开会议的议程可以编辑，并显示在个人用户的 "我的会议 "部分。更改会议系列模板不会影响已经发生的会议事件。
       blankslate:
@@ -355,12 +365,19 @@ zh-CN:
   label_agenda_item_undisclosed_wp: "工作包 #%{id} 不可见"
   label_agenda_item_deleted_wp: "已删除工作包引用"
   label_agenda_item_actions: "议程项目行动"
+  label_agenda_item_move_to_next: "移动到下次会议"
   label_agenda_item_move_to_top: "移至顶部"
   label_agenda_item_move_to_bottom: "移至底部"
   label_agenda_item_move_up: "向上移动"
   label_agenda_item_move_down: "向下移动"
   label_agenda_item_add_notes: "添加备注"
+  label_agenda_item_add_outcome: "添加成果"
   label_agenda_item_work_package: "议程项目工作包"
+  label_agenda_outcome: "成果"
+  label_agenda_outcome_actions: "议程成果行动"
+  label_agenda_outcome_edit: "编辑成果"
+  label_agenda_outcome_delete: "删除成果"
+  text_outcome_not_editable_anymore: "此成果已不可编辑。"
   text_agenda_item_title: '议程项目 "%{title}"'
   text_agenda_work_package_deleted: '删除工作包的议程项目'
   text_deleted_agenda_item: '删除的议程项目'
@@ -377,10 +394,16 @@ zh-CN:
   label_meeting_state_planned: "已计划"
   label_meeting_state_cancelled: "已取消"
   label_meeting_state_skipped: "已跳过"
+  label_meeting_state_in_progress: "进行中"
   label_meeting_reopen_action: "重新开放会议"
   label_meeting_close_action: "关闭会议"
-  text_meeting_open_description: "本次会议已开放。您可以添加/移除议程项目并随时编辑它们。会议结束后，关闭它以锁定它。"
+  label_meeting_in_progress_action: "开始会议"
+  text_meeting_open_description: "本次会议已打开。您可以添加/删除议程项目并随时编辑。 一旦议程就绪，就将其记载为正在取得的成果。"
   text_meeting_closed_description: "此会议已关闭。您不能再添加/移除议程项目。"
+  text_meeting_in_progress_description: "本次会议正在进行中。您可以记录每个议程项目的结果，重新排列，甚至添加新的项目。 一旦会议完成，您可以将其标记为关闭以便锁定。"
+  text_meeting_open_dropdown_description: "任何现有成果都将继续存在，但用户将无法添加新成果。"
+  text_meeting_in_progress_dropdown_description: "记录会议期间的信息需求或决策等成果。"
+  text_meeting_closed_dropdown_description: "此会议已关闭。您不能再修改议程项目或成果。"
   label_meeting_manage_participants: "管理与会者"
   label_meeting_no_participants: "沒有与会者"
   label_meeting_show_hide_participants: "显示/隐藏 %{count} 更多"
@@ -394,6 +417,9 @@ zh-CN:
   text_add_work_package_to_meeting_description: "一个工作包可以添加到一个或多个会议供讨论。与此相关的任何说明也可在这里看到。"
   text_agenda_item_no_notes: "未提供备注"
   text_agenda_item_not_editable_anymore: "此议程项目已不可编辑。"
+  text_agenda_item_move_next_meeting: "您确定要将此移至 %{date} %{time} 的下一次会议吗？"
+  text_agenda_item_moved_to_next_meeting: "议程项目移至下次会议，日期 %{date}"
   text_work_package_has_no_upcoming_meeting_agenda_items: "该工作包尚未被安排到即将举行的会议议程中。"
+  text_agenda_item_move_next_meeting_cancelled: "无法移动到下次会议，因为它已被取消。"
   text_work_package_add_to_meeting_hint: '使用"添加到会议"按钮将此工作包添加到即将举行的会议。'
   text_work_package_has_no_past_meeting_agenda_items: "在过往会议中没有提及过该工作包。"

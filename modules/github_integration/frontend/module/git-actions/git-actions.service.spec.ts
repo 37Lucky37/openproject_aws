@@ -66,7 +66,7 @@ describe('GitActionsService', function() {
   });
 
 
-  it('it produces a branch name, commit message, and a git command', () => {
+  it('produces a branch name, commit message, and a git command', () => {
     const wp = createWorkPackage();
     expect(service.branchName(wp)).toEqual('user-story/42-find-the-question');
     expect(service.commitMessage(wp)).toEqual(`[#42] Find the question

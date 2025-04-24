@@ -23,7 +23,7 @@ fi:
   plugin_openproject_reporting:
     name: "OpenProject Reporting"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_report_as: "Save report as..."
+  button_save_report_as: "Tallenna raportti nimellä..."
   comments: "Kommentti"
   cost_reports_title: "Työaika ja kustannukset"
   label_cost_report: "Kustannusraportti"
@@ -92,8 +92,8 @@ fi:
       title: "Your PDF timesheet export"
       button: "Export PDF timesheet"
       timesheet: "Timesheet"
-      time: "Time"
-      sum_hours: Sum
+      time: "Aika"
+      sum_hours: Yhteensä
     cost_reports:
       title: "Your Cost Reports XLS export"
       start_time: "Start time"

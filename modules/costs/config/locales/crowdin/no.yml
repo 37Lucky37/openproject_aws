@@ -30,6 +30,7 @@
         overridden_costs: "Overstyrte kostnader"
         spent: "Brukt"
         spent_on: "Dato"
+        logged_by: "Logget av"
       cost_type:
         unit: "Enhetsnavn"
         unit_plural: "Flertallsnavn på enhet"
@@ -46,24 +47,34 @@
       user:
         default_rates: "Standard satser"
       time_entry:
-        project: Project
-        user: User
-        work_package: Work package
+        project: Prosjekt
+        user: Bruker
+        work_package: Arbeidspakke
         hours: Timer
-        comments: Comment
+        comments: Kommentar
         activity: Aktivitet
         spent_on: Dato
-        start_time: Start time
+        start_time: Starttid
         end_time: Finish time
     models:
+      time_entry:
+        one: "Time entry"
+        other: "Time entries"
+      cost_entry:
+        one: "Cost entry"
+        other: "Cost entries"
       cost_type:
         one: "Kostnadstype"
         other: "Kostnadstyper"
+      time_entry_activity:
+        one: "Time tracking activity"
+        other: "Tidregistrering aktiviteter"
       rate: "Sats"
     errors:
       models:
         time_entry:
           invalid_time: "must be between 00:00 and 23:59."
+          cannot_log_for_this_work_package: "Cannot log time for this work package."
         work_package:
           is_not_a_valid_target_for_cost_entries: "Arbeidspakke #%{id} er ikke et gyldig mål for nytildeling av kostnadsoppføringer."
           nullify_is_not_valid_for_cost_entries: "Kostnadsoppføringer kan ikke tilordnes et prosjekt."
@@ -79,6 +90,7 @@
   button_add_rate: "Legg til sats"
   button_log_costs: "Loggfør enhetskostnader"
   button_log_time: "Log"
+  button_add_activity: "Aktivitet"
   caption_booked_on_project: "Bestilt i prosjektet"
   caption_default: "Standard"
   caption_default_rate_history_for: "Standardratehistorikk for %{user}"
@@ -90,8 +102,10 @@
   caption_save_rate: "Lagre sats"
   caption_set_rate: "Angi gjeldende sats"
   caption_show_locked: "Vis låste typer"
-  caption_log_time_dialog: "Log time"
+  caption_log_time_dialog: "Logg tid"
   description_date_for_new_rate: "Dato for ny sats"
+  description_costs_settings: "Define the desired format for the costs in all projects."
+  description_time_settings: "Define which fields are mandatory to fill when logging time in all projects."
   group_by_others: "ikke i noen grupper"
   label_between: "mellom"
   label_cost_filter_add: "Legg til filter for kostnadspost"
@@ -118,6 +132,8 @@
   label_kind: "Type"
   label_less_or_equal: "<="
   label_log_costs: "Loggfør enhetskostnader"
+  label_new_time_entry_activity: "New time entry activity"
+  label_time_entry_activity_form_description: "Changes to this time entry activity will be reflected in all projects where it is enabled."
   label_no: "Nei"
   label_option_plural: "Alternativer"
   label_overall_costs: "Samlede kostnader"
@@ -130,6 +146,10 @@
   label_until: "fram til"
   label_valid_from: "Gyldig fra"
   label_yes: "Ja"
+  label_time: "Tidspunkt"
+  label_cost: "Cost"
+  label_costs: "Kostnader"
+  label_mandatory_fields: "Mandatory fields"
   placeholder_activity_select_work_package_first: Work package selection is required first
   notice_something_wrong: "Noe gikk galt. Prøv på nytt."
   notice_successful_restore: "Vellykket gjenoppretting."
@@ -151,8 +171,8 @@
   permission_view_own_time_entries: "Vis egen tidsbruk"
   project_module_costs: "Tid og kostnader"
   setting_allow_tracking_start_and_end_times: "Allow users to track start and end time on time records"
-  setting_costs_currency: "Currency"
-  setting_costs_currency_format: "Format of currency"
+  setting_costs_currency: "Valuta"
+  setting_costs_currency_format: "Formatet på valuta"
   setting_enforce_tracking_start_and_end_times: "Force users to set start and end time on time records"
   text_assign_time_and_cost_entries_to_project: "Overfør rapporterte timer og kostnader til prosjektet"
   text_destroy_cost_entries_question: "%{cost_entries} ble rapportert på arbeidspakkene du er i ferd med å slette. Hva vil du gjøre ?"
@@ -161,8 +181,6 @@
   text_reassign_time_and_cost_entries: "Overfør rapporterte timer og kostnader til denne arbeidspakken:"
   text_warning_hidden_elements: "Noen oppføringer kan være utelatt fra aggregeringen."
   week: "uke"
-  js:
-    text_are_you_sure: "Er du sikker?"
   api_v3:
     errors:
       validation:

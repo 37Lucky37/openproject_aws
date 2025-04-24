@@ -1,13 +1,13 @@
 vi:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
-        display_name: Name
-        identifier: Identifier
-        secret: Secret
-        scope: Scope
+        display_name: Tên
+        identifier: Định danh
+        secret: Bí mật
+        scope: Phạm vi
         assertion_consumer_service_url: ACS (Assertion consumer service) URL
-        limit_self_registration: Limit self registration
+        limit_self_registration: Giới hạn đăng ký tự động
         sp_entity_id: Service entity ID
         metadata_url: Identity provider metadata URL
         name_identifier_format: Name identifier format
@@ -21,9 +21,8 @@ vi:
         private_key: Corresponding private key for OpenProject SAML requests
         signature_method: Signature algorithm
         digest_method: Digest algorithm
-        format: "Format"
-        icon: "Custom icon"
-  activerecord:
+        format: "Định dạng"
+        icon: "Biểu tượng tùy chỉnh"
     errors:
       models:
         saml/provider:
@@ -60,7 +59,7 @@ vi:
       plural: SAML identity providers
       singular: SAML identity provider
       requested_attributes: Requested attributes
-      attribute_mapping: Attribute mapping
+      attribute_mapping: Ánh xạ thuộc tính
       attribute_mapping_text: >
         The following fields control which attributes provided by the SAML identity provider are used to provide user attributes in OpenProject
       metadata:
@@ -75,7 +74,7 @@ vi:
         format: 'Attribute format'
       section_headers:
         configuration: "Primary configuration"
-        attributes: "Attributes"
+        attributes: "Thuộc tính"
       section_texts:
         display_name: "Configure the display name of the SAML provider."
         metadata: "Pre-fill configuration using a metadata URL or by pasting metadata XML"
@@ -90,7 +89,7 @@ vi:
       seeded_from_env: "This provider was seeded from the environment configuration. It cannot be edited."
     settings:
       metadata_none: "I don't have metadata"
-      metadata_url: "Metadata URL"
+      metadata_url: "Siêu dữ liệu URL"
       metadata_xml: "Metadata XML"
     instructions:
       documentation_link: >
@@ -104,7 +103,7 @@ vi:
       metadata_xml: >
         Your identity provider provides a metadata XML download.
       limit_self_registration: >
-        If enabled users can only register using this provider if the self registration setting allows for it.
+        Nếu được bật, người dùng chỉ có thể đăng ký bằng nhà cung cấp này nếu cài đặt đăng ký tự động cho phép.
       sp_entity_id: >
         The entity ID of the service provider (SP). Sometimes also referred to as Audience. This is the unique client identifier of the OpenProject instance.
       idp_sso_service_url: >
@@ -138,7 +137,7 @@ vi:
       authn_requests_signed: >
         If checked, OpenProject will sign the SAML AuthnRequest. You will have to provide a signing certificate and private key using the fields below.
       want_assertions_signed: >
-        If checked, OpenProject will required signed responses from the identity provider using it's own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         If enabled, require the identity provider to encrypt the assertion response using the certificate pair that you provide.
       certificate: >

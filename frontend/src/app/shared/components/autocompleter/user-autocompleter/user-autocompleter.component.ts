@@ -56,7 +56,6 @@ import { addFiltersToPath } from 'core-app/core/apiv3/helpers/add-filters-to-pat
 import { UserAutocompleterTemplateComponent } from 'core-app/shared/components/autocompleter/user-autocompleter/user-autocompleter-template.component';
 import { IUser } from 'core-app/core/state/principals/user.model';
 import { compareByAttribute } from 'core-app/shared/helpers/angular/tracking-functions';
-import { SHOW_USER_HOVER_CARD } from 'core-app/shared/components/time_entries/create/create.modal';
 
 export const usersAutocompleterSelector = 'op-user-autocompleter';
 
@@ -93,20 +92,16 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
 
   @Input() public url:string = this.apiV3Service.users.path;
 
+  @Input() public additionalOptions:IUserAutocompleteItem[]|null = null;
+
   @Output() public userInvited = new EventEmitter<HalResource>();
 
   @InjectField(OpInviteUserModalService) opInviteUserModalService:OpInviteUserModalService;
-  @InjectField(SHOW_USER_HOVER_CARD, true) showUserHoverCard:boolean;
 
   getOptionsFn = this.getAvailableUsers.bind(this);
 
   ngOnInit():void {
     super.ngOnInit();
-
-    // Disabling hover cards by injection takes precedence over the input setting
-    if (!this.showUserHoverCard) {
-      this.hoverCards = false;
-    }
 
     this.applyTemplates(UserAutocompleterTemplateComponent, {
       inviteUserToProject: this.inviteUserToProject,
@@ -138,9 +133,15 @@ export class UserAutocompleterComponent extends OpAutocompleterComponent<IUserAu
       .pipe(
         map((res) => _.uniqBy(res._embedded.elements, (el) => el._links.self?.href || el.id)),
         map((users) => {
-          return users.map((user) => {
+          const mapped:IUserAutocompleteItem[] = users.map((user) => {
               return { id: user.id, name: user.name, href: user._links.self?.href, email: user.email };
             });
+
+          if (this.additionalOptions) {
+            return this.additionalOptions.concat(mapped);
+          }
+
+          return mapped;
           }),
       );
   }

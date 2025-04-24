@@ -184,7 +184,7 @@ class WorkPackages::RemindersController < ApplicationController
 
   def build_remind_at_from_params(remind_at_date, remind_at_time)
     if remind_at_date.present? && remind_at_time.present?
-      DateTime.parse("#{remind_at_date} #{User.current.time_zone.parse(remind_at_time)}")
+      User.current.time_zone.parse("#{remind_at_date} #{remind_at_time}")
     end
   end
 

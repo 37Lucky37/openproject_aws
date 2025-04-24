@@ -20,6 +20,20 @@
 #See COPYRIGHT and LICENSE files for more details.
 #++
 pl:
+  attributes:
+    additions_count: "Liczba dodań"
+    deletions_count: "Liczba usunięć"
+    comments_count: "Liczba komentarzy"
+    github_html_url: "Adres URL żądania Pull Request"
+    github_app_owner_avatar_url: "Adres URL awatara właściciela"
+    review_comments_count: "Liczba komentarzy recenzji"
+    github: "Identyfikator GitHub"
+    github_avatar_url: "Adres URL awatara"
+    github_updated_at: "Zaktualizowano o"
+    github_login: "Login GitHub"
+    labels: "Etykiety"
+    repository: "Repozytorium"
+    changed_files_count: "Zmienione pliki"
   button_add_deploy_target: Dodaj cel wdrożenia
   label_deploy_target: Cel wdrożenia
   label_deploy_target_new: Nowy cel wdrożenia

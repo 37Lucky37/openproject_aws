@@ -171,7 +171,7 @@ We added a new “Files” tab in the work package details. This way, you will h
 - Fixed: Cannot select all projects in work package table \[[#41437](https://community.openproject.org/wp/41437)\]
 - Fixed: Attribute help text opens when clicking ng-select dropdown \[[#41442](https://community.openproject.org/wp/41442)\]
 - Fixed: API responses inconsistent between Bearer tokens and API tokens \[[#41480](https://community.openproject.org/wp/41480)\]
-- Fixed: Create new task on my page not possible: Project not shown in pulldown list \[[#41533](https://community.openproject.org/wp/41533)\]
+- Fixed: Create new task on My page not possible: Project not shown in pulldown list \[[#41533](https://community.openproject.org/wp/41533)\]
 - Fixed: Include projects - Action bar has no round corners \[[#41582](https://community.openproject.org/wp/41582)\]
 - Fixed: Fix capitalization in two places (minor) in the Team Planner \[[#41647](https://community.openproject.org/wp/41647)\]
 - Fixed: Comments linked to another package are not shown correctly \[[#41649](https://community.openproject.org/wp/41649)\]

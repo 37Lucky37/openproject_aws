@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -57,6 +59,8 @@ RSpec.describe CustomFieldFormBuilder do
       build_stubbed(:user)
     end
 
+    let(:scope) { instance_double(ActiveRecord::Relation) }
+
     before do
       without_partial_double_verification do
         allow(resource)
@@ -105,7 +109,7 @@ RSpec.describe CustomFieldFormBuilder do
             <opce-basic-single-date-picker
               class="custom-class"
               data-value="null"
-              data-id='"user_custom_field_#{custom_field.id}"'
+              data-input-id='"user_custom_field_#{custom_field.id}"'
               data-name='"user[#{custom_field.id}]"'
             ></opce-basic-single-date-picker>
           HTML
@@ -255,7 +259,6 @@ RSpec.describe CustomFieldFormBuilder do
       let(:project) { build_stubbed(:project) }
       let(:user1) { build_stubbed(:user) }
       let(:user2) { build_stubbed(:user) }
-      let(:scope) { instance_double(ActiveRecord::Relation) }
 
       let(:resource) { project }
 
@@ -273,8 +276,10 @@ RSpec.describe CustomFieldFormBuilder do
                 .and_return(scope)
 
         allow(scope)
-          .to receive(:select)
-                .and_return([user1, user2])
+          .to receive_messages(
+            select: [user1, user2],
+            includes: scope
+          )
       end
 
       it_behaves_like "wrapped in container", "select-container" do
@@ -331,6 +336,10 @@ RSpec.describe CustomFieldFormBuilder do
 
           allow(project)
             .to receive(:shared_versions)
+                  .and_return(scope)
+
+          allow(scope)
+            .to receive(:references)
                   .and_return([version1, version2])
         end
       end
@@ -346,8 +355,12 @@ RSpec.describe CustomFieldFormBuilder do
                   name="user[#{custom_field.id}]"
                   no_label="true">
             <option value="" label=" "></option>
-            <option value="#{version1.id}">#{version1.name}</option>
-            <option value="#{version2.id}">#{version2.name}</option>
+            <optgroup label="#{version1.project.name}">
+              <option value="#{version1.id}">#{version1.name}</option>
+            </optgroup>
+            <optgroup label="#{version2.project.name}">
+              <option value="#{version2.id}">#{version2.name}</option>
+            </optgroup>
           </select>
         }).at_path("select")
       end
@@ -364,8 +377,12 @@ RSpec.describe CustomFieldFormBuilder do
                     name="user[#{custom_field.id}]"
                     no_label="true">
               <option value="">--- Please select ---</option>
-              <option value="#{version1.id}">#{version1.name}</option>
-              <option value="#{version2.id}">#{version2.name}</option>
+              <optgroup label="#{version1.project.name}">
+                <option value="#{version1.id}">#{version1.name}</option>
+              </optgroup>
+              <optgroup label="#{version2.project.name}">
+                <option value="#{version2.id}">#{version2.name}</option>
+              </optgroup>
             </select>
           }).at_path("select")
         end

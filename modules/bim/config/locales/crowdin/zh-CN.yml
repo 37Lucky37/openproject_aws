@@ -84,6 +84,12 @@ zh-CN:
         ifc_attachment: "IFC 文件"
         is_default: "默认模型"
         attachments: "IFC 文件"
+      bim/bcf/issue:
+        bcf_comment: "BCF 评论"
+        bim_snippet: "BIM 片段"
+        reference_links: "参考链接"
+        stage: "阶段"
+        viewpoint: "视点"
     errors:
       models:
         bim/ifc_models/ifc_model:

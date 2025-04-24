@@ -2,6 +2,7 @@
 uk:
   js:
     storages:
+      authentication_error: "Помилка автентифікації за допомогою %{storageType}"
       link_files_in_storage: "Додати посилання на файли в сховищі %{storageType}"
       link_existing_files: "Прив’язати наявні файли"
       upload_files: "Вивантажити файли"
@@ -19,6 +20,7 @@ uk:
         one_drive: "OneDrive / SharePoint"
         default: "Сховище"
       information:
+        authentication_error: "Сталася помилка. Запит до сховища %{storageType} не вдалось автентифікувати."
         connection_error: >
           Деякі налаштування сховища %{storageType} не працюють. Зверніться до адміністратора %{storageType}.
         live_data_error: "Не вдалось отримати докладні відомості про файл"
@@ -27,6 +29,8 @@ uk:
         no_file_links: "Додати посилання на файли в цей пакет робіт можна за допомогою сховища %{storageType}."
         not_logged_in: >
           Щоб додати посилання, переглянути або завантажити файли, пов’язані з цим пакетом робіт, увійдіть у %{storageType}.
+        suggest_logout: Спробуйте вийти із системи й увійти знову. Це може вирішити проблему.
+        suggest_relink: Спробуйте повторно зв’язати свій обліковий запис за допомогою кнопки входу нижче. Це може вирішити проблему.
       files:
         already_existing_header: "Цей файл уже існує"
         already_existing_body: >

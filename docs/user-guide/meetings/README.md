@@ -18,7 +18,8 @@ Meetings in OpenProject allow you to manage and document your project meetings, 
 > [!IMPORTANT]
 > With OpenProject 13.1 we introduced dynamic meetings alongside [classic meetings](classic-meetings). 
 > With OpenProject 15.3 dynamic meetings are replaced by [one-time meetings](one-time-meetings) and [recurring meetings](recurring-meetings) to further improve meeting management.
-> Please keep in mind that the ability to create classic meetings will eventually be removed from OpenProject.
+> Please keep in mind that the ability to create classic meetings will be removed from OpenProject with OpenProject 16.0.
+
 
 
 | Topic                                               | Content                                                   |
@@ -31,7 +32,7 @@ Meetings in OpenProject allow you to manage and document your project meetings, 
 
 ## Meetings in OpenProject
 
-Meetings in OpenProject help teams organise discussions, track meeting agendas, and document decisions efficiently. There are three types of meetings: **one-time meetings**, **recurring meetings**, and **classic meetings**. [One-time meetings](one-time-meetings/) are standalone events scheduled for a specific date and time. [Recurring meetings](recurring-meetings/) introduce a structured way to define a series of related meetings, ensuring consistency and reducing manual setup. [Classic meetings](classic-meetings/) are also standalone events, but are a legacy format that will eventually be phased out.
+Meetings in OpenProject help teams organize discussions, track meeting agendas, and document decisions efficiently. There are three types of meetings: **one-time meetings**, **recurring meetings**, and **classic meetings**. [One-time meetings](one-time-meetings/) are standalone events scheduled for a specific date and time. [Recurring meetings](recurring-meetings/) introduce a structured way to define a series of related meetings, ensuring consistency and reducing manual setup. [Classic meetings](classic-meetings/) are also standalone events, but are a legacy format that will eventually be phased out.
 
 ### Meetings overview
 

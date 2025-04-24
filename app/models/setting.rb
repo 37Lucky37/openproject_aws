@@ -93,7 +93,7 @@ class Setting < ApplicationRecord
           definition = Settings::Definition[:#{name}]
 
           if definition.format != :boolean
-            ActiveSupport::Deprecation.warn "Calling #{self}.#{name}? is deprecated since it is not a boolean", caller
+            ActiveSupport::Deprecation.new.warn "Calling #{self}.#{name}? is deprecated since it is not a boolean", caller_locations
           end
 
           value = self[:#{name}]

@@ -103,7 +103,7 @@ lv:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Atskaites punkti
             item_2:
               name: Pieteikumi
             item_3:
@@ -167,17 +167,17 @@ lv:
             item_1:
               name: Atskaites punkti
             item_2:
-              name: Tasks
+              name: Uzdevumi
             item_3:
               name: Komandas plānotājs
           project-overview:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -202,7 +202,7 @@ lv:
                   name: Pieteikumi
               item_6:
                 options:
-                  name: Milestones
+                  name: Atskaites punkti
           work_packages:
             item_0:
               subject: Project kick off construction project
@@ -256,7 +256,7 @@ lv:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -271,7 +271,7 @@ lv:
 
                     *   Create a useful overview of the results
                     *   Check what has been done and summarize the results
-                    *   Communicate all the relevant results with the customer
+                    *   Communicate all the relevant results with the customer
                     *   Identify the fundamental boundary conditions of the project
 
                     ## Description
@@ -419,7 +419,7 @@ lv:
             item_0:
               name: Project plan
             item_1:
-              name: Milestones
+              name: Atskaites punkti
             item_2:
               name: Uzdevumi
             item_3:
@@ -428,10 +428,10 @@ lv:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 
@@ -459,7 +459,7 @@ lv:
                   name: Pieteikumi
               item_6:
                 options:
-                  name: Milestones
+                  name: Atskaites punkti
           work_packages:
             item_0:
               subject: Project kick off creating BIM model
@@ -692,9 +692,9 @@ lv:
             item_4:
               name: Project plan
             item_5:
-              name: Milestones
+              name: Atskaites punkti
             item_6:
-              name: Tasks
+              name: Uzdevumi
             item_7:
               name: Komandas plānotājs
           boards:
@@ -704,10 +704,10 @@ lv:
             widgets:
               item_0:
                 options:
-                  name: Welcome
+                  name: Sveicināti
               item_1:
                 options:
-                  name: Getting started
+                  name: Uzsākot darbu
                   text: |
                     We are glad you joined! We suggest to try a few things to get started in OpenProject.
 

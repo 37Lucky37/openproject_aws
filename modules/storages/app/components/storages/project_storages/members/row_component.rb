@@ -51,19 +51,16 @@ module Storages::ProjectStorages::Members
 
     def status
       connection_result = storage_connection_status
-
-      if connection_result == :not_connected
-        ensure_connection_url = oauth_clients_ensure_connection_url(
-          oauth_client_id: storage.oauth_client.client_id,
-          storage_id: storage.id
-        )
+      case connection_result
+      when :not_connected
         helpers.op_icon("icon-warning -warning") +
           content_tag(
             :span,
             I18n.t("storages.member_connection_status.not_connected",
-                   link: link_to(I18n.t("link"), ensure_connection_url),
-                   class: "pl-2").html_safe
+                   link: link_to(I18n.t("link"), ensure_connection_url)).html_safe
           )
+      when :not_connected_sso
+        content_tag(:span, I18n.t("storages.member_connection_status.not_connected_sso"))
       else
         I18n.t("storages.member_connection_status.#{connection_result}")
       end
@@ -89,22 +86,31 @@ module Storages::ProjectStorages::Members
     end
 
     def storage_connection_status
-      return :not_connected unless oauth_client_connected?
+      if storage_connected?
+        return :connected if can_read_files?
 
-      if can_read_files?
-        :connected
-      else
-        :connected_no_permissions
+        return :connected_no_permissions
       end
+
+      selector = Storages::Peripherals::StorageInteraction::AuthenticationMethodSelector.new(user: member.principal, storage:)
+      return :not_connected_sso if selector.sso?
+
+      :not_connected
     end
 
-    def oauth_client_connected?
-      storage.oauth_client.present? &&
-        member.principal.remote_identities.exists?(oauth_client: storage.oauth_client)
+    def storage_connected?
+      member.principal.remote_identities.exists?(integration: storage)
     end
 
     def can_read_files?
       member.principal.admin? || member.roles.any? { |role| role.has_permission?(:read_files) }
+    end
+
+    def ensure_connection_url
+      oauth_clients_ensure_connection_url(
+        oauth_client_id: storage.oauth_client.client_id,
+        storage_id: storage.id
+      )
     end
   end
 end

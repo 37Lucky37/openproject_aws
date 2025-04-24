@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -30,6 +32,7 @@ require_relative "new"
 
 module Pages::Meetings
   class Index < Pages::Page
+    include Components::Common::Filters
     include Components::Autocompleter::NgSelectAutocompleteHelpers
 
     attr_accessor :project
@@ -192,7 +195,7 @@ module Pages::Meetings
 
     def meeting_group_key(meeting)
       start_date = meeting.start_time.to_date
-      next_week = Time.current.next_occurring(Redmine::I18n.start_of_week)
+      next_week = Time.current.next_occurring(OpenProject::Internationalization::Date.beginning_of_week).beginning_of_day
 
       if start_date == Time.zone.today
         :today

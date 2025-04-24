@@ -1,5 +1,5 @@
 ms:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nama
@@ -23,7 +23,6 @@ ms:
         digest_method: Algoritma penghadaman
         format: "Format"
         icon: "Ikon tersuai"
-  activerecord:
     errors:
       models:
         saml/provider:
@@ -138,7 +137,7 @@ ms:
       authn_requests_signed: >
         Jika ditandakan, OpenProject akan menandatangani SAML AuthnRequest. Anda perlu memberikan sijil tandatangan dan kunci peribadi menggunakan medan di bawah.
       want_assertions_signed: >
-        Jika ditandakan, OpenProject akan memerlukan respons yang ditandatangani daripada pembekal identiti menggunakan pasangan kunci sijilnya sendiri. OpenProject akan mengesahkan tandatangan terhadap sijil dari bahagian konfigurasi asas.
+        If checked, OpenProject will required signed responses from the identity provider using its own certificate keypair. OpenProject will verify the signature against the certificate from the basic configuration section.
       want_assertions_encrypted: >
         Jika didayakan, minta pembekal identiti menyulitkan respons penegasan menggunakan pasangan sijil yang anda berikan.
       certificate: >

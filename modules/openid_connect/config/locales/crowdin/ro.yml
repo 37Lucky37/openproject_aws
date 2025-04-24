@@ -3,15 +3,15 @@ ro:
     name: "OpenProject OpenID Connect"
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
-    Ați fost deconectat. Conținutul oricărui formular pe care îl trimiteți poate fi pierdut. Vă rugăm să [vă conectați].
-  activemodel:
+    Ai fost deconectat. Conținutul oricărui formular pe care îl trimiți poate fi pierdut. Te rog să [te conectezi].
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nume
         slug: Unique identifier
         display_name: Nume afișat
-        client_id: Client ID
-        client_secret: Client secret
+        client_id: ID Client
+        client_secret: Client Secret
         secret: Secret
         scope: Scop
         grant_types_supported: Supported grant types
@@ -29,7 +29,6 @@ ro:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@ ro:
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Lista Mapare Atribute
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Încă nu au fost definiți furnizori.
       plural: Furnizori OpenID

@@ -30,7 +30,16 @@ module WorkPackage::Journalized
   extend ActiveSupport::Concern
 
   included do
-    acts_as_journalized
+    acts_as_journalized journals_association_extension: proc {
+      def restricted_visible
+        if OpenProject::FeatureDecisions.comments_with_restricted_visibility_active? &&
+            User.current.allowed_in_project?(:view_comments_with_restricted_visibility, proxy_association.owner.project)
+          all
+        else
+          where(restricted: false)
+        end
+      end
+    }
 
     # This one is here only to ease reading
     module JournalizedProcs

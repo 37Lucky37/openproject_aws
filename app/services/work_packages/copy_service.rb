@@ -26,7 +26,7 @@
 # See COPYRIGHT and LICENSE files for more details.
 #++
 
-class WorkPackages::CopyService
+class WorkPackages::CopyService < BaseServices::BaseCallable
   include ::Shared::ServiceContext
   include Contracted
   include ::Copy::Concerns::CopyAttachments
@@ -36,12 +36,13 @@ class WorkPackages::CopyService
                 :contract_class
 
   def initialize(user:, work_package:, contract_class: WorkPackages::CopyContract)
+    super()
     self.user = user
     self.work_package = work_package
     self.contract_class = contract_class
   end
 
-  def call(send_notifications: nil, copy_attachments: true, copy_share_members: true, **attributes)
+  def perform(send_notifications: nil, copy_attachments: true, copy_share_members: true, **attributes)
     in_context(work_package, send_notifications:) do
       copy(attributes, copy_attachments, copy_share_members, send_notifications)
     end
@@ -69,6 +70,7 @@ class WorkPackages::CopyService
     WorkPackages::CreateService
       .new(user:,
            contract_class:)
+      .with_state(state)
       .call(**copied_attributes(work_package, attribute_overrides).merge(send_notifications:).symbolize_keys)
   end
 

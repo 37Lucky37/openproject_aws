@@ -79,7 +79,7 @@ class RootSeeder < Seeder
   end
 
   def cleanup_seed_data
-    admin_user.lock! if Setting.seed_admin_user_locked?
+    admin_user.locked! if Setting.seed_admin_user_locked?
   end
 
   def seed_development_data?

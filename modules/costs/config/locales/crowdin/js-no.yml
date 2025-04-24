@@ -21,6 +21,7 @@
 #++
 "no":
   js:
+    text_are_you_sure: "Er du sikker?"
     work_packages:
       property_groups:
         costs: "Kostnader"

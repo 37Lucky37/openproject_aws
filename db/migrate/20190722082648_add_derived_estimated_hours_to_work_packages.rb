@@ -218,10 +218,9 @@ class AddDerivedEstimatedHoursToWorkPackages < ActiveRecord::Migration[5.2]
   end
 
   def touch_work_packages(work_packages)
-    where = work_packages.arel.where_sql
-
     WorkPackage.connection.execute("
-      UPDATE work_packages SET updated_at = NOW(), lock_version = lock_version + 1 #{where}
+      UPDATE work_packages SET updated_at = NOW(), lock_version = lock_version + 1
+      WHERE id IN (#{work_packages.select(:id).to_sql})
     ")
   end
 end

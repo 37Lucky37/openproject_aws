@@ -51,7 +51,6 @@ RSpec.shared_examples_for "basic query filter" do
   let(:project) { build_stubbed(:project) }
   let(:expected_class_key) { defined?(:class_key) ? class_key : raise("needs to be defined") }
   let(:type) { raise "needs to be defined" }
-  let(:human_name) { nil }
 
   describe ".key" do
     it "is the defined key" do
@@ -73,7 +72,8 @@ RSpec.shared_examples_for "basic query filter" do
 
   describe "#human_name" do
     it "is the l10 name for the filter" do
-      expect(instance.human_name).to eql(human_name.presence || name)
+      expected = defined?(human_name) ? (human_name.presence || name) : name
+      expect(instance.human_name).to eql(expected)
     end
   end
 end
@@ -163,8 +163,10 @@ RSpec.shared_examples_for "list_optional query filter" do
       let(:operator) { "=" }
 
       it "is the same as handwriting the query" do
+        quoted_values = db_values.map { |val| "'#{ActiveRecord::Base.connection.quote_string(val)}'" }.join(",")
+
         expected = expected_base_scope
-                   .where(["#{expected_table_name}.#{attribute} IN (?)", db_values])
+                   .where("#{expected_table_name}.#{attribute} IN (#{quoted_values})")
 
         expect(instance.apply_to(model).to_sql).to eql expected.to_sql
       end
@@ -174,9 +176,11 @@ RSpec.shared_examples_for "list_optional query filter" do
       let(:operator) { "!" }
 
       it "is the same as handwriting the query" do
+        quoted_values = db_values.map { |val| "'#{ActiveRecord::Base.connection.quote_string(val)}'" }.join(",")
+
         sql = "(#{expected_table_name}.#{attribute} IS NULL
-               OR #{expected_table_name}.#{attribute} NOT IN (?))".squish
-        expected = expected_base_scope.where([sql, db_values])
+               OR #{expected_table_name}.#{attribute} NOT IN (#{quoted_values}))".squish
+        expected = expected_base_scope.where(sql)
 
         expect(instance.apply_to(model).to_sql).to eql expected.to_sql
       end

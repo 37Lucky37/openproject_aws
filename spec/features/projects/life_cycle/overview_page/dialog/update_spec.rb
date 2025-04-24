@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,11 +31,14 @@
 require "spec_helper"
 require_relative "../shared_context"
 
-RSpec.describe "Edit project stages and gates on project overview page", :js, with_flag: { stages_and_gates: true } do
-  include_context "with seeded projects and stages and gates"
+RSpec.describe "Edit project phases on project overview page", :js, with_flag: { stages_and_gates: true } do
+  include_context "with seeded projects and phases"
+
   shared_let(:overview) { create :overview, project: }
 
   let(:overview_page) { Pages::Projects::Show.new(project) }
+
+  let(:activity_page) { Pages::Projects::Activity.new(project) }
 
   current_user { admin }
 
@@ -44,19 +49,16 @@ RSpec.describe "Edit project stages and gates on project overview page", :js, wi
   describe "with the dialog open" do
     context "when all LifeCycleSteps are blank" do
       before do
-        Project::LifeCycleStep.update_all(start_date: nil, end_date: nil)
+        Project::Phase.update_all(start_date: nil, finish_date: nil)
       end
 
-      it "shows all the Project::LifeCycleSteps without a value" do
+      it "shows all the Project::Phases without a value" do
         dialog = overview_page.open_edit_dialog_for_life_cycles
 
-        dialog.expect_input("Initiating", value: "", type: :stage, position: 1)
-        dialog.expect_input("Ready for Planning", value: "", type: :gate, position: 2)
-        dialog.expect_input("Planning", value: "", type: :stage, position: 3)
-        dialog.expect_input("Ready for Executing", value: "", type: :gate, position: 4)
-        dialog.expect_input("Executing", value: "", type: :stage, position: 5)
-        dialog.expect_input("Ready for Closing", value: "", type: :gate, position: 6)
-        dialog.expect_input("Closing", value: "", type: :stage, position: 7)
+        dialog.expect_input("Initiating", value: "", position: 1)
+        dialog.expect_input("Planning", value: "", position: 2)
+        dialog.expect_input("Executing", value: "", position: 3)
+        dialog.expect_input("Closing", value: "", position: 4)
 
         # Saving the dialog is successful
         dialog.submit
@@ -72,12 +74,12 @@ RSpec.describe "Edit project stages and gates on project overview page", :js, wi
     end
 
     context "when all LifeCycleSteps have a value" do
-      it "shows all the Project::LifeCycleSteps and updates them correctly" do
+      it "shows all the Project::Phases and updates them correctly" do
         dialog = overview_page.open_edit_dialog_for_life_cycles
 
         expect_angular_frontend_initialized
 
-        project.available_life_cycle_steps.each do |step|
+        project.available_phases.each do |step|
           dialog.expect_input_for(step)
         end
 
@@ -85,43 +87,67 @@ RSpec.describe "Edit project stages and gates on project overview page", :js, wi
 
         retry_block do
           # Retrying due to a race condition between filling the input vs submitting the form preview.
-          original_dates = [life_cycle_initiating.start_date, life_cycle_initiating.end_date]
-          dialog.set_date_for(life_cycle_initiating, value: original_dates)
+          original_dates = [life_cycle_initiating.start_date, life_cycle_initiating.finish_date]
+          dialog.set_date_for(life_cycle_initiating, values: original_dates)
 
           page.driver.clear_network_traffic
-          dialog.set_date_for(life_cycle_initiating, value: initiating_dates)
+          dialog.set_date_for(life_cycle_initiating, values: initiating_dates)
 
           dialog.expect_caption(life_cycle_initiating, text: "Duration: 8 working days")
           # Ensure that only 1 ajax request is triggered after setting the date range.
           expect(page.driver.browser.network.traffic.size).to eq(1)
         end
 
-        ready_for_planning_date = start_date + 1.day
-        dialog.set_date_for(life_cycle_ready_for_planning, value: ready_for_planning_date)
-        dialog.expect_no_caption(life_cycle_ready_for_planning)
+        dialog.clear_date_for(life_cycle_planning)
 
         # Saving the dialog is successful
         dialog.submit
         dialog.expect_closed
 
         # Sidebar is refreshed with the updated values
-        expected_date_range = initiating_dates.map { |date| date.strftime("%m/%d/%Y") }.join(" - ")
         overview_page.within_life_cycle_container(life_cycle_initiating) do
-          expect(page).to have_text expected_date_range
+          expect(page).to have_text initiating_dates.map { I18n.l(it) }.join("\n-\n")
         end
 
-        overview_page.within_life_cycle_container(life_cycle_ready_for_planning) do
-          expect(page).to have_text ready_for_planning_date.strftime("%m/%d/%Y")
+        ready_for_planning_dates = [
+          life_cycle_planning.start_date,
+          life_cycle_planning.finish_date
+        ].map { I18n.l(it) }.join("\n-\n")
+
+        overview_page.within_life_cycle_container(life_cycle_planning) do
+          expect(page).to have_no_text ready_for_planning_dates
+        end
+
+        activity_page.visit!
+
+        activity_page.show_details
+
+        life_cycle_initiating_was = life_cycle_initiating.dup
+        life_cycle_initiating.reload
+
+        life_cycle_planning_was = life_cycle_planning.dup
+        life_cycle_planning.reload
+
+        activity_page.within_journal(number: 1) do
+          activity_page.expect_activity("Initiating changed from " \
+                                        "#{I18n.l life_cycle_initiating_was.start_date} - " \
+                                        "#{I18n.l life_cycle_initiating_was.finish_date} to " \
+                                        "#{I18n.l life_cycle_initiating.start_date} - " \
+                                        "#{I18n.l life_cycle_initiating.finish_date}")
+
+          activity_page.expect_activity("Planning date deleted " \
+                                        "#{I18n.l life_cycle_planning_was.start_date} - " \
+                                        "#{I18n.l life_cycle_planning_was.finish_date}")
         end
       end
 
-      it "shows the validation errors" do
+      it "shows the validation errors", with_settings: { journal_aggregation_time_minutes: 0 } do
         expect_angular_frontend_initialized
         wait_for_network_idle
 
         dialog = overview_page.open_edit_dialog_for_life_cycles
 
-        expected_text = "Date can't be earlier than the previous Stage's end date."
+        expected_text = "Date range can't be earlier than the previous phase's end date."
 
         # Cycling is required so we always select a different date on the datepicker,
         # making sure the change event is triggered.
@@ -129,10 +155,10 @@ RSpec.describe "Edit project stages and gates on project overview page", :js, wi
 
         # Retrying due to a race condition between filling the input vs submitting the form preview.
         retry_block do
-          value = start_date + cycled_days.next.days
-          dialog.set_date_for(life_cycle_ready_for_planning, value:)
+          values = [start_date + cycled_days.next.days] * 2
+          dialog.set_date_for(life_cycle_planning, values:)
 
-          dialog.expect_validation_message(life_cycle_ready_for_planning, text: expected_text)
+          dialog.expect_validation_message(life_cycle_planning, text: expected_text)
         end
 
         # Saving the dialog fails
@@ -140,18 +166,39 @@ RSpec.describe "Edit project stages and gates on project overview page", :js, wi
         dialog.expect_open
 
         # The validation message is kept after the unsuccessful save attempt
-        dialog.expect_validation_message(life_cycle_ready_for_planning, text: expected_text)
+        dialog.expect_validation_message(life_cycle_planning, text: expected_text)
 
         retry_block do
           # The validation message is cleared when date is changed
-          value = start_date + 2.days + cycled_days.next.days
-          dialog.set_date_for(life_cycle_ready_for_planning, value:)
-          dialog.expect_no_validation_message(life_cycle_ready_for_planning)
+          values = [start_date + 2.days + cycled_days.next.days] * 2
+          dialog.set_date_for(life_cycle_planning, values:)
+          dialog.expect_no_validation_message(life_cycle_planning)
         end
 
         # Saving the dialog is successful
         dialog.submit
         dialog.expect_closed
+
+        activity_page.visit!
+
+        activity_page.show_details
+
+        life_cycle_planning_was = life_cycle_planning.dup
+        life_cycle_planning.reload
+        activity_page.within_journal(number: 1) do
+          expected_date_from = [
+            I18n.l(life_cycle_planning_was.start_date),
+            I18n.l(life_cycle_planning_was.finish_date)
+          ].join(" - ")
+
+          expected_date_to = [
+            I18n.l(life_cycle_planning.start_date),
+            I18n.l(life_cycle_planning.finish_date)
+          ].join(" - ")
+          activity_page.expect_activity("Planning changed from " \
+                                        "#{expected_date_from} to " \
+                                        "#{expected_date_to}")
+        end
       end
     end
 

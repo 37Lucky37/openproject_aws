@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -152,7 +154,7 @@ module OpenProject
                  "]", "^", "_", "`", "{", "|", "}", "~"]
 
         begin
-          password = ""
+          password = +""
           length = [RANDOM_PASSWORD_MIN_LENGTH, Evaluator.min_length].max
           length.times { |_i| password << chars[SecureRandom.random_number(chars.size - 1)] }
         end while not Evaluator.conforming? password

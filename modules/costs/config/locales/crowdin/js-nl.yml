@@ -21,6 +21,7 @@
 #++
 nl:
   js:
+    text_are_you_sure: "Weet u het zeker?"
     work_packages:
       property_groups:
         costs: "Kosten"

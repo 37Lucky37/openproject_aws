@@ -76,18 +76,6 @@ module WorkPackage::PDFExport::Common::Common
     pdf.move_down(opts[:bottom_margin]) if opts.key?(:bottom_margin)
   end
 
-  def get_column_value(work_package, column_name)
-    formatter = formatter_for(column_name, :pdf)
-    formatter.format(work_package)
-  end
-
-  def get_formatted_value(value, column_name)
-    return "" if value.nil?
-
-    formatter = formatter_for(column_name, :pdf)
-    formatter.format_value(value, {})
-  end
-
   def escape_tags(value)
     # only disable html tags, but do not replace html entities
     value.to_s.gsub("<", "&lt;").gsub(">", "&gt;")
@@ -245,35 +233,28 @@ module WorkPackage::PDFExport::Common::Common
     end
   end
 
-  def get_total_sums
-    query.display_sums? ? (query.results.all_total_sums || {}) : {}
-  end
-
-  def get_group_sums(group)
-    @group_sums ||= query.results.all_group_sums
-    @group_sums[group] || {}
-  end
-
-  def get_groups
-    query.results.work_package_count_by_group
-         .select { |_, count| count > 0 }
-         .map { |group, _| group }
-  end
-
-  def wants_report?
-    options[:pdf_export_type] == "report"
-  end
-
-  def wants_gantt?
-    options[:pdf_export_type] == "gantt"
-  end
-
   def with_cover?
     false
   end
 
-  def with_sums_table?
-    query.display_sums?
+  def get_column_value(work_package, column_name)
+    formatter = formatter_for(column_name, :pdf)
+    formatter.format(work_package)
+  end
+
+  def get_formatted_value(value, column_name)
+    return "" if value.nil?
+
+    formatter = formatter_for(column_name, :pdf)
+    formatter.format_value(value, {})
+  end
+
+  def hyphenation_enabled
+    ActiveModel::Type::Boolean.new.cast(options[:hyphenation])
+  end
+
+  def hyphenation_language
+    options[:hyphenation_language] if hyphenation_enabled
   end
 
   def build_pdf_filename(base)
@@ -304,5 +285,29 @@ module WorkPackage::PDFExport::Common::Common
   def start_new_page_if_needed
     is_first_on_page = pdf.bounds.absolute_top - pdf.y < 10
     pdf.start_new_page unless is_first_on_page
+  end
+
+  def write_optional_page_break
+    space_from_bottom = pdf.y - pdf.bounds.bottom
+    if space_from_bottom < styles.page_break_threshold
+      pdf.start_new_page
+    end
+  end
+
+  def make_link_href_cell(href, caption)
+    "<color rgb='#{styles.link_color}'><link href='#{href}'>#{caption}</link></color>"
+  end
+
+  def get_id_column_cell(work_package, value)
+    href = url_helpers.work_package_url(work_package)
+    make_link_href_cell(href, value)
+  end
+
+  def get_subject_column_cell(work_package, value)
+    make_link_anchor(work_package.id, escape_tags(value))
+  end
+
+  def wp_status_prawn_color(work_package)
+    work_package.status.color&.hexcode&.sub("#", "") || "F0F0F0"
   end
 end

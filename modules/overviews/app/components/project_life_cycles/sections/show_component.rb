@@ -37,13 +37,13 @@ module ProjectLifeCycles
         super
 
         @project = project
-        @life_cycle_steps = @project.available_life_cycle_steps
+        @life_cycle_steps = @project.available_phases
       end
 
       private
 
       def allowed_to_edit?
-        User.current.allowed_in_project?(:edit_project_stages_and_gates, @project)
+        User.current.allowed_in_project?(:edit_project_phases, @project)
       end
     end
   end

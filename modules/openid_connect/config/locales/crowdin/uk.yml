@@ -4,16 +4,16 @@ uk:
     description: "Додає постачальників стратегії OmniAuth OpenID Connect в OpenProject."
   logout_warning: >
     Ви вийшли з системи. Вміст будь-якої форми, яку ви надішлете, може бути втрачено. Спробуйте, [увійти].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
-        name: Ім’я
+        name: Назва
         slug: Унікальний ідентифікатор
-        display_name: Відображуване ім'я
-        client_id: Client ID
-        client_secret: Client secret
-        secret: Таємний код
-        scope: Область використання
+        display_name: Коротке ім’я
+        client_id: ID клієнта
+        client_secret: Секретний ключ клієнта
+        secret: Секретний ключ
+        scope: Область
         grant_types_supported: Підтримувані типи дозволів
         limit_self_registration: Обмежити самостійну реєстрацію
         authorization_endpoint: Кінцева точка авторизації
@@ -29,7 +29,6 @@ uk:
         claims: Запити
         acr_values: Значення ACR
         redirect_url: URL переспрямування
-  activerecord:
     errors:
       models:
         openid_connect/provider:

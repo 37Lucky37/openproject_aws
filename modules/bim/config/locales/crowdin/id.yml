@@ -84,6 +84,12 @@ id:
         ifc_attachment: "berkas IFC"
         is_default: "Model bawaan"
         attachments: "berkas IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Sudut pandang"
     errors:
       models:
         bim/ifc_models/ifc_model:

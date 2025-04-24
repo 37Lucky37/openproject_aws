@@ -39,12 +39,12 @@ RSpec.describe ProjectLifeCycleSteps::BaseContract do
 
   context "with authorized user" do
     let(:user) { build_stubbed(:user) }
-    let(:project) { build_stubbed(:project, available_life_cycle_steps: steps) }
-    let(:steps) { [] }
+    let(:project) { build_stubbed(:project, available_phases: phases) }
+    let(:phases) { [] }
 
     before do
       mock_permissions_for(user) do |mock|
-        mock.allow_in_project(:edit_project_stages_and_gates, project:)
+        mock.allow_in_project(:edit_project_phases, project:)
       end
     end
 
@@ -52,170 +52,126 @@ RSpec.describe ProjectLifeCycleSteps::BaseContract do
     include_examples "contract reuses the model errors"
 
     describe "validations" do
-      describe "#consecutive_steps_have_increasing_dates" do
-        let(:gate1) { build_stubbed(:project_gate, start_date: Date.new(2024, 1, 1)) }
-        let(:stage2) { build_stubbed(:project_stage, start_date: Date.new(2024, 2, 1), end_date: Date.new(2024, 2, 28)) }
-        let(:gate3) { build_stubbed(:project_gate, start_date: Date.new(2024, 3, 1), end_date: Date.new(2024, 3, 15)) }
-        let(:steps) { [gate1, stage2, gate3] }
+      describe "#consecutive_phases_have_increasing_dates" do
+        let(:phase1) { build_stubbed(:project_phase, start_date: Date.new(2024, 1, 1), finish_date: Date.new(2024, 1, 1)) }
+        let(:phase2) { build_stubbed(:project_phase, start_date: Date.new(2024, 2, 1), finish_date: Date.new(2024, 2, 28)) }
+        let(:phase3) { build_stubbed(:project_phase, start_date: Date.new(2024, 3, 1), finish_date: Date.new(2024, 3, 15)) }
+        let(:phases) { [phase1, phase2, phase3] }
 
-        context "when no steps are present" do
-          let(:steps) { [] }
+        context "when no phases are present" do
+          let(:phases) { [] }
 
           it_behaves_like "contract is valid"
         end
 
         context "when only one step is present" do
-          let(:steps) { [gate1] }
+          let(:phases) { [phase1] }
 
           it_behaves_like "contract is valid"
         end
 
-        context "when steps have valid and increasing dates" do
-          let(:steps) { [gate1, stage2] }
+        context "when phases have valid and increasing dates" do
+          let(:phases) { [phase1, phase2, phase3] }
 
           it_behaves_like "contract is valid"
         end
 
-        context "when steps have decreasing dates" do
-          context "and the erroneous step is a Gate" do
-            let(:steps) { [gate3, gate1] }
+        context "when phases have decreasing dates" do
+          context "and the erroneous step is Phase 1" do
+            let(:phases) { [phase3, phase1] }
 
             it_behaves_like "contract is invalid",
-                            "available_life_cycle_steps.date": :non_continuous_dates
+                            "available_phases.date_range": :non_continuous_dates
 
             it "adds an error to the decreasing step" do
               contract.validate
-              expect(gate1.errors.symbols_for(:date)).to include(:non_continuous_dates)
-            end
-          end
-
-          context "and the erroneous step is a Stage" do
-            let(:steps) { [gate3, stage2] }
-
-            it_behaves_like "contract is invalid",
-                            "available_life_cycle_steps.date_range": :non_continuous_dates
-
-            it "adds an error to the decreasing step" do
-              contract.validate
-              expect(stage2.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
+              expect(phase1.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
             end
           end
         end
 
-        context "when steps with identical dates" do
-          let(:step4) { build_stubbed(:project_gate, start_date: Date.new(2024, 1, 1)) }
-          let(:steps) { [gate1, step4] }
+        context "when phases with identical dates" do
+          let(:phase2) { build_stubbed(:project_phase, start_date: Date.new(2024, 1, 1), finish_date: Date.new(2024, 1, 1)) }
 
           it_behaves_like "contract is invalid",
-                          "available_life_cycle_steps.date": :non_continuous_dates
+                          "available_phases.date_range": :non_continuous_dates
         end
 
-        context "when steps have touching start and end dates" do
-          context "when 2 Stages are touching" do
-            let(:stage4) { build_stubbed(:project_stage, start_date: Date.new(2024, 2, 28), end_date: Date.new(2024, 3, 1)) }
-            let(:steps) { [stage2, stage4] }
+        context "when phases have touching start and end dates" do
+          context "when 2 Phases are touching" do
+            let(:phase2) { build_stubbed(:project_phase, start_date: Date.new(2024, 1, 1), finish_date: Date.new(2024, 1, 1)) }
 
             it_behaves_like "contract is invalid",
-                            "available_life_cycle_steps.date_range": :non_continuous_dates
+                            "available_phases.date_range": :non_continuous_dates
 
             context "when having an empty step in between" do
-              let(:step_missing_dates) { build_stubbed(:project_stage, start_date: nil, end_date: nil) }
-              let(:steps) { [stage2, step_missing_dates, stage4] }
+              let(:step_missing_dates) { build_stubbed(:project_phase, start_date: nil, finish_date: nil) }
+              let(:phases) { [phase1, step_missing_dates, phase2] }
 
               it_behaves_like "contract is invalid",
-                              "available_life_cycle_steps.date_range": :non_continuous_dates
+                              "available_phases.date_range": :non_continuous_dates
             end
           end
 
-          context "when 2 Gates are touching" do
-            let(:gate4) { build_stubbed(:project_gate, start_date: Date.new(2024, 1, 1)) }
-            let(:steps) { [gate1, gate4] }
+          context "when 3 Phases are touching" do
+            let(:phase2) { build_stubbed(:project_phase, start_date: Date.new(2024, 1, 1), finish_date: Date.new(2024, 1, 1)) }
+            let(:phase3) { build_stubbed(:project_phase, start_date: Date.new(2024, 1, 1), finish_date: Date.new(2024, 1, 2)) }
 
             it_behaves_like "contract is invalid",
-                            "available_life_cycle_steps.date": :non_continuous_dates
+                            "available_phases.date_range": :non_continuous_dates
+
+            it "adds error to Phase 2 and 3" do
+              contract.validate
+              expect(phase2.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
+              expect(phase3.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
+            end
 
             context "when having an empty step in between" do
-              let(:step_missing_dates) { build_stubbed(:project_stage, start_date: nil, end_date: nil) }
-              let(:steps) { [gate1, step_missing_dates, gate4] }
+              let(:step_missing_dates) { build_stubbed(:project_phase, start_date: nil, finish_date: nil) }
+              let(:phases) { [phase1, phase2, step_missing_dates, phase3] }
 
               it_behaves_like "contract is invalid",
-                              "available_life_cycle_steps.date": :non_continuous_dates
-            end
-          end
+                              "available_phases.date_range": :non_continuous_dates
 
-          context "when a Stage and a Gate are touching on the start date" do
-            let(:gate4) { build_stubbed(:project_gate, start_date: Date.new(2024, 2, 28)) }
-            let(:steps) { [stage2, gate4] }
-
-            it_behaves_like "contract is valid"
-
-            context "when having an empty step in between" do
-              let(:step_missing_dates) { build_stubbed(:project_stage, start_date: nil, end_date: nil) }
-              let(:steps) { [stage2, step_missing_dates, gate4] }
-
-              it_behaves_like "contract is valid"
-            end
-          end
-
-          context "when a Stage and a Gate are touching on the end date" do
-            let(:stage4) { build_stubbed(:project_stage, start_date: Date.new(2023, 12, 30), end_date: Date.new(2024, 1, 1)) }
-            let(:steps) { [stage4, gate1] }
-
-            it_behaves_like "contract is valid"
-
-            context "when having an empty step in between" do
-              let(:step_missing_dates) { build_stubbed(:project_stage, start_date: nil, end_date: nil) }
-              let(:steps) { [stage4, step_missing_dates, gate1] }
-
-              it_behaves_like "contract is valid"
-            end
-          end
-
-          context "when a Stage, a Gate, and anothe Stage are touching" do
-            let(:gate4) { build_stubbed(:project_gate, start_date: Date.new(2024, 2, 28)) }
-            let(:stage5) { build_stubbed(:project_stage, start_date: Date.new(2024, 2, 28), end_date: Date.new(2024, 3, 1)) }
-            let(:steps) { [stage2, gate4, stage5] }
-
-            it_behaves_like "contract is valid"
-
-            context "when having an empty step in between" do
-              let(:step_missing_dates) { build_stubbed(:project_stage, start_date: nil, end_date: nil) }
-              let(:steps) { [stage2, gate4, step_missing_dates, stage5] }
-
-              it_behaves_like "contract is valid"
+              it "adds error to Phase 2 and 3" do
+                contract.validate
+                expect(phase2.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
+                expect(phase3.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
+                expect(step_missing_dates.errors.symbols_for(:date_range)).to be_empty
+              end
             end
           end
         end
 
         context "when a step has missing start dates" do
-          let(:step_missing_dates) { build_stubbed(:project_stage, start_date: nil, end_date: nil) }
+          let(:step_missing_dates) { build_stubbed(:project_phase, start_date: nil, finish_date: nil) }
 
-          context "and the other steps have increasing dates" do
-            let(:steps) { [gate1, step_missing_dates, stage2] }
+          context "and the other phases have increasing dates" do
+            let(:phases) { [phase1, step_missing_dates, phase2] }
 
             it_behaves_like "contract is valid"
           end
 
-          context "and the other steps have decreasing dates" do
-            let(:steps) { [stage2, step_missing_dates, gate1] }
+          context "and the other phases have decreasing dates" do
+            let(:phases) { [phase2, step_missing_dates, phase1] }
 
             it_behaves_like "contract is invalid",
-                            "available_life_cycle_steps.date": :non_continuous_dates
+                            "available_phases.date_range": :non_continuous_dates
 
             it "adds an error to the decreasing step" do
               contract.validate
-              expect(gate1.errors.symbols_for(:date)).to include(:non_continuous_dates)
+              expect(phase1.errors.symbols_for(:date_range)).to include(:non_continuous_dates)
             end
           end
         end
       end
 
       describe "triggering validations on the model" do
-        it "sets the :saving_life_cycle_steps validation context" do
+        it "sets the :saving_phases validation context" do
           allow(project).to receive(:valid?)
 
           contract.validate
-          expect(project).to have_received(:valid?).with(:saving_life_cycle_steps)
+          expect(project).to have_received(:valid?).with(:saving_phases)
         end
       end
     end

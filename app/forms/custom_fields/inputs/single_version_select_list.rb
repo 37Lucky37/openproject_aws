@@ -41,7 +41,9 @@ class CustomFields::Inputs::SingleVersionSelectList < CustomFields::Inputs::Base
     custom_value_form.autocompleter(**version_input_attributes) do |list|
       assignable_custom_field_values(@custom_field).each do |version|
         list.option(
-          label: version.name, value: version.id,
+          label: version.name,
+          value: version.id,
+          group_by: group_key(version.project),
           selected: selected?(version)
         )
       end
@@ -56,5 +58,9 @@ class CustomFields::Inputs::SingleVersionSelectList < CustomFields::Inputs::Base
 
   def selected?(version)
     version.id == @custom_value.value&.to_i
+  end
+
+  def group_key(project)
+    project.visible?(User.current) ? project.name : I18n.t(:"project.not_available")
   end
 end

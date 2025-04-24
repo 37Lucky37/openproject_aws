@@ -57,7 +57,7 @@ ro:
       include_attachments: Include atașamente
       download_backup: Descarcă backup
       request_backup: Solicită backup
-    close_popup_title: "Închidere pop-up"
+    close_popup_title: "Închide pop-up"
     close_filter_title: "Închide filtrul"
     close_form_title: "Închide formularul"
     button_add_watcher: "Adaugă observator"
@@ -89,9 +89,9 @@ ro:
     button_show_view: "Vizualizare pe tot ecranul"
     button_log_time: "Înregistrare timp"
     button_more: "Mai mult"
-    button_open_details: "Deschidere vizualizare detaliată"
-    button_close_details: "Închideţi fereastra cu detalii"
-    button_open_fullscreen: "Afișare pe tot ecranul"
+    button_open_details: "Deschide vizualizare detalii"
+    button_close_details: "Închide vizualizare detalii"
+    button_open_fullscreen: "Afișează pe tot ecranul"
     button_show_cards: "Afișați vizualizarea cardului"
     button_show_list: "Afișați vizualizarea listei"
     button_show_table: "Afișați vizualizarea tabelului"
@@ -103,7 +103,6 @@ ro:
     button_settings: "Setări"
     button_uncheck_all: "Deselectează tot"
     button_update: "Actualizează"
-    button_export-pdf: "Descarcă PDF"
     button_export-atom: "Descarcă Atom"
     button_generate_pdf: "Generate PDF"
     button_create: "Creează"
@@ -124,11 +123,11 @@ ro:
       types:
         line: "Linie"
         horizontal_bar: "Orizontal"
-        bar: "Ascunde WP Admin bar pentru"
-        pie: "Circulară"
-        doughnut: "Gogoasa"
+        bar: "Bară"
+        pie: "Plăcintă"
+        doughnut: "Gogoașă"
         radar: "Radar"
-        polar_area: "Zona polară"
+        polar_area: "Zonă polară"
       tabs:
         graph_settings: "General"
         dataset: "Set de date %{number}"
@@ -136,8 +135,8 @@ ro:
         could_not_load: "Datele pentru afișarea graficului nu au putut fi încărcate. Este posibil să nu aveți permisiunile necesare."
     description_available_columns: "Coloane disponibile"
     description_current_position: "Ești aici: "
-    description_select_work_package: "Selectaţi pachetul de lucru #%{id}"
-    description_subwork_package: "Fiu al pachetului de lucru #%{id}"
+    description_select_work_package: "Selectează pachet de lucru #%{id}"
+    description_subwork_package: "Copil al pachetului de lucru #%{id}"
     editor:
       revisions: "Show local modifications"
       no_revisions: "No local modifications found"
@@ -147,7 +146,7 @@ ro:
       ckeditor_error: "A apărut o eroare în cadrul CKEditor"
       mode:
         manual: "Sursă"
-        wysiwyg: "Treceți la editorul WYSIWYG"
+        wysiwyg: "Comută la editorul WYSIWYG"
       macro:
         error: "Nu se poate extinde macroul: %{message}"
         attribute_reference:
@@ -157,14 +156,14 @@ ro:
           invalid_attribute: "Atributul selectat \"%{name}\" nu există."
         child_pages:
           button: "Legături către paginile pentru copii"
-          include_parent: "părinte al"
+          include_parent: "Include părinte"
           text: "Păstrare pagini fii ca pagini rădăcină"
           page: "Pagină wiki"
           this_page: "această pagină"
           hint: |
             Lăsați acest câmp gol pentru a lista toate paginile copil ale paginii curente. Dacă doriți să faceți referire la o altă pagină, furnizați titlul sau slug-ul acesteia.
         code_block:
-          button: "Inserați fragmentul de cod"
+          button: "Inserează fragment de cod"
           title: "Inserați/Editați fragmentul de cod"
           language: "Limbaj de formatare"
           language_hint: "Introdu limbajul de formatare care va fi utilizat pentru evidențiere (dacă există suport pentru acesta)."
@@ -221,6 +220,8 @@ ro:
             label_maximum_users: "Număr maxim de utilizatori activi"
             label_starts_at: "Începe în"
             label_expires_at: "Expiră în"
+            label_plan: "Plan"
+            label_additional_features: "Additional features"
             receive_newsletter: Doresc să primesc <a target="_blank" href="%{link}">buletinul informativ</a> OpenProject.
             taken_domain: Nu poate exista decât un singur proces activ pe domeniu.
             domain_mismatch: Numele de gazdă al solicitării curente nu se potrivește cu numele de gazdă configurat. Vă rugăm să verificați de două ori setările sistemului.
@@ -238,7 +239,7 @@ ro:
           test_ee: "Testați gratuit ediția Enterprise timp de 14 zile"
           quick_overview: "Obțineți o imagine de ansamblu rapidă a gestionării proiectelor și a colaborării în echipă cu OpenProject Enterprise edition."
         upsale:
-          become_hero: "Deveniți un erou!"
+          become_hero: "Devino un erou!"
           enterprise_info_html: "%{feature_title} is an Enterprise <span class='spot-icon spot-icon_inline spot-icon_enterprise-addons'></span> add-on."
           upgrade_info: "Te rog să treci la un plan plătit pentru a-l activa și a începe să îl utilizezi în echipa ta."
           benefits:
@@ -257,7 +258,7 @@ ro:
           button_book_now: "Rezervă acum"
           confidence: >
             Oferim încrederea unui software de gestionare a proiectelor de clasă enterprise testat și susținut - cu Open Source și o minte deschisă.
-          link_quote: "Obțineți o ofertă"
+          link_quote: "Obține o ofertă"
           more_info: "Mai multe informatii"
           text: >
             Ediția OpenProject Enterprise se bazează pe ediția Community. Aceasta include add-on-uri Enterprise și asistență profesională, destinate în principal organizațiilor cu peste 10 utilizatori care gestionează proiecte esențiale pentru afaceri cu OpenProject.
@@ -330,7 +331,7 @@ ro:
       zoom:
         in: "Mărire"
         out: "Micșorare"
-        auto: "Mărire"
+        auto: "Zoom automat"
         days: "Zile"
         weeks: "Săptămâni"
         months: "Luni"
@@ -356,10 +357,10 @@ ro:
           learn_about: "Aflați mai multe despre noile caracteristici"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Subscribe to calendar"
       inital_setup_error_message: "An error occured while fetching data."
@@ -371,15 +372,15 @@ ro:
       copy_url_label: "Copiază URL"
       ical_generation_error_text: "An error occured while generating the calendar URL."
       success_message: 'URL-ul "%{name}" a fost copiat cu succes în clipboard-ul tău. Lipiți-l în clientul calendar pentru a finaliza abonamentul.'
-    label_activate: "Activare"
+    label_activate: "Activează"
     label_assignee: "Executant"
     label_add_column_after: "Adaugă coloană după"
     label_add_column_before: "Adaugă coloană înainte"
     label_add_columns: "Adaugă coloane"
     label_add_comment: "Adaugă comentariu"
     label_add_comment_title: "Comentează și tastează @ pentru a notifica alte persoane"
-    label_add_row_after: "Adauga un rand dupa"
-    label_add_row_before: "Adauga un rand inainte"
+    label_add_row_after: "Adaugă rând după"
+    label_add_row_before: "Adaugă rând înainte"
     label_add_selected_columns: "Adaugă coloanele selectate"
     label_added_by: "adăugat de"
     label_added_time_by: 'Adăugat de <a href="%{authorLink}">%{author}</a> acum %{age}'
@@ -396,14 +397,14 @@ ro:
     label_board_locked: "Blocat"
     label_board_plural: "Panouri"
     label_board_sticky: "Lipicios"
-    label_change: "Modificare"
+    label_change: "Modifică"
     label_create: "Creează"
     label_create_work_package: "Creează pachet de lucru nou"
     label_created_by: "Creat de"
     label_current: "current"
     label_date: "Dată"
     label_date_with_format: "Introduceţi %{date_attribute} folosind următorul format: %{format}"
-    label_deactivate: "Dezactivare"
+    label_deactivate: "Dezactivează"
     label_descending: "Descrescător"
     label_description: "Descriere"
     label_details: "Detalii"
@@ -612,7 +613,7 @@ ro:
         assigned: "Executant"
         #The enum value is named 'responsible' in the database and that is what is transported through the API
         #up to the frontend.
-        responsible: "Accountable"
+        responsible: "Responsabil"
         created: "Creat pe"
         scheduled: "Planificat"
         commented: "Cu comentarii"
@@ -624,11 +625,11 @@ ro:
       date_alerts:
         milestone_date: "Dată etapă"
         overdue: "Restanțe"
-        overdue_since: "since %{difference_in_days}."
-        property_today: "is today."
-        property_is: "is in %{difference_in_days}."
-        property_was: "was %{difference_in_days} ago."
-        property_is_deleted: "is deleted."
+        overdue_since: "de %{difference_in_days}"
+        property_today: "este azi."
+        property_is: "este în %{difference_in_days}"
+        property_was: "a fost acum %{difference_in_days}"
+        property_is_deleted: "este ștearsă."
         upsale:
           title: "Alerte date"
           description: "Cu alertele de date, veți fi notificat cu privire la următoarele date de început sau de sfârșit, astfel încât să nu ratați sau să uitați niciodată un termen limită important."
@@ -718,32 +719,33 @@ ro:
       description: "Descriere: Clic pentru editare ..."
       relation_description: "Clic pentru a adăuga o descriere pentru această relație"
     project:
-      required_outside_context: >
-        Vă rugăm să alegeți un proiect în care să creați pachetul de lucru pentru a vedea toate atributele. Puteți selecta numai proiectele care au tipul de mai sus activat.
-      context: "Contextul proiectului"
-      click_to_switch_to_project: "Proiect: %{projectname}"
-      confirm_template_load: "Schimbarea șablonului va reîncărca pagina și veți pierde toate datele introduse în acest formular. Continuați?"
-      use_template: "Utilizează șablon"
-      no_template_selected: "(Nimic)"
-      copy:
-        copy_options: "Opțiuni de copiere"
       autocompleter:
         label: "Completarea automată a proiectului"
+      click_to_switch_to_project: "Proiect: %{projectname}"
+      confirm_template_load: "Schimbarea șablonului va reîncărca pagina și veți pierde toate datele introduse în acest formular. Continuați?"
+      context: "Contextul proiectului"
+      copy:
+        copy_options: "Opțiuni de copiere"
+      not_available: "Project N/A"
+      no_template_selected: "(Nimic)"
+      required_outside_context: >
+        Vă rugăm să alegeți un proiect în care să creați pachetul de lucru pentru a vedea toate atributele. Puteți selecta numai proiectele care au tipul de mai sus activat.
+      use_template: "Utilizează șablon"
     reminders:
       settings:
         daily:
           add_time: "Adaugă timp"
-          enable: "Activează memento-urile zilnice prin e-mail"
-          explanation: "Veţi primi aceste memento-uri numai pentru notificările necitite şi numai la câteva ore specificate. %{no_time_zone}"
+          enable: "Activează reamintirile zilnice prin e-mail"
+          explanation: "Vei primi aceste reamintiri numai pentru notificările necitite și numai la câteva ore specificate. %{no_time_zone}"
           no_time_zone: "Până când configurezi un fus orar pentru contul tău, orele vor fi interpretate ca fiind în UTC."
           time_label: "Timp %{counter}:"
-          title: "Trimite-mi memento-uri zilnice prin e-mail pentru notificări necitite"
+          title: "Trimite-mi reamintiri zilnice prin e-mail pentru notificările necitite"
         workdays:
-          title: "Primiți memento-uri prin e-mail în aceste zile"
+          title: "Primește reamintiri prin e-mail în aceste zile"
         immediate:
           title: "Trimiteți-mi un e-mail de reamintire"
           mentioned: "Imediat când cineva mă @menționează"
-          personal_reminder: "Immediately when I receive a personal reminder"
+          personal_reminder: "Imediat când primesc reamintiri personale"
         alerts:
           title: "Alerte prin e-mail pentru alte elemente (care nu sunt pachete de lucru)"
           explanation: >
@@ -756,12 +758,12 @@ ro:
           wiki_page_updated: "Pagină wiki actualizată"
           membership_added: "Adaugă membri"
           membership_updated: "Membrii actualizați"
-        title: "E-mail memento-uri"
+        title: "Reamintiri e-mail"
         pause:
-          label: "Întrerupeți temporar memento-urile zilnice prin e-mail"
+          label: "Întrerupe temporar reamintirile zilnice prin e-mail"
           first_day: "Prima zi"
           last_day: "Ultima zi"
-    text_are_you_sure: "Ești sigur?"
+    text_are_you_sure: "Sunteți sigur?"
     text_data_lost: "Toate datele introduse vor fi pierdute."
     text_user_wrote: "%{value} a scris:"
     types:
@@ -797,6 +799,7 @@ ro:
       typeahead_placeholder: Căutarea de posibili observatori
     relation_labels:
       parent: "Părinte"
+      child: "Child"
       children: "Copii"
       relates: "În relație cu"
       duplicates: "Dublează"
@@ -826,7 +829,7 @@ ro:
       add_new_child: "Creează copil nou"
       create_new: "Creează nou"
       add_existing: "Adaugă existent"
-      add_existing_child: "Adaugă copil existent"
+      add_existing_child: "Add child"
       remove_child: "Elimină copil"
       add_new_relation: "Crează o nouă relație"
       add_existing_relation: "Adaugă relație existentă"
@@ -852,8 +855,6 @@ ro:
       select_branch: "Selectare ramură"
     field_value_enter_prompt: "Introduceţi o valoare pentru '%{field}'"
     project_menu_details: "Detalii"
-    scheduling:
-      manual: "Programarea manuală"
     sort:
       sorted_asc: "Ordonare ascendentă aplicată, "
       sorted_dsc: "Ordonare descendentă aplicată, "
@@ -901,15 +902,6 @@ ro:
       comment_send_failed: "A apărut o eroare. Comentariul nu a putut fi salvat."
       comment_updated: "Comentariul a fost actualizat cu succes."
       confirm_edit_cancel: "Sunteți sigur că doriți să renunțați la editarea pachetului de lucru?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Programat automat. Datele sunt derivate din relații."
-        manually_scheduled: "Programare manuală activată, toate relațiile ignorate."
-        start_date_limited_by_relations: "Datele de început disponibile și de încheiere sunt limitate de relații."
-        changing_dates_affects_follow_relations: "Modificarea acestor dăți va afecta dățile pachetelor de lucru aferente."
-        click_on_show_relations_to_open_gantt: 'Faceți clic pe "%{button_name}" pentru o prezentare generală a GANTT.'
-        show_relations: "Arată relațiile"
-        ignore_non_working_days:
-          title: "Numai în zilele lucrătoare"
       description_filter: "Filtrează"
       description_enter_text: "Introduceţi textul"
       description_options_hide: "Ascundere opțiuni"
@@ -946,7 +938,7 @@ ro:
         title: "Pachet de lucru nou"
         header: "Nou %{type}"
         header_no_type: "Nou pachet de lucru (Tipul incă nu a fost stabilit)"
-        header_with_parent: "Nou %{type} (copilul %{parent_type} #%{id})"
+        header_with_parent: "Nou %{type} (Copil al %{parent_type} #%{id})"
         button: "Creează"
       copy:
         title: "Copiază pachet de lucru"
@@ -984,7 +976,7 @@ ro:
         percentageDone: "Procent realizat"
         priority: "Prioritate"
         projectName: "Proiect"
-        remainingWork: "Remaining work"
+        remainingWork: "Muncă rămasă"
         remainingWorkAlternative: "Ore"
         responsible: "Responsabil"
         startDate: "Dată început"
@@ -996,9 +988,9 @@ ro:
         updatedAt: "Actualizat pe"
         versionName: "Versiune"
         version: "Versiune"
-        work: "Work"
+        work: "Muncă"
         workAlternative: "Durata estimată"
-        remainingTime: "Remaining work"
+        remainingTime: "Muncă rămasă"
       default_queries:
         manually_sorted: "Interogare nouă sortată manual"
         latest_activity: "Activitate recentă"
@@ -1054,7 +1046,7 @@ ro:
         is_switched_from_manual_to_automatic: "Este posibil ca datele acestui pachet de lucru să trebuiască să fie recalculate după trecerea de la programarea manuală la cea automată din cauza relațiilor cu alte pachete de lucru."
       sharing:
         title: "Share work package"
-        show_all_users: "Show all users with whom the work package has been shared with"
+        show_all_users: "Arată toți utilizatorilor cu care pachetul de lucru a fost partajat"
         upsale:
           description: "Share work packages with users who are not members of the project."
       table:
@@ -1351,7 +1343,7 @@ ro:
         close: "Close modal"
     open_project_storage_modal:
       waiting_title:
-        timeout: "Timeout"
+        timeout: "Expirat"
       waiting_subtitle:
         network_off: "There is a network problem."
         network_on: "Network is back. We are trying."

@@ -6,7 +6,7 @@ $meeting-agenda-item--presenter-width--mobile: 150px
 .op-meeting-agenda-item
   display: grid
   grid-template-columns: 20px auto 1fr fit-content($meeting-agenda-item--presenter-width) fit-content(40px)
-  grid-template-areas: "drag-handle content duration presenter actions" ". title title title title" ". notes notes notes notes"
+  grid-template-areas: "drag-handle content duration presenter actions" ". title title title title" ". notes notes notes notes" ". outcomes outcomes outcomes outcomes"
 
   &--drag-handle,
   &--duration,
@@ -21,6 +21,7 @@ $meeting-agenda-item--presenter-width--mobile: 150px
 
   &--content
     overflow-wrap: anywhere
+    min-height: 32px
 
   &--presenter
     max-width: $meeting-agenda-item--presenter-width
@@ -37,9 +38,15 @@ $meeting-agenda-item--presenter-width--mobile: 150px
   .custom-presenter-flex
     margin-left: auto
 
+  .muted-color
+    color: var(--fgColor-muted)
+
+  .override
+    padding-bottom: 0
+
   @media screen and (max-width: $breakpoint-lg)
     grid-template-columns: 20px auto 1fr auto 50px
-    grid-template-areas: "drag-handle content content content actions" ". title title title title" ". presenter duration . ."  ". notes notes notes notes"
+    grid-template-areas: "drag-handle content content content actions" ". title title title title" ". presenter duration . ."  ". notes notes notes notes" ". outcomes outcomes outcomes outcomes"
 
     &--author
       justify-self: stretch

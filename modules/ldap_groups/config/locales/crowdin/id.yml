@@ -6,7 +6,7 @@ id:
     attributes:
       ldap_groups/synchronized_group:
         dn: 'DN'
-        auth_source: 'Auth source'
+        auth_source: 'Sumber Otentikasi'
         ldap_auth_source: 'koneksi LDAP'
         sync_users: 'Sinkronkan pengguna'
       ldap_groups/synchronized_filter:

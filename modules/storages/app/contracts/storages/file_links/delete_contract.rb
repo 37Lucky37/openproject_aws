@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -33,6 +35,12 @@ module Storages
     class DeleteContract < ::DeleteContract
       # Check permissions to delete this FileLink
       delete_permission :manage_file_links
+
+      def authorized?
+        return super if model.container.present?
+
+        user == model.creator
+      end
     end
   end
 end

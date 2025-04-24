@@ -21,8 +21,8 @@
 #++
 ro:
   plugin_openproject_reporting:
-    name: "OpenProject Reporting"
-    description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
+    name: "Raport OpenProject"
+    description: "Acest plugin permite crearea de rapoarte de costuri personalizate cu filtrare şi grupare create de OpenProject Time şi de plugin-ul costuri."
   button_save_report_as: "Salvează raportul ca..."
   comments: "Comentariu"
   cost_reports_title: "Timp și costuri"
@@ -93,7 +93,7 @@ ro:
       button: "Export PDF timesheet"
       timesheet: "Timesheet"
       time: "Timp"
-      sum_hours: Sum
+      sum_hours: Sumă
     cost_reports:
       title: "Exportul dumneavoastră de rapoarte de costuri XLS"
       start_time: "Start time"

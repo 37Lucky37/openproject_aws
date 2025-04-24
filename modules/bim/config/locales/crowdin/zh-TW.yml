@@ -84,6 +84,12 @@ zh-TW:
         ifc_attachment: "IFC 檔案"
         is_default: "預設模式"
         attachments: "IFC 檔案"
+      bim/bcf/issue:
+        bcf_comment: "BCF 說明"
+        bim_snippet: "BIM 片段"
+        reference_links: "參考連結"
+        stage: "階段"
+        viewpoint: "視點"
     errors:
       models:
         bim/ifc_models/ifc_model:

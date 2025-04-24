@@ -21,6 +21,7 @@
 #++
 sk:
   js:
+    text_are_you_sure: "Ste si istí?"
     work_packages:
       property_groups:
         costs: "Náklady"

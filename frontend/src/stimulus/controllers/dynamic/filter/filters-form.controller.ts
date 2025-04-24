@@ -44,8 +44,6 @@ interface InternalFilterValue {
 }
 
 export default class FiltersFormController extends Controller {
-  static paramsToCopy = ['sortBy', 'columns', 'query_id', 'per_page'];
-
   static targets = [
     'filterFormToggle',
     'filterForm',
@@ -318,25 +316,20 @@ export default class FiltersFormController extends Controller {
   }
 
   sendForm() {
-    const params = new URLSearchParams();
-    params.append('filters', this.buildFiltersParam(this.parseFilters()));
+    const params = new URLSearchParams(window.location.search);
+    const newFilters = this.buildFiltersParam(this.parseFilters());
 
-    const currentParams = new URLSearchParams(window.location.search);
-
-    if (params.get('filters') === currentParams.get('filters')) {
+    if (newFilters === params.get('filters')) {
       // Some fields may be triggered via the input event and the change event too.
       // This early return will prevent firing request when the filter params are not changed.
       return;
     }
 
+    // Remove the page parameter when changing filters, so that pagination resets
+    params.delete('page');
+    params.set('filters', newFilters);
     const ajaxIndicator = document.querySelector('#ajax-indicator') as HTMLElement;
     ajaxIndicator.style.display = '';
-
-    FiltersFormController.paramsToCopy.forEach((name) => {
-      if (currentParams.has(name)) {
-        params.append(name, currentParams.get(name) as string);
-      }
-    });
 
     const url = `${window.location.pathname}?${params.toString()}`;
 

@@ -297,7 +297,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
         end
 
         it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Bcf comment does not exist." }
+          let(:message) { "BCF comment does not exist." }
         end
       end
     end
@@ -345,7 +345,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
         end
 
         it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Bcf comment does not exist." }
+          let(:message) { "BCF comment does not exist." }
         end
       end
 
@@ -373,7 +373,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
         end
 
         it_behaves_like "bcf api unprocessable response" do
-          let(:message) { "Multiple field constraints have been violated. Viewpoint does not exist. Bcf comment does not exist." }
+          let(:message) { "Multiple field constraints have been violated. Viewpoint does not exist. BCF comment does not exist." }
         end
       end
     end
@@ -560,7 +560,7 @@ RSpec.describe "BCF 2.1 comments resource", content_type: :json do
       end
 
       it_behaves_like "bcf api unprocessable response" do
-        let(:message) { "Bcf comment does not exist." }
+        let(:message) { "BCF comment does not exist." }
       end
     end
 

@@ -31,13 +31,18 @@ require Rails.root.join("db/migrate/20240917105829_add_primary_key_to_custom_fie
 
 RSpec.describe AddPrimaryKeyToCustomFieldsProjects, type: :model do
   shared_association_default(:project) { create(:project) }
+  let(:custom_fields) { create_list(:custom_field, 5) }
 
   it "adds an `id` primary key column with backfilled values" do
     ActiveRecord::Migration.suppress_messages { described_class.migrate(:down) }
     CustomFieldsProject.reset_column_information
     CustomFieldsProject.reset_primary_key
 
-    create_list(:custom_fields_project, 5)
+    # Avoid using factory bot here as the factory will already expect an id column if any
+    # test using the factory has run before.
+    CustomFieldsProject.insert_all(
+      custom_fields.map { |cf| { project_id: project.id, custom_field_id: cf.id } }
+    )
 
     aggregate_failures "no primary key column" do
       expect(CustomFieldsProject.column_names).not_to include("id")

@@ -33,15 +33,16 @@ RSpec.describe "Projects module administration" do
     create(:project, enabled_module_names: [])
   end
 
-  let(:permissions) { %i(edit_project select_project_modules view_work_packages) }
+  let(:permissions) { %i(edit_project select_project_modules view_work_packages manage_types manage_categories) }
   let(:modules_settings_page) { Pages::Projects::Settings::Modules.new(project) }
+  let(:work_packages_settings_page) { Pages::Projects::Settings::WorkPackages.new(project) }
 
   current_user do
     create(:user, member_with_permissions: { project => permissions })
   end
 
   it "allows adding and removing modules" do
-    project_work_packages_menu_link_selector = '//ul[contains(@class, "menu_root")]//span[text()="Work packages"]'
+    project_work_packages_tab_selector = '//ul[contains(@class, "tabnav-tabs")]//span[text()="Categories"]'
 
     modules_settings_page.visit!
 
@@ -50,7 +51,9 @@ RSpec.describe "Projects module administration" do
     expect(page).to have_unchecked_field "Time and costs"
     expect(page).to have_unchecked_field "Work packages"
 
-    expect(page).to have_no_xpath(project_work_packages_menu_link_selector)
+    work_packages_settings_page.visit!
+    expect(page).to have_no_xpath(project_work_packages_tab_selector)
+    modules_settings_page.visit!
 
     check "Activity"
     click_button "Save"
@@ -70,8 +73,11 @@ RSpec.describe "Projects module administration" do
              dependency: "Work packages",
              module: "Calendars"))
 
-    expect(page).to have_no_xpath(project_work_packages_menu_link_selector)
+    work_packages_settings_page.visit!
+    expect(page).to have_no_xpath(project_work_packages_tab_selector)
+    modules_settings_page.visit!
 
+    check "Calendar"
     check "Work packages"
     click_button "Save"
 
@@ -82,12 +88,15 @@ RSpec.describe "Projects module administration" do
     expect(page).to have_unchecked_field "Time and costs"
     expect(page).to have_checked_field "Work packages"
 
-    expect(page).to have_xpath(project_work_packages_menu_link_selector, visible: :all)
+    work_packages_settings_page.visit!
+    expect(page).to have_xpath(project_work_packages_tab_selector, visible: :all)
+    modules_settings_page.visit!
 
     uncheck "Work packages"
     click_button "Save"
 
-    expect(page).to have_no_xpath(project_work_packages_menu_link_selector)
+    work_packages_settings_page.visit!
+    expect(page).to have_xpath(project_work_packages_tab_selector)
   end
 
   context "with a user who does not have the correct permissions (#38097)" do

@@ -44,12 +44,12 @@
                 required: true,
                 visually_hide_label: false,
                 autocomplete_options: {
-                  resource: 'work_packages',
+                  resource: "work_packages",
                   url:,
-                  relations: true, # Activates relations fetch mode in the autocomplete
+                  searchKey: "subjectOrId",
                   openDirectly: false,
                   focusDirectly: true,
-                  dropdownPosition: 'bottom',
+                  dropdownPosition: "bottom",
                   appendTo: "##{DIALOG_ID}",
                   data: { test_selector: TO_ID_FIELD_TEST_SELECTOR}
                 }

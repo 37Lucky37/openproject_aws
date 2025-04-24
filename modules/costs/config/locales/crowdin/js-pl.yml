@@ -21,6 +21,7 @@
 #++
 pl:
   js:
+    text_are_you_sure: "Jesteś pewny?"
     work_packages:
       property_groups:
         costs: "Koszty"

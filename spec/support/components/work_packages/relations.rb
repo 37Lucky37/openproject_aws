@@ -27,12 +27,14 @@
 #++
 
 require "support/components/autocompleter/ng_select_autocomplete_helpers"
+require "support/flash/expectations"
 
 module Components
   module WorkPackages
     class Relations
       include Capybara::DSL
       include Capybara::RSpecMatchers
+      include Flash::Expectations
       include RSpec::Matchers
       include RSpec::Wait
       include ::Components::Autocompleter::NgSelectAutocompleteHelpers
@@ -166,6 +168,10 @@ module Components
         expect(page).not_to have_test_selector("op-relation-row-#{actual_relatable.id}-delete-button")
       end
 
+      def add_predecessor(work_package)
+        add_relation(type: :follows, relatable: work_package)
+      end
+
       def add_relation(type:, relatable:, description: nil)
         i18n_namespace = "#{WorkPackageRelationsTab::IndexComponent::I18N_NAMESPACE}.relations"
         # Open create form
@@ -256,6 +262,14 @@ module Components
         find_row(relatable)
       end
 
+      def expect_closest_relation(relatable)
+        expect(find_row(relatable)).to have_primer_label("Closest", scheme: :primary)
+      end
+
+      def expect_not_closest_relation(relatable)
+        expect(find_row(relatable)).to have_no_primer_label("Closest", scheme: :primary)
+      end
+
       def expect_ghost_relation(relatable)
         find_ghost_row(relatable)
       end
@@ -297,28 +311,15 @@ module Components
         find(".wp-relation--parent-remove").click
       end
 
-      def open_children_autocompleter
-        retry_block do
-          next if page.has_selector?(".wp-relations--children .ng-input input")
-
-          SeleniumHubWaiter.wait
-          page.find_test_selector("op-wp-inline-create-reference",
-                                  text: I18n.t("js.relation_buttons.add_existing_child")).click
-
-          # Security check to be sure that the autocompleter has finished loading
-          page.find ".wp-relations--children .ng-input input"
-        end
-      end
-
       def children_table
-        page.find_test_selector("op-relation-group-children")
+        page.find_test_selector("op-relation-group-child")
       end
 
       def add_existing_child(work_package)
         SeleniumHubWaiter.wait
 
         retry_block do
-          select_relation_type "Existing child"
+          select_relation_type "Child"
         end
 
         within "##{WorkPackageRelationsTab::AddWorkPackageChildFormComponent::DIALOG_ID}" do
@@ -329,6 +330,7 @@ module Components
 
           click_link_or_button "Save"
         end
+        expect_and_dismiss_flash(message: "Successful update.")
       end
 
       def relations_group
@@ -348,11 +350,12 @@ module Components
       end
 
       def remove_child(work_package)
-        child_wp_row = find_row(work_package)
-
-        within(child_wp_row) do
-          relatable_action_menu(work_package).click
-          relatable_delete_button(work_package).click
+        retry_block do
+          child_wp_row = find_row(work_package)
+          within(child_wp_row) do
+            relatable_action_menu(work_package).click
+            relatable_delete_button(work_package).click
+          end
         end
 
         expect_no_row(work_package)

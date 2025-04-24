@@ -103,7 +103,6 @@ cs:
     button_settings: "Nastavení"
     button_uncheck_all: "Odznačit vše"
     button_update: "Aktualizovat"
-    button_export-pdf: "Stáhnout PDF"
     button_export-atom: "Stáhnout Atom"
     button_generate_pdf: ""
     button_create: "Vytvořit"
@@ -222,6 +221,8 @@ cs:
             label_maximum_users: "Maximální počet aktivních uživatelů"
             label_starts_at: "Začíná v"
             label_expires_at: "Vyprší v"
+            label_plan: "Tarif"
+            label_additional_features: "Additional features"
             receive_newsletter: Chci dostávat<a target="_blank" href="%{link}">newsletter OpenProject</a>.
             taken_domain: V každé doméně může být pouze jedna aktivní zkušební verze.
             domain_mismatch: Aktuální název hostitele se neshoduje s nakonfigurovaným názvem hostitele. Zkontrolujte prosím nastavení systému.
@@ -356,10 +357,10 @@ cs:
           learn_about: "Další informace o nových funkcích"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Přihlásit kalendář k odběru"
       inital_setup_error_message: "Při načítání dat došlo k chybě."
@@ -719,17 +720,18 @@ cs:
       description: "Popis: Klikněte pro úpravu..."
       relation_description: "Kliknutím přidáte popis pro tento vztah"
     project:
-      required_outside_context: >
-        Vyberte projekt pro vytvoření pracovního balíčku, abyste viděli všechny atributy. Můžete vybrat pouze projekty, které mají výše uvedený typ aktivován.
-      context: "Kontext projektu"
-      click_to_switch_to_project: "Projekt: %{projectname}"
-      confirm_template_load: "Přepnutí šablony znovu načte stránku a ztratíte všechny vstupy do tohoto formuláře. Pokračovat?"
-      use_template: "Použít šablonu"
-      no_template_selected: "(Žádné)"
-      copy:
-        copy_options: "Možností kopírování"
       autocompleter:
         label: "Automatické doplňování projektu"
+      click_to_switch_to_project: "Projekt: %{projectname}"
+      confirm_template_load: "Přepnutí šablony znovu načte stránku a ztratíte všechny vstupy do tohoto formuláře. Pokračovat?"
+      context: "Kontext projektu"
+      copy:
+        copy_options: "Možností kopírování"
+      not_available: "Project N/A"
+      no_template_selected: "(Žádné)"
+      required_outside_context: >
+        Vyberte projekt pro vytvoření pracovního balíčku, abyste viděli všechny atributy. Můžete vybrat pouze projekty, které mají výše uvedený typ aktivován.
+      use_template: "Použít šablonu"
     reminders:
       settings:
         daily:
@@ -798,6 +800,7 @@ cs:
       typeahead_placeholder: Hledání možných přihlížejících
     relation_labels:
       parent: "Nadřazený"
+      child: "Child"
       children: "Potomci"
       relates: "Související s"
       duplicates: "Duplikáty"
@@ -827,7 +830,7 @@ cs:
       add_new_child: "Vytvořit nového potomka"
       create_new: "Vytvořit nový"
       add_existing: "Přidat existující"
-      add_existing_child: "Přidat existujícího potomka"
+      add_existing_child: "Add child"
       remove_child: "Odstranit potomka"
       add_new_relation: "Vytvořit nový vztah"
       add_existing_relation: "Přidat existující vztah"
@@ -853,8 +856,6 @@ cs:
       select_branch: "Vybrat větev"
     field_value_enter_prompt: "Zadejte hodnotu pro '%{field}'"
     project_menu_details: "Podrobnosti"
-    scheduling:
-      manual: "Manuální plánování"
     sort:
       sorted_asc: "Použito vzestupné řazení, "
       sorted_dsc: "Použité sestupně "
@@ -902,15 +903,6 @@ cs:
       comment_send_failed: "Došlo k chybě. Nelze odeslat komentář."
       comment_updated: "Komentář byl úspěšně aktualizován."
       confirm_edit_cancel: "Opravdu chcete zrušit úpravy pracovního balíčku?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automaticky naplánováno. Data jsou odvozena od vztahů."
-        manually_scheduled: "Manuální plánování povoleno, všechny vztahy jsou ignorovány."
-        start_date_limited_by_relations: "Dostupná data zahájení a ukončení jsou omezena vztahy."
-        changing_dates_affects_follow_relations: "Změna těchto dat ovlivní data souvisejících pracovních balíčků."
-        click_on_show_relations_to_open_gantt: 'Klikněte na "%{button_name}pro přehled GANTT.'
-        show_relations: "Zobrazit vztahy"
-        ignore_non_working_days:
-          title: "pouze pracovní dny"
       description_filter: "Filtr"
       description_enter_text: "Zadejte text"
       description_options_hide: "Skrýt možnosti"

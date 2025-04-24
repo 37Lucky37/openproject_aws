@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -35,23 +37,24 @@ RSpec.describe "Open the Meetings tab",
   shared_let(:project) { create(:project) }
   shared_let(:work_package) { create(:work_package, project:, subject: "A test work_package") }
 
-  let(:user) do
-    create(:user,
-           member_with_roles: { project => role })
-  end
-  let(:role) do
+  shared_let(:role) do
     create(:project_role,
            permissions: %i(view_work_packages
                            view_meetings
                            edit_meetings
                            manage_agendas))
   end
+  shared_let(:user) do
+    create(:user,
+           member_with_roles: { project => role })
+  end
+
   let(:meetings_tab) { Pages::MeetingsTab.new(work_package.id) }
 
   let(:tabs) { Components::WorkPackages::Tabs.new(work_package) }
   let(:meetings_tab_element) { find(".op-tab-row--link_selected", text: "MEETINGS") }
 
-  shared_context "a meetings tab" do
+  shared_context "with a meetings tab" do
     before do
       login_as(user)
     end
@@ -64,9 +67,8 @@ RSpec.describe "Open the Meetings tab",
     end
 
     context "when the user does not have the permissions to see the meetings tab" do
-      let(:role) do
-        create(:project_role,
-               permissions: %i(view_work_packages))
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i(view_work_packages) })
       end
 
       it "does not show the meetings tab" do
@@ -107,9 +109,8 @@ RSpec.describe "Open the Meetings tab",
         create(:meeting_agenda_item, meeting: invisible_meeting, work_package:, notes: "Private note")
       end
 
-      let(:role) do
-        create(:project_role,
-               permissions: %i(view_work_packages view_meetings))
+      let(:user) do
+        create(:user, member_with_permissions: { project => %i(view_work_packages view_meetings) })
       end
 
       it "shows the one visible meeting" do
@@ -262,6 +263,30 @@ RSpec.describe "Open the Meetings tab",
           .map { |container| container["data-test-selector"] }
         expect(meeting_containers).to contain_exactly("op-meeting-container-#{first_meeting.id}",
                                                       "op-meeting-container-#{second_meeting.id}")
+      end
+    end
+
+    context "when the work_package is referenced and has an outcome" do
+      let!(:meeting) { create(:structured_meeting, project:) }
+
+      let!(:meeting_agenda_item) do
+        create(:meeting_agenda_item, meeting:, work_package:, notes: "A very important note in first meeting!")
+      end
+
+      let!(:outcome) do
+        create(:meeting_outcome, meeting_agenda_item:, notes: "A decision was made!")
+      end
+
+      it "shows the outcome" do
+        work_package_page.visit!
+        switch_to_meetings_tab
+
+        meetings_tab.expect_upcoming_counter_to_be(1)
+
+        page.within_test_selector("op-meeting-container-#{meeting.id}") do
+          expect(page).to have_content(meeting_agenda_item.notes)
+          expect(page).to have_content(outcome.notes)
+        end
       end
     end
 
@@ -459,13 +484,13 @@ RSpec.describe "Open the Meetings tab",
   describe "work package full view" do
     let(:work_package_page) { Pages::FullWorkPackage.new(work_package) }
 
-    it_behaves_like "a meetings tab"
+    it_behaves_like "with a meetings tab"
   end
 
   describe "work package split view" do
     let(:work_package_page) { Pages::SplitWorkPackage.new(work_package) }
 
-    it_behaves_like "a meetings tab"
+    it_behaves_like "with a meetings tab"
   end
 
   def switch_to_meetings_tab

@@ -2,6 +2,7 @@
 ru:
   js:
     storages:
+      authentication_error: "Ошибка аутентификации с %{storageType}"
       link_files_in_storage: "Файлы ссылок в %{storageType}"
       link_existing_files: "Связать существующие файлы"
       upload_files: "Загрузить файлы"
@@ -19,6 +20,7 @@ ru:
         one_drive: "OneDrive/SharePoint"
         default: "Хранилище"
       information:
+        authentication_error: "Запрос %{storageType} не может быть аутентифицирован, это ошибка."
         connection_error: >
           Некоторые настройки %{storageType} не работают. Обратитесь к администратору %{storageType}.
         live_data_error: "Ошибка при получении сведений о файле"
@@ -27,6 +29,8 @@ ru:
         no_file_links: "Чтобы связать файлы с этим рабочим пакетом, пожалуйста, сделайте это через %{storageType}."
         not_logged_in: >
           Для добавления ссылки, просмотра или загрузки файлов, относящиеся к этому пакету работ, войдите в %{storageType}.
+        suggest_logout: Для устранения этой проблемы Вы можете попробовать выйти из системы и зайти обратно.
+        suggest_relink: Вы можете попытаться повторно привязать ваш аккаунт с помощью кнопки логин ниже для исправления этой проблемы.
       files:
         already_existing_header: "Этот файл уже существует"
         already_existing_body: >

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -129,8 +130,10 @@ module Meeting::VirtualStartTime
   ##
   # Enforce HH::MM time parsing for the given input string
   def parsed_start_time_hour
+    return nil if @start_time_hour.nil?
+
     Time.strptime(@start_time_hour, "%H:%M")
-  rescue ArgumentError
+  rescue ArgumentError, TypeError
     nil
   end
 end

@@ -103,7 +103,6 @@ pl:
     button_settings: "Ustawienia"
     button_uncheck_all: "Odznacz wszystko"
     button_update: "Aktualizacja"
-    button_export-pdf: "Pobierz plik PDF"
     button_export-atom: "Pobierz Atom"
     button_generate_pdf: "Wygeneruj PDF"
     button_create: "Utwórz"
@@ -222,6 +221,8 @@ pl:
             label_maximum_users: "Maksymalna liczba aktywnych użytkowników"
             label_starts_at: "Data rozpoczęcia"
             label_expires_at: "Wygasa"
+            label_plan: "Plan"
+            label_additional_features: "Dodatkowe funkcje"
             receive_newsletter: Chcę otrzymywać <a target="_blank" href="%{link}">biuletyn </a> OpenProject.
             taken_domain: W każdej domenie może być aktywna tylko jedna wersja próbna.
             domain_mismatch: Obecna nazwa hosta żądania nie pasuje do skonfigurowanej nazwy hosta. Sprawdź dokładnie ustawienia systemu.
@@ -357,10 +358,10 @@ pl:
           learn_about: "Dowiedz się więcej o nowych funkcjach"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                W tej wersji wprowadzono różne funkcje i ulepszenia, np. <br> <ul class="%{list_styling_class}"> <li>Planowanie spotkań cyklicznych w celu usprawnienia cotygodniowych, codwutygodniowych lub niestandardowych spotkań.</li> <li>Tworzenie podrzędnych pakietów roboczych bezpośrednio z karty Relacje.</li> <li>Uwzględnianie sum w eksportach PDF arkuszy czasu pracy w celu uzyskania lepszych danych analitycznych.</li> <li>Uwzględnianie podrzędnych pakietów roboczych w raportach dotyczących kosztów w celu zwiększenia dokładności śledzenia.</li> <li>Wyświetlanie dat wcześniej ukrytych relacji z ograniczonymi uprawnieniami w celu podejmowania świadomych decyzji dotyczących planowania.</li> </ul>
+                Wersja zawiera różne nowe funkcje i ulepszenia, np. <br> <ul class="%{list_styling_class}"> <li>Filtr elementów potomnych (podrzędnych i ich elementów podrzędnych) pakietów roboczych.</li> <li>Korzystaj z zaawansowanej dostępności w selektorze dat.</li> <li>Wyświetlanie % ukończenia w tabeli pakietów roboczych.</li> <li>Dołącz kolumnę elementów podrzędnych w tabelach pakietów roboczych.</li> <li>Poprawione używanie selektora dat na ekranach urządzeń mobilnych.</li> <li>Eksport w formacie PDF pasujący do skonfigurowanego układu formularza.</li> </ul>
     ical_sharing_modal:
       title: "Subskrybuj kalendarz"
       inital_setup_error_message: "Podczas pobierania danych wystąpił błąd."
@@ -720,17 +721,18 @@ pl:
       description: "Opis: Kliknij, aby edytować..."
       relation_description: "Kliknij, aby dodać opis do tej relacji"
     project:
-      required_outside_context: >
-        Wybierz projekt, w którym chcesz utworzyć pakiet roboczy, aby zobaczyć wszystkie atrybuty. Możesz wybrać tylko projekty, które mają aktywowany powyższy typ.
-      context: "Kontekst projektu"
-      click_to_switch_to_project: "Projekt: %{projectname}"
-      confirm_template_load: "Przełączenie szablonu spowoduje ponowne załadowanie strony i utracisz wszystkie dane wprowadzone do tego formularza. Kontynuować?"
-      use_template: "Użyj szablonu"
-      no_template_selected: "(Brak)"
-      copy:
-        copy_options: "Opcje kopiowania"
       autocompleter:
         label: "Autouzupełnianie projektu"
+      click_to_switch_to_project: "Projekt: %{projectname}"
+      confirm_template_load: "Przełączenie szablonu spowoduje ponowne załadowanie strony i utracisz wszystkie dane wprowadzone do tego formularza. Kontynuować?"
+      context: "Kontekst projektu"
+      copy:
+        copy_options: "Opcje kopiowania"
+      not_available: "Projekt niedostępny"
+      no_template_selected: "(Brak)"
+      required_outside_context: >
+        Wybierz projekt, w którym chcesz utworzyć pakiet roboczy, aby zobaczyć wszystkie atrybuty. Możesz wybrać tylko projekty, które mają aktywowany powyższy typ.
+      use_template: "Użyj szablonu"
     reminders:
       settings:
         daily:
@@ -799,6 +801,7 @@ pl:
       typeahead_placeholder: Szukaj możliwych obserwatorów
     relation_labels:
       parent: "Rodzic"
+      child: "Element podrzędny"
       children: "Dzieci"
       relates: "Powiązany z"
       duplicates: "Duplikaty"
@@ -828,7 +831,7 @@ pl:
       add_new_child: "Utwórz nowy podrzędny"
       create_new: "Utwórz nową"
       add_existing: "Dodaj istniejącą"
-      add_existing_child: "Dodaj istniejący podrzędny"
+      add_existing_child: "Dodaj element podrzędny"
       remove_child: "Usuń podrzędny"
       add_new_relation: "Utwórz nową relację"
       add_existing_relation: "Dodaj istniejącą relację"
@@ -854,8 +857,6 @@ pl:
       select_branch: "Wybierz gałąź"
     field_value_enter_prompt: "Wprowadź wartość dla '%{field}'"
     project_menu_details: "Szczegóły"
-    scheduling:
-      manual: "Planowanie ręczne"
     sort:
       sorted_asc: "Zastosowano sortowanie rosnące, "
       sorted_dsc: "Zastosowano sortowanie malejące, "
@@ -903,15 +904,6 @@ pl:
       comment_send_failed: "Wystąpił błąd. Nie można zamieścić komentarza."
       comment_updated: "Komentarz zaktualizowano pomyślnie."
       confirm_edit_cancel: "Czy na pewno chcesz anulować edycję pakietu pracy?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatycznie zaplanowano. Daty pochodzą z relacji."
-        manually_scheduled: "Włączono ręczne planowanie, tym samym wszystkie relacje zostają zignorowane."
-        start_date_limited_by_relations: "Dostępne daty rozpoczęcia i zakończenia są ograniczone relacjami."
-        changing_dates_affects_follow_relations: "Zmiana tych dat wpłynie na daty powiązanych pakietów roboczych."
-        click_on_show_relations_to_open_gantt: 'Kliknij "%{button_name}", aby wyświetlić wykres GANTTa.'
-        show_relations: "Pokaż relacje"
-        ignore_non_working_days:
-          title: "Tylko dni robocze"
       description_filter: "Filtr"
       description_enter_text: "Wpisz tekst"
       description_options_hide: "Ukryj opcje"

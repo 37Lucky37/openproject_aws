@@ -21,6 +21,7 @@
 #++
 zh-TW:
   js:
+    text_are_you_sure: "是否確定？"
     work_packages:
       property_groups:
         costs: "費用"

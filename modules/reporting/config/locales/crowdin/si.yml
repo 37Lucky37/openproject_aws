@@ -93,7 +93,7 @@ si:
       button: "Export PDF timesheet"
       timesheet: "Timesheet"
       time: "Time"
-      sum_hours: Sum
+      sum_hours: මුදල
     cost_reports:
       title: "Your Cost Reports XLS export"
       start_time: "Start time"

@@ -56,7 +56,7 @@ class CostQuery::Result < Report::Result
     def start_timestamp
       return nil if self["start_time"].blank? || self["time_zone"].blank? || self["spent_on"].blank?
 
-      timestamp(Date.parse(self["spent_on"]), self["start_time"], self["time_zone"])
+      timestamp(self["spent_on"], self["start_time"], self["time_zone"])
     end
 
     def end_timestamp

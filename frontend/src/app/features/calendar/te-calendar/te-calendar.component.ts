@@ -184,6 +184,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     dayGridClassNames: (data:DayCellContentArg) => this.calendar.applyNonWorkingDay(data, this.nonWorkingDays),
     slotLaneClassNames: (data:SlotLaneContentArg) => this.calendar.applyNonWorkingDay(data, this.nonWorkingDays),
     slotLabelClassNames: (data:SlotLabelContentArg) => this.calendar.applyNonWorkingDay(data, this.nonWorkingDays),
+    dayHeaderContent: (data:DayHeaderContentArg) => this.calendar.dayHeaderContent(data),
   };
 
   private initializeCalendar(displayedDayss:DisplayedDays) {
@@ -308,7 +309,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     return entries.map((entry) => {
       let start:Moment;
       let end:Moment;
-      const hours = this.timezone.toHours(entry.hours) * this.scaleRatio;
+      const hours = this.timezone.toHours(entry.hours as string) * this.scaleRatio;
       const spentOn = entry.spentOn;
 
       if (hoursDistribution[spentOn]) {
@@ -347,7 +348,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     const dateSums:{ [key:string]:number } = {};
 
     entries.forEach((entry) => {
-      const hours = this.timezone.toHours(entry.hours);
+      const hours = this.timezone.toHours(entry.hours as string);
       const spentOn = entry.spentOn;
 
       if (dateSums[spentOn]) {
@@ -421,7 +422,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
 
   private dispatchEventClick(event:CalendarViewEvent):void {
     if (event.event.extendedProps.entry) {
-      this.editEvent(event.event.extendedProps.entry);
+      this.editEvent(event.event.extendedProps.entry as TimeEntryResource);
     } else if (event.el.classList.contains(ADD_ENTRY_CLASS_NAME) && !event.el.classList.contains(ADD_ENTRY_PROHIBITED_CLASS_NAME)) {
       this.addEvent(moment(event.event.startStr));
     }
@@ -535,7 +536,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
     const schema = (await this.schemaCache.ensureLoaded(entry as TimeEntryResource)) as TimeEntrySchema;
 
     jQuery(event.el).tooltip({
-      content: this.tooltipContentString(event.event.extendedProps.entry, schema),
+      content: this.tooltipContentString(event.event.extendedProps.entry as TimeEntryResource, schema),
       items: '.fc-event',
       close() {
         jQuery('.ui-helper-hidden-accessible').remove();
@@ -555,11 +556,11 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
   private prependDuration(event:CalendarViewEvent):void {
     const timeEntry = event.event.extendedProps.entry as TimeEntryResource;
 
-    if (this.timezone.toHours(timeEntry.hours) < 0.5) {
+    if (this.timezone.toHours(timeEntry.hours as string) < 0.5) {
       return;
     }
 
-    const formattedDuration = this.timezone.formattedDuration(timeEntry.hours);
+    const formattedDuration = this.timezone.formattedDuration(timeEntry.hours as string);
 
     jQuery(event.el)
       .find('.fc-event-title')
@@ -578,7 +579,7 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
   private appendFadeout(event:CalendarViewEvent):void {
     const timeEntry = event.event.extendedProps.entry as TimeEntryResource;
 
-    if (this.timezone.toHours(timeEntry.hours) < 0.5) {
+    if (this.timezone.toHours(timeEntry.hours as string) < 0.5) {
       return;
     }
 
@@ -636,11 +637,11 @@ export class TimeEntryCalendarComponent implements AfterViewInit, OnDestroy {
           </li>
           <li class="tooltip--map--item">
             <span class="tooltip--map--key">${schema.hours.name}:</span>
-            <span class="tooltip--map--value">${this.timezone.formattedDuration(entry.hours)}</span>
+            <span class="tooltip--map--value">${this.timezone.formattedDuration(entry.hours as string)}</span>
           </li>
           <li class="tooltip--map--item">
             <span class="tooltip--map--key">${schema.comment.name}:</span>
-            <span class="tooltip--map--value">${entry.comment.raw || this.i18n.t('js.placeholders.default')}</span>
+            <span class="tooltip--map--value">${this.sanitizedValue(entry.comment.raw || this.i18n.t('js.placeholders.default'))}</span>
           </li>
         `;
   }

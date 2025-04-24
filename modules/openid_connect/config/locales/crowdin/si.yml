@@ -4,14 +4,14 @@ si:
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     You have been logged out. The contents of any form you submit may be lost. Please [log in].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: නම
         slug: Unique identifier
         display_name: Display name
-        client_id: Client ID
-        client_secret: Client secret
+        client_id: සේවාලාභියා හැඳුනුම්පත
+        client_secret: සේවාලාභියා රහස්
         secret: Secret
         scope: Scope
         grant_types_supported: Supported grant types
@@ -29,7 +29,6 @@ si:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@ si:
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: සිතියම්කරණය විශේෂණය
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: No providers have been defined yet.
       plural: OpenID providers

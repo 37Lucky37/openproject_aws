@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,7 +41,7 @@ RSpec.describe WorkPackages::CreateNoteContract do
     wp
   end
   let(:user) { build_stubbed(:user) }
-  let(:policy_instance) { double("WorkPackagePolicyInstance") }
+  let(:policy_instance) { instance_double(WorkPackagePolicy) }
 
   subject(:contract) do
     contract = described_class.new(work_package, user)
@@ -74,6 +76,48 @@ RSpec.describe WorkPackages::CreateNoteContract do
       it "is invalid" do
         expect(contract.errors.symbols_for(:journal_notes))
           .to contain_exactly(:error_unauthorized)
+      end
+    end
+  end
+
+  describe "journal_restricted" do
+    before do
+      allow(policy_instance).to receive(:allowed?).and_return(true)
+    end
+
+    context "with a blank note" do
+      before do
+        work_package.journal_notes = ""
+        work_package.journal_restricted = true
+
+        contract.validate
+      end
+
+      context "and journal_restricted is true, and comments_with_restricted_visibility_active? is disabled",
+              with_flag: { comments_with_restricted_visibility_active: false } do
+        it "is invalid" do
+          expect(contract.errors.full_messages).to eq(["Comment can't be blank.", "Restricted Journal is not available."])
+        end
+      end
+
+      context "and journal_restricted is true, and comments_with_restricted_visibility_active? is enabled",
+              with_flag: { comments_with_restricted_visibility_active: true } do
+        it "is invalid" do
+          expect(contract.errors.full_messages).to eq(["Comment can't be blank."])
+        end
+      end
+    end
+
+    context "with a note" do
+      context "and journal_restricted is true", with_flag: { comments_with_restricted_visibility_active: true } do
+        before do
+          work_package.journal_notes = "blubs"
+          work_package.journal_restricted = true
+
+          contract.validate
+        end
+
+        it("is valid") { expect(contract.errors).to be_empty }
       end
     end
   end

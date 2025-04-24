@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,5 +31,5 @@
 class Storages::LastProjectFolder < ApplicationRecord
   belongs_to :project_storage, class_name: "Storages::ProjectStorage"
 
-  enum mode: { inactive: "inactive", manual: "manual", automatic: "automatic" }.freeze
+  enum :mode, { inactive: "inactive", manual: "manual", automatic: "automatic" }.freeze
 end

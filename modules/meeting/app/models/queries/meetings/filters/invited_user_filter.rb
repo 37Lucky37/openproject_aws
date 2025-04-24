@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,18 +40,39 @@ class Queries::Meetings::Filters::InvitedUserFilter < Queries::Meetings::Filters
     @type_strategy ||= ::Queries::Filters::Strategies::IntegerListOptional.new(self)
   end
 
-  def where
-    [
-      operator_strategy.sql_for_field(values, MeetingParticipant.table_name, "user_id"),
-      "#{MeetingParticipant.table_name}.invited"
-    ].join(" AND ")
+  def where # rubocop:disable Metrics/AbcSize
+    condition = "#{MeetingParticipant.table_name}.invited"
+
+    case operator
+    when "="
+      [operator_strategy.sql_for_field(values, MeetingParticipant.table_name, "user_id"), condition].join(" AND ")
+    when "!"
+      <<~SQL.squish
+        NOT EXISTS (
+          SELECT 1 FROM #{MeetingParticipant.table_name}
+          WHERE #{MeetingParticipant.table_name}.meeting_id = meetings.id
+          AND #{MeetingParticipant.table_name}.user_id = '#{MeetingParticipant.connection.quote_string(values.first)}'
+          AND #{condition}
+        )
+      SQL
+    when "*"
+      ["#{MeetingParticipant.table_name}.user_id IS NOT NULL", condition].join(" AND ")
+    when "!*"
+      <<~SQL.squish
+        NOT EXISTS (
+          SELECT 1 FROM #{MeetingParticipant.table_name}
+          WHERE #{MeetingParticipant.table_name}.meeting_id = meetings.id
+          AND #{condition}
+        )
+      SQL
+    end
   end
 
   def human_name
     I18n.t(:label_invited_user)
   end
 
-  def joins
+  def left_outer_joins
     :participants
   end
 

@@ -103,7 +103,6 @@ ru:
     button_settings: "Настройки"
     button_uncheck_all: "Снять все отметки"
     button_update: "Обновить"
-    button_export-pdf: "Скачать PDF"
     button_export-atom: "Скачать Atom"
     button_generate_pdf: "Создать PDF"
     button_create: "Создать"
@@ -146,7 +145,7 @@ ru:
       error_saving_failed: "Не удалось сохранить документ по следующей причине: %{error}"
       ckeditor_error: "Произошла ошибка в CKEditor"
       mode:
-        manual: "Перейти к источнику уценок"
+        manual: "Перейти на Markdown"
         wysiwyg: "Перейти к WYSIWYG-редактору"
       macro:
         error: "Невозможно развернуть макрос: %{message}"
@@ -194,7 +193,7 @@ ru:
           text: "[Placeholder] Встроенный календарь"
     admin:
       type_form:
-        custom_field: "Настраиваемое поле"
+        custom_field: "Пользовательское поле"
         inactive: "Неактивен"
         drag_to_activate: "Чтобы включить поля, перетащите их отсюда"
         add_group: "Добавить группу атрибутов"
@@ -221,6 +220,8 @@ ru:
             label_maximum_users: "Максимальное число активных пользователей"
             label_starts_at: "Начиная с"
             label_expires_at: "Срок действия до"
+            label_plan: "План"
+            label_additional_features: "Дополнительные возможности"
             receive_newsletter: Я хочу получать <a target="_blank" href="%{link}">новостную рассылку от OpenProject</a>.
             taken_domain: На каждом домене может быть только один активный пробный период.
             domain_mismatch: Текущее имя узла запроса не совпадает с настроенным именем узла. Пожалуйста, дважды проверьте настройки вашей системы.
@@ -311,7 +312,7 @@ ru:
           two: "Второй критерий сортировки"
           three: "Третий критерий сортировки"
     gantt_chart:
-      label: "Диаграмма Ганта"
+      label: "График Гантта"
       quarter_label: "Q%{quarter_number}"
       labels:
         title: "Конфигурация метки"
@@ -356,10 +357,10 @@ ru:
           learn_about: "Подробнее о новых функциях"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                Этот выпуск предлагает Вам различные возможности и улучшения, например, <br>. <ul class="%{list_styling_class}"> <li>Планируйте повторяющиеся совещания, чтобы упростить еженедельные или пользовательские совещания.</li> <li>Создавайте дочерние пакеты работ непосредственно на вкладке Отношения.</li> <li>Включайте итоговые суммы в PDF-экспорт временных таблиц для лучшего понимания.</li> <li>Включайте дочерние пакеты работ в отчеты о затратах для более точного отслеживания.</li> <li>Просматривайте даты ранее скрытых, ограниченных в правах отношений, чтобы принимать обоснованные решения о планировании.</li> </ul>
+                Релиз содержит различные функции и улучшения, например <br> <ul class="%{list_styling_class}"> <li>Фильтр для потомков (детей и внуков) рабочих пакетов.</li> <li> Улучшенное средство для выбора дат.</li> <li>Просмотр суммарного процента выполненных работ.</li> <li>Столбец потомков в таблице пакетов работ.</li> <li>Улучшено отображение средства для выбора дат на мобильных экранах.</li><li>Экспорт PDF, с настройками, соответствующими формe.</li> </ul>
     ical_sharing_modal:
       title: "Подписаться на календарь"
       inital_setup_error_message: "Произошла ошибка при получении данных."
@@ -456,7 +457,7 @@ ru:
     label_mail_notification: "Уведомления по email"
     label_manage_columns: "Управляйте колонками и изменяйте их порядок"
     label_me: "я"
-    label_meeting_agenda: "Повестка встречи"
+    label_meeting_agenda: "Повестка совещания"
     label_meeting_minutes: "Протокол(-ы)"
     label_menu_collapse: "свернуть"
     label_menu_expand: "развернуть"
@@ -564,7 +565,7 @@ ru:
     label_version_plural: "Этапы"
     label_view_has_changed: "Это представление имеет несохраненные изменения. Кликните, чтобы сохранить их."
     help_texts:
-      show_modal: "Показать содержимое атрибута текста справки"
+      show_modal: "Показать текстовую справку по атрибутам"
     onboarding:
       buttons:
         skip: "Пропустить"
@@ -719,17 +720,18 @@ ru:
       description: "Описание: Нажмите для редактирования..."
       relation_description: "Нажмите, чтобы добавить описание для этой связи"
     project:
-      required_outside_context: >
-        Пожалуйста, выберите проект для создания пакета работ для просмотра всех атрибутов. Вы можете выбрать только проекты, которые имеют вышеуказанный тип.
-      context: "Контекст проекта"
-      click_to_switch_to_project: "Проект: %{projectname}"
-      confirm_template_load: "Смена шаблона перезагрузит страницу, и вы потеряете все данные, введенные в этой форме. Продолжить?"
-      use_template: "Использовать шаблон"
-      no_template_selected: "(Нет)"
-      copy:
-        copy_options: "Скопировать параметры"
       autocompleter:
         label: "Автозавершение проекта"
+      click_to_switch_to_project: "Проект: %{projectname}"
+      confirm_template_load: "Смена шаблона перезагрузит страницу, и вы потеряете все данные, введенные в этой форме. Продолжить?"
+      context: "Контекст проекта"
+      copy:
+        copy_options: "Скопировать параметры"
+      not_available: "Проект не существует"
+      no_template_selected: "(Нет)"
+      required_outside_context: >
+        Пожалуйста, выберите проект для создания пакета работ для просмотра всех атрибутов. Вы можете выбрать только проекты, которые имеют вышеуказанный тип.
+      use_template: "Использовать шаблон"
     reminders:
       settings:
         daily:
@@ -771,7 +773,7 @@ ru:
         error_no_table_configured: "Пожалуйста, настройте таблицу для %{group}."
         reset_title: "Сбросить настройки формы"
         confirm_reset: >
-          Предупреждение: хотите сбросить форму? Это сбросит атрибуты к первоначальным значениям группы и запретит правку настраиваемых полей.
+          Предупреждение: хотите сбросить форму? Это сбросит атрибуты к первоначальным значениям группы и запретит правку пользовательских полей.
         upgrade_to_ee: "Обновление до корпоративной версии"
         upgrade_to_ee_text: "Уууууууууу! Если вам нужен этот дополнение, то вы бы хотели поддержать нас разработчиков OpenSource, став клиентом корпоративной версии?"
         more_information: "Больше информации"
@@ -798,6 +800,7 @@ ru:
       typeahead_placeholder: Поиск возможных наблюдателей
     relation_labels:
       parent: "Родитель"
+      child: "Дочерний"
       children: "Дочерние пакеты работ"
       relates: "Связан с"
       duplicates: "Дублирует"
@@ -806,7 +809,7 @@ ru:
       blocked: "Блокируется"
       precedes: "Предшествует"
       follows: "Следует"
-      includes: "Включения"
+      includes: "Включает в себя"
       partof: "Является частью"
       requires: "Требует выполнения"
       required: "Требуется для выполнения"
@@ -827,14 +830,14 @@ ru:
       add_new_child: "Создать новый дочерний пакет работ"
       create_new: "Создать новый"
       add_existing: "Добавить существующий"
-      add_existing_child: "Добавить существующий дочерний пакет работ"
+      add_existing_child: "Добавить дочерний пакет работ"
       remove_child: "Удалить дочерний элемент"
       add_new_relation: "Создать новую связь"
       add_existing_relation: "Добавить существующее отношение"
       update_description: "Установить или обновить описание этого отношения"
       toggle_description: "Переключить описание отношения"
       update_relation: "Нажмите, чтобы изменить тип отношения"
-      add_follower: "Добавить подписчика"
+      add_follower: "Добавить последователя"
       show_relations: "Показать взаимосвязи"
       add_predecessor: "Добавить предшественника"
       remove: "Удалить связь"
@@ -853,8 +856,6 @@ ru:
       select_branch: "Выберите ветку"
     field_value_enter_prompt: "Введите значение для '%{field} ' '"
     project_menu_details: "Детали"
-    scheduling:
-      manual: "Ручное планирование"
     sort:
       sorted_asc: "Сортировка по возрастанию применяется, "
       sorted_dsc: "Применяется сортировка по убыванию, "
@@ -902,15 +903,6 @@ ru:
       comment_send_failed: "Произошла ошибка. Не удалось отправить комментарий."
       comment_updated: "Комментарий успешно обновлен."
       confirm_edit_cancel: "Вы уверены, что хотите отменить редактирование пакета работ?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Автоматически запланировано. Даты выводятся из отношений."
-        manually_scheduled: "Ручное планирование включено, все отношения игнорируются."
-        start_date_limited_by_relations: "Даты начала и окончания доступности ограничены взаимосвязями."
-        changing_dates_affects_follow_relations: "Изменение этих дат повлияет на даты связанных пакетов работ."
-        click_on_show_relations_to_open_gantt: 'Нажмите на "%{button_name}" для просмотра в виде диаграммы Ганта.'
-        show_relations: "Показать взаимосвязи"
-        ignore_non_working_days:
-          title: "Только рабочие дни"
       description_filter: "Фильтр"
       description_enter_text: "Введите текст"
       description_options_hide: "Скрыть параметры"
@@ -1004,7 +996,7 @@ ru:
         manually_sorted: "Новый запрос с ручной сортировкой"
         latest_activity: "Последние действия"
         created_by_me: "Создано мной"
-        assigned_to_me: "Предназначено для меня"
+        assigned_to_me: "Назначены мне"
         recently_created: "Недавно созданное"
         all_open: "Все открытые"
         overdue: "Просрочено"
@@ -1123,7 +1115,7 @@ ru:
         export: "Экспортировать"
         visibility_settings: "Настройки видимости"
         share_calendar: "Подписаться на календарь"
-        page_settings: "Переименовать представления"
+        page_settings: "Переименовать представление"
         delete: "Удалить"
       filter: "Фильтр"
       unselected_title: "Пакет работ"

@@ -35,6 +35,10 @@ class AggregateJournals < ActiveRecord::Migration[6.1]
   # Class has been removed by now
   class WikiContent < ApplicationRecord; end
 
+  # Class has been changed in the meantime.
+  # It received a status enum which's column does not yet exist when this migration runs.
+  class Attachment < ApplicationRecord; end
+
   def up
     [Attachment,
      Changeset,

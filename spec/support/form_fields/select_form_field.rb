@@ -15,6 +15,31 @@ module FormFields
         .to have_no_css(".ng-option", text: option, visible: :all)
     end
 
+    def expect_option(option, grouping: nil)
+      field_container.find(".ng-select-container").click
+      if grouping
+        # Make sure the option is displayed under correct grouping title.
+        option_group = find(".ng-optgroup", text: grouping)
+        option = find(".ng-option.ng-option-child", text: option, visible: :visible)
+
+        expected_group = begin
+          option.find(:xpath,
+                      "preceding-sibling::*[contains(@class, 'ng-optgroup')][1]",
+                      wait: false)
+        rescue Capybara::ElementNotFound
+          raise "Unable to find the '.ng-optgroup' grouping for option '#{option.text}'"
+        end
+
+        expect(option_group).to eq(expected_group), <<~MSG
+          Expected the option '#{option.text}' to be under the group '#{option_group.text}',
+          but it was under '#{expected_group.text}' instead.
+        MSG
+      else
+        expect(page)
+          .to have_css(".ng-option", text: option, visible: :visible)
+      end
+    end
+
     def expect_visible
       expect(field_container).to have_css("ng-select")
     end

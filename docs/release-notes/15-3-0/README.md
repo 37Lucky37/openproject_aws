@@ -16,6 +16,10 @@ In these Release Notes, we will give an overview of important feature changes. A
 
 ## Important feature changes
 
+Take a look at the release video showing most important features introduced in 15.3.0.
+
+![Release 15.3 Video](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_15_3_release.mp4)
+
 ### Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments
 
 Organizing meetings just became much easier with **Recurring Meetings** in OpenProject 15.3. Instead of manually setting up repeated meetings, you can now create a Recurring Meeting series with flexible scheduling options.
@@ -74,7 +78,7 @@ Cost reports in OpenProject now allow to easier include child work packages, ens
 
 OpenProject 15.3 introduces a new filter option for cost reports: **is (includes descendants)**, in addition to **is**. This allows users to automatically include all related child work packages (grandchildren, great-grandchildren, etc.) in their cost reports, improving accuracy and efficiency. This eliminates the need for cumbersome manual selection and ensures that all relevant costs are accounted for in reports.
 
-![Screenshot showing the dropdown in a cost report filter, highlighting the new 'is (includes descendents)' option](openproject-15-3-cost-report-children.png)
+![Screenshot showing the dropdown in a cost report filter, highlighting the new 'is (includes descendants)' option](openproject-15-3-cost-report-children.png)
 
 [Learn more about tracking progress with OpenProject](../../user-guide/time-and-costs/progress-tracking/).
 
@@ -150,7 +154,7 @@ It is now possible to set up custom design variables and logos as environment va
 - Feature: Copying of recurring meetings occurrences \[[#59777](https://community.openproject.org/wp/59777)\]
 - Feature: Cancelling recurring meetings occurrences \[[#59829](https://community.openproject.org/wp/59829)\]
 - Feature: Add trailing unit for input fields in datepicker and lag field \[[#59860](https://community.openproject.org/wp/59860)\]
-- Feature: Update meeting series template blankslate to include information \[[#59867](https://community.openproject.org/wp/59867)\]
+- Feature: Update meeting series template blank slate to include information \[[#59867](https://community.openproject.org/wp/59867)\]
 - Feature: Pagination for recurring meetings \[[#59883](https://community.openproject.org/wp/59883)\]
 - Feature: Cancellation dialogs for for one-time and recurring meetings \[[#59885](https://community.openproject.org/wp/59885)\]
 - Feature: Recurring meetings ICS schedule \[[#59886](https://community.openproject.org/wp/59886)\]
@@ -168,11 +172,11 @@ It is now possible to set up custom design variables and logos as environment va
 - Feature: Display sums in Timesheet PDF \[[#60923](https://community.openproject.org/wp/60923)\]
 - Feature: Separate meeting series show page into two tables \[[#60959](https://community.openproject.org/wp/60959)\]
 - Feature: Autocompleters for user cf filter values on the project list   \[[#60972](https://community.openproject.org/wp/60972)\]
-- Feature: Better structure upcoming meetings by organising them into named date sections \[[#61030](https://community.openproject.org/wp/61030)\]
+- Feature: Better structure upcoming meetings by organizing them into named date sections \[[#61030](https://community.openproject.org/wp/61030)\]
 - Feature: Relations tab: Show a single date when start and finish dates are the same \[[#61044](https://community.openproject.org/wp/61044)\]
 - Feature: Remove smooth animation when loading the Activity tab with sort order &#39;Newest at the bottom&#39; \[[#61074](https://community.openproject.org/wp/61074)\]
 - Feature: Make user popover information visible everywhere \[[#61126](https://community.openproject.org/wp/61126)\]
-- Feature: Better indicate when a recurring meeting has ended (or is ended manually) with changes in phrasing and a more helpful blankslate \[[#61161](https://community.openproject.org/wp/61161)\]
+- Feature: Better indicate when a recurring meeting has ended (or is ended manually) with changes in phrasing and a more helpful blank slate \[[#61161](https://community.openproject.org/wp/61161)\]
 - Feature: Primerize the log time modal \[[#61322](https://community.openproject.org/wp/61322)\]
 - Bugfix: Cost query for work package does not show children / value differs from spentTime \[[#33790](https://community.openproject.org/wp/33790)\]
 - Bugfix: When logging time with comma in English language settings everything after the comma is cut off \[[#36307](https://community.openproject.org/wp/36307)\]
@@ -199,7 +203,7 @@ It is now possible to set up custom design variables and logos as environment va
 - Bugfix: Main recurring meeting index doesn&#39;t show updated empty state \[[#59966](https://community.openproject.org/wp/59966)\]
 - Bugfix: Meeting name is not in a lighter shade on the recurring meeting overview page \[[#59976](https://community.openproject.org/wp/59976)\]
 - Bugfix: Breadcrumb name should be &#39;My meetings&#39; \[[#59994](https://community.openproject.org/wp/59994)\]
-- Bugfix: User is taken back to the top of the page after loading more occurences of recurring meeting \[[#60007](https://community.openproject.org/wp/60007)\]
+- Bugfix: User is taken back to the top of the page after loading more occurrences of recurring meeting \[[#60007](https://community.openproject.org/wp/60007)\]
 - Bugfix: Left side menu doesn&#39;t highlight Meeting series name \[[#60019](https://community.openproject.org/wp/60019)\]
 - Bugfix: As anonymized user, meetings side menus should be reduced \[[#60117](https://community.openproject.org/wp/60117)\]
 - Bugfix: Missing \* to show fields are required + wrong primary button name on the Recurring meeting form \[[#60118](https://community.openproject.org/wp/60118)\]
@@ -210,7 +214,7 @@ It is now possible to set up custom design variables and logos as environment va
 - Bugfix: Hyphenation feature in generated pdf files removes space before italic text \[[#60431](https://community.openproject.org/wp/60431)\]
 - Bugfix: Custom user action broken \[[#60439](https://community.openproject.org/wp/60439)\]
 - Bugfix: Misplaced cursor in comments text editor on iOS  \[[#60538](https://community.openproject.org/wp/60538)\]
-- Bugfix: LDAP sync not lockingusers if no values returned \[[#60566](https://community.openproject.org/wp/60566)\]
+- Bugfix: LDAP sync not locking users if no values returned \[[#60566](https://community.openproject.org/wp/60566)\]
 - Bugfix: Role permissions concerning comments are named &quot;Notes&quot; and are unclear \[[#60602](https://community.openproject.org/wp/60602)\]
 - Bugfix: Adding a WP with long name as agenda item on Meetings creates a visual overlap \[[#60608](https://community.openproject.org/wp/60608)\]
 - Bugfix: Add relation dialog is overflowing when the ticket name is rather long \[[#60619](https://community.openproject.org/wp/60619)\]

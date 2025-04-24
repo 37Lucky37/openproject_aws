@@ -90,43 +90,43 @@ RSpec.describe WorkPackages::DeleteService do
     let(:grandparent) do
       build_stubbed(:work_package)
     end
-    let(:expect_inherited_attributes_service_calls) do
-      inherited_service_instance = double(WorkPackages::UpdateAncestorsService)
+    let(:update_ancestors_service_instance) do
+      update_ancestors_service_instance = instance_double(WorkPackages::UpdateAncestorsService)
 
-      service_result = ServiceResult.success(result: work_package)
+      service_result = ServiceResult.success(result: work_package,
+                                             dependent_results: [ServiceResult.success(result: parent),
+                                                                 ServiceResult.success(result: grandparent)])
 
-      service_result.dependent_results += [ServiceResult.success(result: parent),
-                                           ServiceResult.success(result: grandparent)]
+      allow(update_ancestors_service_instance)
+        .to receive_messages(
+          with_state: update_ancestors_service_instance,
+          call: service_result
+        )
 
-      expect(WorkPackages::UpdateAncestorsService)
-        .to receive(:new)
-        .with(user:,
-              work_package:)
-        .and_return(inherited_service_instance)
-
-      expect(inherited_service_instance)
-        .to receive(:call)
-        .with(work_package.attributes.keys.map(&:to_sym))
-        .and_return(service_result)
+      update_ancestors_service_instance
     end
-    let(:expect_no_inherited_attributes_service_calls) do
-      expect(WorkPackages::UpdateAncestorsService)
-        .not_to receive(:new)
+
+    before do
+      allow(WorkPackages::UpdateAncestorsService)
+        .to receive(:new)
+        .and_return(update_ancestors_service_instance)
     end
 
     it "calls the inherit attributes service for each ancestor" do
-      expect_inherited_attributes_service_calls
-
       subject
+      expect(WorkPackages::UpdateAncestorsService)
+        .to have_received(:new).with(user:, work_package:)
+      expect(update_ancestors_service_instance)
+        .to have_received(:call).with(work_package.attributes.keys.map(&:to_sym))
     end
 
     context "when the work package could not be destroyed" do
       let(:destroyed_result) { false }
 
       it "does not call inherited attributes service" do
-        expect_no_inherited_attributes_service_calls
-
         subject
+        expect(WorkPackages::UpdateAncestorsService)
+          .not_to have_received(:new)
       end
     end
   end

@@ -1,5 +1,5 @@
 es:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Nombre
@@ -15,15 +15,14 @@ es:
         idp_slo_service_url: Terminal de cierre de sesión del proveedor de identidad
         idp_cert: Certificado público del proveedor de identidad
         authn_requests_signed: Firmar solicitudes de autenticación SAML
-        want_assertions_signed: Exigir respuestas firmadas
-        want_assertions_encrypted: Exigir respuestas cifradas
+        want_assertions_signed: Requerir respuestas firmadas
+        want_assertions_encrypted: Requerir respuestas cifradas
         certificate: Certificado utilizado por OpenProject para las solicitudes SAML
         private_key: Clave privada correspondiente para las solicitudes SAML de OpenProject
         signature_method: Algoritmo de firma
         digest_method: Algoritmo de resumen
         format: "Formato"
         icon: "Icono personalizado"
-  activerecord:
     errors:
       models:
         saml/provider:

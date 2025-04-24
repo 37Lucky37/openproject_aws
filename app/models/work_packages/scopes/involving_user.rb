@@ -72,7 +72,7 @@ module WorkPackages::Scopes
       private
 
       def user_and_groups_union(user)
-        in_group = GroupUser.select("group_id").where(["user_id = ?", user.id]).arel # rubocop:disable Rails/WhereEquals
+        in_group = GroupUser.select("group_id").where(["user_id = ?", user.id]) # rubocop:disable Rails/WhereEquals
 
         Arel.sql("#{in_group.to_sql} UNION SELECT #{user.id}")
       end

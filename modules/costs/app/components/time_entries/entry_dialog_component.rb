@@ -35,21 +35,17 @@ module TimeEntries
 
     MODAL_ID = "time-entry-dialog"
 
-    def initialize(time_entry:, show_user: true, show_work_package: true)
-      super()
-      @time_entry = time_entry
-      @show_user = show_user
-      @show_work_package = show_work_package
-    end
+    options time_entry: nil,
+            limit_to_project_id: nil,
+            show_user: true,
+            show_work_package: true
 
     private
-
-    attr_reader :time_entry, :open, :show_user, :show_work_package
 
     def can_delete_time_entry?
       return false if time_entry.new_record?
 
-      DeleteContract.deletion_allowed?(@time_entry, User.current)
+      DeleteContract.deletion_allowed?(time_entry, User.current)
     end
   end
 end

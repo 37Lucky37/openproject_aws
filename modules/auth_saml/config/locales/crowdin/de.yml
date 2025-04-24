@@ -1,11 +1,11 @@
 de:
-  activemodel:
+  activerecord:
     attributes:
       saml/provider:
         display_name: Name
         identifier: Kennung
         secret: Geheim
-        scope: Geltungsbereich
+        scope: Scope
         assertion_consumer_service_url: ACS (Assertion Consumer Service) URL
         limit_self_registration: Selbstregistrierung begrenzen
         sp_entity_id: Entity-ID des Services
@@ -23,7 +23,6 @@ de:
         digest_method: Digest-Algorithmus
         format: "Format"
         icon: "Benutzerdefiniertes Symbol"
-  activerecord:
     errors:
       models:
         saml/provider:

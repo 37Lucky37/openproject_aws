@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -44,7 +46,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
       input_options, label_options = extract_from options
 
       if field_has_errors?(field)
-        input_options[:class] << " -error"
+        add_error_class(input_options)
       end
 
       label = label_for_field(field, label_options)
@@ -71,7 +73,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
   end
   private_class_method :with_text_formatting
 
-  (field_helpers - %i(radio_button hidden_field fields_for label text_area) + %i(date_select)).each do |selector|
+  (field_helpers - %i(radio_button hidden_field fields_for label text_area) + %i(date_select check_box)).each do |selector|
     define_method selector, &tag_with_label_method(selector)
   end
 
@@ -92,14 +94,14 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
     input_options, label_options = extract_from options
 
     if field_has_errors?(field)
-      input_options[:class] << " -error"
+      add_error_class(input_options)
     end
 
     @object_name.to_s.sub!(/\[\]$/, "") || @object_name.to_s.sub!(/\[\]\]$/, "]")
 
     inputs = {
       value: @object.public_send(field),
-      id: field_id(field, index: options[:index]),
+      inputId: field_id(field, index: options[:index]),
       name: options[:name] || field_name(field, index: options[:index])
     }
 
@@ -130,7 +132,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
     label_options[:for] = "#{sanitized_object_name}_#{field}_#{value.downcase}"
 
     if field_has_errors?(field)
-      input_options[:class] << " -error"
+      add_error_class(input_options)
     end
 
     label = label_for_field(field, label_options)
@@ -146,7 +148,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
     end
 
     if field_has_errors?(field)
-      html_options[:class] << " -error"
+      add_error_class(html_options)
     end
 
     merge_required_attributes(options[:required], html_options)
@@ -164,7 +166,6 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
                            checked,
                            text = field.to_s + "_#{checked_value}",
                            options = {})
-
     label_for = :"#{sanitized_object_name}_#{field}_#{checked_value}"
     unchecked_value = options.delete(:unchecked_value) { "" }
 
@@ -240,14 +241,14 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
 
   def field_container_css_class(selector, options)
     classes = if TEXT_LIKE_FIELDS.include?(selector)
-                "form--text-field-container"
+                ["form--text-field-container"]
               else
-                "form--#{selector.to_s.tr('_', '-')}-container"
+                ["form--#{selector.to_s.tr('_', '-')}-container"]
               end
 
-    classes << (" #{options.fetch(:container_class, '')}")
+    classes << options[:container_class]
 
-    classes.strip
+    classes.compact
   end
 
   ##
@@ -296,7 +297,7 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
 
   def label_for_field_errors(content, options, field)
     if field_has_errors?(field)
-      options[:class] << " -error"
+      add_error_class(options)
       error_label = I18n.t("errors.field_erroneous_label",
                            full_errors: @object.errors.full_messages_for(field).join(" "))
       content << content_tag("p", error_label, class: "hidden-for-sighted")
@@ -337,7 +338,9 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def field_has_errors?(field)
-    @object&.errors&.include?(field)
+    return false if @object == false || @object.nil?
+
+    @object.errors&.include?(field)
   end
 
   def extract_from(options)
@@ -368,5 +371,9 @@ class TabularFormBuilder < ActionView::Helpers::FormBuilder
     else
       method.to_s.camelize
     end
+  end
+
+  def add_error_class(options)
+    options[:class] = Array(options[:class]) + ["-error"]
   end
 end

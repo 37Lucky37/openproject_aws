@@ -45,6 +45,7 @@ RSpec.describe "DELETE /meetings/:id",
 
   shared_let(:meeting) do
     create :meeting,
+           :author_participates,
            project:,
            title: "My one-time meeting",
            author: user,

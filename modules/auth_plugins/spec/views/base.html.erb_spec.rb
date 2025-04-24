@@ -44,7 +44,8 @@ RSpec.describe "layouts/base" do
 
     context "with an authenticator with given icon" do
       let(:provider) do
-        { name: "foob_auth", icon: "image.png" }
+        # Need to use an actually existing image as the asset pipeline will otherwise not include the link.
+        { name: "foob_auth", icon: "openid_connect/auth_provider-custom.png" }
       end
 
       before do
@@ -52,7 +53,7 @@ RSpec.describe "layouts/base" do
       end
 
       it "adds the CSS to render the icon" do
-        expect(rendered).to have_text(/background-image:(?:.*)image.png/)
+        expect(rendered).to have_text(/background-image:(?:.*)auth_provider-custom.png/)
       end
     end
   end

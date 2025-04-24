@@ -34,6 +34,7 @@ projects:
         duration: 60
         interval: 1
         frequency: :weekly
+        time_zone: "Europe/Berlin"
         author: :openproject_admin
     meeting_agenda_items:
       - t_title: Good news

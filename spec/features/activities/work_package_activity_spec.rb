@@ -52,6 +52,11 @@ RSpec.describe "Work package activity", :js do
 
   context "when the progress values are changed" do
     before do
+      # set WORK_PACKAGES_ACTIVITIES_TAB_POLLING_INTERVAL_IN_MS from 10s to 1s
+      # to speed up the polling interval for test duration
+      # TODO: Redefine interval as a setting?
+      ENV["WORK_PACKAGES_ACTIVITIES_TAB_POLLING_INTERVAL_IN_MS"] = "1000"
+
       parent_page.visit!
       popover.open
       popover.set_values(work: "100", remaining_time: "5")
@@ -60,7 +65,11 @@ RSpec.describe "Work package activity", :js do
       parent_page.wait_for_activity_tab
     end
 
-    it "displays changed attributes in the activity tab", :aggregate_failures do
+    after do
+      ENV.delete("WORK_PACKAGES_ACTIVITIES_TAB_POLLING_INTERVAL_IN_MS")
+    end
+
+    it "displays changed attributes in the activity tab" do
       activity_tab.expect_journal_changed_attribute(text: "% Complete set to 95%")
       activity_tab.expect_journal_changed_attribute(text: "Work set to 100h")
       activity_tab.expect_journal_changed_attribute(text: "Remaining work set to 5h")

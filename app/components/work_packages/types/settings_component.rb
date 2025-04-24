@@ -31,6 +31,7 @@
 module WorkPackages
   module Types
     class SettingsComponent < ApplicationComponent
+      include ApplicationHelper
       include OpPrimer::ComponentHelpers
       include OpTurbo::Streamable
 
@@ -56,7 +57,7 @@ module WorkPackages
       end
 
       def update_form_options
-        { url: type_path(id: model.id), method: :patch, model: }
+        { url: update_tab_type_path(id: model.id, tab: :settings), method: :patch, model: }
       end
     end
   end

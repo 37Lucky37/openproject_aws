@@ -12,7 +12,7 @@
       type="text"
       class="spot-input"
       [attr.data-value]="value"
-      [id]="id"
+      [id]="inputId"
       [ngModel]="value"
       (ngModelChange)="changeValueFromInputDebounced($event)"
       (click)="onInputClick($event)"
@@ -22,7 +22,7 @@
 
   <ng-container slot="body">
     <form
-      class="spot-container op-datepicker-modal"
+      class="spot-container op-modal-single-date-picker"
       data-test-selector="op-datepicker-modal"
       tabindex="0"
       cdkFocusInitial
@@ -53,7 +53,6 @@
       <spot-text-field
         slot="input"
         name="date"
-        class="op-datepicker-modal--date-field"
         [ngModel]="workingValue"
         [required]="required"
           (ngModelChange)="writeWorkingValue($event)"

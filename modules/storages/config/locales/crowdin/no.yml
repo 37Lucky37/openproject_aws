@@ -1,11 +1,27 @@
 "no":
   activerecord:
     attributes:
+      oauth_client:
+        client_id: Klient ID
+        client_secret: Klient hemmlighet
+      project:
+        project_folder_type: Project folder type
       storages/file_link:
-        origin_id: Opprinnelses ID
+        origin: Origin
+        storage: Lagringssted
+      storages/nextcloud_storage:
+        authentication_methods:
+          oauth2_sso: Single-Sign-On through OpenID Connect Identity Provider
+          oauth2_sso_with_two_way_oauth2_fallback: Single-Sign-On with Two-Way OAuth 2.0 as fallback
+          two_way_oauth2: Two-way OAuth 2.0 authorization code flow
+        storage_audience: Storage Audience
       storages/project_storage:
-        storage: Storage
+        project_folder: Prosjektmappe
+        project_folder_mode: Project folder mode
+        storage: Lagringssted
+        storage_url: Storage URL
       storages/storage:
+        authentication_method: Authentication Method
         creator: Skaper
         drive: Stasjon ID
         host: Vert
@@ -199,15 +215,19 @@
         manual_management_description: Opprett og behandle mapper manuelt per prosjekt på egenhånd. Du må manuelt sikre at relevante brukere har tilgang.
         setup_incomplete: Velg type behandling av brukertilgang og opprettelse av mappe.
         subtitle: Tilgangsstyring
-        title: Tilgang og prosjektmapper
+      access_management_section: Tilgang og prosjektmapper
       automatically_managed_folders: Automatisk administrerte mapper
       general_information: Generell informasjon
-      nextcloud_oauth: Nextcloud OAuth
-      oauth_applications: OAuth programmer
+      oauth_configuration: OAuth configuration
       one_drive_oauth: Azure OAuth
       openproject_oauth: OpenProject OAuth
       project_folders: Prosjektmapper
       redirect_uri: Omdiriger URI
+      storage_audience: Storage Audience
+      storage_audience_blank: No audience has been configured.
+      storage_audience_description: Obtaining tokens for audience "%{audience}".
+      storage_audience_idp: Using first access token received by identity provider, regardless of audience.
+      storage_oauth: Nextcloud OAuth
       storage_provider: Lagringsleverandør
     health:
       checked: Sist sjekket %{datetime}
@@ -222,6 +242,14 @@
         host_not_found: No Nextcloud server found at the configured host url. Please check the configuration.
         missing_dependencies: 'A required dependency is missing on the file storage. Please add the following dependency: %{dependency}.'
         not_configured: The connection could not be validated. Please finish configuration first.
+        oauth_request_not_found: OpenProject couldn't find the root folder of Nextcloud using the current logged-in user. Please check the server logs for further information.
+        oauth_request_unauthorized: The current user isn't authorized to see the main folder of Nextcloud or we couldn't acquire a token. Please check the server logs for further information.
+        oauth_token_missing: OpenProject cannot test the user level communication with Nextcloud as there's no token for the current user.
+        oidc_cant_acquire_token: Your OpenID Connect setup doesn't provide the necessary audience, nor provides token exchange capabilities. Please check out our documentation for more information.
+        oidc_cant_exchange_token: There seems to be a problem with the Token Exchange setup on your OpenID Connect Provider. Please check its configuration and try again.
+        oidc_cant_refresh_token: There was an error while trying to check your access to the storage. Please check the server logs for further information.
+        oidc_non_oidc_user: The current user, while provisioned, wasn't provisioned by an OpenID Connect (OIDC) Identity Provider. Please re-run the check with an OIDC provisioned user.
+        oidc_non_provisioned_user: The current user isn't provided by an OpenID Connect Identity Provider. Please re-run the check with a provided user.
         placeholder: Check your connection against the server.
         subtitle: Connection validation
         tenant_id_wrong: The configured directory (tenant) id is invalid. Please check the configuration.
@@ -250,6 +278,7 @@
       project_folder_bulk: The project folder is the default folder for file uploads for all the projects selected. You can modify this individually in each project settings. Users can nevertheless still upload files to other locations.
     instructions:
       all_available_storages_already_added: Alle tilgjengelige lagringsplasser er allerede lagt til prosjektet.
+      authentication_method: The way that requests between OpenProject and the Storage are authenticated.
       automatic_folder: Dette vil automatisk opprette en rotmappe for prosjektet og administrere tilgangsrettigheter for hvert prosjektmedlem.
       empty_project_folder_validation: Valg av mappe er obligatorisk å fortsette.
       existing_manual_folder: Du kan bestemme en eksisterende mappe som rotmappe for dette prosjektet. Tillatelsene håndteres imidlertid ikke automatisk, administratoren må sørge for at relevante brukere har tilgang. Den valgte mappen kan brukes av flere prosjekter.
@@ -262,6 +291,8 @@
         integration: Nextcloud administrasjon / OpenProject
         oauth_configuration: Kopier disse verdiene fra %{application_link_text}.
         provider_configuration: Kontroller at du har administrasjonsrettigheter i din Nextcloud-instans og %{application_link_text} er installert før du utfører oppsettet.
+        storage_audience: Please enter the Client ID that the Nextcloud instance uses to communicate with the identity provider.
+        storage_audience_placeholder: e.g. nextcloud
       no_specific_folder: Som standard starter hver bruker på sin egen hjem-mappe når vedkommende laster opp en fil.
       no_storage_set_up: Det er ingen fillagring satt opp ennå.
       not_logged_into_storage: Du må logge inn først for å velge en prosjektmappe.
@@ -293,6 +324,7 @@
     label_creator: Skaper
     label_delete_storage: Slett fillagring
     label_edit_storage_access_management: Redigere administrasjon for lagringstilgang
+    label_edit_storage_audience: Edit Storage Audience
     label_edit_storage_automatically_managed_folders: Rediger automatisk administrerte mapper
     label_edit_storage_host: Redigere lagringsvert
     label_existing_manual_folder: Eksisterende mappe med manuelt administrerte tillatelser
@@ -321,23 +353,24 @@
       connected: Tilkoblet
       connected_no_permissions: Brukerrolle har ingen lagringsrettigheter
       not_connected: Ikke tilkoblet. Brukeren må logge inn på lagringsplassen via følgende %{link}.
+      not_connected_sso: Not yet connected, SSO should automatically connect them, once looking at files.
     members_no_results: Ingen medlemmer å vise.
     no_results: Ingen lagring satt opp ennå.
     oauth_access_granted_modal:
-      access_granted: Access granted
+      access_granted: Tilgang gitt
       project_settings:
         access_granted_screen_reader: Access granted. You are now ready to use %{storage}
-        storage_ready: You are now ready to use %{storage}
+        storage_ready: Du er nå klar til å bruke %{storage}
       storage_admin:
         access_granted_screen_reader: Access granted. You are now ready to add projects to %{storage}
         storage_ready: You are now ready to add projects to %{storage}
     oauth_grant_nudge_modal:
       cancel_button_label: Jeg gjør det senere
       heading: Login to %{provider_type} required
-      login_button_aria_label: Login to %{storage}
+      login_button_aria_label: Logg på  %{storage}
       login_button_label: "%{provider_type} log in"
       project_settings:
-        description: To get access to the project folder you need to login to %{storage}.
+        description: For å få tilgang til prosjektmappen må du logge inn til %{storage}.
       requesting_access_to: Ber om tilgang til %{storage}
       storage_admin:
         description: In order to add projects to this storage you need to be logged into %{provider_type}. Please, log in and try again.
@@ -383,8 +416,15 @@
         name: OneDrive/SharePoint
         name_placeholder: f.eks OneDrive
     show_attachments_toggle:
-      description: 'Deaktivering av dette valget vil skjule listen over vedlegg på arbeidspakkefiler for nye prosjekter. Filene som ligger i beskrivelsen av en arbeidspakke vil fortsatt bli lastet opp i den interne lagringen.'
+      description: Deactivating this option will hide the attachments list on the work packages files tab. The files attached in the description of a work package will still be uploaded in the internal attachments storage.
       label: Vis vedlegg i fanen for arbeidspakker
+    storage_audience:
+      idp:
+        helptext: OpenProject will use the first access token received by the identity provider to authenticate requests to the storage. It will not try to obtain another token.
+        label: Use first access token obtained by identity provider
+      manual:
+        helptext: Allows you to set the audience of the storage. OpenProject will try to obtain a token for the given audience from the identity provider.
+        label: Define storage audience manually
     storage_list_blank_slate:
       description: Legg til lagringsplass for å se dem her.
       heading: Du har ingen lagringssted enda.

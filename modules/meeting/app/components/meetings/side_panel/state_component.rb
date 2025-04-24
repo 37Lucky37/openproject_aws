@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -43,6 +45,10 @@ module Meetings
 
     def edit_enabled?
       User.current.allowed_in_project?(:close_meeting_agendas, @project)
+    end
+
+    def status_button
+      render(Meetings::SidePanel::StatusButtonComponent.new(meeting: @meeting))
     end
   end
 end

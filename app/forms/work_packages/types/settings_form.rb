@@ -36,7 +36,6 @@ module WorkPackages
           name: :name,
           label: label(:name),
           placeholder: I18n.t(:label_name),
-          input_width: :large,
           required: true,
           disabled: model.is_standard?
         )
@@ -44,16 +43,16 @@ module WorkPackages
         settings_form.color_select_list(
           name: :color_id,
           label: Color.model_name.human,
-          caption: I18n.t("types.edit.settings.type_color_text"),
-          input_width: :large
+          input_width: :medium,
+          caption: I18n.t("types.edit.settings.type_color_text")
         )
 
         if show_work_flow_copy?
           settings_form.select_list(
             name: :copy_workflow_from,
-            label: label(:copy_workflow_from),
-            include_blank: true,
-            input_width: :large
+            input_width: :medium,
+            label: I18n.t(:label_copy_workflow_from),
+            include_blank: true
           ) do |other_types|
             work_package_types.each do |type|
               other_types.option(
@@ -68,7 +67,6 @@ module WorkPackages
         settings_form.rich_text_area(
           name: :description,
           label: label(:description),
-          input_width: :large,
           rich_text_options: { showAttachments: false }
         )
 

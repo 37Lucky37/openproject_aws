@@ -30,7 +30,6 @@ require "spec_helper"
 
 RSpec.describe ProjectQuery, "results" do
   let(:instance) { described_class.new }
-  let(:base_scope) { Project.order(id: :desc) }
 
   shared_let(:view_role) { create(:project_role, permissions: %i[view_project]) }
   shared_let(:non_member_role) { create(:non_member, permissions: %i[view_project]) }

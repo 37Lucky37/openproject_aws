@@ -36,6 +36,10 @@ RSpec.describe RootSeeder,
                with_config: { edition: "standard" } do
   include RootSeederTestHelpers
 
+  before_all do
+    week_with_saturday_and_sunday_as_weekend
+  end
+
   shared_examples "creates standard demo data" do
     it "creates the system user" do
       expect(SystemUser.where(admin: true).count).to eq 1
@@ -63,8 +67,7 @@ RSpec.describe RootSeeder,
       expect(VersionSetting.count).to eq 4
       expect(Boards::Grid.count).to eq 5
       expect(Boards::Grid.count { |grid| grid.options.has_key?(:filters) }).to eq 1
-      expect(Project::StageDefinition.count).to eq 4
-      expect(Project::GateDefinition.count).to eq 3
+      expect(Project::PhaseDefinition.count).to eq 4
     end
 
     it "links work packages to their version" do
@@ -87,10 +90,18 @@ RSpec.describe RootSeeder,
 
     it "creates a weekly recurring meeting with one instance" do
       expect(RecurringMeeting.count).to eq 1
-      expect(StructuredMeeting.count).to eq 2
-      expect(StructuredMeeting.last.duration).to eq 1.0
-      expect(MeetingAgendaItem.count).to eq 9
-      expect(MeetingAgendaItem.sum(:duration_in_minutes)).to eq 60
+
+      # The template is created.
+      expect(StructuredMeeting.where(template: true).count).to eq 1
+      expect(StructuredMeeting.where(template: true).first.duration).to eq 1.0
+      expect(StructuredMeeting.where(template: true).first.agenda_items.count).to eq 9
+      expect(StructuredMeeting.where(template: true).first.agenda_items.sum(:duration_in_minutes)).to eq 60
+
+      # The first instance from that template is also created with the same data.
+      expect(StructuredMeeting.where(template: false).count).to eq 1
+      expect(StructuredMeeting.where(template: false).first.duration).to eq 1.0
+      expect(StructuredMeeting.where(template: false).first.agenda_items.count).to eq 9
+      expect(StructuredMeeting.where(template: false).first.agenda_items.sum(:duration_in_minutes)).to eq 60
     end
 
     it "creates different types of queries" do
@@ -127,7 +138,7 @@ RSpec.describe RootSeeder,
       )
     end
 
-    include_examples "it creates records", model: Color, expected_count: 149
+    include_examples "it creates records", model: Color, expected_count: 148
     include_examples "it creates records", model: DocumentCategory, expected_count: 3
     include_examples "it creates records", model: GlobalRole, expected_count: 2
     include_examples "it creates records", model: WorkPackageRole, expected_count: 3
@@ -138,6 +149,7 @@ RSpec.describe RootSeeder,
     include_examples "it creates records", model: TimeEntryActivity, expected_count: 6
     include_examples "it creates records", model: Workflow, expected_count: 1758
     include_examples "it creates records", model: RecurringMeeting, expected_count: 1
+    include_examples "it is compatible with the automatic scheduling mode"
   end
 
   describe "demo data" do
@@ -146,6 +158,10 @@ RSpec.describe RootSeeder,
     before_all do
       with_edition("standard") do
         root_seeder.seed_data!
+
+        # Run background jobs as those are also triggered by seeding.
+        # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+        perform_enqueued_jobs
       end
     end
 
@@ -174,8 +190,7 @@ RSpec.describe RootSeeder,
         expect(Version.count).to eq 4
         expect(VersionSetting.count).to eq 4
         expect(Boards::Grid.count).to eq 5
-        expect(Project::StageDefinition.count).to eq 4
-        expect(Project::GateDefinition.count).to eq 3
+        expect(Project::PhaseDefinition.count).to eq 4
       end
     end
   end
@@ -192,6 +207,10 @@ RSpec.describe RootSeeder,
 
       with_edition("standard") do
         root_seeder.seed_data!
+
+        # Run background jobs as those are also triggered by seeding.
+        # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+        perform_enqueued_jobs
       end
     end
 
@@ -209,6 +228,10 @@ RSpec.describe RootSeeder,
           "tr: #{original_translation}"
         end
         root_seeder.seed_data!
+
+        # Run background jobs as those are also triggered by seeding.
+        # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+        perform_enqueued_jobs
       end
     end
 
@@ -232,6 +255,10 @@ RSpec.describe RootSeeder,
           with_edition("standard") do
             reset(:default_language) # Settings are a pain to reset
             root_seeder.seed_data!
+
+            # Run background jobs as those are also triggered by seeding.
+            # But since those background jobs retrigger themselves, don't wrap the seeding inside a block.
+            perform_enqueued_jobs
           ensure
             reset(:default_language)
           end

@@ -60,7 +60,7 @@ Enter your meeting's title, location, start and end date and time, duration, fre
 
 - **Never** - the meeting series runs indefinitely
 - **After a specific date** – lets you specify an **end date** (the meeting might end before or on this date, depending on the original start date and frequency)
-- **After a number of occurrences** – lets you specificy the number of individual **occurrences** after which the series will end
+- **After a number of occurrences** – lets you specify the number of individual **occurrences** after which the series will end
 
 Click the **Create meeting series** button to save your changes. This will create the recurring meeting series and redirect you to the meeting template page. 
 
@@ -101,11 +101,11 @@ Within the same menu you also have the following options:
 
 ### Edit a recurring meeting occurrence
 
-To edit a single meeting within recurring meeting series you have to open it first by clicking the **Open** button next to the meeting. It will then be displayed under *Open* section on the recurring meeting index page, where you can click the meeting date and time. 
+To edit a single meeting within recurring meeting series you have to open it first by clicking the **Open** button next to the meeting. It will then be displayed under *Agenda opened* section on the recurring meeting index page, where you can click the meeting date and time. 
 
 ![Select a meeting occurrence on a recurring meetings series index page](openproject_userguide_meetings_edit_meeting_occurence_link.png)
 
-This will open the specific meeting page. You can then edit the meeting by using same functions as for [editing one-time meetings](../one-time-meetings), including adding sections and agenda points, inviting participants, and adding attachments. 
+This will open the specific meeting page. You can then edit the meeting by using same functions as for [editing one-time meetings](../one-time-meetings), including adding sections and agenda points, documenting agenda item outcomes, inviting participants and adding attachments.
 
 Additionally you can copy a specific meeting series occurrence as a one-time meeting. To do that click the **More** (three dots) icon and select **Copy as one-time meeting**.
 
@@ -116,4 +116,12 @@ Within the same menu you also have the following options:
 - Download iCalendar event
 - Send email to all participants
 - View history
-- Cancel this occurence
+- Cancel this occurrence
+
+### Move an agenda item to next meeting
+
+In addition to all the options available for [editing one-time meetings](../one-time-meetings), within a single meeting of a recurring meeting series you can move an agenda item to next meeting. 
+
+To do that click the **More** (three dots) icon next to an agenda item and select **Move to next meeting**.
+
+![Move an agenda item to next meeting in OpenProject recurring meetings](openproject_userguide_meetings_recurring_meeting_move_agenda_item_to_next_meeting.png)

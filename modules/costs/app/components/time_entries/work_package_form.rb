@@ -30,13 +30,15 @@
 
 module TimeEntries
   class WorkPackageForm < ApplicationForm
-    def initialize(visible: true)
+    def initialize(visible: true, limit_to_project_id: nil)
       super()
       @visible = visible
+      @limit_to_project_id = limit_to_project_id
     end
 
     form do |f|
       f.hidden name: :show_work_package, value: @visible
+      f.hidden name: :limit_to_project_id, value: @limit_to_project_id
 
       if show_work_package_field?
         f.work_package_autocompleter name: :work_package_id,
@@ -50,6 +52,7 @@ module TimeEntries
                                        focusDirectly: false,
                                        append_to: "#time-entry-dialog",
                                        url: work_package_completer_url,
+                                       searchKey: "subjectOrId",
                                        filters: work_package_completer_filters
                                      }
       else
@@ -84,14 +87,18 @@ module TimeEntries
     end
 
     def work_package_validation_error
-      model.errors[:project_id]&.first
+      if model.errors[:project_id].present?
+        model.errors[:project_id].first
+      else
+        model.errors[:work_package]&.first
+      end
     end
 
     def work_package_completer_filters
       filters = []
 
-      if model.project_id
-        filters << { name: "project_id", operator: "=", values: [model.project_id] }
+      if @limit_to_project_id
+        filters << { name: "project_id", operator: "=", values: [@limit_to_project_id] }
       end
 
       filters

@@ -21,6 +21,7 @@
 #++
 hu:
   js:
+    text_are_you_sure: "Biztos vagy benne?"
     work_packages:
       property_groups:
         costs: "Költségek"

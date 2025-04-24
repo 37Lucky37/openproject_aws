@@ -40,9 +40,14 @@ module Settings
         default: nil
       },
       after_login_default_redirect_url: {
-        description: "Override URL to which logged in users are redirected instead of the My page",
+        description: "Override URL to which logged in users are redirected instead of the Home page",
         format: :string,
         default: nil
+      },
+      allowed_link_protocols: {
+        format: :array,
+        description: "Allowed protocols for links in the WYSIWYG editor and formatted texts",
+        default: []
       },
       apiv3_cors_enabled: {
         description: "Enable CORS headers for APIv3 server responses",

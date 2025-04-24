@@ -103,7 +103,6 @@ zh-TW:
     button_settings: "設定"
     button_uncheck_all: "取消全選"
     button_update: "更新"
-    button_export-pdf: "下載 PDF"
     button_export-atom: "下載 Atom"
     button_generate_pdf: "產生PDF檔案"
     button_create: "建立"
@@ -221,6 +220,8 @@ zh-TW:
             label_maximum_users: "使用者帳號上限"
             label_starts_at: "開始於"
             label_expires_at: "過期於"
+            label_plan: "計畫"
+            label_additional_features: "附加功能"
             receive_newsletter: 我想要接收 OpenProject <a target="_blank" href="%{link}">簡報</a>。
             taken_domain: 每個域名只能有一個活動的試用。
             domain_mismatch: 當前請求的主機名與配置的主機名不匹配。請仔細檢查您的系統設置。
@@ -355,10 +356,10 @@ zh-TW:
           learn_about: "瞭解更多新功能的資訊"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                該版本為您帶來了各種功能和改進，例如<br> <ul class="%{list_styling_class}"> <li>排定定期會議，簡化您每週、每兩週或自訂的會議。</li> <li>直接從「關係」標籤建立子工作項目。</li> <li>在時間表 PDF 匯出中包含總和，以獲得更好的洞察力。</li> <li>在成本報告中包含子工作項目，以進行更精確的追蹤。</li> <li>查看先前隱藏的、受權限的關係的日期，以做出明智的排程決策。</li> </ul>
+                本次更新為您帶來多項新功能與改進，例如：<br><ul class="%{list_styling_class}"> <li>子工作項目與孫工作項目的篩選功能</li> <li>日期選擇器強化無障礙輔助功能</li> <li>工作項目表格總計顯示完成百分比（% Complete）</li> <li>工作項目表格新增子工作項專用欄位</li> <li>行動裝置日期選擇器操作體驗優化</li> <li>PDF 匯出格式支援自訂表單版面配置</li> </ul>
     ical_sharing_modal:
       title: "訂閱日曆"
       inital_setup_error_message: "更新資料時發生錯誤"
@@ -599,8 +600,8 @@ zh-TW:
         team_planner:
           overview: "小組工作企劃使您可以直觀地為小組成員分配任務，並全面瞭解哪些成員正在處理哪些工作。"
           calendar: "單周或雙周規劃面版，可以顯示分配給您的小組成員的所有工作項目。"
-          add_assignee: "首先，請將執行者新增到小組工作企劃。"
-          add_existing: "搜索現有工作項目並將其拖動到小組工作企劃中，立即將其分配給小組成員並規定開始日期和結束日期。"
+          add_assignee: "首先，請將執行者新增到團隊規劃。"
+          add_existing: "搜索現有工作項目並將其拖動到團隊規劃中，立即將其分配給小組成員並規定開始日期和結束日期。"
           card: "水平拖動工作項目前後移其時間，拖曳可更改開始日期和結束日期，甚至可以將其垂直拖動到不同的行以分配給其他成員。"
     notifications:
       title: "通知"
@@ -715,17 +716,18 @@ zh-TW:
       description: "描述：點選可編輯"
       relation_description: "按一下以便為此關係添加描述"
     project:
-      required_outside_context: >
-        請選擇專案以便新增工作項目以及檢視屬性。您只能選擇啟用中的專案。
-      context: "專案內容"
-      click_to_switch_to_project: "專案: %{projectname}"
-      confirm_template_load: "切換模板將重新加載頁面，您將丟失此表單上的所有輸入。是否繼續？"
-      use_template: "使用範本"
-      no_template_selected: "(無)"
-      copy:
-        copy_options: "複製選項"
       autocompleter:
         label: "專案自動完成"
+      click_to_switch_to_project: "專案: %{projectname}"
+      confirm_template_load: "切換模板將重新加載頁面，您將丟失此表單上的所有輸入。是否繼續？"
+      context: "專案內容"
+      copy:
+        copy_options: "複製選項"
+      not_available: "無專案"
+      no_template_selected: "(無)"
+      required_outside_context: >
+        請選擇專案以便新增工作項目以及檢視屬性。您只能選擇啟用中的專案。
+      use_template: "使用範本"
     reminders:
       settings:
         daily:
@@ -794,6 +796,7 @@ zh-TW:
       typeahead_placeholder: 尋找可能的監看者
     relation_labels:
       parent: "上層目錄："
+      child: "子項目"
       children: "子項目"
       relates: "關聯"
       duplicates: "重複"
@@ -823,7 +826,7 @@ zh-TW:
       add_new_child: "建立子工作項目"
       create_new: "新增"
       add_existing: "添加現有的"
-      add_existing_child: "加入現有子項目"
+      add_existing_child: "增加子項目"
       remove_child: "移除子項目"
       add_new_relation: "建立新關聯"
       add_existing_relation: "增加現有關系"
@@ -849,8 +852,6 @@ zh-TW:
       select_branch: "選擇分支"
     field_value_enter_prompt: "輸入'%{field}'的值"
     project_menu_details: "詳細資料"
-    scheduling:
-      manual: "手動排程"
     sort:
       sorted_asc: "已套用升冪排序， "
       sorted_dsc: "已套用降冪排序， "
@@ -898,15 +899,6 @@ zh-TW:
       comment_send_failed: "發生錯誤。無法留言。"
       comment_updated: "留言已成功更新。"
       confirm_edit_cancel: "是否確定取消編輯中的工作項目"
-      datepicker_modal:
-        automatically_scheduled_parent: "自動安排。日期來源於關係。"
-        manually_scheduled: "手動排程，忽略所有關聯。"
-        start_date_limited_by_relations: "因關聯工作項目原因，可選的起迄日期將被限制。"
-        changing_dates_affects_follow_relations: "更改這些日期將影響「關聯」的工作項目日期"
-        click_on_show_relations_to_open_gantt: '點選"%{button_name}" 依甘特圖查看'
-        show_relations: "顯示關聯"
-        ignore_non_working_days:
-          title: "工作日"
       description_filter: "篩選條件"
       description_enter_text: "輸入文字"
       description_options_hide: "隱藏選項"
@@ -1216,7 +1208,7 @@ zh-TW:
         invite_to_project: "邀請%{type} 加入 %{project}"
         User: "使用者"
         Group: "群組"
-        PlaceholderUser: "虛擬群組"
+        PlaceholderUser: "占位使用者"
         invite_principal_to_project: "邀請 %{principal} 加入 %{project}"
       project:
         label: "專案"
@@ -1235,8 +1227,8 @@ zh-TW:
           title: "群組"
           description: "基於所選專案中所分配角色的權限"
         placeholder:
-          title: "虛擬群組"
-          title_no_ee: "虛擬暫用群組（Enterprise edition 附加功能）"
+          title: "占位使用者"
+          title_no_ee: "佔位使用者（僅限企業版附加元件）"
           description: "無法訪問該專案並且未發送電子郵件。"
           description_no_ee: '由於沒有存取專案權限，所以不會發送電子郵件。<br>請查看<a href="%{eeHref}" target="_blank">企業版</a>。'
       principal:
@@ -1252,7 +1244,7 @@ zh-TW:
         next_button: "下一個"
         required:
           user: "請選擇一個使用者"
-          placeholder: "請選擇一個「虛擬群組」"
+          placeholder: "請選擇占位使用者"
           group: "請選擇一個群組"
       role:
         label: "%{project} 中的角色"

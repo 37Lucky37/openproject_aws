@@ -103,7 +103,6 @@ de:
     button_settings: "Einstellungen"
     button_uncheck_all: "Alle abwählen"
     button_update: "Aktualisieren"
-    button_export-pdf: "PDF-Download"
     button_export-atom: "Atom-Download"
     button_generate_pdf: "PDF generieren"
     button_create: "Anlegen"
@@ -221,6 +220,8 @@ de:
             label_maximum_users: "Maximale aktive Nutzer"
             label_starts_at: "Beginnt am"
             label_expires_at: "Endet am"
+            label_plan: "Plan"
+            label_additional_features: "Zusätzliche Funktionen"
             receive_newsletter: Ich möchte den OpenProject <a target="_blank" href="%{link}">Newsletter</a> erhalten.
             taken_domain: Es kann nur eine aktive Testversion pro Domain geben.
             domain_mismatch: Der Hostname der aktuellen Anfrage stimmt nicht mit dem konfigurierten Hostnamen überein. Bitte überprüfen Sie Ihre Systemeinstellungen.
@@ -356,10 +357,10 @@ de:
           learn_about: "Erfahren Sie mehr über die neuen Funktionen"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                Das Release enthält verschiedene neue Funktionen und Verbesserungen, z.B. <br> <ul class="%{list_styling_class}"> <li>Planen Sie wiederkehrende Besprechungen, um Ihre wöchentlichen, zweiwöchentlichen oder individuellen Termine zu organisieren. </li> <li>Erstellen Sie untergeordnete Arbeitspakete direkt über die Registerkarte Beziehungen.</li> <li>Erfassen Sie Gesamtsummen in Zeiterfassungs-PDF-Exporten, um einen besseren Überblick zu erhalten.</li> <li>Beziehen Sie untergeordnete Arbeitspakete in Kostenberichte ein, um eine genauere Nachvollziehbarkeit zu gewährleisten.</li> <li>Sehen Sie Datumsangaben von zuvor verborgenen Beziehungen trotz eingeschränkter Berechtigungen, um fundierte Planungsentscheidungen zu treffen.</li> </ul>
+                Das Release bringt Ihnen verschiedene Funktionen und Verbesserungen, z. B. <br> <ul class="%{list_styling_class}"> <li>Filtern nach untergeordneten Arbeitspaketen (Kinder und Kindes-Kinder).</li> <li>Profitieren Sie von der verbesserten Barrierefreiheit im Datumswähler.</li> <li>"% Vollständig" als den Arbeitspaket-Tabellensumme auswählbar.</li> <li>Fügen Sie eine Spalte für Kinder in Arbeitspakettabellen ein.</li> <li>Benutzen Sie die native Datumsauswahl auf mobilen Endgeräten.</li> <li>PDF-Export gemäß des konfigurierten Formularlayouts.</li> </ul>
     ical_sharing_modal:
       title: "Kalender abonnieren"
       inital_setup_error_message: "Beim Abrufen der Daten ist ein Fehler aufgetreten."
@@ -717,17 +718,18 @@ de:
       description: "Beschreibung: Zum Bearbeiten klicken..."
       relation_description: "Klicken, um eine Beschreibung für diese Beziehung anzulegen"
     project:
-      required_outside_context: >
-        Bitte wählen Sie ein Projekt für das Arbeitspaket, um alle Attribute anzuzeigen. Sie können nur Projekte auswählen, für die der ausgewählte Typ oben aktiviert ist.
-      context: "Projektkontext"
-      click_to_switch_to_project: "Projekt: %{projectname}"
-      confirm_template_load: "Das Ändern der Vorlage wird die Seite neu laden und Sie verlieren alle Eingaben zu diesem Formular. Fortfahren?"
-      use_template: "Vorlage verwenden"
-      no_template_selected: "(Keine)"
-      copy:
-        copy_options: "Kopieroptionen"
       autocompleter:
         label: "Projekt Auto-Vervollständigung"
+      click_to_switch_to_project: "Projekt: %{projectname}"
+      confirm_template_load: "Das Ändern der Vorlage wird die Seite neu laden und Sie verlieren alle Eingaben zu diesem Formular. Fortfahren?"
+      context: "Projektkontext"
+      copy:
+        copy_options: "Kopieroptionen"
+      not_available: "Projekt N/A"
+      no_template_selected: "(Keine)"
+      required_outside_context: >
+        Bitte wählen Sie ein Projekt für das Arbeitspaket, um alle Attribute anzuzeigen. Sie können nur Projekte auswählen, für die der ausgewählte Typ oben aktiviert ist.
+      use_template: "Vorlage verwenden"
     reminders:
       settings:
         daily:
@@ -796,6 +798,7 @@ de:
       typeahead_placeholder: Nach möglichen Beobachtern suchen
     relation_labels:
       parent: "Übergeordnetes Arbeitspaket"
+      child: "Kind"
       children: "Untergeordnete Arbeitspakete"
       relates: "Verwandt mit"
       duplicates: "Dupliziert"
@@ -825,7 +828,7 @@ de:
       add_new_child: "Neue Unteraufgabe"
       create_new: "Neu erstellen"
       add_existing: "Bestehende hinzufügen"
-      add_existing_child: "Unteraufgabe zuweisen"
+      add_existing_child: "Kind hinzufügen"
       remove_child: "Unteraufgabe entfernen"
       add_new_relation: "Neue Beziehung erstellen"
       add_existing_relation: "Bestehende Beziehung hinzufügen"
@@ -851,8 +854,6 @@ de:
       select_branch: "Branch auswählen"
     field_value_enter_prompt: "Einen Wert für '%{field}' eingeben"
     project_menu_details: "Details"
-    scheduling:
-      manual: "Manuelle Planung"
     sort:
       sorted_asc: "Aufsteigende Sortierung angewendet, "
       sorted_dsc: "Absteigende Sortierung angewendet, "
@@ -900,15 +901,6 @@ de:
       comment_send_failed: "Ein Fehler ist aufgetreten. Der Kommentar konnte nicht gespeichert werden."
       comment_updated: "Der Kommentar wurde erfolgreich aktualisiert."
       confirm_edit_cancel: "Die Bearbeitung dieses Arbeitspakets wirklich abbrechen?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Automatisch geplant. Termine werden aus Beziehungen abgeleitet."
-        manually_scheduled: "Manuelle Terminplanung aktiviert, alle Beziehungen wurden ignoriert."
-        start_date_limited_by_relations: "Die verfügbaren Start- und Endtermine sind durch Beziehungen begrenzt."
-        changing_dates_affects_follow_relations: "Das Ändern dieser Daten wirkt sich auf die Termine verwandter Arbeitspakete aus."
-        click_on_show_relations_to_open_gantt: 'Klicken Sie auf "%{button_name}" für eine GANTT-Übersicht.'
-        show_relations: "Beziehungen anzeigen"
-        ignore_non_working_days:
-          title: "Nur Werktage"
       description_filter: "Filter"
       description_enter_text: "Text eingeben"
       description_options_hide: "Optionen ausblenden"

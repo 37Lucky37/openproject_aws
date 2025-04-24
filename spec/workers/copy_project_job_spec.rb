@@ -216,7 +216,9 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
           described_class.perform_later(target_project_params: params, associations_to_copy: [:members])
         end
 
-        GoodJob.perform_inline
+        perform_enqueued_jobs do # needed for the deliveries
+          GoodJob.perform_inline
+        end
       end
     end
 
@@ -248,8 +250,6 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
         end
 
         it "notifies the user of the success" do
-          perform_enqueued_jobs # needed for the deliveries
-
           mail = ActionMailer::Base.deliveries
                                    .find { |m| m.message_id.start_with? "op.project-#{copied_project.id}" }
 
@@ -271,8 +271,6 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
         end
 
         it "notifies the user of that parent not being allowed" do
-          perform_enqueued_jobs
-
           mail = ActionMailer::Base.deliveries.first
           expect(mail).to be_present
           expect(mail.subject).to eq I18n.t("copy_project.failed", source_project_name: subproject.name)
@@ -305,8 +303,6 @@ RSpec.describe CopyProjectJob, type: :model, with_good_job_batches: [CopyProject
         end
 
         it "notifies the user of the success" do
-          perform_enqueued_jobs
-
           mail = ActionMailer::Base.deliveries
                                    .find { |m| m.message_id.start_with? "op.project-#{subject.id}" }
 

@@ -64,7 +64,7 @@ Here are resources to get to know OpenProject:
 
 ### Can I run OpenProject as a single user?
 
-Our minimum plan for the Enterprise cloud edition and Enterprise on-premises edition is five users. Our pricing scheme covers three subscription options: Community edition ($0), Enterprise cloud (€5.95/member/month or $7.25/member/month), and Enterprise on-premises (€5.95/member/month or $7.25/member/month). We recommend to start the [Community version](https://www.openproject.org/download-and-installation/) free of charge if the five user minimum is an issue for you.
+Our minimum plan for the Enterprise cloud edition is 5 users. For the Enterprise on-premises edition it is 25 users. Our pricing scheme covers three subscription options: Community edition ($0), Enterprise cloud (€5.95/member/month or $7.25/member/month), and Enterprise on-premises (€5.95/member/month or $7.25/member/month). We recommend to start the [Community version](https://www.openproject.org/download-and-installation/) free of charge if the five user minimum is an issue for you.
 
 ### OpenProject is Open Source. Which kind of license does it come with? What am I allowed to do? What can I change?
 
@@ -268,7 +268,7 @@ To migrate from Bitnami **to Enterprise cloud** please provide these:
 
 You can use the first two steps of [this instruction](../installation-and-operations/installation-faq/#how-can-i-migrate-from-bitnami-to-the-official-openproject-installation-packages). Please contact us to discuss your migration.
 
-To migrate from Bitnami **to Enterprise on premises** please use [this instruction](../installation-and-operations/installation-faq/#how-can-i-migrate-from-bitnami-to-the-official-openproject-installation-packages). We offer (paid) installation support to help you migrate to OpenProject (for the Enterprise on-premises edition). Please contact us to request it.
+To migrate from Bitnami **to Enterprise on-premises** please use [this instruction](../installation-and-operations/installation-faq/#how-can-i-migrate-from-bitnami-to-the-official-openproject-installation-packages). We offer (paid) installation support to help you migrate to OpenProject (for the Enterprise on-premises edition). Please contact us to request it.
 
 ### How can I migrate from Jira/Confluence to OpenProject?
 

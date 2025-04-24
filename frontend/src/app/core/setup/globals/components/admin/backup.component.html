@@ -1,4 +1,4 @@
-<form class="form -bordered -compressed" method="get" [action]="getDownloadUrl()" [hidden]="!isDownloadReady()">
+<form class="form -bordered -compressed" method="get" [action]="getDownloadUrl()" [hidden]="!isDownloadReady()" data-turbo="false">
   <section class="form--section">
     <h3 class="form--section-title">
       {{ text.lastBackup }}

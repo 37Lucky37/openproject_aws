@@ -87,6 +87,10 @@ export class StorageFilesResourceService {
     this.store.reset();
   }
 
+  removeCollection(link:IHalResourceLink):void {
+    delete this.store.getValue().files[link.href];
+  }
+
   private lookup(id:ID):Observable<IStorageFile> {
     return this
       .query

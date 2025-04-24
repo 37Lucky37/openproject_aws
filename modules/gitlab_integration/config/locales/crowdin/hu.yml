@@ -21,7 +21,23 @@
 #See docs/COPYRIGHT.rdoc for more details.
 #++
 hu:
+  attributes:
+    commit: "Commit"
+    gitlab: "GitLab identifier"
+    gitlab_avatar_url: "Avatar URL"
+    gitlab_email: "GitLab Email"
+    gitlab_html_url: "GitLab HTML URL"
+    gitlab_merge_request: "Merge Request"
+    gitlab_name: "GitLab name"
+    gitlab_updated_at: "Updated at"
+    gitlab_user_avatar_url: "GitLab avatar URL"
+    gitlab_username: "GitLab username"
   activerecord:
+    attributes:
+      gitlab_pipeline:
+        ci_details: "CI Details"
+      gitlab_merge_request:
+        labels: "Labels"
     errors:
       models:
         gitlab_issue:
@@ -44,7 +60,8 @@ hu:
     merge_request_reopened_comment: >
       **MR újranyitva:** Egyesítési kérelem (merge request) %{mr_number} [%{mr_title}](%{mr_url}) a következőhöz: [%{repository}](%{repository_url}) újranyitva [%{gitlab_user}](%{gitlab_user_url}) által.
     note_commit_referenced_comment: >
-      **Hivatkozva a következő commitban:** [%{gitlab_user}](%{gitlab_user_url}) hivatkozott erre a WP-re a(z) [%{commit_id}](%{commit_url}) commitban a(z) [%{repository}](%{repository_url}) repositoryban, az üzenet: %{commit_note}
+      **Hivatkozva a következő commitban:** [%{gitlab_user}](%{gitlab_user_url}) hivatkozott erre a WP-re a(z) [%{commit_id}](%{commit_url}) commitban a(z) [%{repository}](%{repository_url}) repositoryban, az üzenet: 
+      %{commit_note}
     note_mr_referenced_comment: >
       **Hivatkozva a következő egyesítési kérelemben:** [%{gitlab_user}](%{gitlab_user_url}) hivatkozott erre a WP-re a(z) %{mr_number}%{mr_title}%{mr_url} MR-ben a(z) [%{repository}](%{repository_url}) repositoryban, az üzenet: %{mr_note}
     note_mr_commented_comment: >

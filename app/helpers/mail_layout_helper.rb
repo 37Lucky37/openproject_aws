@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -28,9 +30,10 @@
 
 module MailLayoutHelper
   def placeholder_table_styles(options = {})
+    style_options = options[:style].present? ? options.delete(:style) : ""
+
     default_options = {
-      style: "table-layout:fixed;border-collapse:separate;border-spacing:0;font-family:Helvetica;" <<
-        (options[:style].present? ? options.delete(:style) : ""),
+      style: "table-layout:fixed;border-collapse:separate;border-spacing:0;font-family:Helvetica;#{style_options}",
       cellspacing: "0",
       cellpadding: "0"
     }

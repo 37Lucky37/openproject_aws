@@ -103,7 +103,6 @@ zh-CN:
     button_settings: "设置"
     button_uncheck_all: "全部不选"
     button_update: "更新"
-    button_export-pdf: "下载 PDF"
     button_export-atom: "下载 Atom"
     button_generate_pdf: "生成 PDF"
     button_create: "创建"
@@ -222,6 +221,8 @@ zh-CN:
             label_maximum_users: "最大活动用户数"
             label_starts_at: "开始时间："
             label_expires_at: "到期时间"
+            label_plan: "计划"
+            label_additional_features: "附加功能"
             receive_newsletter: 我想要接收 OpenProject <a target="_blank" href="%{link}">简报</a>。
             taken_domain: 每个域名只能有一个活动的试用。
             domain_mismatch: 当前请求的主机名与配置的主机名不匹配。请仔细检查您的系统设置。
@@ -356,10 +357,10 @@ zh-CN:
           learn_about: "详细了解新功能"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                该版本为您带来了各种功能和改进，例如：<br> <ul class="%{list_styling_class}"> <li>安排定期会议，以简化您的每周、每两周或自定义预约。</li> <li>直接从“关系”选项卡创建子工作包。</li> <li>在时间表 PDF 导出中包含总和，以获得更好的洞察。</li> <li>在成本报告中包括子工作包，以实现更准确的跟踪。</li> <li>查看以前隐藏的权限限制关系的日期，以便做出明智的日程安排决策。</li></ul>
+                该版本为您带来了多项功能与改进，例如：<br> <ul class="%{list_styling_class}"> <li>筛选工作包后代（子级和孙级）。</li> <li>日期选择器支持高级无障碍功能。</li> <li>工作包表格汇总中显示完成百分比。</li> <li>工作包表格新增子级列。</li> <li>优化移动端屏幕的日期选择器使用体验。</li> <li>PDF 导出与配置的表单布局保持一致。</li> </ul>
     ical_sharing_modal:
       title: "订阅日历"
       inital_setup_error_message: "获取数据时发生错误。"
@@ -716,17 +717,18 @@ zh-CN:
       description: "描述：点击以编辑…"
       relation_description: "点击为此关系添加描述"
     project:
-      required_outside_context: >
-        请选择要创建工作包的项目以查看所有属性。 您只能选择已激活上述类型的项目。
-      context: "项目上下文"
-      click_to_switch_to_project: "项目: %{projectname}"
-      confirm_template_load: "切换模板将重新加载页面，您将丢失此表单上的所有输入。是否继续？"
-      use_template: "使用模板"
-      no_template_selected: "（无）"
-      copy:
-        copy_options: "复制选项"
       autocompleter:
         label: "项目自动补全"
+      click_to_switch_to_project: "项目: %{projectname}"
+      confirm_template_load: "切换模板将重新加载页面，您将丢失此表单上的所有输入。是否继续？"
+      context: "项目上下文"
+      copy:
+        copy_options: "复制选项"
+      not_available: "项目 N/A"
+      no_template_selected: "（无）"
+      required_outside_context: >
+        请选择要创建工作包的项目以查看所有属性。 您只能选择已激活上述类型的项目。
+      use_template: "使用模板"
     reminders:
       settings:
         daily:
@@ -795,6 +797,7 @@ zh-CN:
       typeahead_placeholder: 查找可能的关注者
     relation_labels:
       parent: "父级"
+      child: "子级"
       children: "子任务"
       relates: "关于"
       duplicates: "重复项"
@@ -850,8 +853,6 @@ zh-CN:
       select_branch: "选择分支"
     field_value_enter_prompt: "为'%{field}'输入值"
     project_menu_details: "详细信息"
-    scheduling:
-      manual: "手动计划"
     sort:
       sorted_asc: "升序排列已应用， "
       sorted_dsc: "降序排列已应用， "
@@ -899,15 +900,6 @@ zh-CN:
       comment_send_failed: "出错。无法提交评论。"
       comment_updated: "注释已成功更新。"
       confirm_edit_cancel: "是否确定想要取消编辑工作包？"
-      datepicker_modal:
-        automatically_scheduled_parent: "自动安排。日期来源于关系。"
-        manually_scheduled: "启用手动安排，忽略所有关系。"
-        start_date_limited_by_relations: "可用的开始日期和结束日期受关系限制。"
-        changing_dates_affects_follow_relations: "更改这些日期将影响相关工作包的日期。"
-        click_on_show_relations_to_open_gantt: '点击“%{button_name}”查看 GANTT 概览。'
-        show_relations: "显示关系"
-        ignore_non_working_days:
-          title: "仅工作日"
       description_filter: "筛选器"
       description_enter_text: "输入文本"
       description_options_hide: "隐藏选项"

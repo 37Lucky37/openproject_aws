@@ -62,7 +62,7 @@ class Queries::WorkPackages::Filter::VersionFilter <
     if project
       project.shared_versions
     else
-      Version.visible.systemwide
+      Version.visible.or(Version.systemwide)
     end
   end
 end

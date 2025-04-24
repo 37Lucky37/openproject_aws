@@ -4,7 +4,7 @@ ko:
     description: "OpenProject에 OmniAuth OpenID Connect 전략 공급자를 추가합니다."
   logout_warning: >
     로그아웃되었습니다. 제출한 양식의 내용이 손실될 수 있습니다. [로그인]하십시오.
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: 이름
@@ -29,7 +29,6 @@ ko:
         claims: 클레임
         acr_values: ACR 값
         redirect_url: 리디렉션 URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:

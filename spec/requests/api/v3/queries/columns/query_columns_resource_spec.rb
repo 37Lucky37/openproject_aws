@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -53,8 +55,7 @@ RSpec.describe "API v3 Query Column resource" do
     end
 
     it "succeeds" do
-      expect(last_response.status)
-        .to eq(200)
+      expect(last_response).to have_http_status(200)
     end
 
     it "returns the column" do
@@ -63,18 +64,17 @@ RSpec.describe "API v3 Query Column resource" do
         .at_path("_links/self/href")
     end
 
-    context "user not allowed" do
+    context "given user not allowed" do
       let(:permissions) { [] }
 
       it_behaves_like "unauthorized access"
     end
 
-    context "non existing group by" do
+    context "given non existing group by" do
       let(:path) { api_v3_paths.query_column("bogus") }
 
       it "returns 404" do
-        expect(last_response.status)
-          .to be(404)
+        expect(last_response).to have_http_status(404)
       end
     end
   end

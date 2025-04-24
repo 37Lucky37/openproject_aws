@@ -2,6 +2,7 @@
 pl:
   js:
     storages:
+      authentication_error: "Uwierzytelnianie przy użyciu %{storageType} nie powiodło się"
       link_files_in_storage: "Połącz pliki w %{storageType}"
       link_existing_files: "Połącz istniejące pliki"
       upload_files: "Wczytaj plik"
@@ -19,6 +20,7 @@ pl:
         one_drive: "OneDrive/SharePoint"
         default: "Magazyn"
       information:
+        authentication_error: "Żądania do %{storageType} nie można uwierzytelnić, to jest błąd."
         connection_error: >
           Niektóre ustawienia %{storageType} nie działają. Skontaktuj się z administratorem %{storageType}.
         live_data_error: "Błąd podczas pobierania szczegółów pliku"
@@ -27,6 +29,8 @@ pl:
         no_file_links: "Aby połączyć pliki z tym pakietem roboczym, zrób to za pośrednictwem %{storageType}."
         not_logged_in: >
           Aby dodać link, zobacz lub wgraj pliki związane z tym pakietem roboczym, zaloguj się do %{storageType}.
+        suggest_logout: Możesz spróbować wylogować się, a następnie zalogować, aby naprawić ten problem.
+        suggest_relink: Możesz spróbować, czy ponowne powiązanie Twojego konta za pomocą poniższego przycisku logowania rozwiązuje ten problem.
       files:
         already_existing_header: "Ten plik już istnieje"
         already_existing_body: >

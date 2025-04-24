@@ -4,14 +4,14 @@ et:
     description: "Adds OmniAuth OpenID Connect strategy providers to OpenProject."
   logout_warning: >
     You have been logged out. The contents of any form you submit may be lost. Please [log in].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nimi
         slug: Unique identifier
-        display_name: Display name
-        client_id: Client ID
-        client_secret: Client secret
+        display_name: Näidatav nimi
+        client_id: Kliendi ID
+        client_secret: Kliendi salasõna
         secret: Secret
         scope: Scope
         grant_types_supported: Supported grant types
@@ -29,7 +29,6 @@ et:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -91,7 +90,7 @@ et:
       microsoft_entra:
         name: Microsoft Entra
       custom:
-        name: Custom
+        name: Kohandatud
       upsale:
         description: Connect OpenProject to an OpenID connect identity provider
       label_add_new: Add a new OpenID provider

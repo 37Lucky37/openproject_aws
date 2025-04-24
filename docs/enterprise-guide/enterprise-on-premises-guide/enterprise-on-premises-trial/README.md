@@ -29,4 +29,5 @@ You will then **receive the token** via email with a description how to [activat
 
 ![enterprise-edition-trial-license](1567610604159.png)
 
-> **Note**: There is no need to cancel the trial license. The license will run out automatically after 14 days and will bring you back to the Community version.
+> [!NOTE]
+> There is no need to cancel the trial license. The license will run out automatically after 14 days and will bring you back to the Community version.

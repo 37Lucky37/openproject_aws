@@ -92,7 +92,7 @@ de:
       title: "Ihr PDF-Export des Stundenzettels"
       button: "Stundenzettel als PDF exportieren"
       timesheet: "Stundenzettel"
-      time: "Stunden"
+      time: "Zeit"
       sum_hours: Summe
     cost_reports:
       title: "Kostenbericht als XLS-Export"

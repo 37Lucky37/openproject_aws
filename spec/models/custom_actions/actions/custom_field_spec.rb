@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,6 +31,7 @@ require "spec_helper"
 require_relative "../shared_expectations"
 
 RSpec.describe CustomActions::Actions::CustomField do
+  let(:scope) { instance_double(ActiveRecord::Relation) }
   let(:list_custom_field) do
     build_stubbed(:list_wp_custom_field,
                   custom_options: [build_stubbed(:custom_option, value: "A"),
@@ -261,7 +264,7 @@ RSpec.describe CustomActions::Actions::CustomField do
 
       it "is :associated_property" do
         expect(instance.type)
-          .to be(:associated_property)
+          .to be(:user)
       end
 
       describe "current_user special value" do
@@ -406,9 +409,14 @@ RSpec.describe CustomActions::Actions::CustomField do
       let(:versions) { [z_version, a_version, m_version] }
 
       before do
+        allow(scope)
+          .to receive(:references)
+                .with(:project)
+                .and_return(versions)
+
         allow(Version)
           .to receive(:systemwide)
-          .and_return(versions)
+          .and_return(scope)
       end
 
       context "for a non required field" do
@@ -441,7 +449,6 @@ RSpec.describe CustomActions::Actions::CustomField do
          build_stubbed(:user),
          build_stubbed(:user)]
       end
-      let(:scope) { instance_double(ActiveRecord::Relation) }
 
       before do
         allow(Principal)
@@ -520,7 +527,6 @@ RSpec.describe CustomActions::Actions::CustomField do
          build_stubbed(:user),
          build_stubbed(:user)]
       end
-      let(:scope) { instance_double(ActiveRecord::Relation) }
 
       before do
         allow(Principal)
@@ -551,9 +557,14 @@ RSpec.describe CustomActions::Actions::CustomField do
       end
 
       before do
+        allow(scope)
+          .to receive(:references)
+                .with(:project)
+                .and_return(versions)
+
         allow(Version)
           .to receive(:systemwide)
-          .and_return(versions)
+          .and_return(scope)
       end
 
       it_behaves_like "associated custom action validations" do
@@ -570,8 +581,8 @@ RSpec.describe CustomActions::Actions::CustomField do
       it_behaves_like "bool custom action validations" do
         let(:allowed_values) do
           [
-            { true: OpenProject::Database::DB_VALUE_TRUE },
-            { false: OpenProject::Database::DB_VALUE_FALSE }
+            { true => OpenProject::Database::DB_VALUE_TRUE },
+            { false => OpenProject::Database::DB_VALUE_FALSE }
           ]
         end
       end

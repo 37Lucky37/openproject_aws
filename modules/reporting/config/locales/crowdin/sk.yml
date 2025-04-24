@@ -23,7 +23,7 @@ sk:
   plugin_openproject_reporting:
     name: "OpenProject Reporting"
     description: "This plugin allows creating custom cost reports with filtering and grouping created by the OpenProject Time and costs plugin."
-  button_save_report_as: "Save report as..."
+  button_save_report_as: "Uložiť prehľad ako..."
   comments: "Komentár"
   cost_reports_title: "Čas a náklady"
   label_cost_report: "Výkaz nákladov"
@@ -92,8 +92,8 @@ sk:
       title: "Your PDF timesheet export"
       button: "Export PDF timesheet"
       timesheet: "Timesheet"
-      time: "Time"
-      sum_hours: Sum
+      time: "Čas"
+      sum_hours: Súčet
     cost_reports:
       title: "Váš XLS export správy o nákladoch"
       start_time: "Start time"

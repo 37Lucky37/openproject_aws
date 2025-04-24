@@ -36,7 +36,7 @@ class User < Principal
     firstname: [:firstname],
     lastname_firstname: %i[lastname firstname],
     lastname_n_firstname: %i[lastname firstname],
-    lastname_coma_firstname: %i[lastname firstname],
+    lastname_comma_firstname: %i[lastname firstname],
     username: [:login]
   }.freeze
 
@@ -68,14 +68,16 @@ class User < Principal
   belongs_to :ldap_auth_source, optional: true
 
   # Authorized OAuth grants
-  has_many :oauth_grants,
+  has_many :oauth_grants, # rubocop:disable Rails/InverseOf
            class_name: "Doorkeeper::AccessGrant",
-           foreign_key: "resource_owner_id"
+           foreign_key: "resource_owner_id",
+           dependent: :delete_all
 
   # User-defined oauth applications
   has_many :oauth_applications,
            class_name: "Doorkeeper::Application",
-           as: :owner
+           as: :owner,
+           dependent: :destroy
 
   # Meeting memberships
   has_many :meeting_participants,
@@ -91,6 +93,8 @@ class User < Principal
            inverse_of: :user,
            dependent: :destroy
 
+  has_many :emoji_reactions, dependent: :destroy
+  has_many :reminders, foreign_key: "creator_id", dependent: :destroy, inverse_of: :creator
   has_many :remote_identities, dependent: :destroy
 
   # Users blocked via brute force prevention
@@ -295,7 +299,7 @@ class User < Principal
     when :firstname_lastname then "#{firstname} #{lastname}"
     when :lastname_firstname then "#{lastname} #{firstname}"
     when :lastname_n_firstname then "#{lastname}#{firstname}"
-    when :lastname_coma_firstname then "#{lastname}, #{firstname}"
+    when :lastname_comma_firstname then "#{lastname}, #{firstname}"
     when :firstname then firstname
     when :username then login
 

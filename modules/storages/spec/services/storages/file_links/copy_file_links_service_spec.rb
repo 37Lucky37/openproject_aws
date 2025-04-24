@@ -41,7 +41,8 @@ RSpec.describe Storages::FileLinks::CopyFileLinksService, :webmock do
 
   let(:source_links) { source_wp.map { create(:file_link, container: _1, storage: source) } }
 
-  let(:wp_map) { source_wp.map(&:id).zip(target_wp.map(&:id)).to_h }
+  # Caller is sending the ids as strings as they need to be serialized for the calling job.
+  let(:wp_map) { source_wp.map(&:id).zip(target_wp.map(&:id)).to_h.stringify_keys }
 
   let(:user) { create(:user) }
 

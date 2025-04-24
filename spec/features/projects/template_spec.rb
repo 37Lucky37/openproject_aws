@@ -136,7 +136,6 @@ RSpec.describe "Project templates", :js, with_good_job_batches: [CopyProjectJob,
 
       # Run background jobs twice: the background job which itself enqueues the mailer job
       GoodJob.perform_inline
-      2.times { perform_enqueued_jobs }
 
       mail = ActionMailer::Base
         .deliveries

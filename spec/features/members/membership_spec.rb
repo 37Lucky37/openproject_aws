@@ -154,6 +154,12 @@ RSpec.describe "Administrating memberships via the project settings", :js do
           expect(button["href"]).to eq(edit_user_url(peter))
         end
       end
+
+      it "does not display a hover card on the top menu user avatar" do
+        page.find(".op-top-menu-user-avatar").hover
+
+        expect { page.find_test_selector("user-hover-card-#{User.current.id}") }.to raise_error(Capybara::ElementNotFound)
+      end
     end
 
     context "as a member" do

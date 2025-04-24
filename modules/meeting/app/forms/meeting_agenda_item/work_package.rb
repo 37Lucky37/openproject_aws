@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,14 +38,15 @@ class MeetingAgendaItem::WorkPackage < ApplicationForm
         data: {
           "test-selector": "op-agenda-items-wp-autocomplete"
         },
-        focusDirectly: true,
+        focusDirectly: @autofocus,
         disabled: @disabled
       }
     )
   end
 
-  def initialize(disabled: false)
+  def initialize(autofocus:, disabled: false)
     super()
     @disabled = disabled
+    @autofocus = autofocus
   end
 end

@@ -63,7 +63,7 @@ RSpec.describe OAuthClients::ConnectionManager, :oauth_connection_helpers, :webm
     it "fills in the origin_user_id" do
       expect { subject.code_to_token(code) }.to change(OAuthClientToken, :count).by(1).and(change(RemoteIdentity, :count).by(1))
 
-      last_token = RemoteIdentity.find_by!(user:, oauth_client: storage.oauth_client)
+      last_token = RemoteIdentity.find_by!(user:, auth_source: storage.oauth_client)
       expect(last_token.origin_user_id).to eq("87d349ed-44d7-43e1-9a83-5f2406dee5bd")
     end
 
@@ -74,8 +74,14 @@ RSpec.describe OAuthClients::ConnectionManager, :oauth_connection_helpers, :webm
           .to_return(status: 404)
       end
 
-      it "raises an error" do
-        expect { subject.code_to_token(code) }.to raise_error(HTTPX::HTTPError)
+      it "returns a failure", :aggregate_failures do
+        result = subject.code_to_token(code)
+        expect(result).to be_failure
+        expect(result.errors).to be_a(Storages::StorageError)
+      end
+
+      it "does not create a token" do
+        expect { subject.code_to_token(code) }.not_to change(OAuthClientToken, :count)
       end
     end
   end

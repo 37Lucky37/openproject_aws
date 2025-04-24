@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -61,6 +63,7 @@ class Queries::WorkPackages::Selects::CustomFieldSelect < Queries::WorkPackages:
     else
       WorkPackageCustomField.all
     end
+      .visible_by_user(User.current)
       .reject { |cf| cf.field_format == "text" }
       .map { |cf| new(cf) }
   end

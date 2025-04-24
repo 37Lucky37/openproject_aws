@@ -62,6 +62,7 @@ RSpec.describe DemoData::ProjectSeeder do
           frequency: :weekly
           interval: 1
           author: :openproject_user
+          time_zone: "Etc/UTC"
       meeting_agenda_items:
         - title: First topic
           meeting: :weekly_meeting_template

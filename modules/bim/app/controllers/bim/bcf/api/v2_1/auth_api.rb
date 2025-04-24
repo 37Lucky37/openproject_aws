@@ -29,6 +29,12 @@
 module Bim::Bcf::API::V2_1
   class AuthAPI < ::API::OpenProjectAPI
     resources :auth do
+      helpers do
+        def allowed_unauthenticated_route?
+          true
+        end
+      end
+
       get do
         ::Bim::Bcf::API::V2_1::Auth::SingleRepresenter.new(nil)
       end

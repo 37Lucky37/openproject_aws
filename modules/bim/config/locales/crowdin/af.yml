@@ -84,6 +84,12 @@ af:
         ifc_attachment: "IGK lêer"
         is_default: "Verstek model"
         attachments: "IGK lêer"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Viewpoint"
     errors:
       models:
         bim/ifc_models/ifc_model:

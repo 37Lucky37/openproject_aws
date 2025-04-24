@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -149,11 +151,11 @@ RSpec.describe "Recurring meetings CRUD",
   it "can edit the details of a recurring meeting" do
     show_page.visit!
 
-    show_page.expect_subtitle text: "Every week on Tuesday at 01:30 PM, ends on 01/14/2025"
+    show_page.expect_subtitle text: "Every week on Tuesday at 01:30 PM (UTC), ends on 01/14/2025"
 
     show_page.edit_meeting_series
     show_page.within_modal "Edit Meeting" do
-      page.select("Daily", from: "Frequency")
+      page.select("Every day", from: "Frequency")
       meetings_page.set_start_time "11:00"
       page.select("a number of occurrences", from: "Meeting series ends")
       page.fill_in("Occurrences", with: "8")
@@ -162,7 +164,7 @@ RSpec.describe "Recurring meetings CRUD",
       click_link_or_button("Save")
     end
     wait_for_network_idle
-    show_page.expect_subtitle text: "Daily at 11:00 AM, ends on 01/07/2025"
+    show_page.expect_subtitle text: "Every day at 11:00 AM (UTC), ends on 01/07/2025"
   end
 
   it "shows the correct actions based on status" do
@@ -185,6 +187,25 @@ RSpec.describe "Recurring meetings CRUD",
 
     show_page.expect_cancelled_meeting date: "12/31/2024 01:30 PM"
     show_page.expect_cancelled_actions date: "12/31/2024 01:30 PM"
+  end
+
+  it "can edit the meeting series interval when created with working days (Regression #62089)" do
+    meeting.update!(frequency: "working_days")
+
+    show_page.visit!
+
+    show_page.edit_meeting_series
+    show_page.within_modal "Edit Meeting" do
+      page.select("Every day", from: "Frequency")
+      page.fill_in("Interval", with: "2")
+
+      sleep 0.5
+      click_link_or_button("Save")
+    end
+
+    wait_for_network_idle
+    wait_for { meeting.reload.frequency }.to eq "daily"
+    wait_for { meeting.interval }.to eq 2
   end
 
   context "with view permissions only" do

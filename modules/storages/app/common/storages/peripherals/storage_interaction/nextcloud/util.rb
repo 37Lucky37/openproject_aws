@@ -66,12 +66,20 @@ module Storages
               response.xml.xpath("//s:message").text
             end
 
+            # rubocop:disable Metrics/AbcSize
             def origin_user_id(caller:, storage:, auth_strategy:)
               case auth_strategy.key
               when :basic_auth
                 ServiceResult.success(result: storage.username)
-              when :oauth_user_token
-                origin_user_id = RemoteIdentity.where(user_id: auth_strategy.user, oauth_client: storage.oauth_client)
+              when :oauth_user_token, :sso_user_token
+                auth_source = if auth_strategy.key == :oauth_user_token
+                                storage.oauth_client
+                              else
+                                auth_strategy.user.authentication_provider
+                              end
+                origin_user_id = RemoteIdentity.where(user_id: auth_strategy.user,
+                                                      auth_source:,
+                                                      integration: storage)
                                                .pick(:origin_user_id)
                 if origin_user_id.present?
                   ServiceResult.success(result: origin_user_id)
@@ -88,6 +96,7 @@ module Storages
                                      "Cannot execute query without user context.")
               end
             end
+            # rubocop:enable Metrics/AbcSize
 
             def error_data_from_response(caller:, response:)
               payload = if response.respond_to?(:content_type)

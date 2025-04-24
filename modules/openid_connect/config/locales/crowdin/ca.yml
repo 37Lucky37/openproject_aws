@@ -4,14 +4,14 @@ ca:
     description: "Afegeix proveïdors d'estratègia OmniAuth OpenID Connect a OpenProject."
   logout_warning: >
     S'ha tancat la teva sessió. Es poden haver perdut els continguts de qualsevol formulari sotmès. Si us plau, [inicia sessió].
-  activemodel:
+  activerecord:
     attributes:
       openid_connect/provider:
         name: Nom
         slug: Unique identifier
         display_name: Nom mostrat
-        client_id: Client ID
-        client_secret: Client secret
+        client_id: ID de client
+        client_secret: Clau secreta del Client
         secret: Secret
         scope: Abast
         grant_types_supported: Supported grant types
@@ -29,7 +29,6 @@ ca:
         claims: Claims
         acr_values: ACR values
         redirect_url: Redirect URL
-  activerecord:
     errors:
       models:
         openid_connect/provider:
@@ -104,7 +103,7 @@ ca:
       label_advanced_configuration: Advanced configuration
       label_configuration_details: Metadata
       label_client_details: Client details
-      label_attribute_mapping: Attribute mapping
+      label_attribute_mapping: Associació d'atributs
       client_details_description: Configuration details of OpenProject as an OIDC client
       no_results_table: Encara no s'han definit cap proveïdor.
       plural: Proveïdors d’OpenID

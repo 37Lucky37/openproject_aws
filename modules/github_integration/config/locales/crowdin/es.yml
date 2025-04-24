@@ -20,6 +20,20 @@
 #See COPYRIGHT and LICENSE files for more details.
 #++
 es:
+  attributes:
+    additions_count: "Número de adiciones"
+    deletions_count: "Número de eliminaciones"
+    comments_count: "Número de comentarios"
+    github_html_url: "URL de solicitud de incorporación de cambios"
+    github_app_owner_avatar_url: "URL del avatar del propietario"
+    review_comments_count: "Número de comentarios de revisión"
+    github: "Identificador de GitHub"
+    github_avatar_url: "URL del avatar"
+    github_updated_at: "Actualizado a las"
+    github_login: "Inicio de sesión en GitHub"
+    labels: "Etiquetas"
+    repository: "Repositorio"
+    changed_files_count: "Archivos modificados"
   button_add_deploy_target: Añadir objetivo de despliegue
   label_deploy_target: Objetivo de despliegue
   label_deploy_target_new: Nuevo objetivo de despliegue

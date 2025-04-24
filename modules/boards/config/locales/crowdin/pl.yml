@@ -19,7 +19,7 @@ pl:
       status: Status
       version: Wersja
       subproject: Podprojekt
-      subtasks: Nadrzędny-podrzędny
+      subtasks: Nadrzędny-podrzędny 
       basic: Podstawowe
     board_type_descriptions:
       basic: >

@@ -103,7 +103,6 @@ es:
     button_settings: "Configuración"
     button_uncheck_all: "Deseleccionar todos"
     button_update: "Actualizar"
-    button_export-pdf: "Descargar PDF"
     button_export-atom: "Descargar Atom"
     button_generate_pdf: "Generar PDF"
     button_create: "Crear"
@@ -222,6 +221,8 @@ es:
             label_maximum_users: "Máximo de usuarios activos"
             label_starts_at: "Empieza el"
             label_expires_at: "Expira el"
+            label_plan: "Plan"
+            label_additional_features: "Funciones adicionales"
             receive_newsletter: Quiero recibir el <a target="_blank" href="%{link}">boletín</a> de OpenProject.
             taken_domain: Solo puede existir una prueba activa por dominio.
             domain_mismatch: El nombre actual de host no coincide con el nombre de host configurado. Por favor, comprueba la configuración del sistema.
@@ -357,10 +358,10 @@ es:
           learn_about: "Más información sobre las nuevas funciones"
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                La versión incluye varias funciones y mejoras para usted, por ejemplo: <br> <ul class="%{list_styling_class}"> <li>Programe reuniones periódicas para optimizar sus citas semanales, quincenales o personalizadas. </li> <li>Cree paquetes de trabajo secundarios directamente desde la pestaña Relaciones.</li> <li>Incluya las sumas totales en las exportaciones en PDF de las hojas de horas para obtener una mejor información.</li> <li>Incluya paquetes de trabajo secundarios en los informes de costes para un seguimiento más preciso.</li> <li>Vea las fechas de relaciones previamente ocultas y restringidas por permisos para tomar decisiones informadas sobre la programación.</li> </ul>
+                La versión incluye varias funciones y mejoras para usted, por ejemplo: <br> <ul class="%{list_styling_class}"> <li>Filtro para descendientes (secundarios y subsecundarios) de paquetes de trabajo. </li> <li>Benefíciese de la accesibilidad avanzada en el selector de fechas.</li> <li>Vea el % completado incluido en las sumas de la tabla de paquetes de trabajo.</li> <li>Incluya una columna para los elementos secundarios en las tablas de paquetes de trabajo.</li> <li>Utilice mejor el selector de fechas en las pantallas móviles.</li> <li>Exportaciones en PDF que coinciden con el diseño de formulario configurado.</li> </ul>
     ical_sharing_modal:
       title: "Suscribirse al calendario"
       inital_setup_error_message: "Se ha producido un error al obtener los datos."
@@ -718,17 +719,18 @@ es:
       description: "Descripción: Haga clic para editar..."
       relation_description: "Haga clic para añadir la descripción a esta relación"
     project:
-      required_outside_context: >
-        Seleccione el proyecto donde quiere crear el paquete de trabajo para ver todos los atributos. Solo puede seleccionar proyectos que tengan activado el tipo de paquete utilizado.
-      context: "Contexto del proyecto"
-      click_to_switch_to_project: "Proyecto: %{projectname}"
-      confirm_template_load: "Al cambiar la plantilla, se actualizará la página y perderá todos los datos introducidos en el formulario. ¿Quiere continuar?"
-      use_template: "Usar plantilla"
-      no_template_selected: "(Ninguna)"
-      copy:
-        copy_options: "Opciones de copia"
       autocompleter:
         label: "Autocompletado del proyecto"
+      click_to_switch_to_project: "Proyecto: %{projectname}"
+      confirm_template_load: "Al cambiar la plantilla, se actualizará la página y perderá todos los datos introducidos en el formulario. ¿Quiere continuar?"
+      context: "Contexto del proyecto"
+      copy:
+        copy_options: "Opciones de copia"
+      not_available: "Proyecto N/D"
+      no_template_selected: "(Ninguna)"
+      required_outside_context: >
+        Seleccione el proyecto donde quiere crear el paquete de trabajo para ver todos los atributos. Solo puede seleccionar proyectos que tengan activado el tipo de paquete utilizado.
+      use_template: "Usar plantilla"
     reminders:
       settings:
         daily:
@@ -797,6 +799,7 @@ es:
       typeahead_placeholder: Buscar posibles observadores
     relation_labels:
       parent: "Principal"
+      child: "Elemento secundario"
       children: "Sub-elemento"
       relates: "Relacionado con"
       duplicates: "Duplicados"
@@ -826,7 +829,7 @@ es:
       add_new_child: "Crear nuevo sub-elemento"
       create_new: "Crear nuevo"
       add_existing: "Agregar existente"
-      add_existing_child: "Añadir sub-elemento existente"
+      add_existing_child: "Añadir elemento secundario"
       remove_child: "Eliminar sub-elemento"
       add_new_relation: "Crear nueva relación"
       add_existing_relation: "Agregar relación existente"
@@ -852,8 +855,6 @@ es:
       select_branch: "Seleccione rama"
     field_value_enter_prompt: "Introduzca un valor para '%{field}'"
     project_menu_details: "Detalles"
-    scheduling:
-      manual: "Programación manual"
     sort:
       sorted_asc: "Orden ascendiente aplicado, "
       sorted_dsc: "Orden descendiente aplicado, "
@@ -901,15 +902,6 @@ es:
       comment_send_failed: "Ha ocurrido un error. No se pudo añadir el comentario."
       comment_updated: "El comentario se actualizó correctamente."
       confirm_edit_cancel: "¿Está seguro que desea cancelar la edición del paquete de trabajo?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Programado automáticamente. Las fechas están derivadas de relaciones."
-        manually_scheduled: "Programación manual activa, todas las relaciones son ignoradas."
-        start_date_limited_by_relations: "Las fechas de inicio y final disponibles están limitadas por relaciones."
-        changing_dates_affects_follow_relations: "Cambiar estas fechas afectará a las fechas de los paquetes de trabajo relacionados."
-        click_on_show_relations_to_open_gantt: 'Haga clic en "%{button_name}" para la vista general de GANTT.'
-        show_relations: "Mostrar relaciones"
-        ignore_non_working_days:
-          title: "Solo días laborables"
       description_filter: "Filtro"
       description_enter_text: "Introducir texto"
       description_options_hide: "Ocultar opciones"

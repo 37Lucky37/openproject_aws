@@ -21,6 +21,7 @@
 #++
 el:
   js:
+    text_are_you_sure: "Είστε σίγουρος/η;"
     work_packages:
       property_groups:
         costs: "Κόστος"

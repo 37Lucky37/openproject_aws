@@ -42,12 +42,9 @@ RSpec.describe "Work package reminder modal",
   end
 
   let!(:user_with_permissions) do
-    local_offset = Time.now.gmt_offset # rubocop:disable Rails/TimeZone
-    time_zone = UserPreferences::UpdateContract.assignable_time_zones
-                                                 .find { |tz| tz.now.utc_offset == local_offset }
     create(:user,
            member_with_roles: { project => role_that_allows_managing_own_reminders },
-           preferences: { time_zone: time_zone.tzinfo.canonical_zone.name })
+           preferences: { time_zone: "Europe/Berlin" })
   end
   let!(:user_without_permissions) do
     create(:user,
@@ -66,8 +63,8 @@ RSpec.describe "Work package reminder modal",
     end
 
     specify "can create a reminder, subsequently update it and delete it" do
-      date = Date.current + 2.weeks
-      time = Time.zone.parse("05:00")
+      time = (current_user.time_zone.now + 2.weeks).change(hour: 12, minute: 0, second: 0)
+      date = time.to_date
 
       work_package_page.visit!
       work_package_page.click_reminder_button
@@ -79,7 +76,9 @@ RSpec.describe "Work package reminder modal",
           .to have_css(".spot-modal--subheader",
                        text: "You will receive a notification for this work package at the chosen time.")
         fill_in "Date", with: date
-        fill_in "Time", with: time
+        # capybara expets us to set a full timestamp here, eventhough the
+        # input is only for time and the date portion is irrelevant
+        fill_in "Time", with: "1970-01-01T#{time.strftime('%H:%M')}"
         fill_in "Note", with: "Never forget!"
 
         click_link_or_button "Set reminder"
@@ -93,7 +92,7 @@ RSpec.describe "Work package reminder modal",
       .to have_attributes(
         remindable: work_package,
         creator: user_with_permissions,
-        remind_at: DateTime.parse("#{date} #{time}"),
+        remind_at: time,
         note: "Never forget!"
       )
 
@@ -106,7 +105,7 @@ RSpec.describe "Work package reminder modal",
           .to have_css(".spot-modal--subheader",
                        text: "You will receive a notification for this work package at the chosen time.")
         expect(page).to have_field("Date", with: date)
-        expect(page).to have_field("Time", with: time.in_time_zone(current_user.time_zone).strftime("%H:%M"))
+        expect(page).to have_field("Time", with: time.strftime("%H:%M"))
         expect(page).to have_field("Note", with: "Never forget!")
         expect(page).to have_button("Save")
 
@@ -120,7 +119,7 @@ RSpec.describe "Work package reminder modal",
         .to have_attributes(
           remindable: work_package,
           creator: user_with_permissions,
-          remind_at: DateTime.parse("#{date} #{time}"),
+          remind_at: time,
           note: "Remember to never forget!"
         )
 

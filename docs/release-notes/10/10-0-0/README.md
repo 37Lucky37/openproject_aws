@@ -156,7 +156,7 @@ OpenProject 10 significantly improves the performance, especially for the work p
 - Fixed: Project menu auto-closes in change project screen [[#30867](https://community.openproject.org/wp/30867)]
 - Fixed: Versions not copied and copying slow [[#30872](https://community.openproject.org/wp/30872)]
 - Fixed: Relations cannot be created [[#30877](https://community.openproject.org/wp/30877)]
-- Fixed: Performance error on MyPage [[#30878](https://community.openproject.org/wp/30878)]
+- Fixed: Performance error on My page [[#30878](https://community.openproject.org/wp/30878)]
 - Fixed: Bars in Roadmap graph are massive [[#30890](https://community.openproject.org/wp/30890)]
 - Fixed: Words with umlauts are not found in PDF's [[#30891](https://community.openproject.org/wp/30891)]
 - Fixed: Lists in Copy Workflow could be bigger [[#30892](https://community.openproject.org/wp/30892)]

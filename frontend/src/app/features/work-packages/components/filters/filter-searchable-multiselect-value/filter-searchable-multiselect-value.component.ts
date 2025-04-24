@@ -64,6 +64,12 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
 
   itemTracker = (item:HalResource):string => item.href || item.id || item.name;
 
+  groupByFn = (item:HalResource):string|null => {
+    if (!this.isVersionResource) return null;
+    const project = item.definingProject as HalResource | undefined;
+    return project?.name || this.I18n.t('js.project.not_available');
+  };
+
   compareByHref = compareByHref;
 
   resourceType:string|null = null;
@@ -209,5 +215,10 @@ export class FilterSearchableMultiselectValueComponent extends UntilDestroyedMix
   private get isUserResource() {
     const type = _.get(this.filter.currentSchema, 'values.type', null) as string;
     return type && type.indexOf('User') > 0;
+  }
+
+  private get isVersionResource() {
+    const type = _.get(this.filter.currentSchema, 'values.type', null) as string;
+    return type && type.indexOf('Version') > 0;
   }
 }

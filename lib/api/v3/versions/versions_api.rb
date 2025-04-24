@@ -36,7 +36,7 @@ module API
                                                             # the distinct(false) is added in order to allow ORDER BY LOWER(name)
                                                             # which would otherwise be invalid in postgresql
                                                             # SELECT DISTINCT, ORDER BY expressions must appear in select list
-                                                            Version.visible(current_user).distinct(false)
+                                                            Version.visible(current_user).or(Version.systemwide).distinct(false)
                                                           })
                                                      .mount
 

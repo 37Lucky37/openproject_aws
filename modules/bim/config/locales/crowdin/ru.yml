@@ -84,6 +84,12 @@ ru:
         ifc_attachment: "Файл IFC"
         is_default: "Модель по умолчанию"
         attachments: "Файл IFC"
+      bim/bcf/issue:
+        bcf_comment: "Комментарий BCF"
+        bim_snippet: "Сниппет BIM"
+        reference_links: "Референсные ссылки"
+        stage: "Этап"
+        viewpoint: "Точка просмотра"
     errors:
       models:
         bim/ifc_models/ifc_model:

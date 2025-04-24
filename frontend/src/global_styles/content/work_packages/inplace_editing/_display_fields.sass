@@ -51,6 +51,10 @@ display-field
       padding-right: 0.25rem
       text-align: center
 
+.display-field--scheduling-icon
+  fill: var(--body-font-color)
+  margin-right: 0.25rem
+
 // READ value of edit fields
 .inline-edit--display-field
   display: inline-block
@@ -120,6 +124,10 @@ display-field
       & > span:last-child
         margin-right: 0
 
+  &.combinedDate, &.date
+    .display-field--scheduling-icon
+      position: relative
+      top: 1px
 
 .wp-table--cell-container
   .inline-edit--display-field.-placeholder,
@@ -130,8 +138,14 @@ display-field
     .-placeholder
       @include wp-table--placeholder-time-values
 
-.wp-table--cell-container .dueDate .icon-pin
+.wp-table--cell-container .dueDate .display-field--scheduling-icon
   display: none
+
+.op-wp-single-card--content-dates
+  .display-field--scheduling-icon
+    fill: var(--fgColor-muted)
+    position: relative
+    top: 1px
 
 .wp-table--cell-container
   &.duration,
@@ -141,14 +155,18 @@ display-field
 
 .wp-table--cell-container.startDate
   padding-left: $work-package--start-date-display-field-padding-left
+  position: relative
 
-  .icon-context
-    position: relative
-
-  .icon-pin:before
+  .display-field--scheduling-icon
     position: absolute
-    left: -24px
-    top: -8px
+    left: 4px
+    top: 6px
+    margin-right: 0
+
+  .-placeholder
+    // The special alignment of placeholders requires a special alignment of the icon
+    .display-field--scheduling-icon
+      top: 8px
 
 // Sums in wp table
 .wp-table--sum-container.split-time-field

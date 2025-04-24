@@ -84,6 +84,12 @@ vi:
         ifc_attachment: "Tệp IFC"
         is_default: "Mô hình mặc định"
         attachments: "Tệp IFC"
+      bim/bcf/issue:
+        bcf_comment: "BCF comment"
+        bim_snippet: "BIM snippet"
+        reference_links: "Reference links"
+        stage: "Stage"
+        viewpoint: "Góc nhìn"
     errors:
       models:
         bim/ifc_models/ifc_model:

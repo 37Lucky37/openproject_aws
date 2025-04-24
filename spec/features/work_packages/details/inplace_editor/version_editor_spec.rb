@@ -69,7 +69,8 @@ RSpec.describe "subject inplace editor", :js, :selenium do
 
       # Expect the order to be descending by version date
       labels = page.all(".ng-option-label").map { |el| el.text.strip }
-      expect(labels).to eq ["-", version.name, version2.name, version3.name]
+      expect(labels)
+        .to eq ["-", project.name, version.name, "Project N/A", version2.name, version3.name]
 
       page.find(".ng-option-label", text: version3.name).select_option
       field.expect_state_text(version3.name)

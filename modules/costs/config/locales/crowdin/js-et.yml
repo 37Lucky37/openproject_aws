@@ -21,6 +21,7 @@
 #++
 et:
   js:
+    text_are_you_sure: "Kas oled kindel?"
     work_packages:
       property_groups:
         costs: "Kulud"

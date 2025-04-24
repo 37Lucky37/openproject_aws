@@ -18,5 +18,7 @@ Under [external file storages](./external-file-storages) you can add Nextcloud o
 
 Under [attachments](./attachments) you can manage settings for attachments in work packages. You will also find the [virus scanning](./attachments/virus-scanning) settings here. 
 
+## Categories
 
+Under [categories](./categories) you can create and manage documentation categories in OpenProject.
 

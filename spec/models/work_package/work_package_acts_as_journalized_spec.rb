@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -61,22 +63,22 @@ RSpec.describe WorkPackage do
 
       it "notes the changes to subject" do
         expect(work_package.last_journal.details[:subject])
-          .to contain_exactly(nil, work_package.subject)
+          .to eq([nil, work_package.subject])
       end
 
       it "notes the changes to project" do
         expect(work_package.last_journal.details[:project_id])
-          .to contain_exactly(nil, work_package.project_id)
+          .to eq([nil, work_package.project_id])
       end
 
       it "notes the description" do
         expect(work_package.last_journal.details[:description])
-          .to contain_exactly(nil, work_package.description)
+          .to eq([nil, work_package.description])
       end
 
       it "notes the scheduling mode" do
         expect(work_package.last_journal.details[:schedule_manually])
-          .to contain_exactly(nil, false)
+          .to eq([nil, true])
       end
 
       it "has the timestamp of the work package update time for created_at" do
@@ -174,7 +176,7 @@ RSpec.describe WorkPackage do
         work_package.assigned_to = User.current
         work_package.responsible = User.current
         work_package.parent = parent_work_package
-        work_package.schedule_manually = true
+        work_package.schedule_manually = false
 
         work_package.save!
       end
@@ -191,67 +193,25 @@ RSpec.describe WorkPackage do
         end
       end
 
-      shared_examples_for "old value" do
-        subject { work_package.last_journal.old_value_for(property) }
-
-        it { is_expected.to eq(expected_value) }
-      end
-
-      shared_examples_for "new value" do
-        subject { work_package.last_journal.new_value_for(property) }
-
-        it { is_expected.to eq(expected_value) }
-      end
-
-      describe "journaled value for" do
-        describe "description" do
-          let(:property) { "description" }
-
-          context "for old value" do
-            let(:expected_value) { "Description" }
-
-            it_behaves_like "old value"
-          end
-
-          context "for new value" do
-            let(:expected_value) { "changed" }
-
-            it_behaves_like "new value"
-          end
-        end
-
-        describe "schedule_manually" do
-          let(:property) { "schedule_manually" }
-
-          context "for old value" do
-            let(:expected_value) { false }
-
-            it_behaves_like "old value"
-          end
-
-          context "for new value" do
-            let(:expected_value) { true }
-
-            it_behaves_like "new value"
-          end
-        end
-
-        describe "duration" do
-          let(:property) { "duration" }
-
-          context "for old value" do
-            let(:expected_value) { 1 }
-
-            it_behaves_like "old value"
-          end
-
-          context "for new value" do
-            let(:expected_value) { 8 }
-
-            it_behaves_like "new value"
+      shared_examples_for "journaled value for" do |property:, expected_old_value:, expected_new_value:|
+        context "for #{property}", :aggregate_failures do
+          it "tracks the change from old value #{expected_old_value.inspect} to new value #{expected_new_value.inspect}" do
+            journal = work_package.last_journal
+            expect(journal.old_value_for(property)).to eq(expected_old_value)
+            expect(journal.new_value_for(property)).to eq(expected_new_value)
           end
         end
       end
+
+      include_examples "journaled value for", property: "description",
+                                              expected_old_value: "Description",
+                                              expected_new_value: "changed"
+      include_examples "journaled value for", property: "schedule_manually",
+                                              expected_old_value: true,
+                                              expected_new_value: false
+      include_examples "journaled value for", property: "duration",
+                                              expected_old_value: 1,
+                                              expected_new_value: 8
 
       describe "adding journal with a missing journal and an existing journal" do
         before do
@@ -910,6 +870,76 @@ RSpec.describe WorkPackage do
     it "removes the storable journals" do
       expect(Journal::StorableJournal.find_by(id: attachable_journals.map(&:id)))
         .to be_nil
+    end
+  end
+
+  describe "#journals.restricted_visible" do
+    let(:work_package) { create(:work_package) }
+    let(:admin) { create(:admin) }
+    let(:user) { create(:user) }
+
+    let!(:restricted_note) do
+      create(:work_package_journal,
+             user: admin,
+             notes: "First comment by admin",
+             journable: work_package,
+             restricted: true,
+             version: 2)
+    end
+
+    let!(:unrestricted_note) do
+      create(:work_package_journal,
+             user:,
+             notes: "First comment by user",
+             journable: work_package,
+             restricted: false,
+             version: 3)
+    end
+
+    subject(:journals) { work_package.journals.restricted_visible }
+
+    before do
+      login_as user
+    end
+
+    context "when comments_with_restricted_visibility is enabled", with_flag: { comments_with_restricted_visibility: true } do
+      context "when the user cannot see restricted journals" do
+        before do
+          mock_permissions_for(user) do |mock|
+            mock.allow_in_work_package :view_work_packages, work_package:
+          end
+        end
+
+        it "does not return the restricted journal" do
+          expect(journals.map(&:id)).not_to include(restricted_note.id)
+          expect(journals.map(&:id)).to include(unrestricted_note.id)
+        end
+      end
+
+      context "when the user can see restricted journals" do
+        before do
+          mock_permissions_for(user) do |mock|
+            mock.allow_in_project(:view_comments_with_restricted_visibility, project: work_package.project)
+          end
+        end
+
+        it "returns all journals" do
+          expect(journals.map(&:id)).to include(restricted_note.id, unrestricted_note.id)
+        end
+      end
+    end
+
+    context "when comments_with_restricted_visibility is disabled", with_flag: { comments_with_restricted_visibility: false } do
+      before do
+        mock_permissions_for(user) do |mock|
+          mock.allow_in_project(:view_comments_with_restricted_visibility, project: work_package.project)
+        end
+      end
+
+      it "does not return the restricted journal regardless of permissions" do
+        expect(journals.map(&:id)).not_to include(restricted_note.id)
+        expect(journals.map(&:id)).to include(unrestricted_note.id)
+      end
     end
   end
 end

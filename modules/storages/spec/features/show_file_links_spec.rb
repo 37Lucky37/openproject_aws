@@ -46,10 +46,11 @@ RSpec.describe "Showing of file links in work package", :js do
 
   let(:sync_service) { instance_double(Storages::FileLinkSyncService) }
   let(:authorization_state) { ServiceResult.success }
+  let(:remote_identity) { create(:remote_identity, user: current_user, integration: storage) }
 
   before do
     Storages::Peripherals::Registry.stub(
-      "#{storage}.queries.auth_check",
+      "#{storage}.queries.user",
       ->(_) { authorization_state }
     )
 
@@ -62,6 +63,7 @@ RSpec.describe "Showing of file links in work package", :js do
 
     project_storage
     file_link
+    remote_identity
 
     login_as current_user
     wp_page.visit_tab! :files
@@ -93,13 +95,25 @@ RSpec.describe "Showing of file links in work package", :js do
     end
   end
 
+  context "if user is not connected to Nextcloud" do
+    let(:remote_identity) { nil }
+
+    it "must show storage information box with login button" do
+      within_test_selector("op-tab-content--tab-section", text: "MY STORAGE", wait: 25) do
+        expect(page).to have_button("Nextcloud login")
+        expect(page).to have_text("Login to Nextcloud")
+        expect(page).to have_list_item(text: "logo.png")
+      end
+    end
+  end
+
   context "if user is not authorized in Nextcloud" do
     let(:authorization_state) { ServiceResult.failure(errors: Storages::StorageError.new(code: :unauthorized)) }
 
     it "must show storage information box with login button" do
       within_test_selector("op-tab-content--tab-section", text: "MY STORAGE", wait: 25) do
         expect(page).to have_button("Nextcloud login")
-        expect(page).to have_text("Login to Nextcloud")
+        expect(page).to have_text("Authentication with Nextcloud failed")
         expect(page).to have_list_item(text: "logo.png")
       end
     end

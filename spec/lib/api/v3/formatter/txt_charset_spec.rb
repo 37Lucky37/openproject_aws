@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,7 +31,7 @@
 require "spec_helper"
 
 RSpec.describe API::V3::Formatter::TxtCharset do
-  let(:umlaut_object_ascii) { "ümläutß".force_encoding("ASCII-8BIT") }
+  let(:umlaut_object_ascii) { (+"ümläutß").force_encoding("ASCII-8BIT") }
   let(:umlaut_object_utf8) { umlaut_object_ascii.force_encoding("utf-8") }
   let(:env) { {} }
 

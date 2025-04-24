@@ -2,6 +2,7 @@
 pt-PT:
   js:
     storages:
+      authentication_error: "Falha na autenticação com %{storageType}"
       link_files_in_storage: "Vincular ficheiros em %{storageType}"
       link_existing_files: "Vincular ficheiros existentes"
       upload_files: "Carregar ficheiros"
@@ -19,6 +20,7 @@ pt-PT:
         one_drive: "OneDrive/SharePoint"
         default: "Armazenamento"
       information:
+        authentication_error: "Não foi possível autenticar o pedido para %{storageType}, o que constitui um erro."
         connection_error: >
           Algumas definições do %{storageType} não estão a funcionar. Contacte a sua administração de %{storageType}.
         live_data_error: "Erro ao obter detalhes do ficheiro"
@@ -27,6 +29,8 @@ pt-PT:
         no_file_links: "Para vincular ficheiros a este pacote de trabalho, faça-o através de %{storageType}."
         not_logged_in: >
           Para adicionar um link e ver ou enviar ficheiro relacionados com este pacote de trabalho, inicie sessão em %{storageType}.
+        suggest_logout: Pode tentar terminar a sessão e voltar a iniciar a sessão para resolver o problema.
+        suggest_relink: Pode tentar voltar a ligar à sua conta através do botão de início de sessão abaixo para resolver este problema.
       files:
         already_existing_header: "Este ficheiro já existe"
         already_existing_body: >

@@ -139,7 +139,7 @@ class AddValidityPeriodToJournals < ActiveRecord::Migration[7.0]
 
   def add_validity_period_constraint
     execute <<~SQL.squish
-      CREATE EXTENSION IF NOT EXISTS btree_gist;
+      CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA pg_catalog;
 
       ALTER TABLE journals
       ADD CONSTRAINT non_overlapping_journals_validity_periods

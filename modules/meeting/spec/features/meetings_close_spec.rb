@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -39,7 +40,7 @@ RSpec.describe "Meetings close" do
            member_with_permissions: { project => permissions })
   end
 
-  let!(:meeting) { create(:meeting, project:, title: "Own awesome meeting!", author: user) }
+  let!(:meeting) { create(:meeting, :author_participates, project:, title: "Own awesome meeting!", author: user) }
   let!(:meeting_agenda) { create(:meeting_agenda, meeting:, text: "asdf") }
 
   before do

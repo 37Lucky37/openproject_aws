@@ -37,10 +37,10 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
     it "can add a new child" do
       wp_page.visit_tab!("relations")
       relations_tab.expect_add_relation_button
-      relations_tab.expect_new_relation_type("New child")
-      relations_tab.expect_new_relation_type("Existing child")
+      relations_tab.expect_new_relation_type("Create new child")
+      relations_tab.expect_new_relation_type("Child")
 
-      relations_tab.select_relation_type "New child"
+      relations_tab.select_relation_type "Create new child"
 
       create_dialog.select_type "Task"
       create_dialog.set_subject "Hello there"
@@ -70,10 +70,10 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
       it "can render the page correctly after creation (regression #60629)" do
         wp_split_page.visit_tab!("relations")
         relations_tab.expect_add_relation_button
-        relations_tab.expect_new_relation_type("New child")
-        relations_tab.expect_new_relation_type("Existing child")
+        relations_tab.expect_new_relation_type("Create new child")
+        relations_tab.expect_new_relation_type("Child")
 
-        relations_tab.select_relation_type "New child"
+        relations_tab.select_relation_type "Create new child"
 
         create_dialog.select_type "Risk"
         create_dialog.set_subject "Hello there"
@@ -114,8 +114,8 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
         wp_page.visit_tab!("relations")
         relations_tab.expect_add_relation_button
         relations_tab.expect_new_relation_type("Related to")
-        relations_tab.expect_no_new_relation_type("Existing child")
-        relations_tab.expect_no_new_relation_type("New child")
+        relations_tab.expect_no_new_relation_type("Child")
+        relations_tab.expect_no_new_relation_type("Create new child")
       end
     end
 
@@ -123,7 +123,7 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
             with_settings: { work_package_done_ratio: "status" } do
       it "can add a new child" do
         wp_page.visit_tab!("relations")
-        relations_tab.select_relation_type "New child"
+        relations_tab.select_relation_type "Create new child"
 
         create_dialog.select_type "Task"
         create_dialog.set_subject "Hello there"
@@ -155,11 +155,11 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
       create(:user, member_with_permissions: { project => %i[view_work_packages manage_subtasks] })
     end
 
-    it "shows an action to add 'Existing child', but not to add 'New child'" do
+    it "shows an action to add 'Child', but not to 'Create new child'" do
       wp_page.visit_tab!("relations")
       relations_tab.expect_add_relation_button
-      relations_tab.expect_new_relation_type("Existing child")
-      relations_tab.expect_no_new_relation_type("New child")
+      relations_tab.expect_new_relation_type("Child")
+      relations_tab.expect_no_new_relation_type("Create new child")
     end
   end
 
@@ -182,7 +182,7 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
 
     it "displays a field for each required custom field" do
       wp_page.visit_tab!("relations")
-      relations_tab.select_relation_type "New child"
+      relations_tab.select_relation_type "Create new child"
 
       all_possible_custom_fields.each do |cf|
         create_dialog.in_dialog do
@@ -198,7 +198,7 @@ RSpec.describe "Relations children tab", :js, :with_cuprite do
 
     it "focuses the subject input field" do
       wp_page.visit_tab!("relations")
-      relations_tab.select_relation_type "New child"
+      relations_tab.select_relation_type "Create new child"
 
       create_dialog.expect_subject_field_focused
     end

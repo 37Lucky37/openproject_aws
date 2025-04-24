@@ -21,6 +21,7 @@
 #++
 pt-PT:
   js:
+    text_are_you_sure: "Tem a certeza?"
     work_packages:
       property_groups:
         costs: "Custos"

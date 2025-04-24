@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -51,12 +52,14 @@ RSpec.describe "Meetings", "Index", :js do
 
   shared_let(:meeting) do
     create(:meeting,
+           :author_participates,
            project:,
            title: "Awesome meeting today!",
            start_time: Time.current)
   end
   shared_let(:tomorrows_meeting) do
     create(:meeting,
+           :author_participates,
            project:,
            title: "Awesome meeting tomorrow!",
            start_time: 1.day.from_now,
@@ -65,6 +68,7 @@ RSpec.describe "Meetings", "Index", :js do
   end
   shared_let(:meeting_with_no_location) do
     create(:meeting,
+           :author_participates,
            project:,
            title: "Boring meeting without a location!",
            start_time: 1.day.from_now,
@@ -72,17 +76,23 @@ RSpec.describe "Meetings", "Index", :js do
   end
   shared_let(:meeting_with_malicious_location) do
     create(:meeting,
+           :author_participates,
            project:,
            title: "Sneaky meeting!",
            start_time: 1.day.from_now,
            location: "<script>alert('Description');</script>")
   end
   shared_let(:yesterdays_meeting) do
-    create(:meeting, project:, title: "Awesome meeting yesterday!", start_time: 1.day.ago)
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Awesome meeting yesterday!",
+           start_time: 1.day.ago)
   end
 
   shared_let(:other_project_meeting) do
     create(:meeting,
+           :author_participates,
            project: other_project,
            title: "Awesome other project meeting!",
            start_time: 2.days.from_now,
@@ -90,7 +100,11 @@ RSpec.describe "Meetings", "Index", :js do
            location: "not-a-url")
   end
   shared_let(:ongoing_meeting) do
-    create(:meeting, project:, title: "Awesome ongoing meeting!", start_time: 30.minutes.ago)
+    create(:meeting,
+           :author_participates,
+           project:,
+           title: "Awesome ongoing meeting!",
+           start_time: 30.minutes.ago)
   end
 
   def setup_meeting_involvement
@@ -162,6 +176,19 @@ RSpec.describe "Meetings", "Index", :js do
         it "show all past meetings" do
           meetings_page.expect_meetings_listed_in_table(yesterdays_meeting, meeting, ongoing_meeting)
           meetings_page.expect_meetings_not_listed(tomorrows_meeting)
+
+          # keeps the past filter selected when changing advanced filters (Regression #61875)" do
+          meetings_page.open_filters
+          meetings_page.remove_filter "invited_user_id"
+          click_on "Apply"
+
+          wait_for_network_idle
+
+          if context == :global
+            expect(page).to have_current_path(meetings_path(upcoming: false, filters: "[]"))
+          else
+            expect(page).to have_current_path(project_meetings_path(project, upcoming: false, filters: "[]"))
+          end
         end
       end
 

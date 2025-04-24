@@ -103,7 +103,6 @@ ms:
     button_settings: "Tetapan"
     button_uncheck_all: "Nyahtandakan semua"
     button_update: "Kemas kini"
-    button_export-pdf: "Muat turun PDF"
     button_export-atom: "Muat Turun Atom"
     button_generate_pdf: "Menjana PDF"
     button_create: "Cipta"
@@ -222,6 +221,8 @@ ms:
             label_maximum_users: "Pengguna aktif maksimum"
             label_starts_at: "Mula pada"
             label_expires_at: "Tamat tempoh pada"
+            label_plan: "Pelan"
+            label_additional_features: "Additional features"
             receive_newsletter: Saya ingin menerima <a target="_blank" href="%{link}">surat berita</a> OpenProject.
             taken_domain: Hanya boleh mempunyai satu percubaan aktif setiap domain.
             domain_mismatch: Permintaan nama hos semasa tidak sepadan dengan nama hos yang dikonfigurasikan. Sila semak tetapan sistem anda sekali lagi.
@@ -357,10 +358,10 @@ ms:
           learn_about: "Ketahui lebih lanjut mengenai fitur-fitur baharu."
           #Include the version to invalidate outdated translations in other locales.
           #Otherwise, e.g. chinese might still have the translations for 10.0 in the 12.0 release.
-          "15_3":
+          "15_5":
             standard:
               new_features_html: >
-                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Schedule recurring meetings to streamline your weekly, biweekly, or custom appointments.</li> <li>Create child work packages directly from the Relations tab.</li> <li>Include total sums in timesheet PDF exports for better insights.</li> <li>Include child work packages in cost reports for more accurate tracking.</li> <li>See dates of previously hidden, permission-restricted relations to make informed scheduling decisions.</li> </ul>
+                The release brings various features and improvements for you, e.g. <br> <ul class="%{list_styling_class}"> <li>Filter for descendants (children and grandchildren) of work packages.</li> <li>Benefit from advanced accessibility in the date picker.</li> <li>See % Complete included in work package table sums.</li> <li>Include a column for children in work package tables.</li> <li>Better use the date picker in mobile screens.</li> <li>PDF exports matching configured form layout.</li> </ul>
     ical_sharing_modal:
       title: "Langgan kalendar"
       inital_setup_error_message: "Ralat berlaku ketika sedang mengambil data."
@@ -717,17 +718,18 @@ ms:
       description: "Deskripsi: Klik untuk edit..."
       relation_description: "Klik untuk tambah deskripsi untuk hubungan ini"
     project:
-      required_outside_context: >
-        Sila pilih projek untuk mencipta pakej kerja untuk melihat semua atribut. Anda hanya boleh memilih projek yang mempunyai jenis di atas yang telah diaktifkan.
-      context: "Konteks projek"
-      click_to_switch_to_project: "Projek: %{projectname}"
-      confirm_template_load: "Menukar templat akan memuat semula laman dan anda akan kehilangan semua input untuk borang ini. Teruskan?"
-      use_template: "Guna templat"
-      no_template_selected: "(Tiada)"
-      copy:
-        copy_options: "Salin pilihan"
       autocompleter:
         label: "Autopelengkapan projek"
+      click_to_switch_to_project: "Projek: %{projectname}"
+      confirm_template_load: "Menukar templat akan memuat semula laman dan anda akan kehilangan semua input untuk borang ini. Teruskan?"
+      context: "Konteks projek"
+      copy:
+        copy_options: "Salin pilihan"
+      not_available: "Project N/A"
+      no_template_selected: "(Tiada)"
+      required_outside_context: >
+        Sila pilih projek untuk mencipta pakej kerja untuk melihat semua atribut. Anda hanya boleh memilih projek yang mempunyai jenis di atas yang telah diaktifkan.
+      use_template: "Guna templat"
     reminders:
       settings:
         daily:
@@ -796,6 +798,7 @@ ms:
       typeahead_placeholder: Cari pemerhati yang mungkin
     relation_labels:
       parent: "Induk"
+      child: "Child"
       children: "Anak"
       relates: "Berkaitan Dengan"
       duplicates: "Duplikasi"
@@ -825,7 +828,7 @@ ms:
       add_new_child: "Cipta anak baru"
       create_new: "Cipta baru"
       add_existing: "Tambah sedia ada"
-      add_existing_child: "Tambah anak sedia ada"
+      add_existing_child: "Add child"
       remove_child: "Padam anak"
       add_new_relation: "Cipta perhubungan baharu"
       add_existing_relation: "Tambah perhubungan sedia ada"
@@ -851,8 +854,6 @@ ms:
       select_branch: "Pilih cabang"
     field_value_enter_prompt: "Masukkan nilai untuk '%{field}'"
     project_menu_details: "Butiran-butiran"
-    scheduling:
-      manual: "Penjadualan secara manual"
     sort:
       sorted_asc: "Susunan menaik digunakan, "
       sorted_dsc: "Susunan menurun digunakan, "
@@ -900,15 +901,6 @@ ms:
       comment_send_failed: "Ralat telah berlaku. Tidak dapat menghantar komen."
       comment_updated: "Komen telah berjaya dikemas kini."
       confirm_edit_cancel: "Adakah anda pasti anda ingin membatalkan edit pakej kerja?"
-      datepicker_modal:
-        automatically_scheduled_parent: "Dijadualkan secara automatik. Tarikh diperolehi daripada hubungan."
-        manually_scheduled: "Penjadualan secara manual dibenarkan, semua hubungan diabaikan."
-        start_date_limited_by_relations: "Tarikh mula dan akhir yang tersedia adalah dibatasi oleh hubungan."
-        changing_dates_affects_follow_relations: "Mengubah tarikh ini akan mempengaruhi tarikh pakej kerja yang berkaitan."
-        click_on_show_relations_to_open_gantt: 'Klik "%{button_name}" untuk gambaran keseluruhan GANTT.'
-        show_relations: "Paparkan hubungan"
-        ignore_non_working_days:
-          title: "Hari bekerja sahaja"
       description_filter: "Penyaring"
       description_enter_text: "Masukkan teks"
       description_options_hide: "Sembunyikan pilihan"

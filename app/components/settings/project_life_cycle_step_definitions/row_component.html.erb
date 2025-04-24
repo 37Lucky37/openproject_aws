@@ -32,17 +32,22 @@ See COPYRIGHT and LICENSE files for more details.
     row_container.with_column(flex_layout: true, classes: "gap-2 min-width-0") do |title_container|
       if allowed_to_customize_life_cycle?
         title_container.with_column do
-          render(Primer::OpenProject::DragHandle.new(
-            data: { "projects--settings--border-box-filter-target": "hideWhenFiltering" }
-          ))
+          render(
+            Primer::OpenProject::DragHandle.new(
+              data: { "projects--settings--border-box-filter-target": "hideWhenFiltering" }
+            )
+          )
         end
+      end
+      title_container.with_column(classes: icon_color_class) do
+        render Primer::Beta::Octicon.new(icon: icon)
       end
       title_container.with_column(classes: "ellipsis", test_selector: "project-life-cycle-step-definition-name") do
         render(
           if allowed_to_customize_life_cycle?
             Primer::Beta::Link.new(
               classes: "filter-target-visible-text",
-              href: edit_admin_settings_project_life_cycle_step_definition_path(definition),
+              href: edit_admin_settings_project_phase_definition_path(definition),
               font_weight: :bold
             )
           else
@@ -55,7 +60,7 @@ See COPYRIGHT and LICENSE files for more details.
         end
       end
       title_container.with_column do
-        render(Projects::LifeCycleTypeComponent.new(definition))
+        render(Primer::Beta::Text.new(**gate_text_options)) { gate_info }
       end
       title_container.with_column(classes: "no-wrap") do
         render(Primer::Beta::Text.new) { t("project.count", count: definition.project_count) }
@@ -69,7 +74,7 @@ See COPYRIGHT and LICENSE files for more details.
 
           menu.with_item(
             label: t(:label_edit),
-            href: edit_admin_settings_project_life_cycle_step_definition_path(definition)
+            href: edit_admin_settings_project_phase_definition_path(definition)
           ) do |item|
             item.with_leading_visual_icon(icon: :pencil)
           end
@@ -86,7 +91,7 @@ See COPYRIGHT and LICENSE files for more details.
           menu.with_item(
             label: t(:text_destroy),
             scheme: :danger,
-            href: admin_settings_project_life_cycle_step_definition_path(definition),
+            href: admin_settings_project_phase_definition_path(definition),
             form_arguments: {
               method: :delete,
               data: {

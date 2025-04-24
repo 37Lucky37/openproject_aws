@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -29,6 +31,7 @@
 class MeetingAgendaItemsController < ApplicationController
   include AttachableServiceCall
   include OpTurbo::ComponentStream
+  include OpTurbo::FlashStreamHelper
   include Meetings::AgendaComponentStreams
 
   before_action :set_meeting
@@ -36,16 +39,17 @@ class MeetingAgendaItemsController < ApplicationController
   before_action :set_meeting_agenda_item,
                 except: %i[new cancel_new create]
   before_action :authorize
+  before_action :check_recurring_meeting_param, only: %i[move_to_next_meeting]
 
   def new
-    if @meeting.open?
+    if @meeting.closed?
+      update_all_via_turbo_stream
+      render_error_flash_message_via_turbo_stream(message: t("text_meeting_not_editable_anymore"))
+    else
       if params[:meeting_section_id].present?
         meeting_section = @meeting.sections.find(params[:meeting_section_id])
       end
       render_agenda_item_form_via_turbo_stream(meeting_section:, type: @agenda_item_type)
-    else
-      update_all_via_turbo_stream
-      render_error_flash_message_via_turbo_stream(message: t("text_meeting_not_editable_anymore"))
     end
 
     respond_with_turbo_streams
@@ -191,7 +195,42 @@ class MeetingAgendaItemsController < ApplicationController
     respond_with_turbo_streams
   end
 
+  def move_to_next_meeting # rubocop:disable Metrics/AbcSize
+    next_occurrence = init_next_meeting_occurrence
+    return if next_occurrence.nil?
+
+    update_call = ::MeetingAgendaItems::UpdateService
+      .new(user: current_user, model: @meeting_agenda_item)
+      .call(meeting_id: next_occurrence.id, meeting_section: nil)
+
+    if update_call.success?
+      render_success_flash_message_via_turbo_stream(
+        message: I18n.t(:text_agenda_item_moved_to_next_meeting, date: format_date(next_occurrence.start_time))
+      )
+      remove_item_via_turbo_stream(clear_slate: @meeting.agenda_items.empty?)
+      update_header_component_via_turbo_stream
+      respond_with_turbo_streams
+    else
+      respond_with_flash_error(message: call.message)
+    end
+  end
+
   private
+
+  def init_next_meeting_occurrence
+    return @next_occurrence if @next_occurrence.present?
+
+    call = ::RecurringMeetings::InitOccurrenceService
+    .new(user: User.system, recurring_meeting: @series)
+    .call(start_time: @next_meeting_time)
+
+    if call.success?
+      call.result
+    else
+      respond_with_flash_error(message: call.message)
+      nil
+    end
+  end
 
   def set_meeting
     @meeting = Meeting.find(params[:meeting_id])
@@ -224,5 +263,28 @@ class MeetingAgendaItemsController < ApplicationController
     update_all_via_turbo_stream
     # show additional base error message
     render_base_error_in_flash_message_via_turbo_stream(call.errors)
+  end
+
+  def check_recurring_meeting_param
+    if @meeting.closed? || !@meeting.recurring?
+      return render_400
+    end
+
+    @next_meeting_time = DateTime.iso8601(params[:datetime]).utc
+    @series = @meeting.recurring_meeting
+
+    render_400 unless @next_meeting_time && @series.occurs_at?(@next_meeting_time)
+    find_existing_occurrence
+  end
+
+  def find_existing_occurrence
+    next_occurrence = @series.scheduled_meetings.find_by(start_time: @next_meeting_time)
+    return if next_occurrence.nil?
+
+    if next_occurrence.cancelled?
+      respond_with_flash_error(message: I18n.t(:text_agenda_item_move_next_meeting_cancelled))
+    else
+      @next_occurrence = next_occurrence.meeting
+    end
   end
 end

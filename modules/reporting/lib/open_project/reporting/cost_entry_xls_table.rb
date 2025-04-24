@@ -73,7 +73,7 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
   end
 
   def cost_main_columns(result)
-    main_cols = [show_field(:spent_on, result.fields[:spent_on.to_s])]
+    main_cols = [show_field(:spent_on, result.fields["spent_on"])]
     main_cols.concat cost_main_times_columns(result) if with_times_column?
     main_cols
   end
@@ -133,7 +133,7 @@ class OpenProject::Reporting::CostEntryXlsTable < OpenProject::XlsExport::XlsVie
     query
       .each_direct_result
       .map(&:itself)
-      .group_by { |r| DateTime.parse(r.fields["spent_on"]) }
+      .group_by { |r| r.fields["spent_on"] }
       .sort
       .flat_map { |_, date_results| date_results.sort_by { |r| r.fields["id"] } }
   end

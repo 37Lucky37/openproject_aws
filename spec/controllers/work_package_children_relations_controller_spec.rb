@@ -35,12 +35,12 @@ RSpec.describe WorkPackageChildrenRelationsController do
   shared_let(:task_type) { create(:type_task) }
   shared_let(:milestone_type) { create(:type_milestone) }
   shared_let(:project) { create(:project, types: [task_type, milestone_type]) }
-  shared_let(:work_package) { create(:work_package, project:, type: task_type) }
-  shared_let(:child_work_package) { create(:work_package, parent: work_package, project:, type: task_type) }
+  shared_let(:work_package) { create(:work_package, subject: "work_package", project:, type: task_type) }
+  shared_let(:child_work_package) { create(:work_package, subject: "child", parent: work_package, project:, type: task_type) }
 
   current_user { user }
 
-  describe "GET /work_packages/:work_package_id/children/new" do
+  describe "GET /work_packages/:work_package_id/children_relations/new" do
     before do
       allow(WorkPackageRelationsTab::AddWorkPackageChildDialogComponent)
         .to receive(:new)
@@ -57,7 +57,7 @@ RSpec.describe WorkPackageChildrenRelationsController do
     end
   end
 
-  describe "POST /work_packages/:work_package_id/children" do
+  describe "POST /work_packages/:work_package_id/children_relations" do
     shared_let(:future_child_work_package) { create(:work_package, project:) }
 
     it "creates a child relationship" do
@@ -75,6 +75,23 @@ RSpec.describe WorkPackageChildrenRelationsController do
                      as: :turbo_stream)
       expect(response).to have_http_status(:unprocessable_entity)
       expect(future_child_work_package.reload.parent).to be_nil
+    end
+
+    context "when the child is invalid due to a required custom field" do
+      shared_let(:custom_field) do
+        create(:integer_wp_custom_field, is_required: true, is_for_all: true, default_value: nil) do |cf|
+          project.types.first.custom_fields << cf
+          project.work_package_custom_fields << cf
+        end
+      end
+
+      it "the creation call still succeeds" do
+        post("create", params: { work_package_id: work_package.id,
+                                 work_package: { id: future_child_work_package.id } },
+                       as: :turbo_stream)
+        expect(response).to have_http_status(:ok)
+        expect(future_child_work_package.reload.parent).to eq(work_package)
+      end
     end
   end
 
@@ -114,7 +131,23 @@ RSpec.describe WorkPackageChildrenRelationsController do
       expect(WorkPackages::UpdateAncestorsService).to have_received(:new)
         .with(user: user, work_package: child_work_package)
       expect(WorkPackages::SetScheduleService).to have_received(:new)
-        .with(a_hash_including(work_package: [child_work_package]))
+        .with(a_hash_including(work_package: [child_work_package, work_package]))
+    end
+
+    context "when the child is invalid due to a required custom field" do
+      shared_let(:custom_field) do
+        create(:integer_wp_custom_field, is_required: true, is_for_all: true, default_value: nil) do |cf|
+          project.types.first.custom_fields << cf
+          project.work_package_custom_fields << cf
+        end
+      end
+
+      it "the creation call still succeeds" do
+        send_delete_request
+
+        expect(response).to have_http_status(:ok)
+        expect(child_work_package.reload.parent).to be_nil
+      end
     end
   end
 end

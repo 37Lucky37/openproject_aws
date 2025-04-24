@@ -152,7 +152,7 @@
       data-test-selector="op-wp-single-card--content-assignee"
     ></op-principal>
     <display-field
-      *ngIf="!showAsInlineCard"
+      *ngIf="!showAsInlineCard && (workPackage.startDate || workPackage.dueDate)"
       [resource]="workPackage"
       [displayFieldOptions]="{ writable: false, dateFormat: 'MMM DD, YYYY', placeholder: '' }"
       [displayClass]="combinedDateDisplayField"

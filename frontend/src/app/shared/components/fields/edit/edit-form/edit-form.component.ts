@@ -92,7 +92,6 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
     const requiresConfirmation = ConfigurationService.warnOnLeavingUnsaved();
 
     this.unregisterListener = $transitions.onBefore({}, (transition:Transition) => {
-      this.removeIdleComponents();
       if (!this.editing) {
         return undefined;
       }
@@ -123,16 +122,6 @@ export class EditFormComponent extends EditForm<HalResource> implements OnInit, 
   ngOnDestroy() {
     this.unregisterListener();
     this.globalEditFormChangesTrackerService.removeFromActiveForms(this);
-  }
-
-  // Hacky fix: remove inactive rendered components which aren't in DOM any more
-  removeIdleComponents() {
-    this.appRef.components.forEach((component) => {
-      const element = ((component.hostView as unknown) as { rootNodes:unknown[] }).rootNodes[0] as HTMLElement;
-      if (!document.body.contains(element)) {
-        this.appRef.detachView(component.hostView);
-      }
-    });
   }
 
   public async activateField(form:EditForm, schema:IFieldSchema, fieldName:string, errors:string[]):Promise<EditFieldHandler> {

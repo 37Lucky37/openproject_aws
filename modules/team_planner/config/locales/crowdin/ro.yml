@@ -2,7 +2,7 @@
 ro:
   plugin_openproject_team_planner:
     name: "Planificare echipă OpenProject"
-    description: "Provides team planner views."
+    description: "Oferă vederi planificator echipă."
   permission_view_team_planner: "Vezi planificatorul echipei"
   permission_manage_team_planner: "Gestionează planificatorul de echipe"
   project_module_team_planner_view: "Planificare echipă"

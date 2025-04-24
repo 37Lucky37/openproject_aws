@@ -65,6 +65,7 @@ module WorkPackages
         WorkPackages::UpdateAncestorsService
           .new(user:,
                work_package: wp)
+          .with_state(state)
           .call(changes)
       end
     end

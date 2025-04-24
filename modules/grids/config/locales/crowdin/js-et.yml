@@ -51,7 +51,7 @@ et:
         work_packages_accountable:
           title: "Work packages I am accountable for"
         work_packages_assigned:
-          title: 'Minu teemad'
+          title: 'Minu tööpaketid'
         work_packages_created:
           title: 'Work packages created by me'
         work_packages_watched:

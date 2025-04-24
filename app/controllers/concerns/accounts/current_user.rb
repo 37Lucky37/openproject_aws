@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #-- copyright
 # OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
@@ -37,16 +39,6 @@ module Accounts::CurrentUser
 
   protected
 
-  # The current user is a per-session kind of thing and session stuff is controller responsibility.
-  # A globally accessible User.current is a big code smell. When used incorrectly it allows getting
-  # the current user outside of a session scope, i.e. in the model layer, from mailers or
-  # in the console which doesn't make any sense. For model code that needs to be aware of the
-  # current user, i.e. when returning all visible projects for <somebody>, the controller should
-  # pass the current user to the model, instead of letting it fetch it by itself through
-  # `User.current`. This method acts as a reminder and wants to encourage you to use it.
-  # Project.visible_by actually allows the controller to pass in a user but it falls back
-  # to `User.current` and there are other places in the session-unaware codebase,
-  # that rely on `User.current`.
   def current_user
     User.current
   end

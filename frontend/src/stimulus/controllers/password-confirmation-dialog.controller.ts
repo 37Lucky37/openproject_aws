@@ -68,24 +68,27 @@ export default class PasswordConfirmationDialogController extends ApplicationCon
     }
 
     this.activeDialog = true;
-    opModalService
-      .show(PasswordConfirmationModalComponent, 'global')
-      .subscribe((modal) => modal.closingEvent.subscribe(() => {
-        this.activeDialog = false;
 
-        if (!modal.confirmed) {
-          return;
-        }
+    pluginContext.runInZone(() => {
+      opModalService
+        .show(PasswordConfirmationModalComponent, 'global')
+        .subscribe((modal) => modal.closingEvent.subscribe(() => {
+          this.activeDialog = false;
 
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.id = 'hidden_password_confirmation';
-        input.name = '_password_confirmation';
-        input.value = modal.password_confirmation as string;
+          if (!modal.confirmed) {
+            return;
+          }
 
-        form.append(input);
-        form.requestSubmit(event?.submitter);
-      }));
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.id = 'hidden_password_confirmation';
+          input.name = '_password_confirmation';
+          input.value = modal.password_confirmation as string;
+
+          form.append(input);
+          form.requestSubmit(event?.submitter);
+        }));
+    });
 
     return false;
   }

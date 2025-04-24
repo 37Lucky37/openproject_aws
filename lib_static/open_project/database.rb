@@ -70,7 +70,7 @@ module OpenProject
       # Ensure cache is busted if result is positive or unset
       # and the value was cached
       if ensure_fresh || cached_result != false
-        fresh_result = connection.migration_context.needs_migration?
+        fresh_result = connection.pool.migration_context.needs_migration?
         Rails.cache.write(cache_key, expires_in: 1.hour)
         return fresh_result
       end
@@ -160,7 +160,7 @@ module OpenProject
 
     def self.mysql?(_arg = nil)
       message = ".mysql? is no longer supported and will always return false. Remove the call."
-      ActiveSupport::Deprecation.warn message, caller
+      ActiveSupport::Deprecation.new.warn message, caller_locations
       false
     end
 

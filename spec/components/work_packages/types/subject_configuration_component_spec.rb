@@ -31,11 +31,12 @@
 require "rails_helper"
 
 RSpec.describe WorkPackages::Types::SubjectConfigurationComponent, type: :component do
-  subject(:render_component) do
-    render_inline(described_class.new(type))
-  end
-
   let(:type) { create(:type) }
+  let(:subject_configuration_form_data) { nil }
+
+  subject(:render_component) do
+    render_inline(described_class.new(type, subject_configuration_form_data:))
+  end
 
   context "when enterprise edition is activated", with_ee: %i[work_package_subject_generation] do
     it "shows no enterprise banner" do
@@ -49,6 +50,58 @@ RSpec.describe WorkPackages::Types::SubjectConfigurationComponent, type: :compon
 
       expect(page.find("input[type=radio][value=generated]")).not_to be_disabled
       expect(page.find("input[type=radio][value=manual]")).not_to be_disabled
+    end
+
+    context "if component is rendered without form values in parameters" do
+      before do
+        render_component
+      end
+
+      context "if work package type has no subject pattern configured" do
+        it "must have manual option checked" do
+          expect(page.find("input[type=radio][value=manual]")).to be_checked
+        end
+      end
+
+      context "if work package type has subject pattern configured" do
+        let(:type) { create(:type, patterns: { subject: { blueprint: "Created by {{assignee}}", enabled: true } }) }
+
+        it "must have generated option checked and pattern input filled" do
+          expect(page.find("input[type=radio][value=generated]")).to be_checked
+          expect(page.find("input[type=hidden][id=types_forms_subject_configuration_form_model_pattern]", visible: false).value)
+            .to eq("Created by {{assignee}}")
+        end
+      end
+    end
+
+    context "if component is rendered with form values in parameters" do
+      before do
+        render_component
+      end
+
+      context "if work package type has subject pattern configured, but form params have option manual selected" do
+        let(:type) { create(:type, patterns: { subject: { blueprint: "Created by {{assignee}}", enabled: true } }) }
+        let(:subject_configuration_form_data) { { subject_configuration: :manual } }
+
+        it "must have manual option checked" do
+          expect(page.find("input[type=radio][value=manual]")).to be_checked
+        end
+      end
+
+      context "if work package type has no subject pattern configured, but form params have a pattern" do
+        let(:subject_configuration_form_data) do
+          {
+            subject_configuration: :generated,
+            pattern: "Created by {{assignee}}"
+          }
+        end
+
+        it "must have generated option checked and pattern input filled" do
+          expect(page.find("input[type=radio][value=generated]")).to be_checked
+          expect(page.find("input[type=hidden][id=types_forms_subject_configuration_form_model_pattern]", visible: false).value)
+            .to eq("Created by {{assignee}}")
+        end
+      end
     end
   end
 

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 #-- copyright
-# OpenProject is a project management system.
+# OpenProject is an open source project management software.
 # Copyright (C) the OpenProject GmbH
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License version 3.
 #
 # OpenProject is a fork of ChiliProject, which is a fork of Redmine. The copyright follows:
-# Copyright (C) 2006-2017 Jean-Philippe Lang
+# Copyright (C) 2006-2013 Jean-Philippe Lang
 # Copyright (C) 2010-2013 the ChiliProject Team
 #
 # This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # See COPYRIGHT and LICENSE files for more details.
-# +
+#++
 
 module OpenIDConnect
   module UserTokens
@@ -36,7 +36,7 @@ module OpenIDConnect
         @jwt_parser = jwt_parser
       end
 
-      def call(access_token:, refresh_token: nil, known_audiences: [], clear_previous: false)
+      def call(access_token:, refresh_token: nil, known_audiences: [], clear_previous: false, expires_in: nil)
         if access_token.blank?
           Rails.logger.error("Could not associate token to user: No access token")
           return
@@ -49,14 +49,15 @@ module OpenIDConnect
 
         @user.oidc_user_tokens.destroy_all if clear_previous
 
-        token = prepare_token(access_token:, refresh_token:, known_audiences:)
+        token = prepare_token(access_token:, refresh_token:, known_audiences:, expires_in:)
         token.save! if token.audiences.any?
       end
 
       private
 
-      def prepare_token(access_token:, refresh_token:, known_audiences:)
-        @user.oidc_user_tokens.build(access_token:, refresh_token:).tap do |token|
+      def prepare_token(access_token:, refresh_token:, expires_in:, known_audiences:)
+        expires_at = expires_in&.seconds&.from_now
+        @user.oidc_user_tokens.build(access_token:, refresh_token:, expires_at:).tap do |token|
           token.audiences = merge_audiences(known_audiences, discover_audiences(access_token).value_or([]))
         end
       end

@@ -88,7 +88,7 @@ Before version 15.0, users could choose whether their email address was displaye
 
 With OpenProject 15.0, we are pleased to release another great improvement for our project lists: Clicking on the table headers in a project list now gives you a quick action menu that not only allows you to sort in descending or ascending order, but also to filter or change, remove or add a column. You can still find the same actions in the top-right menu button, but now these actions are much quicker to access. [Read more about the configuration for project lists in our user guide](../../user-guide/projects/project-lists/#configure-project-lists-view).
 
-![Gif showing how quickly you can now change rows in project lists by clicking on the headers](quick_action_table_headers.gif)
+![video showing how quickly you can now change rows in project lists by clicking on the headers](https://openproject-docs.s3.eu-central-1.amazonaws.com/videos/OpenProject_15_0_quick_action_table_headers.mp4)
 
 ### Experience simplified design settings with fewer sidebar design variables needed
 

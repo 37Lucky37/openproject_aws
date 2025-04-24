@@ -39,7 +39,7 @@ class RecurringMeeting < ApplicationRecord
   belongs_to :project
   belongs_to :author, class_name: "User"
 
-  validates_presence_of :start_time, :title, :frequency, :end_after
+  validates_presence_of :start_time, :title, :frequency, :end_after, :time_zone
   validates_presence_of :end_date, if: -> { end_after_specific_date? }
   validates_numericality_of :iterations,
                             only_integer: true,
@@ -56,20 +56,30 @@ class RecurringMeeting < ApplicationRecord
            if: -> { end_after_specific_date? }
 
   after_initialize :set_defaults
+
+  # Unset any previously set schedule before running validations
+  before_validation :unset_schedule
+
   after_save :unset_schedule
   before_destroy :remove_jobs
 
-  enum frequency: {
-    daily: 0,
-    working_days: 1,
-    weekly: 2
-  }.freeze, _prefix: true, _default: "weekly"
+  enum :frequency,
+       {
+         daily: 0,
+         working_days: 1,
+         weekly: 2
+       },
+       prefix: true,
+       default: "weekly"
 
-  enum end_after: {
-    specific_date: 0,
-    iterations: 1,
-    never: 3
-  }.freeze, _prefix: true, _default: "never"
+  enum :end_after,
+       {
+         specific_date: 0,
+         iterations: 1,
+         never: 3
+       },
+       prefix: true,
+       default: "never"
 
   has_many :meetings,
            inverse_of: :recurring_meeting,
@@ -106,7 +116,12 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def human_frequency
-    I18n.t("recurring_meeting.frequency.#{frequency}")
+    case frequency
+    when "working_days"
+      I18n.t("recurring_meeting.frequency.working_days")
+    else
+      I18n.t("recurring_meeting.frequency.x_#{frequency}", count: interval)
+    end
   end
 
   def human_day_of_week
@@ -114,11 +129,22 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def weekday
+    return I18n.t(:label_empty_element) if start_time.blank?
+
     I18n.l(start_time, format: "%A")
   end
 
   def date
     start_time.day.ordinalize
+  end
+
+  def start_time
+    super&.in_time_zone(time_zone)
+  end
+
+  def time_zone
+    time_zone_string = super || Setting.user_default_timezone.presence || "Etc/UTC"
+    ActiveSupport::TimeZone[time_zone_string]
   end
 
   def schedule
@@ -148,20 +174,21 @@ class RecurringMeeting < ApplicationRecord
   end
 
   def full_schedule_in_words # rubocop:disable Metrics/AbcSize
+    time = "#{format_time(start_time, time_zone:, include_date: false)} (#{friendly_timezone_name(time_zone)})"
     if has_ended?
       I18n.t("recurring_meeting.in_words.full_past",
              base: base_schedule,
-             time: format_time(start_time, include_date: false),
+             time:,
              end_date: format_date(last_occurrence))
     elsif will_end?
       I18n.t("recurring_meeting.in_words.full",
              base: base_schedule,
-             time: format_time(start_time, include_date: false),
+             time:,
              end_date: format_date(last_occurrence))
     else
       I18n.t("recurring_meeting.in_words.never_ending",
              base: base_schedule,
-             time: format_time(start_time, include_date: false))
+             time:)
     end
   end
 
@@ -169,6 +196,12 @@ class RecurringMeeting < ApplicationRecord
     I18n.t("recurring_meeting.in_words.frequency",
            base: base_schedule,
            time: format_time(start_time, include_date: false))
+  end
+
+  def reschedule_required?(previous: false)
+    (previous ? previous_changes : changes)
+      .keys
+      .intersect?(%w[frequency start_date start_time start_time_hour iterations interval end_after end_date])
   end
 
   def scheduled_occurrences(limit:)
@@ -192,6 +225,8 @@ class RecurringMeeting < ApplicationRecord
   def previous_occurrence(from_time: Time.current)
     schedule.previous_occurrence(from_time)&.to_time
   end
+
+  delegate :occurs_at?, to: :schedule
 
   def remaining_occurrences
     case end_after
