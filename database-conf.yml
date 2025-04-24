@@ -1,0 +1,17 @@
+production:
+  adapter: postgresql
+  database: openproject_db
+  host: postgres
+  username: openproject_user
+  password: "G6vb3Le52C"
+  encoding: unicode
+  pool: 20
+
+test:
+  adapter: postgresql
+  database: openproject_db
+  host: postgres
+  username: openproject_user
+  password: "G6vb3Le52C"
+  encoding: unicode
+  pool: 20
