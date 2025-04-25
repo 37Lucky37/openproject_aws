@@ -55,7 +55,7 @@ jobs:
     - name: Tag and Push to ECR
       run: |
         IMAGE_URI=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-        docker tag openproject_repo-openproject $IMAGE_URI
+        docker tag openproject_aws-openproject $IMAGE_URI
         docker push $IMAGE_URI
 
     - name: Cleanup
