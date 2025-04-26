@@ -1,0 +1,69 @@
+{
+  "AWSEBDockerrunVersion": "2",
+  "containerDefinitions": [
+    {
+      "name": "openproject_app",
+      "image": "864981721059.dkr.ecr.us-east-1.amazonaws.com/openproject:latest", 
+      "essential": true,
+      "memory": 1024,
+      "cpu": 512,
+      "environment": [
+        {
+          "name": "SECRET_KEY_BASE",
+          "value": "cf99476b3e3d8c9f1843d20b4cd7f1dc4a5c19c777277bc832c8cb39ce129449bc76f3736dc7d27bb1efdb78e68137663d47ac1e82bb251cddd599777a238505"
+        },
+        {
+          "name": "RAILS_ENV",
+          "value": "production"
+        },
+        {
+          "name": "MEMCACHE_SERVERS",
+          "value": "memcached:11211"
+        },
+        {
+          "name": "OPENPROJECT_HTTPS",
+          "value": "false"
+        },
+        {
+          "name": "MIGRATE_DB",
+          "value": "yes"
+        },
+        {
+          "name": "PRECOMPILE_ASSETS",
+          "value": "yes"
+        },
+        {
+          "name": "CI",
+          "value": "false"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "database-conf",
+          "containerPath": "/app/config/database.yml"
+        }
+      ]
+    },
+    {
+      "name": "memcached_container",
+      "image": "864981721059.dkr.ecr.us-east-1.amazonaws.com/memcached:latest",
+      "essential": false,
+      "memory": 512,
+      "cpu": 256,
+      "ports": [
+        {
+          "hostPort": 11211,
+          "containerPort": 11211
+        }
+      ]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "database-conf",
+      "host": {
+        "sourcePath": "database-conf.yml"
+      }
+    }
+  ]
+}
