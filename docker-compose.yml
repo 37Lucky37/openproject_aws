@@ -43,7 +43,7 @@ services:
       RDS_DB_NAME: openproject_db
       OPENPROJECT_HTTPS: "false"
       MIGRATE_DB: "yes"       
-      PRECOMPILE_ASSETS: "no"
+      PRECOMPILE_ASSETS: "yes"
       CI: "true"
     depends_on:
       - postgres
