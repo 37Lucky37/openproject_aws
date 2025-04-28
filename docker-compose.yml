@@ -4,21 +4,6 @@ networks:
     driver: bridge
 
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres_container
-    restart: always
-    environment:
-      POSTGRES_DB: openproject_db
-      POSTGRES_USER: openproject_user
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
-    networks:
-      - openproject_network
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   memcached:
     image: memcached:latest
     container_name: memcached_container
@@ -41,16 +26,11 @@ services:
       OPENPROJECT_HTTPS: "false"
       MIGRATE_DB: "yes"       
       PRECOMPILE_ASSETS: "yes"
-      CI: "true"
+      CI: "false"
     depends_on:
-      - postgres
       - memcached
     ports:
       - "3001:3000"
     networks:
       - openproject_network
-    volumes:
-      - ./database-conf.yml:/app/config/database.yml
 
-volumes:
-  postgres_data:
