@@ -18,7 +18,7 @@ else
 fi
 
 
-if [ "$PRECOMPILE_ASSETS" = "yes" ]; then
+if [ "$PRECOMPILE_ASSETS" = "no" ]; then
   echo "Precompiling assets..."
   RAILS_ENV=production bundle exec rake assets:precompile
   # if [ "$(ls -A /app/public/assets 2>/dev/null)" ]; then
