@@ -42,6 +42,8 @@ jobs:
         echo "Waiting for OpenProject to be ready..."
         until docker logs openproject_app 2>&1 | grep -q "CI checks passed successfully!"; do
           echo "Still waiting..."; sleep 20;
+          echo "Last 20 lines of OpenProject logs:"
+          docker logs --tail 20 openproject_app
         done
         docker compose ps
         docker logs openproject_app
